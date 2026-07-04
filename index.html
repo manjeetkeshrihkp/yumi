@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elite X — Ads Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Table overrides to fit Meta Ads theme */
+        .admin-table th, .admin-table td {
+            padding: 14px 12px;
+            vertical-align: middle;
+        }
+
+        .chart-tabs {
+            display: flex;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--card-border);
+            padding: 3px;
+            border-radius: 8px;
+            gap: 2px;
+        }
+
+        .chart-tab {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .chart-tab:hover {
+            color: var(--text-primary);
+        }
+
+        .chart-tab.active {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-primary);
+        }
+
+        /* Responsive Campaign Ad Row Card */
+        .ad-row-card {
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            border: 1px solid var(--card-border) !important;
+            transition: border-color 0.2s;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.01);
+        }
+        
+        .ad-row-card:hover {
+            border-color: var(--card-border-hover) !important;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .ad-row-card-stats {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 600px) {
+            .ad-row-card {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 14px;
+            }
+            .ad-row-card-stats {
+                width: 100%;
+                justify-content: space-between;
+                border-top: 1px solid rgba(255, 255, 255, 0.04);
+                padding-top: 12px;
+                gap: 16px;
+            }
+        }
+
+        /* Desktop Modal style */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-box {
+            background: #0f0f13;
+            border: 1px solid var(--card-border-hover);
+            border-radius: 16px;
+            padding: 24px;
+            width: 90%;
+            max-width: 440px;
+            box-shadow: var(--glass-shadow);
+        }
+
+        .modal-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .modal-desc {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        .action-row {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="glow-bg">
+        <div class="glow-1"></div>
+        <div class="glow-2"></div>
+    </div>
+
+    <!-- Mobile Top Navigation Header -->
+    <header class="top-nav">
+        <div class="nav-left">
+            <button class="icon-btn" id="openMobileSidebar" aria-label="Menu">
+                <i class="ph ph-list"></i>
+            </button>
+            <a href="index.html" class="logo">Elite <span>X</span></a>
+        </div>
+        <div class="nav-actions">
+            <button class="icon-btn" aria-label="Notifications" id="notificationBellMobile">
+                <i class="ph ph-bell"></i>
+                <span class="badge"></span>
+            </button>
+            <div class="profile-avatar">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=150&auto=format&fit=crop" alt="Creator Profile">
+            </div>
+        </div>
+    </header>
+
+    <!-- Side Menu Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Desktop Sidebar Menu -->
+    <aside class="sidebar" id="sidebarMenu">
+        <div class="sidebar-header">
+            <a href="index.html" class="logo"><i class="ph ph-lightning" style="color: var(--accent);"></i> Elite <span>X</span></a>
+            <button class="icon-btn" id="closeMobileSidebar" style="display: none;"><i class="ph ph-x"></i></button>
+        </div>
+
+        <nav class="sidebar-links">
+            <a href="index.html" class="active"><i class="ph ph-squares-four"></i> Dashboard</a>
+            <a href="campaigns.html"><i class="ph ph-megaphone"></i> Campaigns</a>
+            <a href="wallet.html"><i class="ph ph-wallet"></i> Wallet</a>
+            <a href="shop.html"><i class="ph ph-shopping-bag"></i> Shop</a>
+        </nav>
+
+        <div style="height: 1px; background: var(--card-border); margin: 12px 16px;"></div>
+        <nav class="sidebar-links">
+            <a href="admin.html" style="color: var(--accent); background: rgba(99,102,241,0.06); border: 1px solid rgba(99,102,241,0.12); border-radius: 8px;">
+                <i class="ph ph-user-gear"></i> Admin Panel
+                <span style="margin-left: auto; font-size: 0.6rem; font-weight: 700; padding: 2px 6px; background: var(--accent); color: #fff; border-radius: 99px; letter-spacing: 0.3px;">ADMIN</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="user-profile">
+                <div class="profile-avatar" style="width: 36px; height: 36px;">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=150&auto=format&fit=crop" alt="Creator Profile">
+                </div>
+                <div class="user-details">
+                    <h4>Alex Carter</h4>
+                    <p>Pro Creator</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Workspace Container -->
+    <main class="dashboard-container">
+
+        <!-- Bento Grid System -->
+        <div class="bento-grid">
+            
+            <!-- Square Ad List Manager (Span 12) -->
+            <div class="bento-card span-12">
+                <div style="display:flex; justify-content:flex-start; margin-bottom:20px; flex-wrap:wrap; gap:16px;">
+                    <div class="chart-tabs" id="adsFilterTabs">
+                        <button class="chart-tab active" data-filter="all">All Ads</button>
+                        <button class="chart-tab" data-filter="approved">Active</button>
+                        <button class="chart-tab" data-filter="pending">In Review</button>
+                        <button class="chart-tab" data-filter="rejected">Rejected</button>
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 12px;" id="ads-list-container">
+                    <!-- Populated dynamically by JS -->
+                </div>
+            </div>
+
+
+
+        </div>
+    </main>
+
+    <!-- Desktop Submit Video Modal -->
+    <div class="modal-overlay" id="desktopSubmitModal">
+        <div class="modal-box">
+            <div class="modal-title">Submit Video Link</div>
+            <div class="modal-desc">Provide your promotional video URL. Only campaigns you have ordered products for will appear.</div>
+            
+            <div class="form-group">
+                <label class="input-label">Select Campaign Target</label>
+                <div class="custom-dropdown" id="campaignDropdown">
+                    <div class="dropdown-trigger">
+                        <span id="selected-campaign-name">Select Campaign Target...</span>
+                        <i class="ph ph-caret-down"></i>
+                    </div>
+                    <div class="dropdown-menu" id="dropdownMenu">
+                        <!-- Populated dynamically by JS -->
+                    </div>
+                    <input type="hidden" id="campaign-select-value" value="">
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 24px;">
+                <label class="input-label">Video URL</label>
+                <div class="input-box">
+                    <input type="url" id="video-link-input" class="input-field" placeholder="https://instagram.com/reel/...">
+                    <i class="ph ph-link"></i>
+                </div>
+            </div>
+
+            <div class="action-row">
+                <button class="btn-outline btn-sm" id="closeDesktopSubmitModalBtn" style="width:auto; padding:10px 16px;">Cancel</button>
+                <button class="btn-gradient btn-sm" id="submit-video-btn" style="width:auto; padding:10px 16px;"><i class="ph ph-paper-plane-tilt"></i> Submit Link</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Professional Full-Width Bottom Navigation for Mobile -->
+    <nav class="bottom-nav">
+        <a href="index.html" class="bottom-nav-item active">
+            <i class="ph ph-squares-four"></i>
+            <span>Home</span>
+        </a>
+        <a href="campaigns.html" class="bottom-nav-item">
+            <i class="ph ph-megaphone"></i>
+            <span>Campaigns</span>
+        </a>
+        
+        <!-- Floating FAB to open submission drawer -->
+        <button class="mobile-fab" id="openMobileDrawerBtn" aria-label="Submit video">
+            <i class="ph ph-plus"></i>
+        </button>
+
+        <a href="wallet.html" class="bottom-nav-item">
+            <i class="ph ph-wallet"></i>
+            <span>Wallet</span>
+        </a>
+        <a href="shop.html" class="bottom-nav-item">
+            <i class="ph ph-shopping-bag"></i>
+            <span>Shop</span>
+        </a>
+    </nav>
+
+    <!-- Mobile submission Drawer -->
+    <div class="drawer-overlay" id="mobileDrawerOverlay"></div>
+    <div class="bottom-drawer" id="mobileDrawer">
+        <div class="drawer-handle"></div>
+        <div class="drawer-header">
+            <h3>Submit Video Link</h3>
+            <button class="icon-btn" id="closeMobileDrawerBtn"><i class="ph ph-x"></i></button>
+        </div>
+        <div style="padding-top: 10px;">
+            <div class="form-group">
+                <label class="input-label">Campaign Target</label>
+                <div class="custom-dropdown" id="campaignDropdownMobile">
+                    <div class="dropdown-trigger">
+                        <span id="selected-campaign-name-mobile">Select Campaign...</span>
+                        <i class="ph ph-caret-down"></i>
+                    </div>
+                    <div class="dropdown-menu" id="dropdownMenuMobile">
+                        <!-- Populated dynamically by JS -->
+                    </div>
+                    <input type="hidden" id="campaign-select-value-mobile" value="">
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 24px;">
+                <label class="input-label">Video URL</label>
+                <div class="input-box">
+                    <input type="url" id="video-link-input-mobile" class="input-field" placeholder="https://instagram.com/reel/...">
+                    <i class="ph ph-link"></i>
+                </div>
+            </div>
+
+            <button class="btn-gradient" id="submit-video-btn-mobile" style="margin-bottom: 16px;">
+                <i class="ph ph-paper-plane-tilt"></i> Submit Link
+            </button>
+        </div>
+    </div>
+
+    <!-- Toast container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="shared.js"></script>
+    <script>
+        let currentFilter = 'all';
+        window.openSubmitForCampaign = function(campId, campText) {
+            document.getElementById('campaign-select-value').value = campId;
+            document.getElementById('selected-campaign-name').textContent = campText;
+            openDesktopSubmitModal();
+        }
+
+        function renderAdsDashboard() {
+            const container = document.getElementById('ads-list-container');
+            container.innerHTML = '';
+
+            const orders = getOrders().filter(o => o.status !== 'returned');
+            const subs = getSubmissions();
+            const joined = getJoinedCampaigns();
+
+            const acceptedCampaigns = [];
+
+            // 1. Add Buy & Review campaigns
+            orders.forEach(order => {
+                const campaign = DEFAULT_CAMPAIGNS.find(c => c.productId === order.productId);
+                if (campaign) {
+                    const sub = subs.find(s => s.campaignId === campaign.id);
+                    acceptedCampaigns.push({
+                        campaign: campaign,
+                        order: order,
+                        submission: sub
+                    });
+                }
+            });
+
+            // 2. Add other joined campaigns
+            joined.forEach(campId => {
+                const campaign = DEFAULT_CAMPAIGNS.find(c => c.id === campId);
+                if (campaign && campaign.type !== 'buy_to_review') {
+                    if (!acceptedCampaigns.find(item => item.campaign.id === campId)) {
+                        const sub = subs.find(s => s.campaignId === campId);
+                        acceptedCampaigns.push({
+                            campaign: campaign,
+                            order: null,
+                            submission: sub
+                        });
+                    }
+                }
+            });
+
+            // Filter campaigns based on submission status
+            const filtered = acceptedCampaigns.filter(item => {
+                if (currentFilter === 'all') return true;
+                if (currentFilter === 'pending') return item.submission && item.submission.status === 'pending';
+                if (currentFilter === 'approved') return item.submission && item.submission.status === 'approved';
+                if (currentFilter === 'rejected') return item.submission && item.submission.status === 'rejected';
+                return false;
+            });
+
+            if (filtered.length === 0) {
+                if (acceptedCampaigns.length === 0) {
+                    container.innerHTML = `
+                        <div style="padding: 40px; text-align: center; color: var(--text-muted); font-size: 0.88rem;">
+                            You haven't accepted any campaigns yet.
+                            <div style="margin-top: 16px;">
+                                <a href="campaigns.html" class="btn-gradient" style="display: inline-flex; width: auto; padding: 8px 16px; font-size: 0.8rem; text-decoration: none; align-items: center; gap: 6px;">
+                                    <i class="ph ph-megaphone"></i> Browse Campaigns
+                                </a>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    container.innerHTML = `
+                        <div style="padding:40px; text-align:center; color:var(--text-muted); font-size:0.88rem;">
+                            No campaigns match this status filter.
+                        </div>
+                    `;
+                }
+                return;
+            }
+
+            const campaignThumbnails = {
+                'camp_direct': 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?q=80&w=200&auto=format&fit=crop',
+                'camp_app': 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=200&auto=format&fit=crop',
+                'camp_onsite': 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=200&auto=format&fit=crop'
+            };
+
+            filtered.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'ad-row-card';
+
+                const s = item.submission;
+                const c = item.campaign;
+                const o = item.order;
+
+                let platformIcon = 'ph-instagram-logo';
+                let iconColor = '#f43f5e';
+                let videoUrl = '#';
+                
+                if (s) {
+                    videoUrl = s.videoUrl;
+                    if (s.videoUrl.includes('youtube.com') || s.videoUrl.includes('youtu.be')) {
+                        platformIcon = 'ph-youtube-logo';
+                        iconColor = '#ef4444';
+                    } else if (s.videoUrl.includes('tiktok.com')) {
+                        platformIcon = 'ph-tiktok-logo';
+                        iconColor = '#f4f4f5';
+                    }
+                }
+
+                // Delivery / Submission Status
+                let statusBadge = '';
+                let reachVal = '—';
+                let earningsVal = '₹0.00';
+                let earningsStyle = '';
+                let playIconHtml = '';
+                let linkHtml = '';
+
+                if (!s) {
+                    // No video submitted yet
+                    statusBadge = `<span style="display:inline-flex; align-items:center; gap:6px; color:var(--text-secondary); font-weight:600; font-size:0.75rem;"><span style="width:6px; height:6px; border-radius:50%; background:var(--text-muted);"></span> Ready to Film</span>`;
+                    reachVal = 'Not uploaded';
+                    earningsVal = '₹0.00';
+                    playIconHtml = `
+                        <div style="position:absolute; inset:0; background:rgba(0,0,0,0.4); display:flex; align-items:center; justify-content:center;">
+                            <i class="ph ph-camera" style="font-size:1.15rem; color:#fff; opacity:0.85;"></i>
+                        </div>
+                    `;
+                    linkHtml = `
+                        <span style="font-weight:600; font-size:0.95rem; color:var(--text-primary);">
+                            ${c.title}
+                        </span>
+                        <div style="margin-top:4px;">
+                            <button class="btn-gradient" onclick="openSubmitForCampaign('${c.id}', '${c.brand}: ${c.title}')" style="width: auto; padding: 6px 12px; font-size: 0.72rem; border-radius: 6px; display: inline-flex; align-items: center; gap: 4px;">
+                                <i class="ph ph-video-camera"></i> Submit Video
+                            </button>
+                        </div>
+                    `;
+                } else {
+                    // Video submitted
+                    if (s.status === 'approved') {
+                        statusBadge = `<span style="display:inline-flex; align-items:center; gap:6px; color:var(--success); font-weight:600; font-size:0.75rem;"><span style="width:6px; height:6px; border-radius:50%; background:var(--success); box-shadow:0 0 8px var(--success);"></span> Active</span>`;
+                        
+                        const seed = parseInt(s.subId.split('-')[1]) || 500;
+                        const views = Math.round((s.performancePayout * 1250) + (seed % 1000) * 10 + 5000);
+                        reachVal = views.toLocaleString('en-IN');
+
+                        const totalPay = 1.00 + s.performancePayout;
+                        earningsVal = `₹${totalPay.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
+                        earningsStyle = 'color:var(--success); font-weight:700;';
+                    } else if (s.status === 'rejected') {
+                        statusBadge = `<span style="display:inline-flex; align-items:center; gap:6px; color:var(--danger); font-weight:600; font-size:0.75rem;"><span style="width:6px; height:6px; border-radius:50%; background:var(--danger); box-shadow:0 0 8px var(--danger);"></span> Rejected</span>`;
+                        reachVal = '0';
+                        earningsVal = '₹0.00';
+                    } else {
+                        statusBadge = `<span style="display:inline-flex; align-items:center; gap:6px; color:var(--warning); font-weight:600; font-size:0.75rem;"><span style="width:6px; height:6px; border-radius:50%; background:var(--warning); box-shadow:0 0 8px var(--warning);"></span> In Review</span>`;
+                        reachVal = 'Evaluating';
+                        earningsVal = 'Pending Review';
+                    }
+
+                    playIconHtml = `
+                        <div style="position:absolute; inset:0; background:rgba(0,0,0,0.25); display:flex; align-items:center; justify-content:center;">
+                            <i class="ph ph-play" style="font-size:1.15rem; color:#fff; filter:drop-shadow(0 2px 4px rgba(0,0,0,0.4));"></i>
+                        </div>
+                        <div style="position:absolute; bottom:4px; right:4px; background:rgba(9,9,11,0.85); width:18px; height:18px; border-radius:50%; display:flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,0.05);">
+                            <i class="ph ${platformIcon}" style="font-size:0.75rem; color:${iconColor};"></i>
+                        </div>
+                    `;
+
+                    linkHtml = `
+                        <span style="font-weight:600; font-size:0.95rem; display:flex; align-items:center; gap:8px;">
+                            <a href="${s.videoUrl}" target="_blank" style="color:var(--text-primary); text-decoration:none; display:inline-flex; align-items:center; gap:4px;">
+                                ${c.title} <i class="ph ph-arrow-square-out" style="font-size:0.72rem; color:var(--text-muted);"></i>
+                            </a>
+                        </span>
+                    `;
+                }
+
+                const imgUrl = o ? o.image : (campaignThumbnails[c.id] || 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?q=80&w=200&auto=format&fit=crop');
+                const taskDetailsText = o ? `Order: ${o.orderId}` : `Task ID: TSK-${c.id.split('_')[1] || '928371'}`;
+                const dateText = o ? `Ordered: ${o.date}` : `Joined: 03/07/2026`;
+
+                div.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 16px; flex-grow: 1; min-width: 0;">
+                        <!-- Rectangular Video Thumbnail (16:9 aspect ratio) -->
+                        <div style="position:relative; width:100px; height:58px; border-radius:6px; overflow:hidden; border:1px solid rgba(255,255,255,0.06); flex-shrink:0; background:#18181b;">
+                            <img src="${imgUrl}" style="width:100%; height:100%; object-fit:cover;">
+                            ${playIconHtml}
+                        </div>
+                        <div style="display:flex; flex-direction:column; gap:4px; min-width: 0;">
+                            ${linkHtml}
+                            <div style="font-size:0.75rem; color:var(--text-secondary); display:flex; align-items:center; gap:6px; flex-wrap: wrap;">
+                                <span>${c.brand}</span>
+                                <span style="color: var(--text-muted);">•</span>
+                                <span>${taskDetailsText}</span>
+                            </div>
+                            <div style="margin-top:2px; display:flex; align-items:center; gap:8px; flex-wrap: wrap;">
+                                ${statusBadge}
+                                <span style="font-size:0.72rem; color:var(--text-muted);">•</span>
+                                <span style="font-size:0.72rem; color:var(--text-muted);"><i class="ph ph-calendar" style="vertical-align: middle;"></i> ${dateText}</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Meta Stats columns aligned on the right -->
+                    <div class="ad-row-card-stats">
+                        <div style="text-align: right; min-width: 80px;">
+                            <div style="font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px;">Reach</div>
+                            <div style="font-size: 0.9rem; font-weight: 700; color: var(--text-primary); margin-top: 2px;">${reachVal}</div>
+                        </div>
+                        <div style="text-align: right; min-width: 100px;">
+                            <div style="font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px;">Amount Earned</div>
+                            <div style="font-size: 1.15rem; ${earningsStyle}; margin-top: 2px;">${earningsVal}</div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function loadDashboardMetrics() {
+            renderAdsDashboard();
+        }
+
+        // --- Desktop Submit Modal Handlers ---
+        const submitModal = document.getElementById('desktopSubmitModal');
+        
+        function openDesktopSubmitModal() {
+            populateCampaignDropdown('campaignDropdown', 'campaign-select-value', 'selected-campaign-name');
+            submitModal.classList.add('active');
+            document.getElementById('video-link-input').value = '';
+        }
+
+        function closeDesktopSubmitModal() {
+            submitModal.classList.remove('active');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderHeaderAndSidebar('index.html');
+            setupSubmissionModal();
+            loadDashboardMetrics();
+
+            // Modal Button bindings
+            const openBtn = document.getElementById('openDesktopSubmitModalBtn');
+            if (openBtn) openBtn.addEventListener('click', openDesktopSubmitModal);
+            document.getElementById('closeDesktopSubmitModalBtn').addEventListener('click', closeDesktopSubmitModal);
+
+            // Filter Ads Tabs
+            document.querySelectorAll('#adsFilterTabs .chart-tab').forEach(tab => {
+                tab.addEventListener('click', (e) => {
+                    document.querySelectorAll('#adsFilterTabs .chart-tab').forEach(t => t.classList.remove('active'));
+                    e.currentTarget.classList.add('active');
+                    currentFilter = e.currentTarget.getAttribute('data-filter');
+                    renderAdsDashboard();
+                });
+            });
+
+            // Desktop Form Submission inside modal
+            const submitBtn = document.getElementById('submit-video-btn');
+            const inputField = document.getElementById('video-link-input');
+            submitBtn.addEventListener('click', () => {
+                const campId = document.getElementById('campaign-select-value').value;
+                const url = inputField.value.trim();
+                
+                const res = addSubmission(campId, url);
+                if (res.success) {
+                    showToast("Link submitted successfully! Pending review.", "success");
+                    
+                    // Reset dropdown
+                    document.getElementById('campaign-select-value').value = '';
+                    document.getElementById('selected-campaign-name').textContent = 'Select Campaign Target...';
+                    inputField.value = '';
+
+                    closeDesktopSubmitModal();
+                    loadDashboardMetrics();
+                } else {
+                    showToast(res.msg, "error");
+                }
+            });
+
+            // Mobile Form Submission (drawer)
+            const mobileSubmitBtn = document.getElementById('submit-video-btn-mobile');
+            const mobileInputField = document.getElementById('video-link-input-mobile');
+            mobileSubmitBtn.addEventListener('click', () => {
+                const campId = document.getElementById('campaign-select-value-mobile').value;
+                const url = mobileInputField.value.trim();
+                
+                const res = addSubmission(campId, url);
+                if (res.success) {
+                    showToast("Link submitted successfully! Pending review.", "success");
+                    
+                    // Reset dropdown
+                    document.getElementById('campaign-select-value-mobile').value = '';
+                    document.getElementById('selected-campaign-name-mobile').textContent = 'Select Campaign...';
+                    mobileInputField.value = '';
+
+                    const closeDrawerBtn = document.getElementById('closeMobileDrawerBtn');
+                    if (closeDrawerBtn) closeDrawerBtn.click();
+
+                    loadDashboardMetrics();
+                } else {
+                    showToast(res.msg, "error");
+                }
+            });
+
+            // Check if page loaded from campaign link redirect (?submit=true)
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('submit') === 'true') {
+                openDesktopSubmitModal();
+                const targetCampId = urlParams.get('campaign');
+                if (targetCampId) {
+                    const campaign = DEFAULT_CAMPAIGNS.find(c => c.id === targetCampId);
+                    if (campaign) {
+                        document.getElementById('campaign-select-value').value = targetCampId;
+                        document.getElementById('selected-campaign-name').textContent = `${campaign.brand}: ${campaign.title}`;
+                    }
+                }
+            }
+
+            window.addEventListener('elitex_balance_updated', loadDashboardMetrics);
+            window.addEventListener('elitex_activities_updated', loadDashboardMetrics);
+            // 🔥 Re-render whenever Firebase pushes new data (cross-device real-time)
+            window.addEventListener('elitex_data_changed', loadDashboardMetrics);
+        });
+    </script>
+</body>
+</html>

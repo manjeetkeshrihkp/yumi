@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elite X — Explore Campaigns</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .campaign-item {
+            background: rgba(255, 255, 255, 0.015);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 180px;
+            transition: all 0.2s;
+        }
+
+        .campaign-item:hover {
+            background: rgba(255, 255, 255, 0.03);
+            border-color: var(--card-border-hover);
+            transform: translateY(-2px);
+        }
+
+        .campaign-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .brand-block {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: #fff;
+        }
+
+        .brand-details h4 {
+            font-size: 0.92rem;
+            font-weight: 600;
+        }
+
+        .brand-details p {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 1px;
+        }
+
+        .platform-icon {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+        }
+
+        .platform-icon.instagram { color: #f43f5e; }
+        .platform-icon.youtube { color: #ef4444; }
+        .platform-icon.tiktok { color: #f4f4f5; }
+
+        .campaign-mid {
+            margin: 16px 0;
+        }
+
+        .campaign-title-label {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .progress-bar-wrapper {
+            margin-top: 10px;
+        }
+
+        .progress-bar-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .progress-track {
+            height: 4px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 99px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--accent-gradient);
+            border-radius: 99px;
+            width: 0;
+            transition: width 0.8s ease-out;
+        }
+
+        .campaign-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.02);
+            gap: 12px;
+        }
+
+        .payout-puck {
+            background: rgba(16, 185, 129, 0.08);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            color: var(--success);
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 6px;
+            white-space: nowrap;
+        }
+
+        .action-link {
+            font-size: 0.78rem;
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .action-link:hover {
+            opacity: 0.85;
+            text-decoration: underline;
+        }
+
+        .search-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            width: 240px;
+        }
+
+        .search-wrapper i {
+            position: absolute;
+            left: 12px;
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        .search-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 8px 12px 8px 34px;
+            color: var(--text-primary);
+            font-size: 0.8rem;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .search-input:focus {
+            border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .filter-pills {
+            display: flex;
+            gap: 6px;
+        }
+
+        .filter-pill {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--card-border);
+            color: var(--text-secondary);
+            font-size: 0.78rem;
+            font-weight: 500;
+            padding: 6px 14px;
+            border-radius: 99px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-pill:hover {
+            color: var(--text-primary);
+            border-color: var(--card-border-hover);
+        }
+
+        .filter-pill.active {
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--accent);
+            border-color: rgba(99, 102, 241, 0.3);
+        }
+
+        .campaign-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        @media(max-width: 768px) {
+            .campaign-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="glow-bg">
+        <div class="glow-1"></div>
+        <div class="glow-2"></div>
+    </div>
+
+    <!-- Mobile Top Navigation Header -->
+    <header class="top-nav">
+        <div class="nav-left">
+            <button class="icon-btn" id="openMobileSidebar" aria-label="Menu">
+                <i class="ph ph-list"></i>
+            </button>
+            <a href="index.html" class="logo">Elite <span>X</span></a>
+        </div>
+        <div class="nav-actions">
+            <button class="icon-btn" aria-label="Notifications" id="notificationBellMobile">
+                <i class="ph ph-bell"></i>
+                <span class="badge"></span>
+            </button>
+            <div class="profile-avatar">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=150&auto=format&fit=crop" alt="Creator Profile">
+            </div>
+        </div>
+    </header>
+
+    <!-- Side Menu Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Desktop Sidebar Menu -->
+    <aside class="sidebar" id="sidebarMenu">
+        <div class="sidebar-header">
+            <a href="index.html" class="logo"><i class="ph ph-lightning" style="color: var(--accent);"></i> Elite <span>X</span></a>
+            <button class="icon-btn" id="closeMobileSidebar" style="display: none;"><i class="ph ph-x"></i></button>
+        </div>
+
+        <nav class="sidebar-links">
+            <a href="index.html"><i class="ph ph-squares-four"></i> Dashboard</a>
+            <a href="campaigns.html" class="active"><i class="ph ph-megaphone"></i> Campaigns</a>
+            <a href="wallet.html"><i class="ph ph-wallet"></i> Wallet</a>
+            <a href="shop.html"><i class="ph ph-shopping-bag"></i> Shop</a>
+        </nav>
+
+        <div style="height: 1px; background: rgba(255, 255, 255, 0.06); margin: 12px 16px;"></div>
+        <nav class="sidebar-links">
+            <a href="admin.html" style="color: var(--accent); background: rgba(99,102,241,0.06); border: 1px solid rgba(99,102,241,0.12); border-radius: 8px;">
+                <i class="ph ph-user-gear"></i> Admin Panel
+                <span style="margin-left: auto; font-size: 0.6rem; font-weight: 700; padding: 2px 6px; background: var(--accent); color: #fff; border-radius: 99px; letter-spacing: 0.3px;">ADMIN</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="user-profile">
+                <div class="profile-avatar" style="width: 36px; height: 36px;">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=150&auto=format&fit=crop" alt="Creator Profile">
+                </div>
+                <div class="user-details">
+                    <h4>Alex Carter</h4>
+                    <p>Pro Creator</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Workspace Container -->
+    <main class="dashboard-container">
+        <!-- Bento Grid System -->
+
+        <!-- Bento Grid System -->
+        <div class="bento-grid">
+            
+            <!-- Controls card -->
+            <div class="bento-card span-12" style="padding: 16px 24px;">
+                <div class="section-header-row" style="margin-bottom: 0;">
+                    <h3>Explore Campaigns</h3>
+                    <div class="browser-controls">
+                        <div class="search-wrapper" style="display: inline-flex; margin-right: 12px;">
+                            <i class="ph ph-magnifying-glass"></i>
+                            <input type="text" id="campaignSearch" class="search-input" placeholder="Search brands or titles...">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Campaign list container -->
+            <div class="span-12">
+                <div class="campaign-grid" id="campaignGrid">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Professional Full-Width Bottom Navigation for Mobile -->
+    <nav class="bottom-nav">
+        <a href="index.html" class="bottom-nav-item">
+            <i class="ph ph-squares-four"></i>
+            <span>Home</span>
+        </a>
+        <a href="campaigns.html" class="bottom-nav-item active">
+            <i class="ph ph-megaphone"></i>
+            <span>Campaigns</span>
+        </a>
+        
+        <!-- Floating FAB to open submission drawer -->
+        <button class="mobile-fab" id="openMobileDrawerBtn" aria-label="Submit video">
+            <i class="ph ph-plus"></i>
+        </button>
+
+        <a href="wallet.html" class="bottom-nav-item">
+            <i class="ph ph-wallet"></i>
+            <span>Wallet</span>
+        </a>
+        <a href="shop.html" class="bottom-nav-item">
+            <i class="ph ph-shopping-bag"></i>
+            <span>Shop</span>
+        </a>
+    </nav>
+
+    <!-- Mobile submission Drawer -->
+    <div class="drawer-overlay" id="mobileDrawerOverlay"></div>
+    <div class="bottom-drawer" id="mobileDrawer">
+        <div class="drawer-handle"></div>
+        <div class="drawer-header">
+            <h3>Submit Video Link</h3>
+            <button class="icon-btn" id="closeMobileDrawerBtn"><i class="ph ph-x"></i></button>
+        </div>
+        <div style="padding-top: 10px;">
+            <div class="form-group">
+                <label class="input-label">Campaign Target</label>
+                <div class="custom-dropdown" id="campaignDropdownMobile">
+                    <div class="dropdown-trigger">
+                        <span id="selected-campaign-name-mobile">Select Campaign...</span>
+                        <i class="ph ph-caret-down"></i>
+                    </div>
+                    <div class="dropdown-menu" id="dropdownMenuMobile">
+                        <!-- Populated dynamically by JS -->
+                    </div>
+                    <input type="hidden" id="campaign-select-value-mobile" value="">
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 24px;">
+                <label class="input-label">Video URL</label>
+                <div class="input-box">
+                    <input type="url" id="video-link-input-mobile" class="input-field" placeholder="https://instagram.com/reel/...">
+                    <i class="ph ph-link"></i>
+                </div>
+            </div>
+
+            <button class="btn-gradient" id="submit-video-btn-mobile" style="margin-bottom: 16px;">
+                <i class="ph ph-paper-plane-tilt"></i> Submit Link
+            </button>
+        </div>
+    </div>
+
+    <!-- Toast container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="shared.js"></script>
+    <script>
+        let searchFilter = '';
+
+        function selectCampaignTarget(id) {
+            const campaign = DEFAULT_CAMPAIGNS.find(c => c.id === id);
+            if (!campaign) return;
+
+            if (window.innerWidth <= 1024) {
+                // Mobile dropdown sync
+                const hiddenInputMobile = document.getElementById('campaign-select-value-mobile');
+                const labelMobile = document.getElementById('selected-campaign-name-mobile');
+                if (hiddenInputMobile && labelMobile) {
+                    hiddenInputMobile.value = id;
+                    labelMobile.textContent = `${campaign.brand}: ${campaign.title}`;
+                }
+                openMobileDrawer();
+            } else {
+                // Desktop: Redirect to dashboard with query parameters
+                window.location.href = `index.html?submit=true&campaign=${id}`;
+            }
+        }
+
+        window.showDownloadMock = function() {
+            showToast("Redirecting to App Store... EliteX Catalogue App package downloaded!", "success");
+        }
+
+        window.showSchedulerMock = function() {
+            showToast("EliteX Flagship NY Boutique: On-site visit slot booked!", "success");
+        }
+
+        function renderCampaignsPage() {
+            const grid = document.getElementById('campaignGrid');
+            grid.innerHTML = '';
+
+            const orders = getOrders();
+            const subs = getSubmissions();
+            const joined = getJoinedCampaigns();
+
+            // Filter
+            const filtered = DEFAULT_CAMPAIGNS.filter(c => {
+                return c.brand.toLowerCase().includes(searchFilter.toLowerCase()) || 
+                       c.title.toLowerCase().includes(searchFilter.toLowerCase());
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="bento-card span-12" style="text-align: center; padding: 40px; color: var(--text-muted);">
+                        No campaigns found.
+                    </div>
+                `;
+                return;
+            }
+
+            filtered.forEach(c => {
+                const item = document.createElement('div');
+                item.className = 'campaign-item';
+
+                let platformIcon = 'ph-instagram-logo';
+                if (c.platform === 'youtube') platformIcon = 'ph-youtube-logo';
+                if (c.platform === 'tiktok') platformIcon = 'ph-tiktok-logo';
+
+                const submission = subs.find(s => s.campaignId === c.id);
+
+                let statusBadge = '';
+                let actionBtnHtml = '';
+                let typeBadge = '';
+                let campaignDesc = '';
+
+                // 1. Campaign Type Badges & Descriptions
+                if (c.type === 'buy_to_review') {
+                    typeBadge = `<span class="status-badge" style="background: rgba(139, 92, 246, 0.08); border-color: rgba(139, 92, 246, 0.2); color: #a78bfa;">Buy & Review</span>`;
+                    campaignDesc = `Order this jewelry from our Shop, record a video, and submit the link. You can return the product for a full refund after video approval.`;
+                } else if (c.type === 'direct_video') {
+                    typeBadge = `<span class="status-badge" style="background: rgba(16, 185, 129, 0.08); border-color: rgba(16, 185, 129, 0.2); color: #34d399;">Direct Promo</span>`;
+                    campaignDesc = `No purchase required. Film a creative transition or styling vlog featuring any jewelry you own, then submit the link.`;
+                } else if (c.type === 'app_review') {
+                    typeBadge = `<span class="status-badge" style="background: rgba(59, 130, 246, 0.08); border-color: rgba(59, 130, 246, 0.2); color: #60a5fa;">App Review</span>`;
+                    campaignDesc = `Download our mobile application, rate it, and submit a video review or walkthrough screen recording showing app features.`;
+                } else if (c.type === 'onsite_video') {
+                    typeBadge = `<span class="status-badge" style="background: rgba(236, 72, 153, 0.08); border-color: rgba(236, 72, 153, 0.2); color: #f472b6;">On-Site Video</span>`;
+                    campaignDesc = `Visit our flagship boutique location in New York, film a vlog showing the interior or try-on experience, and submit the link.`;
+                }
+
+                // 2. Action logic based on Type
+                if (c.type === 'buy_to_review') {
+                    const order = orders.find(o => o.productId === c.productId && o.status !== 'returned');
+                    if (!order) {
+                        statusBadge = `<span class="status-badge status-pending">Requires Product</span>`;
+                        actionBtnHtml = `<a href="shop.html?buy=${c.productId}" class="btn-gradient" style="font-size:0.75rem; padding:8px 12px; display:inline-flex; align-items:center; text-decoration:none;">Order Product</a>`;
+                    } else {
+                        if (!submission) {
+                            statusBadge = `<span class="status-badge status-approved" style="background: rgba(99,102,241,0.08); border-color: rgba(99,102,241,0.2); color: var(--accent);">Ready for Content</span>`;
+                            actionBtnHtml = `<button class="btn-outline submit-quick-btn" data-id="${c.id}" style="font-size:0.75rem; padding:8px 12px;">Submit Video</button>`;
+                        } else {
+                            const subStatusClass = `status-${submission.status}`;
+                            const subStatusText = submission.status.charAt(0).toUpperCase() + submission.status.slice(1);
+                            statusBadge = `<span class="status-badge ${subStatusClass}">Video ${subStatusText}</span>`;
+                            
+                            if (submission.status === 'approved') {
+                                actionBtnHtml = `<span style="font-size:0.75rem; color:var(--success); font-weight:600;"><i class="ph ph-check-circle"></i> Completed</span>`;
+                            } else if (submission.status === 'rejected') {
+                                actionBtnHtml = `<button class="btn-outline btn-danger submit-quick-btn" data-id="${c.id}" style="font-size:0.75rem; padding:8px 12px;">Resubmit Video</button>`;
+                            } else {
+                                actionBtnHtml = `<span style="font-size:0.75rem; color:var(--warning); font-weight:600;"><i class="ph ph-clock"></i> Reviewing</span>`;
+                            }
+                        }
+                    }
+                } else {
+                    const isJoined = joined.includes(c.id);
+                    if (!isJoined) {
+                        statusBadge = `<span class="status-badge status-pending">Available Task</span>`;
+                        let extraActButton = '';
+                        if (c.type === 'app_review') {
+                            extraActButton = `<button class="btn-outline" onclick="showDownloadMock()" style="font-size:0.72rem; padding:8px 12px; margin-right:8px;"><i class="ph ph-download-simple"></i> Download App</button>`;
+                        } else if (c.type === 'onsite_video') {
+                            extraActButton = `<button class="btn-outline" onclick="showSchedulerMock()" style="font-size:0.72rem; padding:8px 12px; margin-right:8px;"><i class="ph ph-calendar-blank"></i> Book Visit</button>`;
+                        }
+                        actionBtnHtml = `
+                            <div style="display:flex; align-items:center;">
+                                ${extraActButton}
+                                <button class="btn-gradient join-camp-btn" data-id="${c.id}" style="font-size:0.75rem; padding:8px 12px;"><i class="ph ph-plus"></i> Accept Task</button>
+                            </div>
+                        `;
+                    } else {
+                        if (!submission) {
+                            statusBadge = `<span class="status-badge status-approved" style="background: rgba(99,102,241,0.08); border-color: rgba(99,102,241,0.2); color: var(--accent);">Ready to Film</span>`;
+                            let submitText = "Submit Video";
+                            if (c.type === 'app_review') submitText = "Submit Review";
+                            if (c.type === 'onsite_video') submitText = "Submit Vlog Link";
+                            actionBtnHtml = `<button class="btn-outline submit-quick-btn" data-id="${c.id}" style="font-size:0.75rem; padding:8px 12px;">${submitText}</button>`;
+                        } else {
+                            const subStatusClass = `status-${submission.status}`;
+                            const subStatusText = submission.status.charAt(0).toUpperCase() + submission.status.slice(1);
+                            statusBadge = `<span class="status-badge ${subStatusClass}">Link ${subStatusText}</span>`;
+                            
+                            if (submission.status === 'approved') {
+                                actionBtnHtml = `<span style="font-size:0.75rem; color:var(--success); font-weight:600;"><i class="ph ph-check-circle"></i> Completed</span>`;
+                            } else if (submission.status === 'rejected') {
+                                actionBtnHtml = `<button class="btn-outline btn-danger submit-quick-btn" data-id="${c.id}" style="font-size:0.75rem; padding:8px 12px;">Resubmit Link</button>`;
+                            } else {
+                                actionBtnHtml = `<span style="font-size:0.75rem; color:var(--warning); font-weight:600;"><i class="ph ph-clock"></i> Reviewing</span>`;
+                            }
+                        }
+                    }
+                }
+
+                item.innerHTML = `
+                    <div class="campaign-top">
+                        <div class="brand-block">
+                            <div class="brand-icon" style="background: ${c.color}">${c.avatarChar}</div>
+                            <div class="brand-details">
+                                <h4>${c.brand}</h4>
+                                <div style="display:flex; align-items:center; gap:6px; margin-top:2px;">
+                                    <p>${c.title}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="display:flex; align-items:center; gap: 8px;">
+                            ${typeBadge}
+                            ${statusBadge}
+                            <i class="ph ${platformIcon} platform-icon ${c.platform}"></i>
+                        </div>
+                    </div>
+                    <div class="campaign-mid">
+                        <div style="font-size:0.78rem; color:var(--text-secondary); line-height:1.4;">
+                            ${campaignDesc} 
+                            <strong>₹1.00 Guaranteed</strong> content fee added upon review. Performance bonus declared based on performance.
+                        </div>
+                    </div>
+                    <div class="campaign-bottom">
+                        <div class="payout-puck">${c.payout}</div>
+                        <div style="margin-left: auto;">
+                            ${actionBtnHtml}
+                        </div>
+                    </div>
+                `;
+
+                // Add quick submit bindings
+                const btn = item.querySelector('.submit-quick-btn');
+                if (btn) {
+                    btn.addEventListener('click', (e) => {
+                        const campId = e.currentTarget.getAttribute('data-id');
+                        selectCampaignTarget(campId);
+                    });
+                }
+
+                // Add join button bindings
+                const joinBtn = item.querySelector('.join-camp-btn');
+                if (joinBtn) {
+                    joinBtn.addEventListener('click', (e) => {
+                        const campId = e.currentTarget.getAttribute('data-id');
+                        joinCampaign(campId);
+                        showToast("Task accepted! Campaign added to your active dashboard.", "success");
+                        renderCampaignsPage();
+                    });
+                }
+
+                grid.appendChild(item);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderHeaderAndSidebar('campaigns.html');
+            setupSubmissionModal();
+            renderCampaignsPage();
+
+            // Setup search filter
+            document.getElementById('campaignSearch').addEventListener('input', (e) => {
+                searchFilter = e.target.value;
+                renderCampaignsPage();
+            });
+
+            // Mobile drawer submit syncing
+            const mobileSubmitBtn = document.getElementById('submit-video-btn-mobile');
+            const mobileInputField = document.getElementById('video-link-input-mobile');
+            mobileSubmitBtn.addEventListener('click', () => {
+                const campId = document.getElementById('campaign-select-value-mobile').value;
+                const url = mobileInputField.value.trim();
+                
+                const res = addSubmission(campId, url);
+                if (res.success) {
+                    showToast("Link submitted successfully! Pending review.", "success");
+                    mobileInputField.value = '';
+                    const closeDrawerBtn = document.getElementById('closeMobileDrawerBtn');
+                    if (closeDrawerBtn) closeDrawerBtn.click();
+                    renderCampaignsPage();
+                } else {
+                    showToast(res.msg, "error");
+                }
+            });
+
+            // Global listen to balance updates and Firebase real-time sync
+            window.addEventListener('elitex_balance_updated', renderCampaignsPage);
+            window.addEventListener('elitex_data_changed', renderCampaignsPage);
+        });
+    </script>
+</body>
+</html>

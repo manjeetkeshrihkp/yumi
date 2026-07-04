@@ -1,0 +1,1724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EliteX — Wallet & Payout Center</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* ===== PREMIUM GRAPHIC DESIGN VARIABLES & ESTHETICS ===== */
+        :root {
+            --card-glass: rgba(15, 15, 20, 0.7);
+            --card-glass-hover: rgba(22, 22, 30, 0.85);
+            --border-glass: rgba(255, 255, 255, 0.08);
+            --border-glass-hover: rgba(255, 255, 255, 0.16);
+            --debit-grad: linear-gradient(135deg, #1e1e2f 0%, #0f0f15 100%);
+        }
+
+        .wallet-bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 18px;
+            margin-top: 18px;
+        }
+
+        .span-12 { grid-column: span 12; }
+        .span-8 { grid-column: span 8; }
+        .span-6 { grid-column: span 6; }
+        .span-4 { grid-column: span 4; }
+        .span-3 { grid-column: span 3; }
+
+        @media (max-width: 1024px) {
+            .span-6, .span-3 { grid-column: span 6; }
+        }
+        @media (max-width: 768px) {
+            .span-12, .span-8, .span-6, .span-4, .span-3 { grid-column: span 12; }
+        }
+
+        /* ===== DEBIT CARD UI ===== */
+        .debit-card-premium {
+            background: linear-gradient(135deg, #0d0e12 0%, #171923 50%, #0a0b0f 100%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 24px;
+            height: 200px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.8), inset 0 1px 1px rgba(255,255,255,0.05);
+            transition: all 0.3s ease;
+        }
+
+        .debit-card-premium:hover {
+            transform: translateY(-2px);
+            border-color: rgba(255, 255, 255, 0.18);
+            box-shadow: 0 25px 50px -10px rgba(0, 0, 0, 0.9), inset 0 1px 1px rgba(255,255,255,0.08);
+        }
+
+        .debit-card-premium::before {
+            content: ''; position: absolute; inset: 0;
+            background: radial-gradient(circle at 80% 20%, rgba(99, 102, 241, 0.15) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 2;
+        }
+
+        .card-brand {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .card-brand i {
+            color: var(--accent);
+            font-size: 0.9rem;
+        }
+
+        .card-chip {
+            width: 38px;
+            height: 28px;
+            background: linear-gradient(135deg, #e5c07b 0%, #abb2bf 100%);
+            border-radius: 6px;
+            position: relative;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.2);
+        }
+
+        .card-chip::after {
+            content: ''; position: absolute; inset: 4px;
+            border: 1px solid rgba(0,0,0,0.15);
+            border-radius: 4px;
+        }
+
+        .card-middle {
+            margin-top: 14px;
+            z-index: 2;
+        }
+
+        .card-lbl {
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+        }
+
+        .card-bal {
+            font-size: 2.35rem;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            color: #fff;
+            margin-top: 2px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .card-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            z-index: 2;
+        }
+
+        .card-val {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-top: 2px;
+            display: block;
+        }
+
+        .card-val.active {
+            color: var(--success);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .card-val.active .dot {
+            width: 6px; height: 6px; border-radius: 50%;
+            background: var(--success);
+            box-shadow: 0 0 6px var(--success);
+        }
+
+        /* Ops Panel responsive styling */
+        .ops-panel-wrap {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .stats-row-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 16px;
+            grid-column: span 12;
+        }
+
+        @media (max-width: 1100px) {
+            .stats-row-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        @media (max-width: 768px) {
+            .stats-row-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (max-width: 480px) {
+            .stats-row-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        /* Control Hub Premium styling */
+        .ops-panel-wrap {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .control-hub-premium {
+            background: radial-gradient(circle at top right, rgba(99, 102, 241, 0.05), transparent 50%), rgba(20, 20, 25, 0.45);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 20px;
+            padding: 24px;
+            height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 20px;
+            backdrop-filter: blur(20px);
+            box-shadow: var(--glass-shadow);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .control-hub-premium:hover {
+            border-color: rgba(99, 102, 241, 0.2);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6), 0 0 20px rgba(99, 102, 241, 0.05);
+        }
+        .laser-progress-box {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .laser-lbl-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--text-secondary);
+        }
+        .laser-track {
+            height: 4px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 99px;
+            overflow: hidden;
+            width: 100%;
+        }
+        .laser-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), #8b5cf6);
+            border-radius: 99px;
+            box-shadow: 0 0 8px var(--accent);
+            width: 0%;
+            transition: width 0.4s ease;
+        }
+        .ops-actions-row {
+            display: flex;
+            flex-direction: row;
+            gap: 12px;
+        }
+        .ops-actions-row .btn-action-premium {
+            flex: 1;
+        }
+
+        /* Mobile specific overrides */
+        @media (max-width: 768px) {
+            .wallet-bento-grid {
+                gap: 14px;
+            }
+            .chart-card-premium {
+                padding: 16px;
+            }
+            .chart-container-inner {
+                height: 180px;
+            }
+            .txn-item-row {
+                padding: 14px 16px;
+            }
+            .bento-stat {
+                min-height: 110px;
+                padding: 16px;
+            }
+            .bento-stat-val {
+                font-size: 1.35rem;
+                margin-top: 6px;
+            }
+            .span-8, .span-4 {
+                grid-column: span 12 !important;
+            }
+        }
+
+        /* Professional Buttons Control */
+        .btn-action-premium {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            height: 42px;
+            padding: 0 16px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            font-family: 'Inter', sans-serif;
+            text-decoration: none;
+            white-space: nowrap;
+            border: none;
+        }
+
+        .btn-add-funds {
+            background: #ffffff;
+            color: #000000;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.08);
+        }
+
+        .btn-add-funds:hover {
+            background: #e4e4e7;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(255, 255, 255, 0.12);
+        }
+
+        .btn-cash-out {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: var(--text-secondary);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+        }
+
+        .btn-cash-out:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.15);
+            color: #ffffff;
+            transform: translateY(-1px);
+        }
+
+        .ctrl-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .payout-progress-box {
+            margin-top: 8px;
+        }
+
+        .payout-lbl-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.72rem;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+        }
+
+        .progress-track-premium {
+            height: 6px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 99px;
+            overflow: hidden;
+        }
+
+        .progress-fill-premium {
+            height: 100%;
+            background: var(--accent-gradient);
+            border-radius: 99px;
+            transition: width 0.4s ease;
+        }
+
+        /* ===== MINI BENTO STATS ===== */
+        .bento-stat {
+            background: var(--card-glass);
+            border: 1px solid var(--border-glass);
+            border-radius: 16px;
+            padding: 20px;
+            backdrop-filter: blur(20px);
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 125px;
+        }
+
+        .bento-stat:hover {
+            border-color: var(--border-glass-hover);
+            transform: translateY(-2px);
+            background: var(--card-glass-hover);
+        }
+
+        .bento-stat::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+        }
+
+        .bento-icon-box {
+            width: 32px; height: 32px; border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1rem;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.06);
+            align-self: flex-start;
+        }
+
+        .bento-stat-val {
+            font-size: 1.55rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
+            margin-top: 10px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .bento-stat-sub {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* Colors for icons and text */
+        .clr-blue { color: #3b82f6; }
+        .clr-purple { color: #a78bfa; }
+        .clr-emerald { color: #34d399; }
+        .clr-gold { color: #fbbf24; }
+
+        /* ===== CURVE CHART PANEL ===== */
+        .chart-card-premium {
+            background: var(--card-glass);
+            border: 1px solid var(--border-glass);
+            border-radius: 20px;
+            padding: 24px;
+            backdrop-filter: blur(20px);
+            box-shadow: var(--glass-shadow);
+        }
+
+        .chart-header-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .chart-container-inner {
+            width: 100%;
+            height: 240px;
+            position: relative;
+        }
+
+        .chart-canvas {
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+        }
+
+        /* Double-ring dot for line hover */
+        .chart-hover-ring {
+            animation: pulse-ring 1.8s infinite;
+        }
+
+        @keyframes pulse-ring {
+            0% { r: 4; opacity: 1; }
+            100% { r: 12; opacity: 0; }
+        }
+
+        /* Tooltip styling */
+        .chart-tooltip-panel {
+            position: absolute;
+            background: rgba(10, 10, 14, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-size: 0.78rem;
+            pointer-events: none;
+            display: none;
+            z-index: 100;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.05);
+            white-space: nowrap;
+            backdrop-filter: blur(8px);
+        }
+
+        /* ===== SEARCH & FILTER BAR ===== */
+        .ledger-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 28px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            gap: 14px;
+        }
+
+        .segmented-tabs {
+            display: flex;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 3px;
+            border-radius: 8px;
+            gap: 1px;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 0.76rem;
+            font-weight: 600;
+            padding: 6px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-secondary);
+        }
+
+        .tab-btn.active {
+            background: rgba(255, 255, 255, 0.06);
+            color: #fff;
+        }
+
+        /* ===== TRANSACTION LIST ===== */
+        .txn-ledger-list {
+            display: flex;
+            flex-direction: column;
+            background: rgba(10, 10, 15, 0.45);
+            border: 1px solid var(--border-glass);
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: var(--glass-shadow);
+        }
+
+        .txn-item-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            transition: background 0.2s ease, transform 0.2s ease;
+        }
+
+        .txn-item-row:last-child {
+            border-bottom: none;
+        }
+
+        .txn-item-row:hover {
+            background: rgba(255, 255, 255, 0.015);
+        }
+
+        .txn-col-meta {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .txn-avatar-square {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .txn-avatar-square.credit {
+            background: rgba(16, 185, 129, 0.05);
+            border-color: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+        }
+
+        .txn-avatar-square.debit {
+            background: rgba(255, 255, 255, 0.02);
+            border-color: rgba(255, 255, 255, 0.06);
+            color: var(--text-secondary);
+        }
+
+        .txn-avatar-square.simulate {
+            background: rgba(99, 102, 241, 0.05);
+            border-color: rgba(99, 102, 241, 0.15);
+            color: var(--accent);
+        }
+
+        .txn-avatar-square.withdraw {
+            background: rgba(239, 68, 68, 0.05);
+            border-color: rgba(239, 68, 68, 0.15);
+            color: var(--danger);
+        }
+
+        .txn-text-group {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .txn-main-title {
+            font-size: 0.86rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .txn-subtitle {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .txn-amount-group {
+            text-align: right;
+        }
+
+        .txn-value-number {
+            font-size: 0.95rem;
+            font-weight: 700;
+        }
+
+        .txn-value-number.plus { color: var(--success); }
+        .txn-value-number.minus { color: var(--text-primary); }
+
+        .txn-date-stamp {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 3px;
+        }
+
+        /* ===== MODALS ===== */
+        .modal-overlay {
+            position: fixed; inset: 0; background: rgba(9, 9, 11, 0.75);
+            backdrop-filter: blur(12px); z-index: 2500;
+            display: none; align-items: center; justify-content: center;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active { display: flex; }
+
+        .modal-container-box {
+            background: #09090b;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
+            padding: 28px;
+            width: 100%;
+            max-width: 440px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.03);
+            animation: modalPop 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes modalPop {
+            from { opacity: 0; transform: translateY(14px) scale(0.97); }
+            to { opacity: 1; transform: none; }
+        }
+
+        .modal-header-panel {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .modal-header-panel h3 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .close-icon-btn {
+            background: none; border: none; color: var(--text-muted);
+            font-size: 1.2rem; cursor: pointer; transition: color 0.15s;
+            padding: 4px; border-radius: 6px;
+        }
+
+        .close-icon-btn:hover { color: #fff; background: rgba(255,255,255,0.04); }
+
+        .field-group {
+            margin-bottom: 18px;
+        }
+
+        .field-label {
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .field-input-box {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .field-input-box input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #fff;
+            padding: 10px 12px;
+            border-radius: 8px;
+            outline: none;
+            font-size: 0.88rem;
+            transition: border-color 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .field-input-box input:focus {
+            border-color: var(--accent);
+            background: rgba(255,255,255,0.04);
+        }
+
+        .amount-pills-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .pill-selection-btn {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            color: var(--text-secondary);
+            padding: 8px;
+            border-radius: 8px;
+            font-size: 0.76rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .pill-selection-btn:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.12);
+            color: #fff;
+        }
+
+        .pill-selection-btn.active {
+            background: rgba(99, 102, 241, 0.12);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        .modal-action-row {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 24px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .modal-action-row .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            height: 40px;
+            padding: 0 16px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            font-family: 'Inter', sans-serif;
+            border: none;
+        }
+
+        .modal-action-row .btn-primary {
+            background: #ffffff;
+            color: #000000;
+            border: 1px solid rgba(255,255,255,0.15);
+            box-shadow: 0 2px 8px rgba(255,255,255,0.08);
+        }
+
+        .modal-action-row .btn-primary:hover {
+            background: #e4e4e7;
+            transform: translateY(-1px);
+        }
+
+        .modal-action-row .btn-ghost {
+            background: rgba(255,255,255,0.02);
+            color: var(--text-secondary);
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .modal-action-row .btn-ghost:hover {
+            background: rgba(255,255,255,0.05);
+            color: #ffffff;
+            border-color: rgba(255,255,255,0.15);
+            transform: translateY(-1px);
+        }
+
+        @media (max-width: 768px) {
+            .modal-overlay {
+                align-items: flex-end;
+                padding: 0;
+            }
+            .modal-container-box {
+                max-width: 100%;
+                border-radius: 24px 24px 0 0;
+                border-left: none;
+                border-right: none;
+                border-bottom: none;
+                padding: 24px 24px 44px 24px;
+                box-shadow: 0 -10px 40px rgba(0,0,0,0.5);
+                animation: modalSlideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            }
+        }
+
+        @keyframes modalSlideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="glow-bg">
+        <div class="glow-1"></div>
+        <div class="glow-2"></div>
+    </div>
+
+    <!-- Mobile Top Navigation Header -->
+    <header class="top-nav">
+        <div class="nav-left">
+            <button class="icon-btn" id="openMobileSidebar" aria-label="Menu">
+                <i class="ph ph-list"></i>
+            </button>
+            <a href="index.html" class="logo">Elite <span>X</span></a>
+        </div>
+        <div class="nav-actions">
+            <button class="icon-btn" aria-label="Notifications" id="notificationBellMobile">
+                <i class="ph ph-bell"></i>
+                <span class="badge"></span>
+            </button>
+            <div class="profile-avatar">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=150&auto=format&fit=crop" alt="Creator Profile">
+            </div>
+        </div>
+    </header>
+
+    <!-- Side Menu Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Desktop Sidebar Menu -->
+    <aside class="sidebar" id="sidebarMenu">
+        <div class="sidebar-header">
+            <a href="index.html" class="logo"><i class="ph ph-lightning" style="color: var(--accent);"></i> Elite <span>X</span></a>
+            <button class="icon-btn" id="closeMobileSidebar" style="display: none;"><i class="ph ph-x"></i></button>
+        </div>
+
+        <nav class="sidebar-links">
+            <a href="index.html"><i class="ph ph-squares-four"></i> Dashboard</a>
+            <a href="campaigns.html"><i class="ph ph-megaphone"></i> Campaigns</a>
+            <a href="wallet.html" class="active"><i class="ph ph-wallet"></i> Wallet</a>
+            <a href="shop.html"><i class="ph ph-shopping-bag"></i> Shop</a>
+        </nav>
+
+        <div style="height: 1px; background: rgba(255, 255, 255, 0.06); margin: 12px 16px;"></div>
+        <nav class="sidebar-links">
+            <a href="admin.html" style="color: var(--accent); background: rgba(99,102,241,0.06); border: 1px solid rgba(99,102,241,0.12); border-radius: 8px;">
+                <i class="ph ph-user-gear"></i> Admin Panel
+                <span style="margin-left: auto; font-size: 0.6rem; font-weight: 700; padding: 2px 6px; background: var(--accent); color: #fff; border-radius: 99px; letter-spacing: 0.3px;">ADMIN</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="user-profile">
+                <div class="profile-avatar" style="width: 36px; height: 36px;">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=150&auto=format&fit=crop" alt="Creator Profile">
+                </div>
+                <div class="user-details">
+                    <h4>Alex Carter</h4>
+                    <p>Pro Creator</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Workspace Container -->
+    <main class="dashboard-container">
+        <div class="wallet-bento-grid">
+            
+            <!-- Top Premium Card (Span 8 on desktop, Span 12 on mobile) -->
+            <div class="span-8">
+                <div class="debit-card-premium">
+                    <div class="card-top">
+                        <span class="card-brand"><i class="ph ph-lightning"></i> EliteX Platinum</span>
+                        <div class="card-chip"></div>
+                    </div>
+                    <div class="card-middle">
+                        <span class="card-lbl">Available Balance</span>
+                        <h2 class="card-bal" id="wallet-balance-text">₹0.00</h2>
+                    </div>
+                    <div class="card-bottom">
+                        <div>
+                            <span class="card-lbl">Card Holder</span>
+                            <span class="card-val">Alex Carter</span>
+                        </div>
+                        <div>
+                            <span class="card-lbl">Ledger Status</span>
+                            <span class="card-val active"><span class="dot"></span> Secure Connection</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Operations Control Box (Span 4 on desktop, Span 12 on mobile) -->
+            <div class="span-4 ops-panel-wrap">
+                <div class="control-hub-premium">
+                    <div class="laser-progress-box">
+                        <div class="laser-lbl-row">
+                            <span style="display: flex; align-items: center; gap: 6px;"><span class="dot" style="width: 6px; height: 6px; border-radius: 50%; background: var(--success); box-shadow: 0 0 6px var(--success);"></span> Auto-Clearance</span>
+                            <span id="payout-target-text">50%</span>
+                        </div>
+                        <div class="laser-track">
+                            <div class="laser-fill" id="payout-progress-fill" style="width: 50%;"></div>
+                        </div>
+                    </div>
+                    <div class="ops-actions-row">
+                        <button class="btn-action-premium btn-add-funds" id="add-funds-btn"><i class="ph ph-plus-circle"></i> Add Funds</button>
+                        <button class="btn-action-premium btn-cash-out" id="withdraw-funds-btn"><i class="ph ph-arrow-circle-up"></i> Cash Out</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats row grid container (Span 12) -->
+            <div class="stats-row-grid">
+                <!-- Total Content Earnings -->
+                <div class="bento-stat">
+                    <div class="bento-icon-box clr-blue"><i class="ph ph-film-strip"></i></div>
+                    <div>
+                        <span class="mini-stat-lbl">Guaranteed Fees</span>
+                        <div class="bento-stat-val" id="guaranteed-earnings-text">₹0.00</div>
+                        <div class="bento-stat-sub"><i class="ph ph-trend-up clr-emerald"></i> ₹1.00 base payout</div>
+                    </div>
+                </div>
+
+                <!-- Performance Payouts -->
+                <div class="bento-stat">
+                    <div class="bento-icon-box clr-purple"><i class="ph ph-sparkles"></i></div>
+                    <div>
+                        <span class="mini-stat-lbl">Performance Bonuses</span>
+                        <div class="bento-stat-val clr-purple" id="bonus-earnings-text">₹0.00</div>
+                        <div class="bento-stat-sub"><i class="ph ph-star clr-purple"></i> Engagement rewards</div>
+                    </div>
+                </div>
+
+                <!-- Affiliate Commissions -->
+                <div class="bento-stat">
+                    <div class="bento-icon-box clr-blue" style="color: var(--accent); border-color: rgba(99,102,241,0.15); background: rgba(99,102,241,0.05);"><i class="ph ph-handshake"></i></div>
+                    <div>
+                        <span class="mini-stat-lbl">Affiliate Earnings</span>
+                        <div class="bento-stat-val" id="affiliate-earnings-text" style="color: var(--accent);">₹0.00</div>
+                        <div class="bento-stat-sub"><i class="ph ph-link" style="color: var(--accent);"></i> 10% referral rate</div>
+                    </div>
+                </div>
+
+                <!-- Completed Refund Cash -->
+                <div class="bento-stat">
+                    <div class="bento-icon-box clr-emerald"><i class="ph ph-arrow-counter-clockwise"></i></div>
+                    <div>
+                        <span class="mini-stat-lbl">Refunded Returns</span>
+                        <div class="bento-stat-val clr-emerald" id="refund-earnings-text">₹0.00</div>
+                        <div class="bento-stat-sub"><i class="ph ph-check-circle clr-emerald"></i> Returns processed</div>
+                    </div>
+                </div>
+
+                <!-- Total Net Earnings -->
+                <div class="bento-stat">
+                    <div class="bento-icon-box clr-gold"><i class="ph ph-trend-up"></i></div>
+                    <div>
+                        <span class="mini-stat-lbl">Total Net Income</span>
+                        <div class="bento-stat-val clr-gold" id="net-income-text">₹0.00</div>
+                        <div class="bento-stat-sub"><i class="ph ph-shield-check clr-gold"></i> Audited earnings</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Earnings Progression Chart (Span 12) -->
+            <div class="chart-card-premium span-12">
+                <div class="chart-header-row">
+                    <div>
+                        <h3 style="font-size: 0.95rem; font-weight: 700;">Earnings Trajectory Line</h3>
+                        <p style="font-size: 0.72rem; color: var(--text-muted); margin-top: 2px;">Visual Bezier spline tracking cumulative balance progression</p>
+                    </div>
+                    <span style="font-size: 0.72rem; color: var(--text-muted); font-family: 'JetBrains Mono', monospace;" id="chart-data-range">Real-Time Data Sync</span>
+                </div>
+                <div class="chart-container-inner">
+                    <svg class="chart-canvas" id="earnings-chart-svg"></svg>
+                    <div class="chart-tooltip-panel" id="chart-tooltip-box"></div>
+                </div>
+            </div>
+
+            <!-- Affiliate Commissions Portal (Span 12) -->
+            <div class="chart-card-premium span-12">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; flex-wrap: wrap; gap: 10px;">
+                    <div>
+                        <h3 style="font-size: 0.95rem; font-weight: 700; display: flex; align-items: center; gap: 6px;"><i class="ph ph-handshake clr-purple" style="font-size: 1.15rem;"></i> Affiliate Referral Portal</h3>
+                        <p style="font-size: 0.72rem; color: var(--text-muted); margin-top: 2px;">Share your link and earn 10% commission on every jewelry purchase</p>
+                    </div>
+                    <div style="display: flex; gap: 8px;">
+                        <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-glass); border-radius: 8px; padding: 6px 12px; font-size: 0.75rem; font-family: 'JetBrains Mono', monospace; display: flex; align-items: center; gap: 8px;">
+                            <span style="color: var(--text-muted);">CODE:</span>
+                            <span style="font-weight: 700; color: var(--accent);">ELITEX-ALEX-529</span>
+                            <button onclick="copyReferralCode()" style="background:none; border:none; color:var(--text-secondary); cursor:pointer; font-size:0.9rem;" title="Copy Code"><i class="ph ph-copy"></i></button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 14px; margin-bottom: 18px;">
+                    <div style="background: rgba(255,255,255,0.015); border: 1px solid var(--border-glass); border-radius: 12px; padding: 14px; text-align: center;">
+                        <span style="font-size: 0.65rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted);">Total Link Clicks</span>
+                        <div style="font-size: 1.2rem; font-weight: 700; color: #fff; margin-top: 4px;">1,420</div>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.015); border: 1px solid var(--border-glass); border-radius: 12px; padding: 14px; text-align: center;">
+                        <span style="font-size: 0.65rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted);">Referral Conversions</span>
+                        <div style="font-size: 1.2rem; font-weight: 700; color: #fff; margin-top: 4px;">38 sales</div>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.015); border: 1px solid var(--border-glass); border-radius: 12px; padding: 14px; text-align: center;">
+                        <span style="font-size: 0.65rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted);">Conversion Rate</span>
+                        <div style="font-size: 1.2rem; font-weight: 700; color: var(--success); margin-top: 4px;">2.68%</div>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.015); border: 1px solid var(--border-glass); border-radius: 12px; padding: 14px; text-align: center;">
+                        <span style="font-size: 0.65rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted);">Commission Rate</span>
+                        <div style="font-size: 1.2rem; font-weight: 700; color: var(--accent); margin-top: 4px;">10% flat</div>
+                    </div>
+                </div>
+                
+                <!-- Recent Commission list -->
+                <div style="background: rgba(255,255,255,0.01); border: 1px solid var(--border-glass); border-radius: 12px; padding: 12px 16px;">
+                    <div style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 8px;">Recent Referral Commissions</div>
+                    <div style="display: flex; flex-direction: column; gap: 8px;" id="referrals-log-list">
+                        <!-- Loaded dynamically -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Transactions Ledger Registry (Span 12) -->
+            <div class="span-12">
+                <div class="ledger-bar">
+                    <div>
+                        <h3 style="font-size: 0.95rem; font-weight: 700;">Transactions Audit Trail</h3>
+                        <p style="font-size: 0.72rem; color: var(--text-muted); margin-top: 2px;">Comprehensive chronological ledger logs</p>
+                    </div>
+                    <div class="segmented-tabs" id="ledgerFilters">
+                        <button class="tab-btn active" data-filter="all">All Logs</button>
+                        <button class="tab-btn" data-filter="income">Income</button>
+                        <button class="tab-btn" data-filter="orders">Orders</button>
+                        <button class="tab-btn" data-filter="simulator">Simulation</button>
+                    </div>
+                </div>
+
+                <div class="txn-ledger-list" id="transaction-list-element">
+                    <!-- Loaded dynamically -->
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Deposit Testing Credits Modal -->
+    <div class="modal-overlay" id="depositModal">
+        <div class="modal-container-box">
+            <div class="modal-header-panel">
+                <h3><i class="ph ph-plus-circle clr-emerald"></i> Deposit Credits</h3>
+                <button class="close-icon-btn" onclick="closeModal('depositModal')"><i class="ph ph-x"></i></button>
+            </div>
+            <p style="font-size: 0.78rem; color: var(--text-secondary); line-height: 1.45; margin-bottom: 18px;">
+                Inject virtual testing credits into your workspace balance to simulate purchases, orders, and review rewards.
+            </p>
+            
+            <div class="amount-pills-row">
+                <button class="pill-selection-btn" data-val="1000">₹1,000</button>
+                <button class="pill-selection-btn" data-val="2500">₹2,500</button>
+                <button class="pill-selection-btn" data-val="5000">₹5,000</button>
+            </div>
+
+            <div class="field-group" style="margin-bottom: 20px;">
+                <label class="field-label">Custom Deposit Value (₹)</label>
+                <div class="field-input-box">
+                    <input type="number" id="deposit-amount-input" placeholder="Enter amount to credit..." min="10" step="100">
+                </div>
+            </div>
+
+            <div class="modal-action-row">
+                <button class="btn btn-ghost" onclick="closeModal('depositModal')">Cancel</button>
+                <button class="btn btn-primary" id="confirm-deposit-btn"><i class="ph ph-plus"></i> Add Funds</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Request Cash Out Modal -->
+    <div class="modal-overlay" id="withdrawModal">
+        <div class="modal-container-box">
+            <div class="modal-header-panel">
+                <h3><i class="ph ph-arrow-circle-up clr-blue"></i> Payout Cash Out</h3>
+                <button class="close-icon-btn" onclick="closeModal('withdrawModal')"><i class="ph ph-x"></i></button>
+            </div>
+            <p style="font-size: 0.78rem; color: var(--text-secondary); line-height: 1.45; margin-bottom: 18px;">
+                Transfer campaign earnings out of your digital wallet into your designated bank account or UPI address.
+            </p>
+
+            <div class="field-group" style="margin-bottom: 14px;">
+                <label class="field-label">Withdrawal Amount (₹)</label>
+                <div class="field-input-box">
+                    <input type="number" id="withdraw-amount-input" placeholder="Amount to withdraw..." min="1">
+                </div>
+                <p style="font-size: 0.7rem; color: var(--text-muted); margin-top: 4px;" id="withdraw-max-hint">Max available: ₹0.00</p>
+            </div>
+
+            <div class="field-group" style="margin-bottom: 20px;">
+                <label class="field-label">Destination Address (UPI ID / Bank Acc)</label>
+                <div class="field-input-box">
+                    <input type="text" id="withdraw-destination-input" placeholder="e.g. alex@okaxis or account details...">
+                </div>
+            </div>
+
+            <div class="modal-action-row">
+                <button class="btn btn-ghost" onclick="closeModal('withdrawModal')">Cancel</button>
+                <button class="btn btn-primary" id="confirm-withdraw-btn"><i class="ph ph-check"></i> Request Payout</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Professional Bottom Navigation for Mobile -->
+    <nav class="bottom-nav">
+        <a href="index.html" class="bottom-nav-item">
+            <i class="ph ph-squares-four"></i>
+            <span>Home</span>
+        </a>
+        <a href="campaigns.html" class="bottom-nav-item">
+            <i class="ph ph-megaphone"></i>
+            <span>Campaigns</span>
+        </a>
+        
+        <!-- Floating FAB to open submission drawer -->
+        <button class="mobile-fab" id="openMobileDrawerBtn" aria-label="Submit video">
+            <i class="ph ph-plus"></i>
+        </button>
+
+        <a href="wallet.html" class="bottom-nav-item active">
+            <i class="ph ph-wallet"></i>
+            <span>Wallet</span>
+        </a>
+        <a href="shop.html" class="bottom-nav-item">
+            <i class="ph ph-shopping-bag"></i>
+            <span>Shop</span>
+        </a>
+    </nav>
+
+    <!-- Mobile submission Drawer -->
+    <div class="drawer-overlay" id="mobileDrawerOverlay"></div>
+    <div class="bottom-drawer" id="mobileDrawer">
+        <div class="drawer-handle"></div>
+        <div class="drawer-header">
+            <h3>Submit Video Link</h3>
+            <button class="icon-btn" id="closeMobileDrawerBtn"><i class="ph ph-x"></i></button>
+        </div>
+        <div style="padding-top: 10px;">
+            <div class="form-group">
+                <label class="input-label">Campaign Target</label>
+                <div class="custom-dropdown" id="campaignDropdownMobile">
+                    <div class="dropdown-trigger">
+                        <span id="selected-campaign-name-mobile">Select Campaign...</span>
+                        <i class="ph ph-caret-down"></i>
+                    </div>
+                    <div class="dropdown-menu" id="dropdownMenuMobile">
+                        <!-- Populated dynamically by JS -->
+                    </div>
+                    <input type="hidden" id="campaign-select-value-mobile" value="">
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 24px;">
+                <label class="input-label">Video URL</label>
+                <div class="input-box">
+                    <input type="url" id="video-link-input-mobile" class="input-field" placeholder="https://instagram.com/reel/...">
+                    <i class="ph ph-link"></i>
+                </div>
+            </div>
+
+            <button class="btn-gradient" id="submit-video-btn-mobile" style="margin-bottom: 16px;">
+                <i class="ph ph-paper-plane-tilt"></i> Submit Link
+            </button>
+        </div>
+    </div>
+
+    <!-- Toast container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="shared.js"></script>
+    <script>
+        // --- CUSTOM TRANSACTION DATABASE LOGS ---
+        function getCustomTransactions() {
+            return JSON.parse(localStorage.getItem('elitex_custom_transactions') || '[]');
+        }
+
+        function addCustomTransaction(type, desc, amount) {
+            const list = getCustomTransactions();
+            list.unshift({
+                date: new Date().toLocaleDateString(),
+                ref: 'TXN-' + Math.floor(100000 + Math.random() * 900000),
+                type: type,
+                desc: desc,
+                amount: amount
+            });
+            localStorage.setItem('elitex_custom_transactions', JSON.stringify(list));
+        }
+
+        window.copyReferralCode = function() {
+            navigator.clipboard.writeText('ELITEX-ALEX-529');
+            showToast("Referral code copied to clipboard!", "success");
+        }
+
+        let currentFilter = 'all';
+
+        // --- RENDER DYNAMIC LEDGER TRAIL ---
+        function renderWalletPage() {
+            const bal = getWalletBalance();
+            document.getElementById('wallet-balance-text').textContent = `₹${bal.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
+            
+            // Render payout clearance progress
+            const progressPct = Math.min(100, Math.max(0, (bal / 10000) * 100));
+            document.getElementById('payout-progress-fill').style.width = `${progressPct}%`;
+            document.getElementById('payout-target-text').textContent = `${Math.round(100 - progressPct)}% to Auto-Clearance (₹10,000)`;
+
+            const orders = getOrders();
+            const subs = getSubmissions();
+            
+            // 0. Seed Affiliate Commissions
+            const referrals = [
+                { date: '01/07/2026', ref: 'REF-829103', desc: 'Affiliate Commission: @jenna.styles bought Gold Ring', amount: 250.00, icon: 'ph-handshake', typeName: 'Affiliate Sale', avatarClass: 'credit', commissionAmt: 250 },
+                { date: '30/06/2026', ref: 'REF-390218', desc: 'Affiliate Commission: @luke_creations bought Necklace', amount: 120.00, icon: 'ph-handshake', typeName: 'Affiliate Sale', avatarClass: 'credit', commissionAmt: 120 },
+                { date: '28/06/2026', ref: 'REF-492810', desc: 'Affiliate Commission: @aesthetic_grace bought Bracelet', amount: 180.00, icon: 'ph-handshake', typeName: 'Affiliate Sale', avatarClass: 'credit', commissionAmt: 180 }
+            ];
+
+            // Stats Calculations
+            const appSubs = subs.filter(s => s.status === 'approved');
+            const totalGuaranteed = appSubs.length * 1.00;
+            const totalBonuses = appSubs.reduce((acc, s) => acc + (s.performancePayout || 0), 0);
+            const totalAffiliate = referrals.reduce((acc, r) => acc + r.amount, 0);
+            
+            // Calculate refunds
+            const refundsList = orders.filter(o => o.status === 'returned');
+            const totalRefunds = refundsList.reduce((acc, o) => acc + o.price, 0);
+
+            // Total net earnings
+            const netIncome = totalGuaranteed + totalBonuses + totalAffiliate;
+
+            document.getElementById('guaranteed-earnings-text').textContent = `₹${totalGuaranteed.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
+            document.getElementById('bonus-earnings-text').textContent = `₹${totalBonuses.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
+            document.getElementById('affiliate-earnings-text').textContent = `₹${totalAffiliate.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
+            document.getElementById('refund-earnings-text').textContent = `₹${totalRefunds.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
+            document.getElementById('net-income-text').textContent = `₹${netIncome.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
+
+            const transactions = [];
+
+            // Add affiliate to ledger transactions array
+            referrals.forEach(r => {
+                transactions.push({
+                    date: r.date,
+                    ref: r.ref,
+                    type: 'income',
+                    desc: r.desc,
+                    amount: r.amount,
+                    icon: r.icon,
+                    typeName: r.typeName,
+                    avatarClass: r.avatarClass
+                });
+            });
+
+            // Render Affiliate Referral list portal logs
+            const refLogEl = document.getElementById('referrals-log-list');
+            if (refLogEl) {
+                refLogEl.innerHTML = '';
+                referrals.forEach(r => {
+                    const div = document.createElement('div');
+                    div.style.display = 'flex';
+                    div.style.justify = 'space-between';
+                    div.style.alignItems = 'center';
+                    div.style.fontSize = '0.78rem';
+                    div.style.padding = '6px 0';
+                    div.style.borderBottom = '1px solid rgba(255,255,255,0.03)';
+                    div.innerHTML = `
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <div class="txn-avatar-square credit" style="width:26px; height:26px; border-radius:6px; font-size:0.8rem;"><i class="ph ph-handshake"></i></div>
+                            <div>
+                                <span style="font-weight:600; color:#fff;">${r.desc.replace('Affiliate Commission: ', '')}</span>
+                            </div>
+                        </div>
+                        <span style="font-weight:700; color:var(--success);">+₹${r.commissionAmt.toFixed(2)}</span>
+                    `;
+                    refLogEl.appendChild(div);
+                });
+            }
+
+            // 1. Add orders (Debits)
+            orders.forEach(o => {
+                transactions.push({
+                    date: o.date,
+                    ref: o.orderId,
+                    type: 'orders',
+                    desc: `Purchased Product: ${o.name}`,
+                    amount: -o.price,
+                    icon: 'ph-shopping-bag',
+                    typeName: 'Purchase',
+                    avatarClass: 'debit'
+                });
+                
+                // Add refund if returned
+                if (o.status === 'returned') {
+                    transactions.push({
+                        date: o.date,
+                        ref: o.orderId.replace('ORD', 'REF'),
+                        type: 'income',
+                        desc: `Refunded product: ${o.name}`,
+                        amount: o.price,
+                        icon: 'ph-arrow-down-left',
+                        typeName: 'Refund',
+                        avatarClass: 'credit'
+                    });
+                }
+            });
+
+            // 2. Add video payouts (Credits)
+            subs.forEach(s => {
+                if (s.status === 'approved') {
+                    transactions.push({
+                        date: s.date,
+                        ref: s.subId,
+                        type: 'income',
+                        desc: `Base Fee: ${s.campaignTitle}`,
+                        amount: 1.00,
+                        icon: 'ph-film-strip',
+                        typeName: 'Guaranteed Fee',
+                        avatarClass: 'credit'
+                    });
+
+                    if (s.performancePayout > 0) {
+                        transactions.push({
+                            date: s.date,
+                            ref: s.subId.replace('SUB', 'PAY'),
+                            type: 'income',
+                            desc: `Engagement Bonus: ${s.campaignTitle}`,
+                            amount: s.performancePayout,
+                            icon: 'ph-sparkles',
+                            typeName: 'Bonus Reward',
+                            avatarClass: 'credit'
+                        });
+                    }
+                }
+            });
+
+            // 3. Add custom transactions (Deposits & Withdrawals)
+            const custom = getCustomTransactions();
+            custom.forEach(c => {
+                const isDeposit = c.type === 'Deposit';
+                transactions.push({
+                    date: c.date,
+                    ref: c.ref,
+                    type: 'simulator',
+                    desc: c.desc,
+                    amount: c.amount,
+                    icon: isDeposit ? 'ph-plus' : 'ph-bank',
+                    typeName: c.type,
+                    avatarClass: isDeposit ? 'simulate' : 'withdraw'
+                });
+            });
+
+            // Sort by reference date descending
+            transactions.sort((a, b) => b.ref.localeCompare(a.ref));
+
+            // Render list registry
+            const ledgerEl = document.getElementById('transaction-list-element');
+            ledgerEl.innerHTML = '';
+
+            const filteredTxns = transactions.filter(t => currentFilter === 'all' || t.type === currentFilter);
+
+            if (filteredTxns.length === 0) {
+                ledgerEl.innerHTML = `
+                    <div style="text-align: center; padding: 48px 20px; color: var(--text-muted); font-size: 0.85rem;">
+                        No transactions found matching this filter.
+                    </div>
+                `;
+            } else {
+                filteredTxns.forEach(t => {
+                    const row = document.createElement('div');
+                    row.className = 'txn-item-row';
+
+                    const isNegative = t.amount < 0;
+                    const amtPrefix = isNegative ? '-' : '+';
+                    const formattedAmt = `${amtPrefix}₹${Math.abs(t.amount).toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
+                    const valClass = isNegative ? 'minus' : 'plus';
+
+                    row.innerHTML = `
+                        <div class="txn-col-meta">
+                            <div class="txn-avatar-square ${t.avatarClass}">
+                                <i class="ph ${t.icon}"></i>
+                            </div>
+                            <div class="txn-text-group">
+                                <span class="txn-main-title">${t.desc}</span>
+                                <span class="txn-subtitle">${t.ref} • ${t.typeName}</span>
+                            </div>
+                        </div>
+                        <div class="txn-amount-group">
+                            <span class="txn-value-number ${valClass}">${formattedAmt}</span>
+                            <div class="txn-date-stamp">${t.date}</div>
+                        </div>
+                    `;
+                    ledgerEl.appendChild(row);
+                });
+            }
+
+            // Draw advanced bezier progression line chart
+            renderEarningsChart(transactions);
+        }
+
+        // --- RENDER DYNAMIC BEZIER LINE CHART ---
+        function renderEarningsChart(transactions) {
+            const svg = document.getElementById('earnings-chart-svg');
+            svg.innerHTML = ''; // Clear SVG elements
+
+            if (transactions.length === 0) return;
+
+            // Reverse transactions to compute timeline in chronological order
+            const cronList = [...transactions].reverse();
+            
+            // Build progressive running balance trajectory
+            let balance = 5000.00; // Default starter balance
+            const timeline = [{ val: balance, date: 'Starter' }];
+
+            cronList.forEach(t => {
+                balance += t.amount;
+                timeline.push({ val: balance, date: t.date });
+            });
+
+            // Map values to SVG Coordinate bounds
+            const w = svg.clientWidth || 800;
+            const h = svg.clientHeight || 240;
+            
+            const padding = { top: 25, right: 30, bottom: 35, left: 60 };
+            const chartW = w - padding.left - padding.right;
+            const chartH = h - padding.top - padding.bottom;
+
+            const values = timeline.map(pt => pt.val);
+            const minVal = Math.min(...values) * 0.95;
+            const maxVal = Math.max(...values) * 1.05;
+            const valRange = maxVal - minVal || 1;
+
+            const getX = (index) => padding.left + (index / (timeline.length - 1)) * chartW;
+            const getY = (val) => padding.top + chartH - ((val - minVal) / valRange) * chartH;
+
+            // Draw Y-axis gridlines & labels
+            for (let i = 0; i <= 4; i++) {
+                const fractionVal = minVal + (valRange * (i / 4));
+                const y = getY(fractionVal);
+                
+                // Grid line
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('x1', padding.left);
+                line.setAttribute('y1', y);
+                line.setAttribute('x2', w - padding.right);
+                line.setAttribute('y2', y);
+                line.setAttribute('stroke', 'rgba(255,255,255,0.03)');
+                line.setAttribute('stroke-dasharray', '3,3');
+                svg.appendChild(line);
+
+                // Label text
+                const txt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                txt.setAttribute('x', padding.left - 12);
+                txt.setAttribute('y', y + 4);
+                txt.setAttribute('fill', 'var(--text-muted)');
+                txt.setAttribute('font-size', '10px');
+                txt.setAttribute('text-anchor', 'end');
+                txt.setAttribute('font-family', 'JetBrains Mono');
+                txt.textContent = `₹${Math.round(fractionVal).toLocaleString('en-IN')}`;
+                svg.appendChild(txt);
+            }
+
+            // Draw X-axis dates
+            const step = Math.max(1, Math.ceil(timeline.length / 5));
+            timeline.forEach((pt, idx) => {
+                if (idx % step === 0 || idx === timeline.length - 1) {
+                    const x = getX(idx);
+                    const txt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                    txt.setAttribute('x', x);
+                    txt.setAttribute('y', h - padding.bottom + 18);
+                    txt.setAttribute('fill', 'var(--text-muted)');
+                    txt.setAttribute('font-size', '10px');
+                    txt.setAttribute('text-anchor', 'middle');
+                    txt.setAttribute('font-family', 'JetBrains Mono');
+                    txt.textContent = pt.date;
+                    svg.appendChild(txt);
+                }
+            });
+
+            // Calculate bezier control points for smooth spline path (Bezier curve logic)
+            const tension = 0.16;
+            let pathD = `M ${getX(0)} ${getY(timeline[0].val)}`;
+            let areaD = `M ${getX(0)} ${padding.top + chartH} L ${getX(0)} ${getY(timeline[0].val)}`;
+
+            for (let i = 0; i < timeline.length - 1; i++) {
+                const prev = timeline[i - 1] || timeline[i];
+                const curr = timeline[i];
+                const next = timeline[i + 1];
+                const post = timeline[i + 2] || next;
+
+                const cp1x = getX(i) + (getX(i + 1) - getX(i - 1 < 0 ? 0 : i - 1)) * tension;
+                const cp1y = getY(curr.val) + (getY(next.val) - getY(prev.val)) * tension;
+
+                const cp2x = getX(i + 1) - (getX(i + 2 >= timeline.length ? timeline.length - 1 : i + 2) - getX(i)) * tension;
+                const cp2y = getY(next.val) - (getY(post.val) - getY(curr.val)) * tension;
+
+                pathD += ` C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${getX(i+1)} ${getY(next.val)}`;
+                areaD += ` C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${getX(i+1)} ${getY(next.val)}`;
+            }
+
+            areaD += ` L ${getX(timeline.length - 1)} ${padding.top + chartH} Z`;
+
+            // Draw Area Fill (Glow background)
+            const areaPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            areaPath.setAttribute('d', areaD);
+            areaPath.setAttribute('fill', 'url(#chart-area-grad)');
+            svg.appendChild(areaPath);
+
+            // Draw Path Line
+            const linePath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            linePath.setAttribute('d', pathD);
+            linePath.setAttribute('fill', 'none');
+            linePath.setAttribute('stroke', 'var(--accent)');
+            linePath.setAttribute('stroke-width', '2.5');
+            linePath.setAttribute('stroke-linecap', 'round');
+            linePath.setAttribute('stroke-linejoin', 'round');
+            svg.appendChild(linePath);
+
+            // Add SVG gradient definition
+            if (!svg.querySelector('defs')) {
+                const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+                defs.innerHTML = `
+                    <linearGradient id="chart-area-grad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="var(--accent)" stop-opacity="0.14" />
+                        <stop offset="100%" stop-color="var(--accent)" stop-opacity="0" />
+                    </linearGradient>
+                `;
+                svg.appendChild(defs);
+            }
+
+            // Draw dot points and setup mouse event lookups
+            const tooltip = document.getElementById('chart-tooltip-box');
+            timeline.forEach((pt, idx) => {
+                const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                dot.setAttribute('cx', getX(idx));
+                dot.setAttribute('cy', getY(pt.val));
+                dot.setAttribute('r', '4');
+                dot.setAttribute('fill', 'var(--accent)');
+                dot.setAttribute('stroke', '#09090b');
+                dot.setAttribute('stroke-width', '1.5');
+                dot.style.cursor = 'pointer';
+                dot.style.transition = 'r 0.15s';
+
+                dot.addEventListener('mouseenter', (e) => {
+                    dot.setAttribute('r', '6');
+                    tooltip.style.display = 'block';
+                    tooltip.style.left = `${getX(idx) - 40}px`;
+                    tooltip.style.top = `${getY(pt.val) - 52}px`;
+                    tooltip.innerHTML = `<strong>₹${pt.val.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</strong><br><span style="color:var(--text-muted); font-size:9px;">${pt.date}</span>`;
+                });
+
+                dot.addEventListener('mouseleave', () => {
+                    dot.setAttribute('r', '4');
+                    tooltip.style.display = 'none';
+                });
+
+                svg.appendChild(dot);
+            });
+        }
+
+        // --- INTERACTIVE SEGMENTED TABS FILTERING ---
+        document.querySelectorAll('#ledgerFilters .tab-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('#ledgerFilters .tab-btn').forEach(b => b.classList.remove('active'));
+                e.currentTarget.classList.add('active');
+                currentFilter = e.currentTarget.getAttribute('data-filter');
+                renderWalletPage();
+            });
+        });
+
+        // --- OPEN / CLOSE MODAL TRIGGERS ---
+        window.openModal = (id) => {
+            const m = document.getElementById(id);
+            if (m) m.classList.add('active');
+        }
+
+        window.closeModal = (id) => {
+            const m = document.getElementById(id);
+            if (m) m.classList.remove('active');
+        }
+
+        // Close modal on outside overlay click
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) overlay.classList.remove('active');
+            });
+        });
+
+        // --- RUN PAGE LIFE-CYCLE ON LOAD ---
+        document.addEventListener('DOMContentLoaded', () => {
+            renderHeaderAndSidebar('wallet.html');
+            setupSubmissionModal();
+            renderWalletPage();
+
+            // 1. Deposit Funds actions
+            const depositModal = document.getElementById('depositModal');
+            const depositInput = document.getElementById('deposit-amount-input');
+            
+            document.getElementById('add-funds-btn').addEventListener('click', () => {
+                depositInput.value = '';
+                document.querySelectorAll('.pill-selection-btn').forEach(b => b.classList.remove('active'));
+                openModal('depositModal');
+            });
+
+            // Quick amount selection pills
+            document.querySelectorAll('.pill-selection-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    document.querySelectorAll('.pill-selection-btn').forEach(b => b.classList.remove('active'));
+                    e.currentTarget.classList.add('active');
+                    depositInput.value = e.currentTarget.getAttribute('data-val');
+                });
+            });
+
+            // Confirm credit deposit action
+            document.getElementById('confirm-deposit-btn').addEventListener('click', () => {
+                const amount = parseFloat(depositInput.value);
+                if (isNaN(amount) || amount <= 0) {
+                    showToast("Please enter a valid deposit amount.", "error");
+                    return;
+                }
+
+                updateWalletBalance(amount);
+                addCustomTransaction('Deposit', 'Added funds via simulator deposit', amount);
+                addActivity(`Deposited ₹${amount.toFixed(2)} testing credits`, 'emerald');
+                triggerSync(); // 🔥 Firebase push sync trigger
+                
+                showToast(`Deposited ₹${amount.toLocaleString('en-IN', { minimumFractionDigits: 2 })} successfully!`, "success");
+                closeModal('depositModal');
+                renderWalletPage();
+            });
+
+            // 2. Withdraw Funds actions
+            const withdrawModal = document.getElementById('withdrawModal');
+            const withdrawInput = document.getElementById('withdraw-amount-input');
+            const destInput = document.getElementById('withdraw-destination-input');
+
+            document.getElementById('withdraw-funds-btn').addEventListener('click', () => {
+                const bal = getWalletBalance();
+                document.getElementById('withdraw-max-hint').textContent = `Max available: ₹${bal.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
+                
+                // Pre-populate saved destination if available
+                destInput.value = localStorage.getItem('elitex_withdraw_dest') || '';
+                withdrawInput.value = '';
+                openModal('withdrawModal');
+            });
+
+            // Confirm withdrawal action
+            document.getElementById('confirm-withdraw-btn').addEventListener('click', () => {
+                const amount = parseFloat(withdrawInput.value);
+                const dest = destInput.value.trim();
+                const bal = getWalletBalance();
+
+                if (isNaN(amount) || amount <= 0) {
+                    showToast("Please enter a valid withdrawal amount.", "error");
+                    return;
+                }
+
+                if (amount > bal) {
+                    showToast("Insufficient balance for this withdrawal.", "error");
+                    return;
+                }
+
+                if (!dest) {
+                    showToast("Please provide a transfer destination UPI or account ID.", "error");
+                    return;
+                }
+
+                // Save destination for future withdrawals
+                localStorage.setItem('elitex_withdraw_dest', dest);
+
+                updateWalletBalance(-amount);
+                addCustomTransaction('Withdrawal', `Transferred balance to checking: ${dest}`, -amount);
+                addActivity(`Withdrew ₹${amount.toFixed(2)} to ${dest}`, 'rose');
+                triggerSync(); // 🔥 Firebase push sync trigger
+
+                showToast(`Withdrawal of ₹${amount.toLocaleString('en-IN', { minimumFractionDigits: 2 })} requested successfully!`, "success");
+                closeModal('withdrawModal');
+                renderWalletPage();
+            });
+
+            // Mobile submission form handling
+            const mobileSubmitBtn = document.getElementById('submit-video-btn-mobile');
+            const mobileInputField = document.getElementById('video-link-input-mobile');
+            mobileSubmitBtn.addEventListener('click', () => {
+                const campId = document.getElementById('campaign-select-value-mobile').value;
+                const url = mobileInputField.value.trim();
+                
+                const res = addSubmission(campId, url);
+                if (res.success) {
+                    showToast("Link submitted successfully! Pending review.", "success");
+                    mobileInputField.value = '';
+                    const closeDrawerBtn = document.getElementById('closeMobileDrawerBtn');
+                    if (closeDrawerBtn) closeDrawerBtn.click();
+                    renderWalletPage();
+                } else {
+                    showToast(res.msg, "error");
+                }
+            });
+
+            // Real-time synchronization listeners
+            window.addEventListener('elitex_balance_updated', renderWalletPage);
+            window.addEventListener('elitex_data_changed', renderWalletPage);
+        });
+    </script>
+</body>
+</html>
