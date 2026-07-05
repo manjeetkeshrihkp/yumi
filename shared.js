@@ -293,55 +293,14 @@ function initFirebase() {
                 }
             });
 
-            // Listen to root /products, /items, /catalog, /shop nodes in ceninasia Firebase
-            ['products', 'items', 'catalog', 'shop', 'cenin_products'].forEach(nodeName => {
-                window.firebaseDb.ref(nodeName).on('value', pSnap => {
-                    const pVal = pSnap.val();
-                    if (pVal) {
-                        let pList = Array.isArray(pVal) ? pVal : Object.keys(pVal).map(k => ({ id: k, ...pVal[k] }));
-                        if (pList.length > 0) {
-                            _cacheSet('elitex_custom_products', pList);
-                            window.dispatchEvent(new CustomEvent('elitex_data_changed'));
-                        }
-                    }
-                });
-            });
-
             // Flush pending writes
             _pendingWrites.forEach(fn => fn());
             _pendingWrites = [];
-
-            // Automatic REST sync fallback for products
-            fetchFirebaseProducts();
 
         } catch (e) {
             console.error('[EliteX] Firebase init failed:', e);
         }
     });
-}
-
-function fetchFirebaseProducts() {
-    try {
-        const config = getFirebaseConfig();
-        const dbUrl = config.databaseURL || "https://elitex-fd3c0-default-rtdb.firebaseio.com";
-        
-        fetch(`${dbUrl}/products.json`)
-            .then(r => r.json())
-            .then(data => {
-                if (data) {
-                    let list = [];
-                    if (Array.isArray(data)) list = data;
-                    else if (typeof data === 'object') {
-                        list = Object.keys(data).map(k => ({ id: k, ...data[k] }));
-                    }
-                    if (list.length > 0) {
-                        _cacheSet('elitex_custom_products', list);
-                        window.dispatchEvent(new CustomEvent('elitex_data_changed'));
-                    }
-                }
-            })
-            .catch(() => {});
-    } catch (e) {}
 }
 
 // ==================== WRITE TO FIREBASE ====================

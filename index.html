@@ -198,6 +198,83 @@
         <!-- Bento Grid System -->
         <div class="bento-grid">
             
+            <!-- Bento Stats Card (Span 6) -->
+            <div class="bento-card span-6" style="display:flex; flex-direction:column; justify-content:space-between; gap:16px;">
+                <div>
+                    <h3 style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; color: var(--text-secondary); letter-spacing: 0.8px; margin-bottom: 8px;">Earnings Overview</h3>
+                    <div style="font-size: 2rem; font-weight: 800; color: #fff; margin-bottom: 2px;" id="statLifetimeEarnings">₹0.00</div>
+                    <div style="font-size: 0.72rem; color: #34d399; font-weight: 600; display:flex; align-items:center; gap:4px;"><i class="ph ph-trend-up"></i> +12.4% vs last week</div>
+                </div>
+                
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px; border-top:1px solid var(--card-border); padding-top:14px;">
+                    <div>
+                        <div style="font-size:0.68rem; color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px;">Pending Payout</div>
+                        <div style="font-size:1.05rem; font-weight:700; color:#fbbf24; font-family:'JetBrains Mono',monospace;" id="statPendingEarnings">₹0.00</div>
+                    </div>
+                    <div>
+                        <div style="font-size:0.68rem; color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px;">Active Campaigns</div>
+                        <div style="font-size:1.05rem; font-weight:700; color:var(--accent-purple); font-family:'JetBrains Mono',monospace;" id="statActiveCampaigns">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bento Graph Card (Span 6) -->
+            <div class="bento-card span-6" style="display:flex; flex-direction:column; gap:12px;">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <h3 style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; color: var(--text-secondary); letter-spacing: 0.8px;">Performance Trend</h3>
+                    <span style="font-size: 0.72rem; padding: 3px 8px; background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.2); border-radius: 20px; color: var(--accent-purple); font-weight: 600;">7D Chart</span>
+                </div>
+                
+                <!-- sleek SVG Line Chart -->
+                <div style="flex:1; width:100%; min-height:100px; max-height:120px; position:relative; margin-top:8px;">
+                    <svg viewBox="0 0 100 35" preserveAspectRatio="none" style="width: 100%; height: 100%; display: block; overflow: visible;">
+                        <defs>
+                            <linearGradient id="chartGlow" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stop-color="var(--accent-purple)" stop-opacity="0.3"/>
+                                <stop offset="100%" stop-color="var(--accent-purple)" stop-opacity="0"/>
+                            </linearGradient>
+                        </defs>
+                        <!-- Grid lines -->
+                        <line x1="0" y1="5" x2="100" y2="5" stroke="rgba(255,255,255,0.03)" stroke-width="0.3" stroke-dasharray="2,2"/>
+                        <line x1="0" y1="15" x2="100" y2="15" stroke="rgba(255,255,255,0.03)" stroke-width="0.3" stroke-dasharray="2,2"/>
+                        <line x1="0" y1="25" x2="100" y2="25" stroke="rgba(255,255,255,0.03)" stroke-width="0.3" stroke-dasharray="2,2"/>
+                        
+                        <!-- Area path -->
+                        <path d="M 0 35 L 0 25 Q 15 20, 30 28 T 60 12 T 85 8 T 100 4 L 100 35 Z" fill="url(#chartGlow)" />
+                        
+                        <!-- Stroke path -->
+                        <path d="M 0 25 Q 15 20, 30 28 T 60 12 T 85 8 T 100 4" fill="none" stroke="var(--accent-purple)" stroke-width="1.8" stroke-linecap="round" />
+                        
+                        <!-- Neon dots -->
+                        <circle cx="0" cy="25" r="1.2" fill="#fff" stroke="var(--accent-purple)" stroke-width="0.5"/>
+                        <circle cx="30" cy="28" r="1.2" fill="#fff" stroke="var(--accent-purple)" stroke-width="0.5"/>
+                        <circle cx="60" cy="12" r="1.2" fill="#fff" stroke="var(--accent-purple)" stroke-width="0.5"/>
+                        <circle cx="85" cy="8" r="1.2" fill="#fff" stroke="var(--accent-purple)" stroke-width="0.5"/>
+                        <circle cx="100" cy="4" r="1.2" fill="#fff" stroke="var(--accent-purple)" stroke-width="0.5" class="pulse-chart-dot"/>
+                    </svg>
+                    
+                    <!-- SVG dot pulse keyframe -->
+                    <style>
+                        @keyframes pulse-dot {
+                            0% { r: 1.2; opacity: 1; }
+                            50% { r: 2.5; opacity: 0.5; }
+                            100% { r: 1.2; opacity: 1; }
+                        }
+                        .pulse-chart-dot {
+                            animation: pulse-dot 2s infinite ease-in-out;
+                            transform-origin: center;
+                        }
+                    </style>
+                </div>
+                
+                <div style="display:flex; justify-content:space-between; font-size:0.65rem; color:var(--text-secondary); margin-top:2px;">
+                    <span>Mon</span>
+                    <span>Wed</span>
+                    <span>Fri</span>
+                    <span>Sun</span>
+                </div>
+            </div>
+
             <!-- Square Ad List Manager (Span 12) -->
             <div class="bento-card span-12">
                 <div style="display:flex; justify-content:flex-start; margin-bottom:20px; flex-wrap:wrap; gap:16px;">
@@ -539,6 +616,46 @@
 
         function loadDashboardMetrics() {
             renderAdsDashboard();
+            
+            const subs = getSubmissions();
+            const orders = getOrders();
+            const joined = getJoinedCampaigns();
+            
+            // Calculate Lifetime Earnings
+            const approved = subs.filter(s => s.status === 'approved');
+            const lifetime = approved.reduce((sum, s) => sum + 1.00 + (s.performancePayout || 0), 0);
+            
+            // Calculate Pending Payouts
+            const pending = subs.filter(s => s.status === 'pending');
+            const pendingSum = pending.reduce((sum, s) => sum + 1.00 + (s.performancePayout || 0), 0);
+            
+            // Calculate Active campaigns
+            // 1. Buy & Review campaigns
+            const acceptedCampaigns = [];
+            orders.forEach(order => {
+                const campaign = DEFAULT_CAMPAIGNS.find(c => c.productId === order.productId);
+                if (campaign && !acceptedCampaigns.some(item => item.id === campaign.id)) {
+                    acceptedCampaigns.push(campaign);
+                }
+            });
+            // 2. Joined campaigns
+            joined.forEach(campId => {
+                const campaign = DEFAULT_CAMPAIGNS.find(c => c.id === campId);
+                if (campaign && campaign.type !== 'buy_to_review' && !acceptedCampaigns.some(item => item.id === campaign.id)) {
+                    acceptedCampaigns.push(campaign);
+                }
+            });
+            
+            const activeCount = acceptedCampaigns.length;
+
+            // Update DOM
+            const lifetimeEl = document.getElementById('statLifetimeEarnings');
+            const pendingEl = document.getElementById('statPendingEarnings');
+            const activeEl = document.getElementById('statActiveCampaigns');
+            
+            if (lifetimeEl) lifetimeEl.textContent = `₹${lifetime.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
+            if (pendingEl) pendingEl.textContent = `₹${pendingSum.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
+            if (activeEl) activeEl.textContent = activeCount;
         }
 
         // --- Desktop Submit Modal Handlers ---

@@ -800,6 +800,9 @@ textarea.form-input { resize: none; height: 80px; line-height: 1.4; }
     <a href="#" data-tab="products" onclick="goTab('products',this)">
       <i class="ph ph-shopping-bag"></i> Products
     </a>
+    <a href="#" data-tab="add-product" onclick="goTab('add-product',this)">
+      <i class="ph ph-plus-circle"></i> Add Product
+    </a>
     <a href="#" data-tab="payouts" onclick="goTab('payouts',this)">
       <i class="ph ph-currency-inr"></i> Payouts
       <span class="nb hidden" id="sb-pending-deposits">0</span>
@@ -1085,6 +1088,71 @@ textarea.form-input { resize: none; height: 80px; line-height: 1.4; }
       </div>
     </div>
 
+    <!-- ══════════════ ADD PRODUCT ══════════════ -->
+    <div class="tab-panel" id="panel-add-product">
+      <div class="data-card" style="max-width:600px; margin:0 auto;">
+        <div class="dc-head" style="margin-bottom:20px;">
+          <div>
+            <div class="dc-title">Add New Product to Shop</div>
+            <div class="dc-sub">Create a new jewelry catalog item and broadcast it to the creator shop</div>
+          </div>
+        </div>
+        
+        <form onsubmit="event.preventDefault(); saveDirectAdminProduct();" style="display:flex; flex-direction:column; gap:16px;">
+          <div>
+            <label style="display:block; font-size:0.75rem; font-weight:700; text-transform:uppercase; letter-spacing:0.6px; color:var(--text-secondary); margin-bottom:6px;">Product Title *</label>
+            <input type="text" id="directProdName" placeholder="e.g. Cenin Sterling Silver Choker"
+              style="width:100%; padding:11px 14px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:10px; color:#fff; font-size:0.88rem; outline:none; box-sizing:border-box;"
+              onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='rgba(255,255,255,0.08)'" required>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+            <div>
+              <label style="display:block; font-size:0.75rem; font-weight:700; text-transform:uppercase; letter-spacing:0.6px; color:var(--text-secondary); margin-bottom:6px;">Selling Price (₹) *</label>
+              <input type="number" id="directProdPrice" placeholder="1499" min="1" step="any"
+                style="width:100%; padding:11px 14px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:10px; color:#fff; font-size:0.88rem; font-family:'JetBrains Mono',monospace; outline:none; box-sizing:border-box;"
+                onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='rgba(255,255,255,0.08)'" required>
+            </div>
+            <div>
+              <label style="display:block; font-size:0.75rem; font-weight:700; text-transform:uppercase; letter-spacing:0.6px; color:var(--text-secondary); margin-bottom:6px;">Cut Price (₹)</label>
+              <input type="number" id="directProdCutPrice" placeholder="1999" step="any"
+                style="width:100%; padding:11px 14px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:10px; color:#fff; font-size:0.88rem; font-family:'JetBrains Mono',monospace; outline:none; box-sizing:border-box;"
+                onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='rgba(255,255,255,0.08)'">
+            </div>
+          </div>
+
+          <div>
+            <label style="display:block; font-size:0.75rem; font-weight:700; text-transform:uppercase; letter-spacing:0.6px; color:var(--text-secondary); margin-bottom:6px;">Category</label>
+            <select id="directProdCategory"
+              style="width:100%; padding:11px 14px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:10px; color:#fff; font-size:0.88rem; outline:none; box-sizing:border-box;">
+              <option value="necklaces" style="background:#0f0f14;">Necklaces</option>
+              <option value="rings" style="background:#0f0f14;">Rings</option>
+              <option value="earrings" style="background:#0f0f14;">Earrings</option>
+              <option value="bracelets" style="background:#0f0f14;">Bracelets</option>
+            </select>
+          </div>
+
+          <div>
+            <label style="display:block; font-size:0.75rem; font-weight:700; text-transform:uppercase; letter-spacing:0.6px; color:var(--text-secondary); margin-bottom:6px;">Image URL (optional)</label>
+            <input type="text" id="directProdImg" placeholder="https://images.unsplash.com/..."
+              style="width:100%; padding:11px 14px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:10px; color:#fff; font-size:0.88rem; outline:none; box-sizing:border-box;"
+              onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='rgba(255,255,255,0.08)'">
+          </div>
+
+          <div>
+            <label style="display:block; font-size:0.75rem; font-weight:700; text-transform:uppercase; letter-spacing:0.6px; color:var(--text-secondary); margin-bottom:6px;">Description (optional)</label>
+            <textarea id="directProdDesc" placeholder="Handcrafted fine jewelry piece..."
+              style="width:100%; padding:11px 14px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:10px; color:#fff; font-size:0.88rem; outline:none; box-sizing:border-box; height:80px; resize:none;"
+              onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='rgba(255,255,255,0.08)'"></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width:100%; padding:12px; font-weight:700; height:44px; display:flex; align-items:center; justify-content:center; gap:8px;">
+            <i class="ph ph-cloud-arrow-up"></i> Save & Sync to Firebase
+          </button>
+        </form>
+      </div>
+    </div>
+
     <!-- ══════════════ PAYOUTS ══════════════ -->
     <div class="tab-panel" id="panel-payouts">
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:14px">
@@ -1367,7 +1435,7 @@ textarea.form-input { resize: none; height: 80px; line-height: 1.4; }
 //  STATE
 // ─────────────────────────────────────────────────────────────────────────────
 function getInitialAdminTab() {
-    var validTabs = ['overview','submissions','analytics','campaigns','creators','orders','products','payouts','broadcast','activity','settings'];
+    var validTabs = ['overview','submissions','analytics','campaigns','creators','orders','products','add-product','payouts','broadcast','activity','settings'];
     var hash = window.location.hash ? window.location.hash.replace('#', '') : '';
     if (hash && validTabs.indexOf(hash) !== -1) return hash;
     var saved = localStorage.getItem('admin_active_tab');
@@ -1394,6 +1462,7 @@ const TAB_META = {
   creators:    ['Creator Roster', 'Manage creator balances and platform access'],
   orders:      ['Product Orders', 'All orders placed by creators'],
   products:    ['Shop Product Catalog', 'Manage products and sync with Firebase database'],
+  'add-product': ['Add New Product', 'Create and broadcast new products to the creator shop catalog'],
   payouts:     ['Payout Ledger', 'Detailed payout history and breakdown'],
   broadcast:   ['Broadcast Center', 'Send notifications to all creators'],
   activity:    ['Activity Log', 'Complete chronological platform event history'],
@@ -1960,6 +2029,66 @@ window.saveAdminProduct = function() {
     if (descEl) descEl.value = '';
 
     renderAdminProducts();
+}
+
+window.saveDirectAdminProduct = function() {
+    if (typeof addProductToFirebase !== 'function') {
+        alert('shared.js has not finished loading yet — please wait a moment and try again.');
+        return;
+    }
+
+    const nameEl = document.getElementById('directProdName');
+    const priceEl = document.getElementById('directProdPrice');
+    const cutPriceEl = document.getElementById('directProdCutPrice');
+    const imgEl = document.getElementById('directProdImg');
+    const catEl = document.getElementById('directProdCategory');
+    const descEl = document.getElementById('directProdDesc');
+
+    const name = nameEl ? nameEl.value.trim() : '';
+    const price = priceEl ? parseFloat(priceEl.value) : NaN;
+
+    if (!name) {
+        toast("Please enter a product title.", "error");
+        return;
+    }
+    if (isNaN(price) || price <= 0) {
+        toast("Please enter a valid price.", "error");
+        return;
+    }
+
+    const cutPrice = (cutPriceEl && cutPriceEl.value) ? parseFloat(cutPriceEl.value) : (price * 1.25);
+    const image = (imgEl && imgEl.value.trim()) ? imgEl.value.trim() : "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?q=80&w=600&auto=format&fit=crop";
+    const category = catEl ? catEl.value : "necklaces";
+    const desc = (descEl && descEl.value.trim()) ? descEl.value.trim() : "Fine jewelry piece crafted with precision.";
+
+    const prod = {
+        id: 'prod_' + Date.now(),
+        name,
+        price,
+        cutPrice,
+        image,
+        category,
+        desc
+    };
+
+    try {
+        addProductToFirebase(prod);
+        toast(`Added ${name}! Synced to Firebase database.`, "success");
+    } catch (e) {
+        console.error('[EliteX] Failed to add product:', e);
+        toast("Something went wrong saving the product. Check console for details.", "error");
+        return;
+    }
+
+    // Clear form inputs
+    if (nameEl) nameEl.value = '';
+    if (priceEl) priceEl.value = '';
+    if (cutPriceEl) cutPriceEl.value = '';
+    if (imgEl) imgEl.value = '';
+    if (descEl) descEl.value = '';
+
+    // Go back to products tab to see it!
+    goTab('products', null);
 }
 
 // Fallback wiring in case the inline onclick attribute on the "+ Add New Product"
