@@ -1536,47 +1536,52 @@
             </div>
 
             <!-- Stats row grid container (Span 12) -->
-            <div class="stats-row-grid">
-                <!-- Total Net Earnings -->
-                <div class="bento-stat">
-                    <div class="bento-icon-box clr-gold"><i class="ph ph-coins"></i></div>
-                    <div>
-                        <span class="mini-stat-lbl">Total Net Income</span>
-                        <div class="bento-stat-val clr-gold" id="net-income-text">₹0.00</div>
-                        <div class="bento-stat-sub"><i class="ph ph-shield-check clr-gold"></i> Audited earnings</div>
+            <div class="stats-row-grid-custom" style="display: flex; flex-direction: column; gap: 14px;">
+                <!-- Row 1: Net Income & Security Amount -->
+                <div style="display: flex; gap: 12px; width: 100%;">
+                    <!-- Total Net Earnings -->
+                    <div class="bento-stat" style="flex: 1; min-width: 0; padding: 12px !important; display: flex; flex-direction: column; gap: 4px;">
+                        <div class="bento-icon-box clr-gold" style="width: 32px; height: 32px; font-size: 1.1rem; min-height: 32px;"><i class="ph ph-coins"></i></div>
+                        <div style="margin-top: 4px;">
+                            <span class="mini-stat-lbl" style="font-size: 0.72rem; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Total Net Income</span>
+                            <div class="bento-stat-val clr-gold" id="net-income-text" style="font-size: 1.05rem; margin-top: 2px;">₹0.00</div>
+                            <div class="bento-stat-sub" style="font-size: 0.65rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><i class="ph ph-shield-check clr-gold"></i> Audited</div>
+                        </div>
+                    </div>
+
+                    <!-- Security Amount -->
+                    <div class="bento-stat" style="flex: 1; min-width: 0; padding: 12px !important; display: flex; flex-direction: column; gap: 4px;">
+                        <div class="bento-icon-box" style="color: #14b8a6; border-color: rgba(20, 184, 166, 0.15); background: rgba(20, 184, 166, 0.05); width: 32px; height: 32px; font-size: 1.1rem; min-height: 32px;"><i class="ph ph-shield-check"></i></div>
+                        <div style="margin-top: 4px;">
+                            <span class="mini-stat-lbl" style="font-size: 0.72rem; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Security Amount</span>
+                            <div class="bento-stat-val" id="security-amount-text" style="color: #14b8a6; font-size: 1.05rem; margin-top: 2px;">₹2,000.00</div>
+                            <div class="bento-stat-sub" style="color: var(--text-muted); font-size: 0.65rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><i class="ph ph-lock-key-open" style="color: #14b8a6;"></i> Refundable</div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Security Amount -->
-                <div class="bento-stat">
-                    <div class="bento-icon-box" style="color: #14b8a6; border-color: rgba(20, 184, 166, 0.15); background: rgba(20, 184, 166, 0.05);"><i class="ph ph-shield-check"></i></div>
-                    <div>
-                        <span class="mini-stat-lbl">Security Amount</span>
-                        <div class="bento-stat-val" id="security-amount-text" style="color: #14b8a6;">₹2,000.00</div>
-                        <div class="bento-stat-sub" style="color: var(--text-muted);"><i class="ph ph-lock-key-open" style="color: #14b8a6;"></i> Fully Refundable</div>
+                <!-- Row 2: Performance Bonuses & Affiliate Earnings -->
+                <div style="display: flex; gap: 12px; width: 100%;">
+                    <!-- Performance Payouts -->
+                    <div class="bento-stat" style="flex: 1; min-width: 0; padding: 12px !important; display: flex; flex-direction: column; gap: 4px;">
+                        <div class="bento-icon-box clr-purple" style="width: 32px; height: 32px; font-size: 1.1rem; min-height: 32px;"><i class="ph ph-trophy"></i></div>
+                        <div style="margin-top: 4px;">
+                            <span class="mini-stat-lbl" style="font-size: 0.72rem; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Performance Bonus</span>
+                            <div class="bento-stat-val clr-purple" id="bonus-earnings-text" style="font-size: 1.05rem; margin-top: 2px;">₹0.00</div>
+                            <div class="bento-stat-sub" style="font-size: 0.65rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><i class="ph ph-star clr-purple"></i> Rewards</div>
+                        </div>
+                    </div>
+
+                    <!-- Affiliate Commissions -->
+                    <div class="bento-stat" style="flex: 1; min-width: 0; padding: 12px !important; display: flex; flex-direction: column; gap: 4px;">
+                        <div class="bento-icon-box clr-blue" style="color: var(--accent); border-color: rgba(99,102,241,0.15); background: rgba(99,102,241,0.05); width: 32px; height: 32px; font-size: 1.1rem; min-height: 32px;"><i class="ph ph-handshake"></i></div>
+                        <div style="margin-top: 4px;">
+                            <span class="mini-stat-lbl" style="font-size: 0.72rem; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Affiliate Earning</span>
+                            <div class="bento-stat-val" id="affiliate-earnings-text" style="color: var(--accent); font-size: 1.05rem; margin-top: 2px;">₹0.00</div>
+                            <div class="bento-stat-sub" style="font-size: 0.65rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><i class="ph ph-link" style="color: var(--accent);"></i> 10% Rate</div>
+                        </div>
                     </div>
                 </div>
-
-                <!-- Performance Payouts -->
-                <div class="bento-stat">
-                    <div class="bento-icon-box clr-purple"><i class="ph ph-trophy"></i></div>
-                    <div>
-                        <span class="mini-stat-lbl">Performance Bonuses</span>
-                        <div class="bento-stat-val clr-purple" id="bonus-earnings-text">₹0.00</div>
-                        <div class="bento-stat-sub"><i class="ph ph-star clr-purple"></i> Engagement rewards</div>
-                    </div>
-                </div>
-
-                <!-- Affiliate Commissions -->
-                <div class="bento-stat">
-                    <div class="bento-icon-box clr-blue" style="color: var(--accent); border-color: rgba(99,102,241,0.15); background: rgba(99,102,241,0.05);"><i class="ph ph-handshake"></i></div>
-                    <div>
-                        <span class="mini-stat-lbl">Affiliate Earnings</span>
-                        <div class="bento-stat-val" id="affiliate-earnings-text" style="color: var(--accent);">₹0.00</div>
-                        <div class="bento-stat-sub"><i class="ph ph-link" style="color: var(--accent);"></i> 10% referral rate</div>
-                    </div>
-                </div>
-
             </div>
 
 

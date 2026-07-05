@@ -644,6 +644,9 @@
                 if (joinBtn) {
                     joinBtn.addEventListener('click', (e) => {
                         const campId = e.currentTarget.getAttribute('data-id');
+                        const confirmJoin = confirm("Security Warning:\n\n₹10.00 will be frozen from your wallet as a security deposit for IP address validation. This amount will be refunded to your wallet upon video approval.\n\nDo you want to proceed?");
+                        if (!confirmJoin) return;
+                        
                         const res = joinCampaign(campId);
                         if (res.success) {
                             showToast("Task accepted! ₹10.00 Security Deposit Frozen.", "success");

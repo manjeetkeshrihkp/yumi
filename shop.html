@@ -1122,6 +1122,17 @@
 
                 // Deduct product price locally
                 tempBalance -= p.price * item.quantity;
+
+                addTransaction({
+                    ref: 'TXN-' + Math.floor(100000 + Math.random() * 900000),
+                    desc: `Ordered Jewelry: ${p.name}`,
+                    amount: -p.price * item.quantity,
+                    type: 'orders',
+                    typeName: 'Order Placed',
+                    avatarClass: 'debit',
+                    iconClass: 'ph-shopping-cart-simple',
+                    date: new Date().toLocaleDateString()
+                });
                 
                 const newOrder = {
                     orderId:   'ORD-' + Math.floor(100000 + Math.random() * 900000),

@@ -446,6 +446,18 @@ function placeOrder(productId) {
 
     // Deduct price and optionally security
     updateWalletBalance(-product.price);
+
+    // Record product order transaction
+    addTransaction({
+        ref: 'TXN-' + Math.floor(100000 + Math.random() * 900000),
+        desc: `Ordered Jewelry: ${product.name}`,
+        amount: -product.price,
+        type: 'orders',
+        typeName: 'Order Placed',
+        avatarClass: 'debit',
+        iconClass: 'ph-shopping-cart-simple',
+        date: new Date().toLocaleDateString()
+    });
     
     if (deductSecurity) {
         updateWalletBalance(-10.00);
@@ -499,6 +511,18 @@ function returnProduct(productId) {
     _cacheSet('elitex_orders', orders);
 
     updateWalletBalance(order.price);
+
+    // Record refund transaction
+    addTransaction({
+        ref: 'TXN-' + Math.floor(100000 + Math.random() * 900000),
+        desc: oldStatus === 'ordered' ? `Order Cancelled: ${order.name}` : `Product Returned: ${order.name}`,
+        amount: order.price,
+        type: 'income',
+        typeName: 'Refund Received',
+        avatarClass: 'credit',
+        iconClass: 'ph-arrow-counter-clockwise',
+        date: new Date().toLocaleDateString()
+    });
     
     const activityText = oldStatus === 'ordered' 
         ? `Cancelled order for ${order.name} — ₹${order.price.toFixed(2)} refunded`
