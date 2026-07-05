@@ -304,7 +304,8 @@
                 height: 180px;
             }
             .txn-item-row {
-                padding: 14px 16px;
+                padding: 10px 12px !important;
+                gap: 10px !important;
             }
             .bento-stat {
                 min-height: 110px;
@@ -316,6 +317,52 @@
             }
             .span-8, .span-4 {
                 grid-column: span 12 !important;
+            }
+            
+            /* Transactions Audit Trail Mobile Optimizations */
+            .txn-ledger-list {
+                overflow: hidden !important;
+            }
+            .txn-avatar-square {
+                width: 28px !important;
+                height: 28px !important;
+                border-radius: 6px !important;
+                font-size: 0.85rem !important;
+            }
+            .txn-text-group {
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                gap: 2px !important;
+            }
+            .txn-main-title {
+                display: block !important;
+                font-size: 0.78rem !important;
+                max-width: calc(100vw - 150px) !important;
+                white-space: nowrap !important;
+                overflow: hidden !important;
+                text-overflow: ellipsis !important;
+            }
+            .txn-subtitle {
+                display: block !important;
+                font-size: 0.65rem !important;
+                max-width: calc(100vw - 150px) !important;
+                white-space: nowrap !important;
+                overflow: hidden !important;
+                text-overflow: ellipsis !important;
+            }
+            .txn-subtitle::before {
+                content: none !important;
+            }
+            .txn-amount-group {
+                flex-direction: column-reverse !important;
+                align-items: flex-end !important;
+                gap: 2px !important;
+            }
+            .txn-value-number {
+                font-size: 0.82rem !important;
+            }
+            .txn-date-stamp {
+                font-size: 0.65rem !important;
             }
         }
 
@@ -648,6 +695,12 @@
             font-size: 0.72rem;
             color: var(--text-muted);
             font-family: 'JetBrains Mono', monospace;
+        }
+
+        .txn-subtitle::before {
+            content: "• ";
+            margin-right: 4px;
+            opacity: 0.7;
         }
 
         .txn-amount-group {
@@ -2061,7 +2114,7 @@
                                 </div>
                                 <div class="txn-text-group">
                                     <span class="txn-main-title">${t.desc}</span>
-                                    <span class="txn-subtitle">• ${t.ref} • ${t.typeName}</span>
+                                    <span class="txn-subtitle">${t.ref} • ${t.typeName}</span>
                                 </div>
                             </div>
                             <div class="txn-amount-group">

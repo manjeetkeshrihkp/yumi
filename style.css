@@ -1007,7 +1007,7 @@ body {
     }
 
     /* Table horizontal swipe wrapper */
-    .table-responsive-wrapper, .admin-table-container, .txn-ledger-list {
+    .table-responsive-wrapper, .admin-table-container {
         width: 100% !important;
         max-width: 100% !important;
         overflow-x: auto !important;

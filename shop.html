@@ -300,6 +300,11 @@
             color: #ffffff;
         }
 
+        /* Helper classes for responsive button labels */
+        .btn-text-mobile {
+            display: none;
+        }
+
         /* Responsive Mobile 2 Products Horizontal */
         @media (max-width: 1024px) {
             .products-grid {
@@ -307,10 +312,13 @@
                 gap: 12px;
             }
         }
-        @media (max-width: 640px) {
+        @media (max-width: 768px) {
+            .products-grid-container {
+                padding: 12px 10px !important;
+            }
             .products-grid {
                 grid-template-columns: repeat(2, 1fr) !important;
-                gap: 10px !important;
+                gap: 8px !important;
             }
             .product-item-card {
                 padding: 10px !important;
@@ -328,6 +336,13 @@
             .buy-action-btn, .return-action-btn {
                 height: 34px !important;
                 font-size: 0.72rem !important;
+            }
+            
+            .btn-text-desktop {
+                display: none !important;
+            }
+            .btn-text-mobile {
+                display: inline !important;
             }
         }
 
@@ -460,25 +475,68 @@
         </div>
     </main>
 
-    <!-- Bottom Nav Bar -->
+    <!-- Professional Bottom Navigation for Mobile -->
     <nav class="bottom-nav">
-        <a href="index.html" class="nav-item">
+        <a href="index.html" class="bottom-nav-item">
             <i class="ph ph-squares-four"></i>
             <span>Home</span>
         </a>
-        <a href="campaigns.html" class="nav-item">
+        <a href="campaigns.html" class="bottom-nav-item">
             <i class="ph ph-megaphone"></i>
             <span>Campaigns</span>
         </a>
-        <a href="wallet.html" class="nav-item">
+        
+        <!-- Floating FAB to open submission drawer -->
+        <button class="mobile-fab" id="openMobileDrawerBtn" aria-label="Submit video">
+            <i class="ph ph-plus"></i>
+        </button>
+
+        <a href="wallet.html" class="bottom-nav-item">
             <i class="ph ph-wallet"></i>
             <span>Wallet</span>
         </a>
-        <a href="shop.html" class="nav-item active">
+        <a href="shop.html" class="bottom-nav-item active">
             <i class="ph ph-shopping-bag"></i>
             <span>Shop</span>
         </a>
     </nav>
+
+    <!-- Mobile submission Drawer -->
+    <div class="drawer-overlay" id="mobileDrawerOverlay"></div>
+    <div class="bottom-drawer" id="mobileDrawer">
+        <div class="drawer-handle"></div>
+        <div class="drawer-header">
+            <h3>Submit Video Link</h3>
+            <button class="icon-btn" id="closeMobileDrawerBtn"><i class="ph ph-x"></i></button>
+        </div>
+        <div style="padding-top: 10px;">
+            <div class="form-group">
+                <label class="input-label">Campaign Target</label>
+                <div class="custom-dropdown" id="campaignDropdownMobile">
+                    <div class="dropdown-trigger">
+                        <span id="selected-campaign-name-mobile">Select Campaign...</span>
+                        <i class="ph ph-caret-down"></i>
+                    </div>
+                    <div class="dropdown-menu" id="dropdownMenuMobile">
+                        <!-- Populated dynamically by JS -->
+                    </div>
+                    <input type="hidden" id="campaign-select-value-mobile" value="">
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 24px;">
+                <label class="input-label">Video URL</label>
+                <div class="input-box">
+                    <input type="url" id="video-link-input-mobile" class="input-field" placeholder="https://instagram.com/reel/...">
+                    <i class="ph ph-link"></i>
+                </div>
+            </div>
+
+            <button class="btn-gradient" id="submit-video-btn-mobile" style="margin-bottom: 16px;">
+                <i class="ph ph-paper-plane-tilt"></i> Submit Link
+            </button>
+        </div>
+    </div>
 
     <!-- Cart Drawer -->
     <div class="cart-drawer-overlay" id="cartOverlay" onclick="toggleCartDrawer()"></div>
@@ -600,8 +658,8 @@
 
                 let badgeHtml = isOrdered ? `<span class="purchased-tag">Purchased</span>` : '';
                 let btnHtml = !isOrdered 
-                    ? `<button class="buy-action-btn buy-btn" data-id="${p.id}"><i class="ph ph-shopping-bag"></i> Buy with Wallet</button>`
-                    : `<button class="return-action-btn return-btn" data-id="${p.id}"><i class="ph ph-arrow-counter-clockwise"></i> Return (Refund ₹${p.price.toFixed(2)})</button>`;
+                    ? `<button class="buy-action-btn buy-btn" data-id="${p.id}"><i class="ph ph-shopping-bag"></i> <span class="btn-text-desktop">Buy with Wallet</span><span class="btn-text-mobile">Buy Sample</span></button>`
+                    : `<button class="return-action-btn return-btn" data-id="${p.id}"><i class="ph ph-arrow-counter-clockwise"></i> <span class="btn-text-desktop">Return (Refund ₹${p.price.toFixed(2)})</span><span class="btn-text-mobile">Return Sample</span></button>`;
 
                 card.innerHTML = `
                     <div>
@@ -770,6 +828,27 @@
         document.addEventListener('DOMContentLoaded', () => {
             syncBalance();
             renderShop();
+
+            // Mobile submission drawer form handler
+            const mobileSubmitBtn = document.getElementById('submit-video-btn-mobile');
+            const mobileInputField = document.getElementById('video-link-input-mobile');
+            if (mobileSubmitBtn && mobileInputField) {
+                mobileSubmitBtn.addEventListener('click', () => {
+                    const campId = document.getElementById('campaign-select-value-mobile').value;
+                    const url = mobileInputField.value.trim();
+                    
+                    const res = addSubmission(campId, url);
+                    if (res.success) {
+                        showToast("Link submitted successfully! Pending review.", "success");
+                        mobileInputField.value = '';
+                        const closeDrawerBtn = document.getElementById('closeMobileDrawerBtn');
+                        if (closeDrawerBtn) closeDrawerBtn.click();
+                        if (typeof triggerSync === 'function') triggerSync();
+                    } else {
+                        showToast(res.msg, "error");
+                    }
+                });
+            }
 
             window.addEventListener('elitex_balance_updated', () => {
                 syncBalance();
