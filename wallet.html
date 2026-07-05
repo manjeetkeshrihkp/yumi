@@ -323,40 +323,67 @@
             .txn-ledger-list {
                 overflow: hidden !important;
             }
+            .txn-item-row {
+                padding: 12px 10px !important;
+                display: flex !important;
+                justify-content: space-between !important;
+                align-items: center !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
+                gap: 8px !important;
+            }
+            .txn-col-meta {
+                display: flex !important;
+                align-items: center !important;
+                gap: 8px !important;
+                min-width: 0 !important;
+                flex: 1 !important;
+            }
             .txn-avatar-square {
                 width: 28px !important;
                 height: 28px !important;
                 border-radius: 6px !important;
                 font-size: 0.85rem !important;
+                flex-shrink: 0 !important;
             }
             .txn-text-group {
+                display: flex !important;
                 flex-direction: column !important;
                 align-items: flex-start !important;
                 gap: 2px !important;
+                min-width: 0 !important;
+                flex: 1 !important;
+                overflow: hidden !important;
             }
             .txn-main-title {
                 display: block !important;
-                font-size: 0.78rem !important;
-                max-width: calc(100vw - 150px) !important;
+                font-size: 0.8rem !important;
+                color: #fff !important;
                 white-space: nowrap !important;
                 overflow: hidden !important;
                 text-overflow: ellipsis !important;
+                width: 100% !important;
             }
             .txn-subtitle {
                 display: block !important;
                 font-size: 0.65rem !important;
-                max-width: calc(100vw - 150px) !important;
+                color: var(--text-muted) !important;
                 white-space: nowrap !important;
                 overflow: hidden !important;
                 text-overflow: ellipsis !important;
+                width: 100% !important;
             }
             .txn-subtitle::before {
                 content: none !important;
             }
             .txn-amount-group {
+                display: flex !important;
                 flex-direction: column-reverse !important;
                 align-items: flex-end !important;
+                justify-content: center !important;
                 gap: 2px !important;
+                flex-shrink: 0 !important;
+                text-align: right !important;
             }
             .txn-value-number {
                 font-size: 0.82rem !important;
