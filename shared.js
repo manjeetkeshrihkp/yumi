@@ -99,45 +99,61 @@ const DEFAULT_CAMPAIGNS = [
 
 const DEFAULT_PRODUCTS = [
     {
-        id: "prod_necklace",
-        name: "EliteX Sterling Silver Necklace",
-        price: 1200.00,
-        image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?q=80&w=300&auto=format&fit=crop",
-        desc: "Handcrafted 925 sterling silver chain with a polished drop pendant. Perfect for aesthetic transition reels."
+        "id": "prod_cenin_choker",
+        "name": "Cenin Diamond Choker Necklace",
+        "price": 1499,
+        "cutPrice": 2499,
+        "image": "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?q=80&w=600&auto=format&fit=crop",
+        "desc": "Exquisite sterling silver choker set with brilliant lab-grown diamond accents.",
+        "category": "necklaces"
     },
     {
-        id: "prod_ring",
-        name: "EliteX 18K Gold Aesthetic Ring",
-        price: 2500.00,
-        image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?q=80&w=300&auto=format&fit=crop",
-        desc: "Stunning minimalist gold band crafted for cinematic jewelry styling and daily aesthetic videos."
+        "id": "prod_cenin_gold_ring",
+        "name": "Cenin 18K Gold Solitaire Ring",
+        "price": 2199,
+        "cutPrice": 3299,
+        "image": "https://images.unsplash.com/photo-1605100804763-247f67b3557e?q=80&w=600&auto=format&fit=crop",
+        "desc": "Minimalist 18K gold band featuring a sparkling solitaire stone.",
+        "category": "rings"
     },
     {
-        id: "prod_earrings",
-        name: "EliteX Emerald Drop Earrings",
-        price: 3200.00,
-        image: "https://images.unsplash.com/photo-1635767798638-3e25273a8236?q=80&w=300&auto=format&fit=crop",
-        desc: "Vibrant natural emerald drops set in fine white gold. Ideal for high-end luxury styling content."
+        "id": "prod_cenin_emerald_earrings",
+        "name": "Cenin Emerald Drop Earrings",
+        "price": 1899,
+        "cutPrice": 2799,
+        "image": "https://images.unsplash.com/photo-1635767798638-3e25273a8236?q=80&w=600&auto=format&fit=crop",
+        "desc": "Vibrant emerald drop earrings crafted in fine white gold settings.",
+        "category": "earrings"
     },
     {
-        id: "prod_bracelet",
-        name: "EliteX Pearl Charm Bracelet",
-        price: 1800.00,
-        image: "https://images.unsplash.com/photo-1573408301185-9146fe634ad0?q=80&w=300&auto=format&fit=crop",
-        desc: "Elegant freshwater pearl bracelet with signature lock. Designed to look gorgeous in close-ups."
+        "id": "prod_cenin_pearl_bracelet",
+        "name": "Cenin Freshwater Pearl Bracelet",
+        "price": 1299,
+        "cutPrice": 1899,
+        "image": "https://images.unsplash.com/photo-1573408301185-9146fe634ad0?q=80&w=600&auto=format&fit=crop",
+        "desc": "Elegant freshwater pearls handcrafted with a signature gold clasp.",
+        "category": "bracelets"
+    },
+    {
+        "id": "prod_cenin_sapphire_chain",
+        "name": "Cenin Sapphire Layered Chain",
+        "price": 2899,
+        "cutPrice": 3999,
+        "image": "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?q=80&w=600&auto=format&fit=crop",
+        "desc": "Dual-layer gold chain featuring deep sapphire gemstone pendants.",
+        "category": "necklaces"
     }
 ];
 
 // ==================== FIREBASE CONFIG ====================
 const ELITEX_FIREBASE_CONFIG = {
-    apiKey: "AIzaSyB_UYs4vVMKCxxxd3qP-nIf3l_yvJAgHGI",
-    authDomain: "elitex-fd3c0.firebaseapp.com",
-    databaseURL: "https://elitex-fd3c0-default-rtdb.firebaseio.com",
-    projectId: "elitex-fd3c0",
-    storageBucket: "elitex-fd3c0.firebasestorage.app",
-    messagingSenderId: "542401584757",
-    appId: "1:542401584757:web:01a7d4f85703790f74a23c",
-    measurementId: "G-Z5SVE3ZX6Y"
+  apiKey: "AIzaSyB_UYs4vVMKCxxxd3qP-nIf3l_yvJAgHGI",
+  authDomain: "elitex-fd3c0.firebaseapp.com",
+  databaseURL: "https://elitex-fd3c0-default-rtdb.firebaseio.com",
+  projectId: "elitex-fd3c0",
+  storageBucket: "elitex-fd3c0.firebasestorage.app",
+  messagingSenderId: "542401584757",
+  appId: "1:542401584757:web:01a7d4f85703790f74a23c"
 };
 
 // ==================== FIREBASE STATE ====================
@@ -146,7 +162,18 @@ let _fbReady = false;           // true once Firebase listener is attached
 let _pendingWrites = [];        // queued writes before Firebase is ready
 
 // ==================== FIREBASE CONFIG HELPERS ====================
-// These always return the hardcoded config — user can override via admin settings page
+// Purge stale ceninasia config if still cached
+(function _purgeLegacyConfig() {
+    try {
+        const raw = localStorage.getItem('elitex_firebase_config');
+        if (raw && raw.includes('ceninasia')) {
+            localStorage.removeItem('elitex_firebase_config');
+            console.log('[EliteX] 🔄 Purged stale ceninasia Firebase config → using elitex-fd3c0');
+        }
+    } catch(e) {}
+})();
+
+// These return the configured Firebase credentials
 function getFirebaseConfig() {
     const stored = localStorage.getItem('elitex_firebase_config');
     return stored ? JSON.parse(stored) : ELITEX_FIREBASE_CONFIG;
@@ -224,24 +251,25 @@ function initFirebase() {
             window.dispatchEvent(new Event('firebase_sync_active'));
 
             // ── REAL-TIME LISTENER: Firebase → localStorage cache → UI ──
-            // This runs every time ANY device changes data in Firebase.
             window.firebaseDb.ref('elitex_demo').on('value', snapshot => {
                 const data = snapshot.val();
 
                 if (!data) {
-                    // First time — push local state to bootstrap Firebase
                     _pushToFirebase();
                     return;
                 }
 
-                // Update local cache with Firebase truth
                 let changed = false;
                 const keys = {
-                    balance:          { cache: 'elitex_balance',          fallback: '5000.00' },
-                    orders:           { cache: 'elitex_orders',           fallback: [] },
-                    submissions:      { cache: 'elitex_submissions',      fallback: [] },
-                    joined_campaigns: { cache: 'elitex_joined_campaigns', fallback: [] },
-                    activities:       { cache: 'elitex_activities',       fallback: [] },
+                    balance:             { cache: 'elitex_balance',             fallback: '5000.00' },
+                    security_amount:     { cache: 'elitex_security_amount',     fallback: '0.00' },
+                    orders:              { cache: 'elitex_orders',              fallback: [] },
+                    submissions:         { cache: 'elitex_submissions',         fallback: [] },
+                    joined_campaigns:    { cache: 'elitex_joined_campaigns',    fallback: [] },
+                    activities:          { cache: 'elitex_activities',          fallback: [] },
+                    custom_transactions: { cache: 'elitex_custom_transactions', fallback: [] },
+                    custom_products:     { cache: 'elitex_custom_products',     fallback: [] },
+                    products:            { cache: 'elitex_custom_products',     fallback: [] }
                 };
 
                 Object.entries(keys).forEach(([fbKey, meta]) => {
@@ -258,17 +286,33 @@ function initFirebase() {
                 });
 
                 if (changed) {
-                    // Notify all UI listeners on this page
                     window.dispatchEvent(new CustomEvent('elitex_data_changed'));
                     window.dispatchEvent(new Event('elitex_balance_updated'));
                     window.dispatchEvent(new Event('elitex_activities_updated'));
-                    window.dispatchEvent(new Event('storage')); // for older listeners
+                    window.dispatchEvent(new Event('storage'));
                 }
             });
 
-            // Flush any writes that happened before Firebase was ready
+            // Listen to root /products, /items, /catalog, /shop nodes in ceninasia Firebase
+            ['products', 'items', 'catalog', 'shop', 'cenin_products'].forEach(nodeName => {
+                window.firebaseDb.ref(nodeName).on('value', pSnap => {
+                    const pVal = pSnap.val();
+                    if (pVal) {
+                        let pList = Array.isArray(pVal) ? pVal : Object.keys(pVal).map(k => ({ id: k, ...pVal[k] }));
+                        if (pList.length > 0) {
+                            _cacheSet('elitex_custom_products', pList);
+                            window.dispatchEvent(new CustomEvent('elitex_data_changed'));
+                        }
+                    }
+                });
+            });
+
+            // Flush pending writes
             _pendingWrites.forEach(fn => fn());
             _pendingWrites = [];
+
+            // Automatic REST sync fallback for products
+            fetchFirebaseProducts();
 
         } catch (e) {
             console.error('[EliteX] Firebase init failed:', e);
@@ -276,16 +320,43 @@ function initFirebase() {
     });
 }
 
+function fetchFirebaseProducts() {
+    try {
+        const config = getFirebaseConfig();
+        const dbUrl = config.databaseURL || "https://elitex-fd3c0-default-rtdb.firebaseio.com";
+        
+        fetch(`${dbUrl}/products.json`)
+            .then(r => r.json())
+            .then(data => {
+                if (data) {
+                    let list = [];
+                    if (Array.isArray(data)) list = data;
+                    else if (typeof data === 'object') {
+                        list = Object.keys(data).map(k => ({ id: k, ...data[k] }));
+                    }
+                    if (list.length > 0) {
+                        _cacheSet('elitex_custom_products', list);
+                        window.dispatchEvent(new CustomEvent('elitex_data_changed'));
+                    }
+                }
+            })
+            .catch(() => {});
+    } catch (e) {}
+}
+
 // ==================== WRITE TO FIREBASE ====================
 // Called after every mutation. Reads current localStorage cache and pushes to Firebase.
 function _pushToFirebase() {
     if (!window.firebaseDb) return;
     window.firebaseDb.ref('elitex_demo').set({
-        balance:          localStorage.getItem('elitex_balance') || '5000.00',
-        orders:           _cacheGet('elitex_orders', []),
-        submissions:      _cacheGet('elitex_submissions', []),
-        joined_campaigns: _cacheGet('elitex_joined_campaigns', []),
-        activities:       _cacheGet('elitex_activities', [])
+        balance:             localStorage.getItem('elitex_balance') || '5000.00',
+        security_amount:     localStorage.getItem('elitex_security_amount') || '0.00',
+        orders:              _cacheGet('elitex_orders', []),
+        submissions:         _cacheGet('elitex_submissions', []),
+        joined_campaigns:    _cacheGet('elitex_joined_campaigns', []),
+        activities:          _cacheGet('elitex_activities', []),
+        custom_transactions: _cacheGet('elitex_custom_transactions', []),
+        custom_products:     _cacheGet('elitex_custom_products', [])
     }).then(() => {
         console.log('[EliteX] ✅ Data synced to Firebase.');
     }).catch(err => {
@@ -326,8 +397,64 @@ function getOrders() {
     return _cacheGet('elitex_orders', []);
 }
 
+function getAllProducts() {
+    const custom = _cacheGet('elitex_custom_products', []);
+    if (custom && custom.length > 0) {
+        const customMapped = custom.filter(c => c && typeof c === 'object').map(c => {
+            const nameStr = (c.name || 'Untitled Item').toString();
+            const safeId  = c.id || ('prod_' + nameStr.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, ''));
+            const pVal    = parseFloat(c.price || c.offerPrice || 0);
+            return {
+                id: safeId,
+                name: nameStr,
+                price: isNaN(pVal) ? 0 : pVal,
+                image: c.image || c.img || "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?q=80&w=300&auto=format&fit=crop",
+                desc: c.desc || c.description || "Fine jewelry piece crafted with precision.",
+                category: c.category || "jewelry",
+                cutPrice: c.cutPrice || (pVal ? (pVal * 1.25).toFixed(2) : null)
+            };
+        });
+        const defaultFiltered = DEFAULT_PRODUCTS.filter(p => !customMapped.some(m => m.id === p.id));
+        return [...customMapped, ...defaultFiltered];
+    }
+    return DEFAULT_PRODUCTS;
+}
+
+function addProductToFirebase(product) {
+    const newProd = {
+        id: product.id || 'prod_' + Date.now(),
+        name: product.name,
+        price: parseFloat(product.price),
+        cutPrice: parseFloat(product.cutPrice || (product.price * 1.25)),
+        image: product.image || "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?q=80&w=300&auto=format&fit=crop",
+        desc: product.desc || "Fine jewelry piece crafted with precision.",
+        category: product.category || "jewelry"
+    };
+
+    const currentCustom = _cacheGet('elitex_custom_products', []);
+    // Avoid duplicates by ID
+    const idx = currentCustom.findIndex(p => p.id === newProd.id);
+    if (idx >= 0) {
+        currentCustom[idx] = newProd;
+    } else {
+        currentCustom.unshift(newProd);
+    }
+
+    _cacheSet('elitex_custom_products', currentCustom);
+
+    if (window.firebaseDb) {
+        window.firebaseDb.ref('products/' + newProd.id).set(newProd);
+        window.firebaseDb.ref('cenin_products/' + newProd.id).set(newProd);
+        _pushToFirebase();
+    }
+    
+    window.dispatchEvent(new CustomEvent('elitex_data_changed'));
+    return newProd;
+}
+
 function placeOrder(productId) {
-    const product = DEFAULT_PRODUCTS.find(p => p.id === productId);
+    const products = getAllProducts();
+    const product = products.find(p => p.id === productId);
     if (!product) return { success: false, msg: "Product not found." };
 
     const balance = getWalletBalance();

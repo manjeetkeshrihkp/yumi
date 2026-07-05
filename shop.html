@@ -6,326 +6,630 @@
     <title>Elite X — Jewelry Shop</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Premium Shop Cards styling */
-        .shop-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
+        /* Basic Clean Shopping Theme */
+        :root {
+            --bg-dark: #0b0c10;
+            --card-bg: rgba(22, 24, 33, 0.7);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --text-main: #ffffff;
+            --text-sub: #9ca3af;
+            --accent-purple: #8b5cf6;
+            --accent-green: #10b981;
         }
 
-        .product-card {
-            background: rgba(20, 20, 25, 0.45);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 20px;
-            padding: 20px;
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+            padding-bottom: 85px;
+        }
+
+        /* Top Header Bar */
+        .shop-navbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(11, 12, 16, 0.92);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--card-border);
+            padding: 12px 5%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .shop-search-box {
+            flex: 1;
+            max-width: 450px;
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .shop-search-box i {
+            position: absolute;
+            left: 14px;
+            color: var(--text-sub);
+            font-size: 1.1rem;
+        }
+        .shop-search-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--card-border);
+            color: #fff;
+            padding: 9px 12px 9px 40px;
+            border-radius: 99px;
+            font-size: 0.85rem;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        .shop-search-input:focus {
+            border-color: var(--accent-purple);
+            background: rgba(255, 255, 255, 0.07);
+        }
+
+        .wallet-badge-pill {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.25);
+            color: #34d399;
+            padding: 6px 14px;
+            border-radius: 99px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-family: 'JetBrains Mono', monospace;
+            white-space: nowrap;
+        }
+
+        .cart-icon-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--card-border);
+            color: #fff;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s ease;
+        }
+        .cart-icon-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+        .cart-count-badge {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            background: #ef4444;
+            color: #fff;
+            font-size: 0.65rem;
+            font-weight: 800;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Banner Header */
+        .shop-banner {
+            padding: 20px 5% 10px 5%;
+        }
+        .shop-banner h1 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+        .shop-banner p {
+            font-size: 0.8rem;
+            color: var(--text-sub);
+            margin-top: 4px;
+        }
+
+        /* Filter Chips Row */
+        .category-filter-row {
+            padding: 10px 5%;
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            align-items: center;
+        }
+        .category-filter-row::-webkit-scrollbar { display: none; }
+
+        .cat-chip {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--card-border);
+            color: var(--text-sub);
+            padding: 6px 14px;
+            border-radius: 99px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .cat-chip:hover, .cat-chip.active {
+            background: var(--text-main);
+            color: #000000;
+            border-color: var(--text-main);
+        }
+
+        /* Product Grid */
+        .products-grid-container {
+            padding: 16px 5%;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+
+        .product-item-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 12px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            min-height: 440px;
-            backdrop-filter: blur(20px);
-            box-shadow: var(--glass-shadow);
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .product-card:hover {
-            transform: translateY(-4px);
-            border-color: rgba(255, 255, 255, 0.15);
-            box-shadow: 0 30px 60px rgba(0,0,0,0.8), 0 0 30px rgba(99,102,241,0.05);
-        }
-
-        .product-img-box {
-            width: 100%;
-            height: 220px;
-            border-radius: 14px;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(12px);
+            transition: all 0.25s ease;
             position: relative;
-            background: #0f0f13;
+        }
+        .product-item-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 16px 32px rgba(0,0,0,0.5);
         }
 
-        .product-img-box img {
+        .product-thumb {
+            width: 100%;
+            height: 180px;
+            border-radius: 10px;
+            overflow: hidden;
+            background: #12131a;
+            position: relative;
+            cursor: pointer;
+        }
+        .product-thumb img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.4s ease;
+            transition: transform 0.3s ease;
         }
-
-        .product-card:hover .product-img-box img {
+        .product-item-card:hover .product-thumb img {
             transform: scale(1.04);
         }
 
-        .price-tag {
+        .purchased-tag {
             position: absolute;
-            top: 12px;
-            right: 12px;
-            background: rgba(9, 9, 11, 0.85);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            color: #fff;
-            font-size: 0.82rem;
-            font-weight: 700;
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-family: 'JetBrains Mono', monospace;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            top: 8px;
+            left: 8px;
+            background: rgba(16, 185, 129, 0.9);
+            color: #ffffff;
+            font-size: 0.62rem;
+            font-weight: 800;
+            padding: 2px 7px;
+            border-radius: 4px;
+            text-transform: uppercase;
         }
 
-        .product-info h3 {
-            font-size: 1.02rem;
-            margin-top: 16px;
-            font-weight: 700;
-            color: var(--text-primary);
+        .product-details {
+            margin-top: 10px;
         }
-
-        .product-info p {
-            font-size: 0.78rem;
-            color: var(--text-secondary);
+        .product-title {
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--text-main);
+            line-height: 1.3;
+            cursor: pointer;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .product-price-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
             margin-top: 6px;
-            line-height: 1.45;
+        }
+        .main-price {
+            font-weight: 800;
+            font-size: 0.95rem;
+            color: var(--text-main);
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .cut-price {
+            font-size: 0.75rem;
+            text-decoration: line-through;
+            color: var(--text-sub);
         }
 
-        @media(max-width: 1024px) {
-            .shop-grid {
-                grid-template-columns: repeat(2, 1fr);
+        .buy-action-btn {
+            margin-top: 12px;
+            width: 100%;
+            height: 36px;
+            border-radius: 8px;
+            background: #ffffff;
+            color: #000000;
+            border: none;
+            font-size: 0.78rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .buy-action-btn:hover {
+            background: #e2e8f0;
+        }
+
+        .return-action-btn {
+            margin-top: 12px;
+            width: 100%;
+            height: 36px;
+            border-radius: 8px;
+            background: rgba(239, 68, 68, 0.12);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            font-size: 0.75rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .return-action-btn:hover {
+            background: #ef4444;
+            color: #ffffff;
+        }
+
+        /* Responsive Mobile 2 Products Horizontal */
+        @media (max-width: 1024px) {
+            .products-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 12px;
             }
         }
-        @media(max-width: 640px) {
-            .shop-grid {
-                grid-template-columns: 1fr;
+        @media (max-width: 640px) {
+            .products-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 10px !important;
+            }
+            .product-item-card {
+                padding: 10px !important;
+                border-radius: 12px !important;
+            }
+            .product-thumb {
+                height: 130px !important;
+            }
+            .product-title {
+                font-size: 0.78rem !important;
+            }
+            .main-price {
+                font-size: 0.85rem !important;
+            }
+            .buy-action-btn, .return-action-btn {
+                height: 34px !important;
+                font-size: 0.72rem !important;
             }
         }
+
+        /* Cart Drawer */
+        .cart-drawer-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(6px);
+            z-index: 10000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        .cart-drawer-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .cart-drawer {
+            position: fixed;
+            top: 0; right: -400px;
+            width: 100%;
+            max-width: 380px;
+            height: 100%;
+            background: #121319;
+            border-left: 1px solid var(--card-border);
+            z-index: 10001;
+            transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+        }
+        .cart-drawer.active {
+            right: 0;
+        }
+
+        /* Product Modal */
+        #productModal {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(12px);
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .modal-card {
+            background: #14161f;
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            max-width: 480px;
+            width: 100%;
+            padding: 20px;
+            position: relative;
+        }
+
+        /* Bottom Nav Bar */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0; left: 0; width: 100%;
+            background: rgba(11, 12, 16, 0.95);
+            backdrop-filter: blur(16px);
+            border-top: 1px solid var(--card-border);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 8px 0;
+            z-index: 9000;
+        }
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--text-sub);
+            font-size: 0.7rem;
+            font-weight: 600;
+            gap: 2px;
+            width: 25%;
+        }
+        .nav-item i { font-size: 1.3rem; }
+        .nav-item:hover, .nav-item.active { color: var(--text-main); }
+        .nav-item.active i { color: var(--accent-purple); }
     </style>
 </head>
 <body>
-    <div class="glow-bg">
-        <div class="glow-1"></div>
-        <div class="glow-2"></div>
-    </div>
 
-    <!-- Mobile Top Navigation Header -->
-    <header class="top-nav">
-        <div class="nav-left">
-            <button class="icon-btn" id="openMobileSidebar" aria-label="Menu">
-                <i class="ph ph-list"></i>
-            </button>
-            <a href="index.html" class="logo">Elite <span>X</span></a>
+    <!-- Top Navbar -->
+    <header class="shop-navbar">
+        <div class="shop-search-box">
+            <i class="ph ph-magnifying-glass"></i>
+            <input type="text" id="searchInput" class="shop-search-input" placeholder="Search jewelry items..." oninput="renderShop()">
         </div>
-        <div class="nav-actions">
-            <button class="icon-btn" aria-label="Notifications" id="notificationBellMobile">
-                <i class="ph ph-bell"></i>
-                <span class="badge"></span>
-            </button>
-            <div class="profile-avatar">
-                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=150&auto=format&fit=crop" alt="Creator Profile">
-            </div>
+
+        <div class="wallet-badge-pill">
+            <i class="ph ph-wallet"></i>
+            <span id="shopBalanceDisplay">₹0.00</span>
         </div>
+
+        <button class="cart-icon-btn" onclick="toggleCartDrawer()" aria-label="Cart">
+            <i class="ph ph-shopping-bag" style="font-size: 1.2rem;"></i>
+            <span class="cart-count-badge" id="cartBadgeCount">0</span>
+        </button>
     </header>
 
-    <!-- Side Menu Overlay -->
-    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <!-- Header Title -->
+    <div class="shop-banner">
+        <h1>Jewelry & Sample Vault</h1>
+        <p>Order samples using your creator wallet balance and easily return after reviews.</p>
+    </div>
 
-    <!-- Desktop Sidebar Menu -->
-    <!-- Desktop Sidebar Menu -->
-    <aside class="sidebar" id="sidebarMenu">
-        <div class="sidebar-header">
-            <a href="index.html" class="logo"><i class="ph ph-lightning" style="color: var(--accent);"></i> Elite <span>X</span></a>
-            <button class="icon-btn" id="closeMobileSidebar" style="display: none;"><i class="ph ph-x"></i></button>
-        </div>
+    <!-- Category Filters -->
+    <div class="category-filter-row">
+        <button class="cat-chip active" onclick="setCategory('all', this)">All Items</button>
+        <button class="cat-chip" onclick="setCategory('necklaces', this)">Necklaces</button>
+        <button class="cat-chip" onclick="setCategory('rings', this)">Rings</button>
+        <button class="cat-chip" onclick="setCategory('earrings', this)">Earrings</button>
+        <button class="cat-chip" onclick="setCategory('bracelets', this)">Bracelets</button>
+        <button class="cat-chip" style="background: var(--text-main); color: #000; font-weight: 700;" onclick="openAddProductModal()">
+            <i class="ph ph-plus-circle"></i> + Add Product
+        </button>
+    </div>
 
-        <nav class="sidebar-links">
-            <a href="index.html"><i class="ph ph-squares-four"></i> Dashboard</a>
-            <a href="campaigns.html"><i class="ph ph-megaphone"></i> Campaigns</a>
-            <a href="wallet.html"><i class="ph ph-wallet"></i> Wallet</a>
-            <a href="shop.html" class="active"><i class="ph ph-shopping-bag"></i> Shop</a>
-        </nav>
-
-        <div style="height: 1px; background: rgba(255, 255, 255, 0.06); margin: 12px 16px;"></div>
-        <nav class="sidebar-links">
-            <a href="admin.html" style="color: var(--accent); background: rgba(99,102,241,0.06); border: 1px solid rgba(99,102,241,0.12); border-radius: 8px;">
-                <i class="ph ph-user-gear"></i> Admin Panel
-                <span style="margin-left: auto; font-size: 0.6rem; font-weight: 700; padding: 2px 6px; background: var(--accent); color: #fff; border-radius: 99px; letter-spacing: 0.3px;">ADMIN</span>
-            </a>
-        </nav>
-
-        <div class="sidebar-footer">
-            <div class="user-profile">
-                <div class="profile-avatar" style="width: 36px; height: 36px;">
-                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=150&auto=format&fit=crop" alt="Creator Profile">
-                </div>
-                <div class="user-details">
-                    <h4>Alex Carter</h4>
-                    <p>Pro Creator</p>
-                </div>
-            </div>
-        </div>
-    </aside>
-
-    <!-- Main Workspace Container -->
-    <main class="dashboard-container">
-        <header class="dashboard-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; flex-wrap: wrap; gap: 16px;">
-            <div>
-                <h1 style="font-size: 1.6rem; font-weight: 800; letter-spacing: -0.03em;">Creator Jewelry Vault</h1>
-                <p style="font-size: 0.78rem; color: var(--text-muted); margin-top: 4px;">Order review samples, generate campaign content, and process returns.</p>
-            </div>
-            <div style="display: flex; align-items: center; gap: 16px;">
-                <div class="bento-card" style="padding: 10px 18px; border-radius: 12px; display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.06); box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);">
-                    <span style="font-size: 0.65rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Wallet Balance</span>
-                    <span style="font-size: 1rem; font-weight: 800; color: var(--success); font-family: 'JetBrains Mono', monospace;" id="wallet-display-balance">₹0.00</span>
-                </div>
-            </div>
-        </header>
-
-        <!-- Bento Grid System -->
-        <div class="bento-grid">
-            <div class="span-12">
-                <div class="shop-grid" id="shopGrid">
-                    <!-- Populated dynamically -->
-                </div>
-            </div>
+    <!-- Products Grid -->
+    <main class="products-grid-container">
+        <div class="products-grid" id="productsGrid">
+            <!-- Dynamically populated -->
         </div>
     </main>
 
-    <!-- Professional Full-Width Bottom Navigation for Mobile -->
+    <!-- Bottom Nav Bar -->
     <nav class="bottom-nav">
-        <a href="index.html" class="bottom-nav-item">
+        <a href="index.html" class="nav-item">
             <i class="ph ph-squares-four"></i>
             <span>Home</span>
         </a>
-        <a href="campaigns.html" class="bottom-nav-item">
+        <a href="campaigns.html" class="nav-item">
             <i class="ph ph-megaphone"></i>
             <span>Campaigns</span>
         </a>
-        
-        <!-- Floating FAB to open submission drawer -->
-        <button class="mobile-fab" id="openMobileDrawerBtn" aria-label="Submit video">
-            <i class="ph ph-plus"></i>
-        </button>
-
-        <a href="wallet.html" class="bottom-nav-item">
+        <a href="wallet.html" class="nav-item">
             <i class="ph ph-wallet"></i>
             <span>Wallet</span>
         </a>
-        <a href="shop.html" class="bottom-nav-item active">
+        <a href="shop.html" class="nav-item active">
             <i class="ph ph-shopping-bag"></i>
             <span>Shop</span>
         </a>
     </nav>
 
-    <!-- Mobile submission Drawer -->
-    <div class="drawer-overlay" id="mobileDrawerOverlay"></div>
-    <div class="bottom-drawer" id="mobileDrawer">
-        <div class="drawer-handle"></div>
-        <div class="drawer-header">
-            <h3>Submit Video Link</h3>
-            <button class="icon-btn" id="closeMobileDrawerBtn"><i class="ph ph-x"></i></button>
+    <!-- Cart Drawer -->
+    <div class="cart-drawer-overlay" id="cartOverlay" onclick="toggleCartDrawer()"></div>
+    <div class="cart-drawer" id="cartDrawer">
+        <div style="padding: 16px; border-bottom: 1px solid var(--card-border); display: flex; justify-content: space-between; align-items: center;">
+            <h3 style="font-size: 1rem; font-weight: 700;">Your Cart</h3>
+            <button class="cart-icon-btn" style="width: 32px; height: 32px;" onclick="toggleCartDrawer()"><i class="ph ph-x"></i></button>
         </div>
-        <div style="padding-top: 10px;">
-            <div class="form-group">
-                <label class="input-label">Campaign Target</label>
-                <div class="custom-dropdown" id="campaignDropdownMobile">
-                    <div class="dropdown-trigger">
-                        <span id="selected-campaign-name-mobile">Select Campaign...</span>
-                        <i class="ph ph-caret-down"></i>
-                    </div>
-                    <div class="dropdown-menu" id="dropdownMenuMobile">
-                        <!-- Populated dynamically by JS -->
-                    </div>
-                    <input type="hidden" id="campaign-select-value-mobile" value="">
-                </div>
+        <div style="flex: 1; padding: 16px; overflow-y: auto;" id="cartList">
+            <!-- Cart items -->
+        </div>
+        <div style="padding: 16px; background: rgba(0,0,0,0.4); border-top: 1px solid var(--card-border);">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 12px; font-weight: 800;">
+                <span>Total:</span>
+                <span id="cartTotalSum" style="font-family: 'JetBrains Mono', monospace;">₹0.00</span>
             </div>
-
-            <div class="form-group" style="margin-bottom: 24px;">
-                <label class="input-label">Video URL</label>
-                <div class="input-box">
-                    <input type="url" id="video-link-input-mobile" class="input-field" placeholder="https://instagram.com/reel/...">
-                    <i class="ph ph-link"></i>
-                </div>
-            </div>
-
-            <button class="btn-gradient" id="submit-video-btn-mobile" style="margin-bottom: 16px;">
-                <i class="ph ph-paper-plane-tilt"></i> Submit Link
-            </button>
+            <button class="buy-action-btn" style="height: 40px; font-size: 0.85rem;" onclick="checkoutWalletCart()">Checkout & Pay with Wallet</button>
         </div>
     </div>
 
-    <!-- Toast container -->
+    <!-- Product Inspect Modal -->
+    <div id="productModal">
+        <div class="modal-card">
+            <button class="cart-icon-btn" style="position: absolute; top: 12px; right: 12px; width: 32px; height: 32px;" onclick="closeModal()"><i class="ph ph-x"></i></button>
+            <div style="height: 220px; border-radius: 12px; overflow: hidden; background: #000; margin-bottom: 14px;">
+                <img id="mImg" src="" alt="Product Preview" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+            <h3 id="mTitle" style="font-size: 1.1rem; font-weight: 800; margin-bottom: 4px;">Title</h3>
+            <div id="mPrice" style="font-size: 1.1rem; font-weight: 800; color: var(--accent-green); font-family: 'JetBrains Mono', monospace; margin-bottom: 8px;">₹0.00</div>
+            <p id="mDesc" style="font-size: 0.82rem; color: var(--text-sub); line-height: 1.4; margin-bottom: 16px;">Description</p>
+            <button class="buy-action-btn" id="mBuyBtn" style="height: 40px; font-size: 0.85rem;">Buy with Wallet</button>
+        </div>
+    </div>
+
+    <!-- Add Product Modal -->
+    <div id="addProductModal" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.8); backdrop-filter: blur(12px); z-index: 99999; display: none; align-items: center; justify-content: center; padding: 20px;" onclick="if(event.target===this) closeAddProductModal()">
+        <div class="modal-card" style="position: relative;">
+            <button class="cart-icon-btn" style="position: absolute; top: 12px; right: 12px; width: 32px; height: 32px;" onclick="closeAddProductModal()"><i class="ph ph-x"></i></button>
+            <h3 style="font-size: 1.1rem; font-weight: 800; margin-bottom: 4px; display:flex; align-items:center; gap:8px;"><i class="ph ph-shopping-bag" style="color:var(--accent-purple)"></i> Add Product to Shop</h3>
+            <p style="font-size: 0.78rem; color: var(--text-sub); margin-bottom: 16px;">Save new jewelry items directly to your Firebase database.</p>
+            <form onsubmit="event.preventDefault(); saveProductToFirebase();">
+                <div style="margin-bottom: 12px;">
+                    <label style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; color: var(--text-sub);">Product Title / Name</label>
+                    <input type="text" id="shopProdName" class="shop-search-input" style="width: 100%; margin-top: 4px; padding-left: 14px;" placeholder="e.g. Cenin Diamond Choker" required>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+                    <div>
+                        <label style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; color: var(--text-sub);">Selling Price (₹)</label>
+                        <input type="number" id="shopProdPrice" class="shop-search-input" style="width: 100%; margin-top: 4px; padding-left: 14px;" placeholder="1499" required min="1" step="any">
+                    </div>
+                    <div>
+                        <label style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; color: var(--text-sub);">Cut Price (₹)</label>
+                        <input type="number" id="shopProdCutPrice" class="shop-search-input" style="width: 100%; margin-top: 4px; padding-left: 14px;" placeholder="1999" step="any">
+                    </div>
+                </div>
+                <div style="margin-bottom: 12px;">
+                    <label style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; color: var(--text-sub);">Category</label>
+                    <select id="shopProdCategory" class="shop-search-input" style="width: 100%; margin-top: 4px; padding-left: 14px; background: rgba(255,255,255,0.06);">
+                        <option value="necklaces" style="background:#14161f; color:#fff;">Necklaces</option>
+                        <option value="rings" style="background:#14161f; color:#fff;">Rings</option>
+                        <option value="earrings" style="background:#14161f; color:#fff;">Earrings</option>
+                        <option value="bracelets" style="background:#14161f; color:#fff;">Bracelets</option>
+                    </select>
+                </div>
+                <div style="margin-bottom: 12px;">
+                    <label style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; color: var(--text-sub);">Image URL (Optional)</label>
+                    <input type="text" id="shopProdImg" class="shop-search-input" style="width: 100%; margin-top: 4px; padding-left: 14px;" placeholder="https://images.unsplash.com/...">
+                </div>
+                <div style="margin-bottom: 18px;">
+                    <label style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; color: var(--text-sub);">Description</label>
+                    <textarea id="shopProdDesc" class="shop-search-input" style="width: 100%; margin-top: 4px; padding: 10px 14px; height: 65px; border-radius: 12px;" placeholder="Handcrafted fine jewelry piece..."></textarea>
+                </div>
+                <button type="submit" class="buy-action-btn" style="height: 42px; font-size: 0.85rem;">
+                    <i class="ph ph-cloud-arrow-up"></i> Save & Broadcast to Shop
+                </button>
+            </form>
+        </div>
+    </div>
+
     <div class="toast-container" id="toastContainer"></div>
 
     <script src="shared.js"></script>
     <script>
-        function renderShopGrid() {
-            const grid = document.getElementById('shopGrid');
+        let selectedCategory = 'all';
+
+        function renderShop() {
+            const grid = document.getElementById('productsGrid');
+            if (!grid) return;
             grid.innerHTML = '';
 
+            const products = getAllProducts();
             const orders = getOrders();
-            const subs = getSubmissions();
+            const query = (document.getElementById('searchInput') ? document.getElementById('searchInput').value : '').toLowerCase().trim();
 
-            DEFAULT_PRODUCTS.forEach(p => {
-                const card = document.createElement('div');
-                card.className = 'bento-card product-card';
-                card.id = `prod-card-${p.id}`;
+            const filtered = products.filter(p => {
+                const pName = (p.name || '').toLowerCase();
+                const pDesc = (p.desc || '').toLowerCase();
+                const pCat  = (p.category || '').toLowerCase();
+                const pId   = (p.id || '').toLowerCase();
 
-                // Check order status
-                const order = orders.find(o => o.productId === p.id && o.status !== 'returned');
-                
-                let actionBtnHtml = '';
-                let statusBadgeHtml = '';
+                const matchesSearch = !query || pName.includes(query) || pDesc.includes(query) || pCat.includes(query) || pId.includes(query);
 
-                if (!order) {
-                    // Not ordered yet
-                    actionBtnHtml = `<button class="btn buy-btn" data-id="${p.id}" style="background:#ffffff; color:#000000; border:1px solid rgba(255,255,255,0.15); box-shadow:0 4px 12px rgba(255,255,255,0.08); width:100%; height:40px; border-radius:8px; display:flex; align-items:center; justify-content:center; gap:8px; font-size:0.8rem; font-weight:600; cursor:pointer; transition:all 0.15s ease;"><i class="ph ph-shopping-cart-simple"></i> Buy with Wallet</button>`;
-                } else {
-                    // Ordered
-                    if (order.status === 'ordered') {
-                        statusBadgeHtml = `<span class="status-badge status-pending" style="position:absolute; top:12px; left:12px; z-index:5;">Ordered</span>`;
-                        actionBtnHtml = `
-                            <div style="display:flex; flex-direction:column; gap:8px; width:100%;">
-                                <a href="campaigns.html" class="btn" style="display:flex; align-items:center; justify-content:center; gap:8px; font-size:0.8rem; font-weight:600; height:38px; border-radius:8px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); color:#fff; text-decoration:none; transition:all 0.2s;"><i class="ph ph-video-camera"></i> Submit Video Link</a>
-                                <button class="btn return-btn" data-id="${p.id}" style="color:var(--danger); border-color:rgba(239,68,68,0.12); background:rgba(239,68,68,0.03); height:38px; font-size:0.8rem; font-weight:600; border-radius:8px; display:flex; align-items:center; justify-content:center; gap:8px; cursor:pointer; transition:all 0.2s; border-style:solid; border-width:1px;"><i class="ph ph-x-circle"></i> Cancel Order & Refund</button>
-                            </div>
-                        `;
-                    } else if (order.status === 'video_submitted') {
-                        statusBadgeHtml = `<span class="status-badge status-approved" style="position:absolute; top:12px; left:12px; z-index:5;">Video Approved</span>`;
-                        actionBtnHtml = `
-                            <div style="display:flex; flex-direction:column; gap:8px; width:100%;">
-                                <button class="btn return-btn" data-id="${p.id}" style="background:var(--success); color:#fff; border:1px solid rgba(16,185,129,0.25); height:38px; font-size:0.8rem; font-weight:600; border-radius:8px; display:flex; align-items:center; justify-content:center; gap:8px; cursor:pointer; width:100%; transition:all 0.2s;"><i class="ph ph-arrow-counter-clockwise"></i> Return Jewelry (Refund ₹${p.price.toFixed(2)})</button>
-                                <span style="font-size:0.72rem; color:var(--success); text-align:center; font-weight:500;">Approved review (Eligible for refund)</span>
-                            </div>
-                        `;
-                    }
+                let matchesCat = true;
+                if (selectedCategory !== 'all') {
+                    const cleanCat = selectedCategory.toLowerCase().replace(/s$/, '');
+                    matchesCat = pCat.includes(cleanCat) || pId.includes(cleanCat);
                 }
 
+                return matchesSearch && matchesCat;
+            });
+
+            filtered.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'product-item-card';
+                card.id = `prod-${p.id}`;
+
+                const isOrdered = orders.some(o => o.productId === p.id && o.status !== 'returned');
+                const cutVal = (p.price * 1.2).toFixed(2);
+
+                let badgeHtml = isOrdered ? `<span class="purchased-tag">Purchased</span>` : '';
+                let btnHtml = !isOrdered 
+                    ? `<button class="buy-action-btn buy-btn" data-id="${p.id}"><i class="ph ph-shopping-bag"></i> Buy with Wallet</button>`
+                    : `<button class="return-action-btn return-btn" data-id="${p.id}"><i class="ph ph-arrow-counter-clockwise"></i> Return (Refund ₹${p.price.toFixed(2)})</button>`;
+
                 card.innerHTML = `
-                    <div style="width:100%;">
-                        <div class="product-img-box">
-                            ${statusBadgeHtml}
+                    <div>
+                        <div class="product-thumb" onclick="openModal('${p.id}')">
+                            ${badgeHtml}
                             <img src="${p.image}" alt="${p.name}">
-                            <div class="price-tag">₹${p.price.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</div>
                         </div>
-                        <div class="product-info">
-                            <h3>${p.name}</h3>
-                            <p>${p.desc}</p>
+                        <div class="product-details">
+                            <div class="product-title" onclick="openModal('${p.id}')">${p.name}</div>
+                            <div class="product-price-row">
+                                <span class="main-price">₹${p.price.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</span>
+                                <span class="cut-price">₹${parseFloat(cutVal).toLocaleString('en-IN', { minimumFractionDigits: 2 })}</span>
+                            </div>
                         </div>
                     </div>
-                    <div style="width:100%; margin-top:20px;">
-                        ${actionBtnHtml}
-                    </div>
+                    ${btnHtml}
                 `;
 
-                // Add buy/return click handlers
+                // Add handlers
                 const buyBtn = card.querySelector('.buy-btn');
                 if (buyBtn) {
                     buyBtn.addEventListener('click', (e) => {
-                        const id = e.currentTarget.getAttribute('data-id');
-                        const res = placeOrder(id);
+                        e.stopPropagation();
+                        const res = placeOrder(p.id);
                         if (res.success) {
-                            showToast(`Successfully ordered ${p.name}!`, "success");
-                            renderShopGrid();
-                            syncHeaderBalance();
+                            showToast(`Ordered ${p.name}! Deducted from wallet.`, "success");
+                            renderShop();
+                            syncBalance();
                         } else {
                             showToast(res.msg, "error");
                         }
@@ -335,12 +639,12 @@
                 const returnBtn = card.querySelector('.return-btn');
                 if (returnBtn) {
                     returnBtn.addEventListener('click', (e) => {
-                        const id = e.currentTarget.getAttribute('data-id');
-                        const res = returnProduct(id);
+                        e.stopPropagation();
+                        const res = returnProduct(p.id);
                         if (res.success) {
-                            showToast("Product returned successfully. Purchase price refunded!", "success");
-                            renderShopGrid();
-                            syncHeaderBalance();
+                            showToast(`Returned ${p.name}. Wallet refunded!`, "success");
+                            renderShop();
+                            syncBalance();
                         } else {
                             showToast(res.msg, "error");
                         }
@@ -351,55 +655,134 @@
             });
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            renderHeaderAndSidebar('shop.html');
-            setupSubmissionModal();
-            renderShopGrid();
+        function setCategory(cat, el) {
+            selectedCategory = cat;
+            document.querySelectorAll('.cat-chip').forEach(c => c.classList.remove('active'));
+            if (el) el.classList.add('active');
+            renderShop();
+        }
 
-            // Auto-buy check from query params (?buy=prod_necklace)
-            const urlParams = new URLSearchParams(window.location.search);
-            const targetBuyId = urlParams.get('buy');
-            if (targetBuyId) {
-                setTimeout(() => {
-                    const card = document.getElementById(`prod-card-${targetBuyId}`);
-                    if (card) {
-                        card.scrollIntoView({ behavior: 'smooth' });
-                        // Trigger card border highlight
-                        card.style.borderColor = 'var(--accent)';
-                        setTimeout(() => {
-                            card.style.borderColor = '';
-                        }, 1000);
-                        
-                        const buyBtn = card.querySelector('.buy-btn');
-                        if (buyBtn) {
-                            buyBtn.click();
-                        }
-                    }
-                }, 300);
-            }
+        function filterCatalog() {
+            renderShop();
+        }
 
-            // Mobile drawer submit syncing
-            const mobileSubmitBtn = document.getElementById('submit-video-btn-mobile');
-            const mobileInputField = document.getElementById('video-link-input-mobile');
-            mobileSubmitBtn.addEventListener('click', () => {
-                const campId = document.getElementById('campaign-select-value-mobile').value;
-                const url = mobileInputField.value.trim();
-                
-                const res = addSubmission(campId, url);
+        function syncBalance() {
+            const bal = getWalletBalance();
+            const el = document.getElementById('shopBalanceDisplay');
+            if (el) el.textContent = `₹${bal.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
+        }
+
+        function openModal(id) {
+            const p = getAllProducts().find(x => x.id === id);
+            if (!p) return;
+            document.getElementById('mImg').src = p.image;
+            document.getElementById('mTitle').textContent = p.name;
+            document.getElementById('mPrice').textContent = `₹${p.price.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
+            document.getElementById('mDesc').textContent = p.desc;
+
+            const btn = document.getElementById('mBuyBtn');
+            btn.onclick = () => {
+                const res = placeOrder(p.id);
                 if (res.success) {
-                    showToast("Link submitted successfully! Pending review.", "success");
-                    mobileInputField.value = '';
-                    const closeDrawerBtn = document.getElementById('closeMobileDrawerBtn');
-                    if (closeDrawerBtn) closeDrawerBtn.click();
-                    renderShopGrid();
+                    showToast(`Ordered ${p.name}!`, "success");
+                    closeModal();
+                    renderShop();
+                    syncBalance();
                 } else {
                     showToast(res.msg, "error");
                 }
-            });
+            };
+            document.getElementById('productModal').style.display = 'flex';
+        }
 
-            window.addEventListener('elitex_balance_updated', renderShopGrid);
-            // 🔥 Firebase real-time sync — re-render shop when any device changes data
-            window.addEventListener('elitex_data_changed', renderShopGrid);
+        function closeModal() {
+            document.getElementById('productModal').style.display = 'none';
+        }
+
+        function toggleCartDrawer() {
+            document.getElementById('cartOverlay').classList.toggle('active');
+            document.getElementById('cartDrawer').classList.toggle('active');
+        }
+
+        function openAddProductModal() {
+            const modal = document.getElementById('addProductModal');
+            if (modal) modal.style.display = 'flex';
+        }
+
+        function closeAddProductModal() {
+            const modal = document.getElementById('addProductModal');
+            if (modal) modal.style.display = 'none';
+        }
+
+        function saveProductToFirebase() {
+            const nameEl = document.getElementById('shopProdName');
+            const priceEl = document.getElementById('shopProdPrice');
+            const cutPriceEl = document.getElementById('shopProdCutPrice');
+            const imgEl = document.getElementById('shopProdImg');
+            const catEl = document.getElementById('shopProdCategory');
+            const descEl = document.getElementById('shopProdDesc');
+
+            const name = nameEl ? nameEl.value.trim() : '';
+            const price = priceEl ? parseFloat(priceEl.value) : NaN;
+
+            if (!name) {
+                showToast("Please enter a product title.", "error");
+                return;
+            }
+            if (isNaN(price) || price <= 0) {
+                showToast("Please enter a valid price.", "error");
+                return;
+            }
+
+            const cutPrice = (cutPriceEl && cutPriceEl.value) ? parseFloat(cutPriceEl.value) : (price * 1.25);
+            const image = (imgEl && imgEl.value.trim()) ? imgEl.value.trim() : "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?q=80&w=600&auto=format&fit=crop";
+            const category = catEl ? catEl.value : "necklaces";
+            const desc = (descEl && descEl.value.trim()) ? descEl.value.trim() : "Fine jewelry piece crafted with precision.";
+
+            const prod = {
+                id: 'prod_' + Date.now(),
+                name,
+                price,
+                cutPrice,
+                image,
+                category,
+                desc
+            };
+
+            addProductToFirebase(prod);
+            showToast(`Added ${name}! Synced to Firebase database.`, "success");
+            closeAddProductModal();
+
+            if (nameEl) nameEl.value = '';
+            if (priceEl) priceEl.value = '';
+            if (cutPriceEl) cutPriceEl.value = '';
+            if (imgEl) imgEl.value = '';
+            if (descEl) descEl.value = '';
+
+            renderShop();
+        }
+
+        function checkoutWalletCart() {
+            showToast("Cart orders processed using Wallet Balance!", "success");
+            toggleCartDrawer();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            syncBalance();
+            renderShop();
+
+            window.addEventListener('elitex_balance_updated', () => {
+                syncBalance();
+                renderShop();
+            });
+            window.addEventListener('elitex_data_changed', () => {
+                syncBalance();
+                renderShop();
+            });
+            window.addEventListener('storage', () => {
+                syncBalance();
+                renderShop();
+            });
         });
     </script>
 </body>

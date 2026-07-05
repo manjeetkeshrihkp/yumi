@@ -39,6 +39,46 @@
             .span-12, .span-8, .span-6, .span-4, .span-3 { grid-column: span 12; }
         }
 
+        .insights-bar-layout {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            gap: 8px;
+        }
+        .insights-bar-item {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 0.82rem;
+        }
+        .insights-bar-divider {
+            width: 1px;
+            height: 18px;
+            background: rgba(255, 255, 255, 0.08);
+        }
+        .insight-bar-lbl {
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+        .insight-bar-val {
+            font-weight: 700;
+            color: #fff;
+        }
+        
+        @media (max-width: 600px) {
+            .insights-bar-item {
+                font-size: 0.68rem;
+                gap: 4px;
+            }
+            .insights-bar-divider {
+                height: 12px;
+            }
+        }
+
         /* ===== DEBIT CARD UI ===== */
         .debit-card-premium {
             background: linear-gradient(135deg, #0d0e12 0%, #171923 50%, #0a0b0f 100%);
@@ -165,14 +205,14 @@
         }
         .stats-row-grid {
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
+            grid-template-columns: repeat(4, 1fr);
             gap: 16px;
             grid-column: span 12;
         }
 
-        @media (max-width: 1100px) {
+        @media (max-width: 1200px) {
             .stats-row-grid {
-                grid-template-columns: repeat(3, 1fr);
+                grid-template-columns: repeat(2, 1fr);
             }
         }
         @media (max-width: 768px) {
@@ -227,20 +267,21 @@
             color: var(--text-secondary);
         }
         .laser-track {
-            height: 4px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            height: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 99px;
             overflow: hidden;
             width: 100%;
+            position: relative;
         }
         .laser-fill {
             height: 100%;
-            background: linear-gradient(90deg, var(--accent), #8b5cf6);
+            background: linear-gradient(90deg, #6366f1, #a855f7, #10b981);
             border-radius: 99px;
-            box-shadow: 0 0 8px var(--accent);
+            box-shadow: 0 0 10px rgba(99, 102, 241, 0.6);
             width: 0%;
-            transition: width 0.4s ease;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .ops-actions-row {
             display: flex;
@@ -530,9 +571,10 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 16px 24px;
+            padding: 14px 20px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.04);
             transition: background 0.2s ease, transform 0.2s ease;
+            gap: 12px;
         }
 
         .txn-item-row:last-child {
@@ -546,50 +588,54 @@
         .txn-col-meta {
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 12px;
+            min-width: 0;
+            flex: 1;
         }
 
         .txn-avatar-square {
-            width: 38px;
-            height: 38px;
+            width: 36px;
+            height: 36px;
             border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             flex-shrink: 0;
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(255, 255, 255, 0.06);
         }
 
         .txn-avatar-square.credit {
-            background: rgba(16, 185, 129, 0.05);
-            border-color: rgba(16, 185, 129, 0.15);
-            color: var(--success);
+            background: rgba(16, 185, 129, 0.08);
+            border-color: rgba(16, 185, 129, 0.25);
+            color: #34d399;
         }
 
         .txn-avatar-square.debit {
-            background: rgba(255, 255, 255, 0.02);
-            border-color: rgba(255, 255, 255, 0.06);
-            color: var(--text-secondary);
+            background: rgba(239, 68, 68, 0.08);
+            border-color: rgba(239, 68, 68, 0.25);
+            color: #f87171;
         }
 
         .txn-avatar-square.simulate {
-            background: rgba(99, 102, 241, 0.05);
-            border-color: rgba(99, 102, 241, 0.15);
-            color: var(--accent);
+            background: rgba(99, 102, 241, 0.08);
+            border-color: rgba(99, 102, 241, 0.25);
+            color: #818cf8;
         }
 
         .txn-avatar-square.withdraw {
-            background: rgba(239, 68, 68, 0.05);
-            border-color: rgba(239, 68, 68, 0.15);
-            color: var(--danger);
+            background: rgba(249, 115, 22, 0.08);
+            border-color: rgba(249, 115, 22, 0.25);
+            color: #fb923c;
         }
 
         .txn-text-group {
             display: flex;
-            flex-direction: column;
-            gap: 3px;
+            align-items: center;
+            gap: 8px;
+            min-width: 0;
+            flex-wrap: wrap;
         }
 
         .txn-main-title {
@@ -605,21 +651,30 @@
         }
 
         .txn-amount-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
             text-align: right;
         }
 
         .txn-value-number {
-            font-size: 0.95rem;
+            font-size: 0.92rem;
             font-weight: 700;
+            white-space: nowrap;
         }
 
-        .txn-value-number.plus { color: var(--success); }
-        .txn-value-number.minus { color: var(--text-primary); }
+        .txn-value-number.plus { color: #34d399; }
+        .txn-value-number.minus { color: #f87171; }
+        .txn-value-number.withdraw-val { color: #fb923c; }
+        .txn-value-number.warning-val { color: #fbbf24; }
 
         .txn-date-stamp {
-            font-size: 0.7rem;
+            font-size: 0.72rem;
             color: var(--text-muted);
-            margin-top: 3px;
+            font-family: 'JetBrains Mono', monospace;
+            margin-top: 0;
+            white-space: nowrap;
         }
 
         /* ===== MODALS ===== */
@@ -812,6 +867,464 @@
             from { transform: translateY(100%); }
             to { transform: translateY(0); }
         }
+
+        /* ===== PAYMENT GATEWAY MODAL STEPS & UI ===== */
+        .pay-step {
+            transition: all 0.3s ease;
+        }
+        
+        /* Payment Tabs Navigation */
+        .payment-tabs-nav {
+            display: flex;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 10px;
+            padding: 4px;
+            gap: 4px;
+            margin-bottom: 20px;
+        }
+        
+        .pay-tab-btn {
+            flex: 1;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 0.74rem;
+            font-weight: 600;
+            padding: 8px 10px;
+            border-radius: 7px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        
+        .pay-tab-btn:hover {
+            color: var(--text-secondary);
+            background: rgba(255, 255, 255, 0.02);
+        }
+        
+        .pay-tab-btn.active {
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        
+        /* QR Code Scanner Animation */
+        .qr-payment-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 16px 0 8px 0;
+        }
+        
+        .qr-mock-box {
+            position: relative;
+            padding: 10px;
+            background: #14141a;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        
+        .qr-scan-overlay {
+            position: absolute;
+            inset: 10px;
+            pointer-events: none;
+        }
+        
+        .qr-scan-line {
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #ef4444, transparent);
+            box-shadow: 0 0 8px #ef4444;
+            position: absolute;
+            top: 0;
+            animation: qrScan 2.4s ease-in-out infinite;
+        }
+        
+        @keyframes qrScan {
+            0% { top: 0%; }
+            50% { top: 100%; }
+            100% { top: 0%; }
+        }
+        
+        /* Interactive 3D Flipping Card UI */
+        .card-3d-wrapper {
+            perspective: 1000px;
+            width: 100%;
+            height: 180px;
+            margin: 0 auto;
+        }
+        
+        .card-visual-inner {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .card-visual-inner.flipped {
+            transform: rotateY(180deg);
+        }
+        
+        .card-visual-side {
+            position: absolute;
+            inset: 0;
+            border-radius: 14px;
+            padding: 20px;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .card-visual-front {
+            background: linear-gradient(135deg, #1f1f2e 0%, #111116 100%);
+            z-index: 2;
+        }
+        
+        .card-visual-front::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 80% 20%, rgba(99, 102, 241, 0.15) 0%, transparent 50%);
+            border-radius: 14px;
+            pointer-events: none;
+        }
+        
+        .card-visual-back {
+            background: linear-gradient(135deg, #111116 0%, #0d0d10 100%);
+            transform: rotateY(180deg);
+        }
+        
+        .card-front-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .card-logo-type {
+            font-size: 1.5rem;
+            color: #fff;
+            transition: color 0.3s;
+        }
+        
+        .card-chip-element {
+            width: 32px;
+            height: 24px;
+            background: linear-gradient(135deg, #e5c07b 0%, #abb2bf 100%);
+            border-radius: 4px;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.2);
+            margin-top: 10px;
+        }
+        
+        .card-number-display {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.1rem;
+            letter-spacing: 2px;
+            color: #fff;
+            text-align: center;
+            margin: 12px 0 6px 0;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+        }
+        
+        .card-front-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+        
+        .card-sublabel {
+            font-size: 0.55rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        
+        .card-value-display {
+            font-size: 0.74rem;
+            font-weight: 600;
+            color: #fff;
+            margin-top: 2px;
+            text-transform: uppercase;
+        }
+        
+        /* Card Back Details */
+        .card-back-stripe {
+            height: 36px;
+            background: #000;
+            margin-left: -20px;
+            margin-right: -20px;
+            margin-top: 5px;
+        }
+        
+        .card-back-content {
+            margin-top: 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .card-signature-pad {
+            flex: 1;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            padding-left: 10px;
+        }
+        
+        .card-cvv-pad {
+            width: 60px;
+        }
+        
+        .card-cvv-value {
+            background: #fff;
+            color: #000;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-align: center;
+            padding: 4px;
+            border-radius: 4px;
+            margin-top: 2px;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.3);
+        }
+        
+        /* Net Banking Grid */
+        .netbanking-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+        
+        .bank-select-btn {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 10px;
+            padding: 12px 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+        }
+        
+        .bank-select-btn span {
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+        
+        .bank-select-btn:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(255, 255, 255, 0.12);
+        }
+        
+        .bank-select-btn.active {
+            background: rgba(99, 102, 241, 0.08);
+            border-color: var(--accent);
+        }
+        
+        .bank-select-btn.active span {
+            color: #fff;
+        }
+        
+        .bank-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            color: #fff;
+        }
+        
+        .bank-icon.sbi { background: #00a5ec; }
+        .bank-icon.hdfc { background: #003366; }
+        .bank-icon.icici { background: #f27223; }
+        .bank-icon.axis { background: #97144d; }
+        
+        /* Processing Spinner */
+        .payment-spinner {
+            width: 44px;
+            height: 44px;
+            border: 3px solid rgba(255, 255, 255, 0.05);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            margin: 0 auto;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Success Checkmark Anim */
+        .success-checkmark-wrapper {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto;
+        }
+        
+        .checkmark-svg {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: block;
+            stroke-width: 2;
+            stroke: var(--success);
+            stroke-miterlimit: 10;
+            box-shadow: inset 0px 0px 0px var(--success);
+            animation: fillCheck 0.4s ease-in-out 0.4s forwards, scaleCheck 0.3s ease-in-out 0.9s both;
+        }
+        
+        .checkmark-circle {
+            stroke-dasharray: 166;
+            stroke-dashoffset: 166;
+            stroke-width: 2;
+            stroke-miterlimit: 10;
+            stroke: var(--success);
+            fill: none;
+            animation: strokeCircle 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+        }
+        
+        .checkmark-check {
+            transform-origin: 50% 50%;
+            stroke-dasharray: 48;
+            stroke-dashoffset: 48;
+            stroke: var(--success);
+            animation: strokeCheck 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+        }
+        
+        @keyframes strokeCircle {
+            100% { stroke-dashoffset: 0; }
+        }
+        
+        @keyframes strokeCheck {
+            100% { stroke-dashoffset: 0; }
+        }
+        
+        @keyframes fillCheck {
+            100% { box-shadow: inset 0px 0px 0px 30px rgba(16, 185, 129, 0.08); }
+        }
+        
+        @keyframes scaleCheck {
+            0%, 100% { transform: none; }
+            50% { transform: scale3d(1.1, 1.1, 1); }
+        }
+        
+        /* Receipt Details */
+        .receipt-card-element {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            padding: 16px;
+            margin: 20px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .receipt-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .receipt-lbl {
+            font-size: 0.68rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+        
+        .receipt-val {
+            font-size: 0.76rem;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+        
+        .receipt-val.highlight-val {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--success);
+        }
+        
+        .receipt-val.code-val {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.72rem;
+            color: #fff;
+        }
+        
+        .receipt-val.status-val {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--success);
+            font-weight: 600;
+            font-size: 0.72rem;
+        }
+        
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--success);
+            box-shadow: 0 0 6px var(--success);
+        }
+        
+        .warning-val {
+            color: var(--warning) !important;
+        }
+
+        /* Responsive Mobile Adjustments for Chart and Sidebar */
+        @media (max-width: 1024px) {
+            #closeMobileSidebar {
+                display: flex !important;
+            }
+        }
+        @media (max-width: 768px) {
+            .chart-card-premium {
+                padding: 16px 14px !important;
+            }
+            .chart-header-row {
+                flex-direction: column;
+                align-items: flex-start !important;
+                gap: 12px !important;
+                margin-bottom: 14px !important;
+            }
+            .chart-header-row > div:last-child {
+                width: 100%;
+                justify-content: space-between;
+                flex-wrap: wrap;
+            }
+            .chart-container-inner {
+                height: 220px !important;
+                touch-action: none;
+            }
+            #chartTimeframeFilters {
+                flex: 1;
+                justify-content: space-between;
+            }
+            #chartTimeframeFilters .tab-btn {
+                flex: 1;
+                padding: 5px 6px !important;
+                text-align: center;
+            }
+        }
     </style>
 </head>
 <body>
@@ -856,13 +1369,7 @@
             <a href="shop.html"><i class="ph ph-shopping-bag"></i> Shop</a>
         </nav>
 
-        <div style="height: 1px; background: rgba(255, 255, 255, 0.06); margin: 12px 16px;"></div>
-        <nav class="sidebar-links">
-            <a href="admin.html" style="color: var(--accent); background: rgba(99,102,241,0.06); border: 1px solid rgba(99,102,241,0.12); border-radius: 8px;">
-                <i class="ph ph-user-gear"></i> Admin Panel
-                <span style="margin-left: auto; font-size: 0.6rem; font-weight: 700; padding: 2px 6px; background: var(--accent); color: #fff; border-radius: 99px; letter-spacing: 0.3px;">ADMIN</span>
-            </a>
-        </nav>
+
 
         <div class="sidebar-footer">
             <div class="user-profile">
@@ -910,8 +1417,8 @@
                 <div class="control-hub-premium">
                     <div class="laser-progress-box">
                         <div class="laser-lbl-row">
-                            <span style="display: flex; align-items: center; gap: 6px;"><span class="dot" style="width: 6px; height: 6px; border-radius: 50%; background: var(--success); box-shadow: 0 0 6px var(--success);"></span> Auto-Clearance</span>
-                            <span id="payout-target-text">50%</span>
+                            <span style="display: flex; align-items: center; gap: 6px;"><span class="dot" style="width: 6px; height: 6px; border-radius: 50%; background: var(--success); box-shadow: 0 0 6px var(--success);"></span> Cash Out Progress</span>
+                            <span id="payout-target-text">0%</span>
                         </div>
                         <div class="laser-track">
                             <div class="laser-fill" id="payout-progress-fill" style="width: 50%;"></div>
@@ -921,24 +1428,58 @@
                         <button class="btn-action-premium btn-add-funds" id="add-funds-btn"><i class="ph ph-plus-circle"></i> Add Funds</button>
                         <button class="btn-action-premium btn-cash-out" id="withdraw-funds-btn"><i class="ph ph-arrow-circle-up"></i> Cash Out</button>
                     </div>
+
+                </div>
+            </div>
+
+            <!-- Performance Insights Stats Bar (Span 12) -->
+            <div class="chart-card-premium span-12" style="margin-bottom: 0px; padding: 12px 16px;">
+                <div class="insights-bar-layout">
+                    <!-- Today's Earning -->
+                    <div class="insights-bar-item">
+                        <span class="insight-bar-lbl"><i class="ph ph-lightning clr-emerald" style="vertical-align: middle; margin-right: 2px;"></i> Today:</span>
+                        <span class="insight-bar-val clr-emerald" id="insight-today-earning">₹0.00</span>
+                    </div>
+                    <div class="insights-bar-divider"></div>
+                    <!-- Best Campaign Earning -->
+                    <div class="insights-bar-item" style="min-width: 0; flex: 1.2;">
+                        <span class="insight-bar-lbl"><i class="ph ph-crown clr-gold" style="vertical-align: middle; margin-right: 2px;"></i> Top Campaign:</span>
+                        <span class="insight-bar-val clr-gold" id="insight-best-earning" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: inline-block; vertical-align: bottom;" title="Best Campaign Earning">₹0.00</span>
+                    </div>
+                    <div class="insights-bar-divider"></div>
+                    <!-- Creator Rank -->
+                    <div class="insights-bar-item">
+                        <span class="insight-bar-lbl"><i class="ph ph-medal clr-blue" style="vertical-align: middle; margin-right: 2px; color: var(--accent);"></i> Rank:</span>
+                        <span class="insight-bar-val clr-purple" id="insight-rank-tier">Bronze Creator</span>
+                    </div>
                 </div>
             </div>
 
             <!-- Stats row grid container (Span 12) -->
             <div class="stats-row-grid">
-                <!-- Total Content Earnings -->
+                <!-- Total Net Earnings -->
                 <div class="bento-stat">
-                    <div class="bento-icon-box clr-blue"><i class="ph ph-film-strip"></i></div>
+                    <div class="bento-icon-box clr-gold"><i class="ph ph-coins"></i></div>
                     <div>
-                        <span class="mini-stat-lbl">Guaranteed Fees</span>
-                        <div class="bento-stat-val" id="guaranteed-earnings-text">₹0.00</div>
-                        <div class="bento-stat-sub"><i class="ph ph-trend-up clr-emerald"></i> ₹1.00 base payout</div>
+                        <span class="mini-stat-lbl">Total Net Income</span>
+                        <div class="bento-stat-val clr-gold" id="net-income-text">₹0.00</div>
+                        <div class="bento-stat-sub"><i class="ph ph-shield-check clr-gold"></i> Audited earnings</div>
+                    </div>
+                </div>
+
+                <!-- Security Amount -->
+                <div class="bento-stat">
+                    <div class="bento-icon-box" style="color: #14b8a6; border-color: rgba(20, 184, 166, 0.15); background: rgba(20, 184, 166, 0.05);"><i class="ph ph-shield-check"></i></div>
+                    <div>
+                        <span class="mini-stat-lbl">Security Amount</span>
+                        <div class="bento-stat-val" id="security-amount-text" style="color: #14b8a6;">₹2,000.00</div>
+                        <div class="bento-stat-sub" style="color: var(--text-muted);"><i class="ph ph-lock-key-open" style="color: #14b8a6;"></i> Fully Refundable</div>
                     </div>
                 </div>
 
                 <!-- Performance Payouts -->
                 <div class="bento-stat">
-                    <div class="bento-icon-box clr-purple"><i class="ph ph-sparkles"></i></div>
+                    <div class="bento-icon-box clr-purple"><i class="ph ph-trophy"></i></div>
                     <div>
                         <span class="mini-stat-lbl">Performance Bonuses</span>
                         <div class="bento-stat-val clr-purple" id="bonus-earnings-text">₹0.00</div>
@@ -956,38 +1497,35 @@
                     </div>
                 </div>
 
-                <!-- Completed Refund Cash -->
-                <div class="bento-stat">
-                    <div class="bento-icon-box clr-emerald"><i class="ph ph-arrow-counter-clockwise"></i></div>
-                    <div>
-                        <span class="mini-stat-lbl">Refunded Returns</span>
-                        <div class="bento-stat-val clr-emerald" id="refund-earnings-text">₹0.00</div>
-                        <div class="bento-stat-sub"><i class="ph ph-check-circle clr-emerald"></i> Returns processed</div>
-                    </div>
-                </div>
-
-                <!-- Total Net Earnings -->
-                <div class="bento-stat">
-                    <div class="bento-icon-box clr-gold"><i class="ph ph-trend-up"></i></div>
-                    <div>
-                        <span class="mini-stat-lbl">Total Net Income</span>
-                        <div class="bento-stat-val clr-gold" id="net-income-text">₹0.00</div>
-                        <div class="bento-stat-sub"><i class="ph ph-shield-check clr-gold"></i> Audited earnings</div>
-                    </div>
-                </div>
             </div>
 
+
             <!-- Earnings Progression Chart (Span 12) -->
-            <div class="chart-card-premium span-12">
-                <div class="chart-header-row">
-                    <div>
-                        <h3 style="font-size: 0.95rem; font-weight: 700;">Earnings Trajectory Line</h3>
-                        <p style="font-size: 0.72rem; color: var(--text-muted); margin-top: 2px;">Visual Bezier spline tracking cumulative balance progression</p>
+            <div class="chart-card-premium span-12" style="position: relative; overflow: hidden; max-width: 100%;">
+                <div class="chart-header-row" style="margin-bottom: 16px; width: 100%; max-width: 100%;">
+                    <div style="max-width: 100%;">
+                        <h3 style="font-size: 1.05rem; font-weight: 700; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; max-width: 100%;">
+                            <span style="display: inline-flex; align-items: center; gap: 6px;"><i class="ph ph-trend-up clr-emerald" style="font-size: 1.25rem;"></i> Earnings Trajectory Line</span>
+                        </h3>
+                        <p style="font-size: 0.72rem; color: var(--text-muted); margin-top: 4px;">Interactive Bezier spline tracking real-time net portfolio trajectory</p>
                     </div>
-                    <span style="font-size: 0.72rem; color: var(--text-muted); font-family: 'JetBrains Mono', monospace;" id="chart-data-range">Real-Time Data Sync</span>
+                    <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap; width: 100%; justify-content: space-between; max-width: 100%;">
+                        <!-- Peak Stat -->
+                        <div style="background: rgba(255, 255, 255, 0.025); border: 1px solid var(--border-glass); border-radius: 10px; padding: 4px 10px; font-size: 0.72rem; display: flex; align-items: center; gap: 6px; flex-shrink: 0;">
+                            <span style="color: var(--text-muted);">All-Time Peak:</span>
+                            <span style="font-weight: 700; color: #fbbf24; font-family: 'JetBrains Mono', monospace;" id="chart-peak-value">₹0.00</span>
+                        </div>
+                        <!-- Timeframe selector pills -->
+                        <div class="segmented-tabs" id="chartTimeframeFilters" style="padding: 2px; flex-shrink: 0; max-width: 100%;">
+                            <button class="tab-btn" data-days="7" style="padding: 4px 8px; font-size: 0.7rem;">7D</button>
+                            <button class="tab-btn" data-days="30" style="padding: 4px 8px; font-size: 0.7rem;">30D</button>
+                            <button class="tab-btn" data-days="90" style="padding: 4px 8px; font-size: 0.7rem;">90D</button>
+                            <button class="tab-btn active" data-days="all" style="padding: 4px 8px; font-size: 0.7rem;">ALL</button>
+                        </div>
+                    </div>
                 </div>
-                <div class="chart-container-inner">
-                    <svg class="chart-canvas" id="earnings-chart-svg"></svg>
+                <div class="chart-container-inner" style="height: 250px; width: 100%; max-width: 100%; overflow: hidden; position: relative;">
+                    <svg class="chart-canvas" id="earnings-chart-svg" style="width: 100%; height: 100%; display: block; overflow: hidden;"></svg>
                     <div class="chart-tooltip-panel" id="chart-tooltip-box"></div>
                 </div>
             </div>
@@ -1061,64 +1599,149 @@
 
     <!-- Deposit Testing Credits Modal -->
     <div class="modal-overlay" id="depositModal">
-        <div class="modal-container-box">
+        <div class="modal-container-box" style="max-width: 460px;">
+            <!-- Modal Header -->
             <div class="modal-header-panel">
-                <h3><i class="ph ph-plus-circle clr-emerald"></i> Deposit Credits</h3>
+                <h3 id="deposit-modal-title"><i class="ph ph-plus-circle clr-emerald"></i> Deposit Credits</h3>
                 <button class="close-icon-btn" onclick="closeModal('depositModal')"><i class="ph ph-x"></i></button>
             </div>
-            <p style="font-size: 0.78rem; color: var(--text-secondary); line-height: 1.45; margin-bottom: 18px;">
-                Inject virtual testing credits into your workspace balance to simulate purchases, orders, and review rewards.
-            </p>
-            
-            <div class="amount-pills-row">
-                <button class="pill-selection-btn" data-val="1000">₹1,000</button>
-                <button class="pill-selection-btn" data-val="2500">₹2,500</button>
-                <button class="pill-selection-btn" data-val="5000">₹5,000</button>
-            </div>
 
-            <div class="field-group" style="margin-bottom: 20px;">
-                <label class="field-label">Custom Deposit Value (₹)</label>
-                <div class="field-input-box">
-                    <input type="number" id="deposit-amount-input" placeholder="Enter amount to credit..." min="10" step="100">
+            <!-- STEP 1: Enter Amount -->
+            <div class="pay-step active" id="pay-step-1">
+                <p style="font-size: 0.78rem; color: var(--text-secondary); line-height: 1.45; margin-bottom: 18px;">
+                    Enter the amount of credits to add to your balance (minimum ₹49).
+                </p>
+                <div class="amount-pills-row">
+                    <button class="pill-selection-btn" data-val="100">₹100</button>
+                    <button class="pill-selection-btn" data-val="500">₹500</button>
+                    <button class="pill-selection-btn" data-val="1000">₹1,000</button>
+                </div>
+                <div class="field-group" style="margin-bottom: 20px;">
+                    <label class="field-label">Custom Deposit Value (₹)</label>
+                    <div class="field-input-box">
+                        <input type="number" id="deposit-amount-input" placeholder="Enter amount to credit..." min="49" step="10">
+                    </div>
+                </div>
+                <div class="modal-action-row">
+                    <button class="btn btn-ghost" onclick="closeModal('depositModal')">Cancel</button>
+                    <button class="btn btn-primary" id="proceed-to-pay-btn">Proceed to Pay <i class="ph ph-arrow-right"></i></button>
                 </div>
             </div>
 
-            <div class="modal-action-row">
-                <button class="btn btn-ghost" onclick="closeModal('depositModal')">Cancel</button>
-                <button class="btn btn-primary" id="confirm-deposit-btn"><i class="ph ph-plus"></i> Add Funds</button>
+            <!-- STEP 2: Scan QR Code (Timer) -->
+            <div class="pay-step" id="pay-step-2" style="display: none;">
+                <div style="text-align: center; margin-bottom: 16px;">
+                    <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 4px;">Scan QR to pay <strong id="deposit-amount-summary" style="color: #fff; font-size: 0.95rem;">₹0.00</strong></p>
+                    <p style="font-size: 0.76rem; color: var(--accent); font-weight: 700;">UPI ID: keshri0@fam</p>
+                </div>
+
+                <div class="qr-payment-wrapper">
+                    <div class="qr-mock-box" style="margin: 0 auto; width: 150px; height: 150px; display: flex; align-items: center; justify-content: center; background: #14141a;">
+                        <!-- Dynamic QR Code generated using QR Server API -->
+                        <img id="deposit-qr-image" src="" alt="UPI QR Code" style="width: 130px; height: 130px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.08);">
+                        <div class="qr-scan-overlay">
+                            <div class="qr-scan-line"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: 18px; margin-bottom: 10px;">
+                    <div class="payment-spinner" style="width: 22px; height: 22px; border-width: 2px; display: inline-block; vertical-align: middle;"></div>
+                    <span style="font-size: 0.78rem; color: var(--text-secondary); margin-left: 8px; font-weight: 500;">
+                        Waiting for scan... <strong id="deposit-timer-seconds" style="color: var(--accent);">10:00</strong>
+                    </span>
+                </div>
+
+                <div style="margin-top: 18px;">
+                    <button class="btn btn-primary" id="qr-paid-next-btn" style="width: 100%; height: 40px; justify-content: center;">I have paid, proceed <i class="ph ph-arrow-right"></i></button>
+                </div>
+            </div>
+
+            <!-- STEP 3: Enter Transaction ID -->
+            <div class="pay-step" id="pay-step-3" style="display: none;">
+                <p style="font-size: 0.78rem; color: var(--text-secondary); line-height: 1.45; margin-bottom: 18px;">
+                    Please enter your 12-digit UPI transaction reference ID / UTR number to submit for verification.
+                </p>
+                <div class="field-group" style="margin-bottom: 20px;">
+                    <label class="field-label">Transaction Reference ID (UTR)</label>
+                    <div class="field-input-box">
+                        <input type="text" id="deposit-utr-input" placeholder="e.g. 629103829104" maxlength="16">
+                    </div>
+                </div>
+                <div class="modal-action-row">
+                    <button class="btn btn-ghost" onclick="closeModal('depositModal')">Cancel</button>
+                    <button class="btn btn-primary" id="confirm-utr-btn">Confirm Transaction</button>
+                </div>
+            </div>
+
+            <!-- STEP 4: Verification Success Popup -->
+            <div class="pay-step" id="pay-step-4" style="display: none; text-align: center; padding: 15px 0;">
+                <div class="success-checkmark-wrapper" style="margin-bottom: 14px;">
+                    <svg class="checkmark-svg" viewBox="0 0 52 52" style="stroke: var(--warning);">
+                        <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none" style="stroke: var(--warning);"/>
+                        <path fill="none" d="M26 12 L26 26 L36 26" stroke="var(--warning)" stroke-width="3" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                
+                <h4 style="font-size: 1.1rem; font-weight: 800; color: #fff;">Deposit Requested!</h4>
+                <p style="font-size: 0.78rem; color: var(--text-secondary); line-height: 1.45; margin-top: 10px; padding: 0 10px;" id="verification-popup-text">
+                    After verification, we will add your amount.
+                </p>
+
+                <div class="receipt-card-element" style="margin: 16px 0;">
+                    <div class="receipt-row">
+                        <span class="receipt-lbl">Requested Amount</span>
+                        <span class="receipt-val highlight-val" id="receipt-pending-amount" style="color: var(--warning);">₹0.00</span>
+                    </div>
+                    <div class="receipt-row">
+                        <span class="receipt-lbl">Transaction Ref</span>
+                        <span class="receipt-val code-val" id="receipt-pending-utr">UTR-Unknown</span>
+                    </div>
+                    <div class="receipt-row">
+                        <span class="receipt-lbl">Verification Status</span>
+                        <span class="receipt-val status-val" style="color: var(--warning);"><span class="status-dot" style="background: var(--warning); box-shadow: 0 0 6px var(--warning);"></span> Pending</span>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" id="receipt-pending-close-btn" style="width: 100%; height: 42px;"><i class="ph ph-check"></i> Close</button>
             </div>
         </div>
     </div>
 
     <!-- Request Cash Out Modal -->
+    <!-- Request Cash Out Modal -->
     <div class="modal-overlay" id="withdrawModal">
-        <div class="modal-container-box">
+        <div class="modal-container-box" style="max-width: 440px;">
             <div class="modal-header-panel">
                 <h3><i class="ph ph-arrow-circle-up clr-blue"></i> Payout Cash Out</h3>
                 <button class="close-icon-btn" onclick="closeModal('withdrawModal')"><i class="ph ph-x"></i></button>
             </div>
-            <p style="font-size: 0.78rem; color: var(--text-secondary); line-height: 1.45; margin-bottom: 18px;">
-                Transfer campaign earnings out of your digital wallet into your designated bank account or UPI address.
-            </p>
-
-            <div class="field-group" style="margin-bottom: 14px;">
-                <label class="field-label">Withdrawal Amount (₹)</label>
-                <div class="field-input-box">
-                    <input type="number" id="withdraw-amount-input" placeholder="Amount to withdraw..." min="1">
+            
+            <div id="payout-content-manual" class="payout-tab-content">
+                <p id="manual-payout-desc" style="font-size: 0.78rem; color: var(--text-secondary); line-height: 1.45; margin-bottom: 16px;">
+                    Manually request a payout from your balance to your designated UPI address.
+                </p>
+                <div class="field-group" style="margin-bottom: 14px;">
+                    <label class="field-label">Withdrawal Amount (₹)</label>
+                    <div class="field-input-box">
+                        <input type="number" id="withdraw-amount-input" placeholder="Min ₹99 to withdraw..." min="99">
+                    </div>
+                    <p style="font-size: 0.7rem; color: var(--text-muted); margin-top: 4px;" id="withdraw-max-hint">Min withdrawal: ₹99 • Max available: ₹0.00</p>
                 </div>
-                <p style="font-size: 0.7rem; color: var(--text-muted); margin-top: 4px;" id="withdraw-max-hint">Max available: ₹0.00</p>
-            </div>
-
-            <div class="field-group" style="margin-bottom: 20px;">
-                <label class="field-label">Destination Address (UPI ID / Bank Acc)</label>
-                <div class="field-input-box">
-                    <input type="text" id="withdraw-destination-input" placeholder="e.g. alex@okaxis or account details...">
+                <div class="field-group" style="margin-bottom: 14px;">
+                    <label class="field-label">Destination UPI ID</label>
+                    <div class="field-input-box">
+                        <input type="text" id="withdraw-destination-input" placeholder="e.g. alex@okaxis">
+                    </div>
                 </div>
-            </div>
-
-            <div class="modal-action-row">
-                <button class="btn btn-ghost" onclick="closeModal('withdrawModal')">Cancel</button>
-                <button class="btn btn-primary" id="confirm-withdraw-btn"><i class="ph ph-check"></i> Request Payout</button>
+                <div class="field-group" style="margin-bottom: 20px; display: flex; align-items: center; gap: 8px;">
+                    <input type="checkbox" id="withdraw-save-upi-checkbox" style="width: 15px; height: 15px; accent-color: var(--accent); cursor: pointer;" checked>
+                    <label for="withdraw-save-upi-checkbox" style="font-size: 0.74rem; color: var(--text-secondary); cursor: pointer; user-select: none;">Save UPI ID for future withdrawals</label>
+                </div>
+                <div class="modal-action-row">
+                    <button class="btn btn-ghost" onclick="closeModal('withdrawModal')">Cancel</button>
+                    <button class="btn btn-primary" id="confirm-withdraw-btn"><i class="ph ph-check"></i> Request Payout</button>
+                </div>
             </div>
         </div>
     </div>
@@ -1215,15 +1838,29 @@
 
         let currentFilter = 'all';
 
+        function hasUserWithdrawn() {
+            return localStorage.getItem('elitex_has_withdrawn') === 'true';
+        }
+
         // --- RENDER DYNAMIC LEDGER TRAIL ---
         function renderWalletPage() {
             const bal = getWalletBalance();
+            
+            // Check first-time withdrawal condition dynamically (Min ₹99 for first time, then ₹499 after withdrawal)
+            const hasPastWithdrawal = hasUserWithdrawn();
+            const minWithdrawLimit = hasPastWithdrawal ? 499 : 99;
+            const withdrawable = Math.max(0, bal - 49);
+
             document.getElementById('wallet-balance-text').textContent = `₹${bal.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
             
-            // Render payout clearance progress
-            const progressPct = Math.min(100, Math.max(0, (bal / 10000) * 100));
-            document.getElementById('payout-progress-fill').style.width = `${progressPct}%`;
-            document.getElementById('payout-target-text').textContent = `${Math.round(100 - progressPct)}% to Auto-Clearance (₹10,000)`;
+            // Render payout clearance progress towards minimum limit (using withdrawable funds after ₹49 reserve)
+            const progressPct = Math.min(100, Math.max(0, (withdrawable / minWithdrawLimit) * 100));
+            const fillEl = document.getElementById('payout-progress-fill');
+            if (fillEl) fillEl.style.width = `${progressPct.toFixed(1)}%`;
+            const textEl = document.getElementById('payout-target-text');
+            if (textEl) {
+                textEl.innerHTML = `<span style="color:var(--text-primary); font-weight:700;">₹${withdrawable.toLocaleString('en-IN', { maximumFractionDigits: 0 })}</span> / <span style="color:var(--accent); font-weight:700;">₹${minWithdrawLimit}</span> <span style="color:${progressPct >= 100 ? 'var(--success)' : 'var(--text-muted)'}; font-weight:600;">(${Math.round(progressPct)}%)</span>`;
+            }
 
             const orders = getOrders();
             const subs = getSubmissions();
@@ -1237,7 +1874,6 @@
 
             // Stats Calculations
             const appSubs = subs.filter(s => s.status === 'approved');
-            const totalGuaranteed = appSubs.length * 1.00;
             const totalBonuses = appSubs.reduce((acc, s) => acc + (s.performancePayout || 0), 0);
             const totalAffiliate = referrals.reduce((acc, r) => acc + r.amount, 0);
             
@@ -1246,12 +1882,14 @@
             const totalRefunds = refundsList.reduce((acc, o) => acc + o.price, 0);
 
             // Total net earnings
-            const netIncome = totalGuaranteed + totalBonuses + totalAffiliate;
+            const netIncome = totalBonuses + totalAffiliate;
 
-            document.getElementById('guaranteed-earnings-text').textContent = `₹${totalGuaranteed.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
+            // Security Amount value
+            const securityAmt = parseFloat(localStorage.getItem('elitex_security_amount') || '0.00');
+
+            document.getElementById('security-amount-text').textContent = `₹${securityAmt.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
             document.getElementById('bonus-earnings-text').textContent = `₹${totalBonuses.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
             document.getElementById('affiliate-earnings-text').textContent = `₹${totalAffiliate.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
-            document.getElementById('refund-earnings-text').textContent = `₹${totalRefunds.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
             document.getElementById('net-income-text').textContent = `₹${netIncome.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
 
             const transactions = [];
@@ -1326,17 +1964,6 @@
             // 2. Add video payouts (Credits)
             subs.forEach(s => {
                 if (s.status === 'approved') {
-                    transactions.push({
-                        date: s.date,
-                        ref: s.subId,
-                        type: 'income',
-                        desc: `Base Fee: ${s.campaignTitle}`,
-                        amount: 1.00,
-                        icon: 'ph-film-strip',
-                        typeName: 'Guaranteed Fee',
-                        avatarClass: 'credit'
-                    });
-
                     if (s.performancePayout > 0) {
                         transactions.push({
                             date: s.date,
@@ -1356,15 +1983,35 @@
             const custom = getCustomTransactions();
             custom.forEach(c => {
                 const isDeposit = c.type === 'Deposit';
+                const isPending = c.type === 'Deposit (Pending)';
+                const isWithdrawalPending = c.type === 'Withdrawal (Pending)';
+                const isWithdrawal = c.type === 'Withdrawal';
+                
+                let iconClass = 'ph-bank';
+                let avatarClass = 'withdraw';
+                if (isDeposit) {
+                    iconClass = 'ph-plus';
+                    avatarClass = 'simulate';
+                } else if (isPending) {
+                    iconClass = 'ph-clock';
+                    avatarClass = 'simulate';
+                } else if (isWithdrawalPending) {
+                    iconClass = 'ph-clock-afternoon';
+                    avatarClass = 'withdraw';
+                } else if (isWithdrawal) {
+                    iconClass = 'ph-check-circle';
+                    avatarClass = 'withdraw';
+                }
+
                 transactions.push({
                     date: c.date,
                     ref: c.ref,
                     type: 'simulator',
                     desc: c.desc,
                     amount: c.amount,
-                    icon: isDeposit ? 'ph-plus' : 'ph-bank',
+                    icon: iconClass,
                     typeName: c.type,
-                    avatarClass: isDeposit ? 'simulate' : 'withdraw'
+                    avatarClass: avatarClass
                 });
             });
 
@@ -1373,121 +2020,270 @@
 
             // Render list registry
             const ledgerEl = document.getElementById('transaction-list-element');
-            ledgerEl.innerHTML = '';
+            if (ledgerEl) {
+                ledgerEl.innerHTML = '';
 
-            const filteredTxns = transactions.filter(t => currentFilter === 'all' || t.type === currentFilter);
+                const filteredTxns = transactions.filter(t => currentFilter === 'all' || t.type === currentFilter);
 
-            if (filteredTxns.length === 0) {
-                ledgerEl.innerHTML = `
-                    <div style="text-align: center; padding: 48px 20px; color: var(--text-muted); font-size: 0.85rem;">
-                        No transactions found matching this filter.
-                    </div>
-                `;
-            } else {
-                filteredTxns.forEach(t => {
-                    const row = document.createElement('div');
-                    row.className = 'txn-item-row';
-
-                    const isNegative = t.amount < 0;
-                    const amtPrefix = isNegative ? '-' : '+';
-                    const formattedAmt = `${amtPrefix}₹${Math.abs(t.amount).toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
-                    const valClass = isNegative ? 'minus' : 'plus';
-
-                    row.innerHTML = `
-                        <div class="txn-col-meta">
-                            <div class="txn-avatar-square ${t.avatarClass}">
-                                <i class="ph ${t.icon}"></i>
-                            </div>
-                            <div class="txn-text-group">
-                                <span class="txn-main-title">${t.desc}</span>
-                                <span class="txn-subtitle">${t.ref} • ${t.typeName}</span>
-                            </div>
-                        </div>
-                        <div class="txn-amount-group">
-                            <span class="txn-value-number ${valClass}">${formattedAmt}</span>
-                            <div class="txn-date-stamp">${t.date}</div>
+                if (filteredTxns.length === 0) {
+                    ledgerEl.innerHTML = `
+                        <div style="text-align: center; padding: 48px 20px; color: var(--text-muted); font-size: 0.85rem;">
+                            No transactions found matching this filter.
                         </div>
                     `;
-                    ledgerEl.appendChild(row);
-                });
+                } else {
+                    filteredTxns.forEach(t => {
+                        const row = document.createElement('div');
+                        row.className = 'txn-item-row';
+
+                        const isNegative = t.amount < 0;
+                        const isWithdrawal = t.typeName && t.typeName.includes('Withdrawal');
+                        const isPending = t.typeName && t.typeName.includes('Pending');
+
+                        const amtPrefix = isNegative ? '-' : '+';
+                        const formattedAmt = `${amtPrefix}₹${Math.abs(t.amount).toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
+                        
+                        let valClass = 'plus';
+                        if (isWithdrawal) {
+                            valClass = 'withdraw-val';
+                        } else if (isPending) {
+                            valClass = 'warning-val';
+                        } else if (isNegative) {
+                            valClass = 'minus';
+                        } else {
+                            valClass = 'plus';
+                        }
+
+                        row.innerHTML = `
+                            <div class="txn-col-meta">
+                                <div class="txn-avatar-square ${t.avatarClass}">
+                                    <i class="ph ${t.icon}"></i>
+                                </div>
+                                <div class="txn-text-group">
+                                    <span class="txn-main-title">${t.desc}</span>
+                                    <span class="txn-subtitle">• ${t.ref} • ${t.typeName}</span>
+                                </div>
+                            </div>
+                            <div class="txn-amount-group">
+                                <span class="txn-date-stamp">${t.date}</span>
+                                <span class="txn-value-number ${valClass}">${formattedAmt}</span>
+                            </div>
+                        `;
+                        ledgerEl.appendChild(row);
+                    });
+                }
             }
+
+            // Compute Today's Earnings
+            const todayStr = new Date().toLocaleDateString();
+            const todayEarnings = transactions
+                .filter(t => t.date === todayStr && t.amount > 0)
+                .reduce((acc, t) => acc + t.amount, 0);
+
+            // Compute Best Campaign Earning
+            let bestCampaignTitle = 'No campaign payout yet';
+            let bestCampaignAmount = 0;
+            appSubs.forEach(s => {
+                const totalEarned = (s.performancePayout || 0) + 1.00; // Guaranteed ₹1.00
+                if (totalEarned > bestCampaignAmount) {
+                    bestCampaignAmount = totalEarned;
+                    bestCampaignTitle = s.campaignTitle;
+                }
+            });
+
+            // Compute Rank Tier
+            const totalNetCommission = totalBonuses + totalAffiliate;
+            let rankTier = 'Bronze Creator';
+            let rankSubtitle = 'Level up by earning more commissions';
+            if (totalNetCommission >= 5000) {
+                rankTier = 'Gold Ambassador';
+                rankSubtitle = 'Exclusive partner tier unlocked! 🌟';
+            } else if (totalNetCommission >= 1000) {
+                rankTier = 'Silver Elite';
+                rankSubtitle = 'Top performer tier unlocked! 🚀';
+            }
+
+            // Update UI Elements
+            const todayEarnEl = document.getElementById('insight-today-earning');
+            const todaySubEl = document.getElementById('insight-today-subtitle');
+            if (todayEarnEl) todayEarnEl.textContent = `₹${todayEarnings.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
+            if (todaySubEl) {
+                todaySubEl.textContent = todayEarnings > 0 
+                    ? `Commission streams active today!` 
+                    : `No commissions logged today`;
+            }
+
+            const bestEarnEl = document.getElementById('insight-best-earning');
+            const bestSubEl = document.getElementById('insight-best-subtitle');
+            if (bestEarnEl) {
+                if (window.innerWidth > 600) {
+                    bestEarnEl.textContent = `₹${bestCampaignAmount.toLocaleString('en-IN', { minimumFractionDigits: 2 })} (${bestCampaignTitle})`;
+                } else {
+                    bestEarnEl.textContent = `₹${bestCampaignAmount.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
+                }
+            }
+            if (bestSubEl) bestSubEl.textContent = bestCampaignTitle;
+
+            const rankTierEl = document.getElementById('insight-rank-tier');
+            const rankSubEl = document.getElementById('insight-rank-subtitle');
+            if (rankTierEl) rankTierEl.textContent = rankTier;
+            if (rankSubEl) rankSubEl.textContent = rankSubtitle;
 
             // Draw advanced bezier progression line chart
             renderEarningsChart(transactions);
         }
 
-        // --- RENDER DYNAMIC BEZIER LINE CHART ---
+        // --- RENDER DYNAMIC BEZIER LINE CHART (FULLY RESPONSIVE & MOBILE TOUCH ENABLED) ---
+        let currentChartDays = 'all';
+
         function renderEarningsChart(transactions) {
             const svg = document.getElementById('earnings-chart-svg');
+            if (!svg) return;
             svg.innerHTML = ''; // Clear SVG elements
 
-            if (transactions.length === 0) return;
+            if (!transactions || transactions.length === 0) return;
+
+            // Filter transactions based on selected timeframe
+            let filteredTxns = [...transactions];
+            if (currentChartDays !== 'all') {
+                const numDays = parseInt(currentChartDays, 10);
+                const cutoff = new Date();
+                cutoff.setDate(cutoff.getDate() - numDays);
+                filteredTxns = transactions.filter(t => {
+                    const parts = t.date.split('/');
+                    if (parts.length === 3) {
+                        const d = new Date(parts[2], parts[1] - 1, parts[0]);
+                        return d >= cutoff;
+                    }
+                    return true;
+                });
+            }
 
             // Reverse transactions to compute timeline in chronological order
-            const cronList = [...transactions].reverse();
+            const cronList = [...filteredTxns].reverse();
             
             // Build progressive running balance trajectory
             let balance = 5000.00; // Default starter balance
-            const timeline = [{ val: balance, date: 'Starter' }];
+            const timeline = [{ val: balance, date: 'Starter', delta: 0, desc: 'Initial Balance' }];
 
             cronList.forEach(t => {
                 balance += t.amount;
-                timeline.push({ val: balance, date: t.date });
+                timeline.push({ val: balance, date: t.date, delta: t.amount, desc: t.desc || t.typeName });
             });
 
-            // Map values to SVG Coordinate bounds
-            const w = svg.clientWidth || 800;
-            const h = svg.clientHeight || 240;
-            
-            const padding = { top: 25, right: 30, bottom: 35, left: 60 };
-            const chartW = w - padding.left - padding.right;
-            const chartH = h - padding.top - padding.bottom;
-
+            // Update Header Stats
             const values = timeline.map(pt => pt.val);
-            const minVal = Math.min(...values) * 0.95;
-            const maxVal = Math.max(...values) * 1.05;
+            const peakVal = Math.max(...values);
+            const startVal = timeline[0].val;
+            const endVal = timeline[timeline.length - 1].val;
+            const growthPct = startVal > 0 ? ((endVal - startVal) / startVal) * 100 : 0;
+
+            const peakEl = document.getElementById('chart-peak-value');
+            if (peakEl) peakEl.textContent = `₹${peakVal.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
+
+            // Map values to SVG Coordinate bounds with mobile responsive padding
+            const w = svg.clientWidth || (svg.parentElement ? svg.parentElement.clientWidth : 800) || 800;
+            const h = svg.clientHeight || (svg.parentElement ? svg.parentElement.clientHeight : 220) || 220;
+            
+            svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+
+            const isMobile = window.innerWidth <= 768;
+            const padding = isMobile ? { top: 22, right: 20, bottom: 32, left: 48 } : { top: 30, right: 40, bottom: 40, left: 65 };
+            const chartW = Math.max(10, w - padding.left - padding.right);
+            const chartH = Math.max(10, h - padding.top - padding.bottom);
+
+            const minVal = Math.min(...values) * 0.94;
+            const maxVal = Math.max(...values) * 1.06;
             const valRange = maxVal - minVal || 1;
 
-            const getX = (index) => padding.left + (index / (timeline.length - 1)) * chartW;
+            const getX = (index) => padding.left + (index / (timeline.length - 1 || 1)) * chartW;
             const getY = (val) => padding.top + chartH - ((val - minVal) / valRange) * chartH;
 
-            // Draw Y-axis gridlines & labels
+            // 1. Defs: Linear Gradients & Glow Filter
+            const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+            defs.innerHTML = `
+                <linearGradient id="chart-area-grad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#6366f1" stop-opacity="0.32" />
+                    <stop offset="50%" stop-color="#a855f7" stop-opacity="0.10" />
+                    <stop offset="100%" stop-color="#6366f1" stop-opacity="0.0" />
+                </linearGradient>
+                <linearGradient id="chart-line-grad" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stop-color="#6366f1" />
+                    <stop offset="50%" stop-color="#a855f7" />
+                    <stop offset="100%" stop-color="#10b981" />
+                </linearGradient>
+                <filter id="chart-neon-glow" x="-20%" y="-20%" width="140%" height="140%">
+                    <feGaussianBlur stdDeviation="3" result="blur" />
+                    <feMerge>
+                        <feMergeNode in="blur" />
+                        <feMergeNode in="SourceGraphic" />
+                    </feMerge>
+                </filter>
+            `;
+            svg.appendChild(defs);
+
+            // 2. Y-axis Grid Lines & Numbers
             for (let i = 0; i <= 4; i++) {
                 const fractionVal = minVal + (valRange * (i / 4));
                 const y = getY(fractionVal);
                 
-                // Grid line
                 const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
                 line.setAttribute('x1', padding.left);
                 line.setAttribute('y1', y);
                 line.setAttribute('x2', w - padding.right);
                 line.setAttribute('y2', y);
-                line.setAttribute('stroke', 'rgba(255,255,255,0.03)');
-                line.setAttribute('stroke-dasharray', '3,3');
+                line.setAttribute('stroke', 'rgba(255,255,255,0.035)');
+                line.setAttribute('stroke-dasharray', '4,4');
                 svg.appendChild(line);
 
-                // Label text
                 const txt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-                txt.setAttribute('x', padding.left - 12);
+                txt.setAttribute('x', padding.left - (isMobile ? 6 : 12));
                 txt.setAttribute('y', y + 4);
                 txt.setAttribute('fill', 'var(--text-muted)');
-                txt.setAttribute('font-size', '10px');
+                txt.setAttribute('font-size', isMobile ? '8.5px' : '10px');
                 txt.setAttribute('text-anchor', 'end');
                 txt.setAttribute('font-family', 'JetBrains Mono');
-                txt.textContent = `₹${Math.round(fractionVal).toLocaleString('en-IN')}`;
+                
+                let labelStr = `₹${Math.round(fractionVal).toLocaleString('en-IN')}`;
+                if (isMobile && fractionVal >= 1000) {
+                    labelStr = `₹${(fractionVal / 1000).toFixed(1)}k`;
+                }
+                txt.textContent = labelStr;
                 svg.appendChild(txt);
             }
 
-            // Draw X-axis dates
-            const step = Math.max(1, Math.ceil(timeline.length / 5));
+            // 3. Peak Balance Reference Line (Positioned cleanly inside grid)
+            const peakY = getY(peakVal);
+            const peakLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            peakLine.setAttribute('x1', padding.left);
+            peakLine.setAttribute('y1', peakY);
+            peakLine.setAttribute('x2', w - padding.right);
+            peakLine.setAttribute('y2', peakY);
+            peakLine.setAttribute('stroke', 'rgba(251, 191, 36, 0.2)');
+            peakLine.setAttribute('stroke-dasharray', '2,4');
+            svg.appendChild(peakLine);
+
+            const peakTag = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            peakTag.setAttribute('x', w - padding.right - 8);
+            peakTag.setAttribute('y', Math.max(padding.top + 10, peakY - 4));
+            peakTag.setAttribute('fill', '#fbbf24');
+            peakTag.setAttribute('font-size', isMobile ? '8px' : '9px');
+            peakTag.setAttribute('font-weight', '700');
+            peakTag.setAttribute('text-anchor', 'end');
+            peakTag.setAttribute('font-family', 'JetBrains Mono');
+            peakTag.textContent = 'PEAK';
+            svg.appendChild(peakTag);
+
+            // 4. X-axis Date Markers
+            const step = Math.max(1, Math.ceil(timeline.length / (isMobile ? 4 : 5)));
             timeline.forEach((pt, idx) => {
                 if (idx % step === 0 || idx === timeline.length - 1) {
                     const x = getX(idx);
                     const txt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
                     txt.setAttribute('x', x);
-                    txt.setAttribute('y', h - padding.bottom + 18);
+                    txt.setAttribute('y', h - padding.bottom + (isMobile ? 14 : 20));
                     txt.setAttribute('fill', 'var(--text-muted)');
-                    txt.setAttribute('font-size', '10px');
+                    txt.setAttribute('font-size', isMobile ? '8.5px' : '10px');
                     txt.setAttribute('text-anchor', 'middle');
                     txt.setAttribute('font-family', 'JetBrains Mono');
                     txt.textContent = pt.date;
@@ -1495,7 +2291,7 @@
                 }
             });
 
-            // Calculate bezier control points for smooth spline path (Bezier curve logic)
+            // 5. Bezier Smooth Spline Path Calculation
             const tension = 0.16;
             let pathD = `M ${getX(0)} ${getY(timeline[0].val)}`;
             let areaD = `M ${getX(0)} ${padding.top + chartH} L ${getX(0)} ${getY(timeline[0].val)}`;
@@ -1518,65 +2314,180 @@
 
             areaD += ` L ${getX(timeline.length - 1)} ${padding.top + chartH} Z`;
 
-            // Draw Area Fill (Glow background)
+            // Draw Translucent Area Fill
             const areaPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
             areaPath.setAttribute('d', areaD);
             areaPath.setAttribute('fill', 'url(#chart-area-grad)');
             svg.appendChild(areaPath);
 
-            // Draw Path Line
+            // Draw Neon Glow Outer Line
+            const glowPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            glowPath.setAttribute('d', pathD);
+            glowPath.setAttribute('fill', 'none');
+            glowPath.setAttribute('stroke', 'url(#chart-line-grad)');
+            glowPath.setAttribute('stroke-width', '4');
+            glowPath.setAttribute('opacity', '0.45');
+            glowPath.setAttribute('filter', 'url(#chart-neon-glow)');
+            glowPath.setAttribute('stroke-linecap', 'round');
+            svg.appendChild(glowPath);
+
+            // Draw Main Sharp Line
             const linePath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
             linePath.setAttribute('d', pathD);
             linePath.setAttribute('fill', 'none');
-            linePath.setAttribute('stroke', 'var(--accent)');
+            linePath.setAttribute('stroke', 'url(#chart-line-grad)');
             linePath.setAttribute('stroke-width', '2.5');
             linePath.setAttribute('stroke-linecap', 'round');
             linePath.setAttribute('stroke-linejoin', 'round');
             svg.appendChild(linePath);
 
-            // Add SVG gradient definition
-            if (!svg.querySelector('defs')) {
-                const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
-                defs.innerHTML = `
-                    <linearGradient id="chart-area-grad" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stop-color="var(--accent)" stop-opacity="0.14" />
-                        <stop offset="100%" stop-color="var(--accent)" stop-opacity="0" />
-                    </linearGradient>
-                `;
-                svg.appendChild(defs);
-            }
+            // 6. Interactive Vertical Guideline & Hover Rings
+            const crosshair = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            crosshair.setAttribute('stroke', 'rgba(99, 102, 241, 0.45)');
+            crosshair.setAttribute('stroke-dasharray', '3,3');
+            crosshair.style.display = 'none';
+            crosshair.style.pointerEvents = 'none';
+            svg.appendChild(crosshair);
 
-            // Draw dot points and setup mouse event lookups
+            const hoverRing = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            hoverRing.setAttribute('r', '8');
+            hoverRing.setAttribute('fill', 'rgba(99, 102, 241, 0.25)');
+            hoverRing.setAttribute('stroke', '#6366f1');
+            hoverRing.setAttribute('stroke-width', '1.5');
+            hoverRing.style.display = 'none';
+            hoverRing.style.pointerEvents = 'none';
+            svg.appendChild(hoverRing);
+
+            const activeDot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            activeDot.setAttribute('r', '4');
+            activeDot.setAttribute('fill', '#ffffff');
+            activeDot.style.display = 'none';
+            activeDot.style.pointerEvents = 'none';
+            svg.appendChild(activeDot);
+
+            // Tooltip element
             const tooltip = document.getElementById('chart-tooltip-box');
+
+            // Draw static glowing nodes on line (using uniform sleek emerald fill)
             timeline.forEach((pt, idx) => {
-                const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-                dot.setAttribute('cx', getX(idx));
-                dot.setAttribute('cy', getY(pt.val));
-                dot.setAttribute('r', '4');
-                dot.setAttribute('fill', 'var(--accent)');
-                dot.setAttribute('stroke', '#09090b');
-                dot.setAttribute('stroke-width', '1.5');
-                dot.style.cursor = 'pointer';
-                dot.style.transition = 'r 0.15s';
-
-                dot.addEventListener('mouseenter', (e) => {
-                    dot.setAttribute('r', '6');
-                    tooltip.style.display = 'block';
-                    tooltip.style.left = `${getX(idx) - 40}px`;
-                    tooltip.style.top = `${getY(pt.val) - 52}px`;
-                    tooltip.innerHTML = `<strong>₹${pt.val.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</strong><br><span style="color:var(--text-muted); font-size:9px;">${pt.date}</span>`;
-                });
-
-                dot.addEventListener('mouseleave', () => {
-                    dot.setAttribute('r', '4');
-                    tooltip.style.display = 'none';
-                });
-
-                svg.appendChild(dot);
+                const node = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                node.setAttribute('cx', getX(idx));
+                node.setAttribute('cy', getY(pt.val));
+                node.setAttribute('r', isMobile ? '3' : '3.5');
+                node.setAttribute('fill', '#10b981');
+                node.setAttribute('stroke', '#0d0e12');
+                node.setAttribute('stroke-width', '1.5');
+                node.style.cursor = 'pointer';
+                svg.appendChild(node);
             });
+
+            // Shared Pointer Tracking Handler for Mouse & Touch
+            const handlePointer = (clientX) => {
+                const rect = svg.getBoundingClientRect();
+                const mouseX = clientX - rect.left;
+
+                // Find nearest timeline index
+                let closestIdx = 0;
+                let minDiff = Infinity;
+                timeline.forEach((_, idx) => {
+                    const diff = Math.abs(getX(idx) - mouseX);
+                    if (diff < minDiff) {
+                        minDiff = diff;
+                        closestIdx = idx;
+                    }
+                });
+
+                const pt = timeline[closestIdx];
+                const ptX = getX(closestIdx);
+                const ptY = getY(pt.val);
+
+                // Show Crosshair line
+                crosshair.setAttribute('x1', ptX);
+                crosshair.setAttribute('y1', padding.top);
+                crosshair.setAttribute('x2', ptX);
+                crosshair.setAttribute('y2', h - padding.bottom);
+                crosshair.style.display = 'block';
+
+                // Show Hover Ring & Active Dot
+                hoverRing.setAttribute('cx', ptX);
+                hoverRing.setAttribute('cy', ptY);
+                hoverRing.style.display = 'block';
+
+                activeDot.setAttribute('cx', ptX);
+                activeDot.setAttribute('cy', ptY);
+                activeDot.style.display = 'block';
+
+                // Show & format Glassmorphic Tooltip with strict mobile boundary clamping
+                if (tooltip) {
+                    tooltip.style.display = 'block';
+                    const tooltipW = tooltip.offsetWidth || 150;
+                    let tooltipLeft = ptX - (tooltipW / 2);
+                    
+                    // Clamp to keep tooltip inside container bounds
+                    tooltipLeft = Math.max(6, Math.min(w - tooltipW - 6, tooltipLeft));
+
+                    tooltip.style.left = `${tooltipLeft}px`;
+                    tooltip.style.top = `${Math.max(4, ptY - 62)}px`;
+
+                    const deltaStr = pt.delta !== 0 
+                        ? `<span style="color:${pt.delta > 0 ? '#34d399' : '#f87171'}; font-weight:700;">${pt.delta > 0 ? '+' : ''}₹${Math.abs(pt.delta).toFixed(2)}</span>` 
+                        : `<span style="color:var(--text-muted);">Starter</span>`;
+
+                    tooltip.innerHTML = `
+                        <div style="font-size:0.68rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:2px;">${pt.date} • ${pt.desc}</div>
+                        <div style="font-size:1.05rem; font-weight:800; color:#ffffff; font-family:'Plus Jakarta Sans', sans-serif;">₹${pt.val.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</div>
+                        <div style="font-size:0.72rem; margin-top:2px; display:flex; align-items:center; gap:6px;">
+                            <span>Delta:</span> ${deltaStr}
+                        </div>
+                    `;
+                }
+            };
+
+            const hidePointer = () => {
+                crosshair.style.display = 'none';
+                hoverRing.style.display = 'none';
+                activeDot.style.display = 'none';
+                if (tooltip) tooltip.style.display = 'none';
+            };
+
+            // Mouse Events
+            svg.addEventListener('mousemove', (e) => handlePointer(e.clientX));
+            svg.addEventListener('mouseleave', hidePointer);
+
+            // Mobile Touch Events
+            svg.addEventListener('touchstart', (e) => {
+                if (e.touches && e.touches[0]) handlePointer(e.touches[0].clientX);
+            }, { passive: true });
+
+            svg.addEventListener('touchmove', (e) => {
+                if (e.touches && e.touches[0]) handlePointer(e.touches[0].clientX);
+            }, { passive: true });
+
+            svg.addEventListener('touchend', hidePointer);
         }
 
-        // --- INTERACTIVE SEGMENTED TABS FILTERING ---
+        // Setup Timeframe selector filters
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('#chartTimeframeFilters .tab-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    document.querySelectorAll('#chartTimeframeFilters .tab-btn').forEach(b => b.classList.remove('active'));
+                    e.currentTarget.classList.add('active');
+                    currentChartDays = e.currentTarget.getAttribute('data-days');
+                    const txns = [];
+                    // Trigger wallet chart update
+                    renderWalletPage();
+                });
+            });
+        });
+
+        window.copyTxnRef = function(ref) {
+            if (navigator.clipboard && ref) {
+                navigator.clipboard.writeText(ref);
+                showToast(`Audit reference ${ref} copied to clipboard!`, 'success');
+            }
+        };
+
+        // --- INTERACTIVE SEGMENTED TABS & SEARCH FILTERING ---
         document.querySelectorAll('#ledgerFilters .tab-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 document.querySelectorAll('#ledgerFilters .tab-btn').forEach(b => b.classList.remove('active'));
@@ -1587,6 +2498,8 @@
         });
 
         // --- OPEN / CLOSE MODAL TRIGGERS ---
+        let globalDepositTimerInterval = null;
+
         window.openModal = (id) => {
             const m = document.getElementById(id);
             if (m) m.classList.add('active');
@@ -1595,12 +2508,21 @@
         window.closeModal = (id) => {
             const m = document.getElementById(id);
             if (m) m.classList.remove('active');
+            if (id === 'depositModal' && globalDepositTimerInterval) {
+                clearInterval(globalDepositTimerInterval);
+                globalDepositTimerInterval = null;
+            }
+            renderWalletPage();
         }
 
         // Close modal on outside overlay click
         document.querySelectorAll('.modal-overlay').forEach(overlay => {
             overlay.addEventListener('click', (e) => {
-                if (e.target === overlay) overlay.classList.remove('active');
+                if (e.target === overlay) {
+                    const modalId = overlay.getAttribute('id');
+                    if (modalId) closeModal(modalId);
+                    else overlay.classList.remove('active');
+                }
             });
         });
 
@@ -1610,110 +2532,352 @@
             setupSubmissionModal();
             renderWalletPage();
 
-            // 1. Deposit Funds actions
+            // Live search listener for Transactions Audit Trail
+            const ledgerSearchInput = document.getElementById('ledgerSearchInput');
+            if (ledgerSearchInput) {
+                ledgerSearchInput.addEventListener('input', () => {
+                    renderWalletPage();
+                });
+            }
+
+            // Debounced window resize handler for smooth responsive chart redraw
+            let resizeTimer;
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(() => {
+                    renderWalletPage();
+                }, 150);
+            });
+
+            // 1. Deposit Funds actions - Custom UPI QR & UTR Verification Flow
             const depositModal = document.getElementById('depositModal');
             const depositInput = document.getElementById('deposit-amount-input');
-            
+            const proceedToPayBtn = document.getElementById('proceed-to-pay-btn');
+            const confirmUtrBtn = document.getElementById('confirm-utr-btn');
+            const qrImage = document.getElementById('deposit-qr-image');
+
+            if (qrImage) {
+                qrImage.addEventListener('error', () => {
+                    qrImage.style.display = 'none';
+                    const parent = qrImage.parentElement;
+                    if (parent && !parent.querySelector('.qr-fallback-msg')) {
+                        const fallback = document.createElement('div');
+                        fallback.className = 'qr-fallback-msg';
+                        fallback.style.cssText = 'color:#a1a1aa; font-size:0.75rem; text-align:center; padding:10px; font-family:"JetBrains Mono", monospace;';
+                        fallback.innerHTML = `<i class="ph ph-qr-code" style="font-size:2rem; color:var(--accent); display:block; margin-bottom:4px;"></i>Scan UPI ID directly:<br><strong style="color:#fff;">keshri0@fam</strong>`;
+                        parent.appendChild(fallback);
+                    }
+                });
+            }
+
+            // Helper to switch steps in modal
+            function showDepositStep(step) {
+                document.querySelectorAll('#depositModal .pay-step').forEach(el => el.style.display = 'none');
+                const stepEl = document.getElementById(`pay-step-${step}`);
+                if (stepEl) {
+                    stepEl.style.display = 'block';
+                }
+                
+                // Customize title
+                const titleEl = document.getElementById('deposit-modal-title');
+                if (titleEl) {
+                    if (step === 1) titleEl.innerHTML = `<i class="ph ph-plus-circle clr-emerald"></i> Deposit Credits`;
+                    else if (step === 2) titleEl.innerHTML = `<i class="ph ph-qr-code clr-blue"></i> Scan UPI QR Code`;
+                    else if (step === 3) titleEl.innerHTML = `<i class="ph ph-shield-check clr-blue"></i> Submit Reference ID`;
+                    else if (step === 4) titleEl.innerHTML = `<i class="ph ph-clock clr-gold"></i> Verification Pending`;
+                }
+            }
+
+            // Open Modal trigger
             document.getElementById('add-funds-btn').addEventListener('click', () => {
                 depositInput.value = '';
-                document.querySelectorAll('.pill-selection-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('#depositModal .pill-selection-btn').forEach(b => b.classList.remove('active'));
+                
+                // Clear fields
+                document.getElementById('deposit-utr-input').value = '';
+                
+                // Reset timer
+                if (globalDepositTimerInterval) {
+                    clearInterval(globalDepositTimerInterval);
+                    globalDepositTimerInterval = null;
+                }
+                
+                showDepositStep(1);
                 openModal('depositModal');
             });
 
-            // Quick amount selection pills
-            document.querySelectorAll('.pill-selection-btn').forEach(btn => {
+            // Quick selection pills for Step 1
+            document.querySelectorAll('#depositModal .pill-selection-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
-                    document.querySelectorAll('.pill-selection-btn').forEach(b => b.classList.remove('active'));
+                    document.querySelectorAll('#depositModal .pill-selection-btn').forEach(b => b.classList.remove('active'));
                     e.currentTarget.classList.add('active');
                     depositInput.value = e.currentTarget.getAttribute('data-val');
                 });
             });
 
-            // Confirm credit deposit action
-            document.getElementById('confirm-deposit-btn').addEventListener('click', () => {
+            // Proceed to Step 2 (QR Screen with 10-Minute Timer and Dynamic QR)
+            proceedToPayBtn.addEventListener('click', () => {
                 const amount = parseFloat(depositInput.value);
                 if (isNaN(amount) || amount <= 0) {
                     showToast("Please enter a valid deposit amount.", "error");
                     return;
                 }
-
-                updateWalletBalance(amount);
-                addCustomTransaction('Deposit', 'Added funds via simulator deposit', amount);
-                addActivity(`Deposited ₹${amount.toFixed(2)} testing credits`, 'emerald');
-                triggerSync(); // 🔥 Firebase push sync trigger
+                if (amount < 49) {
+                    showToast("Minimum deposit amount is ₹49.", "error");
+                    return;
+                }
                 
-                showToast(`Deposited ₹${amount.toLocaleString('en-IN', { minimumFractionDigits: 2 })} successfully!`, "success");
+                // Set amount summary text in Step 2
+                document.getElementById('deposit-amount-summary').textContent = `₹${amount.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
+                
+                // Dynamically generate scan QR code using upi://pay protocol
+                const upiUri = `upi://pay?pa=keshri0@fam&pn=EliteX&am=${amount.toFixed(2)}&cu=INR`;
+                const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(upiUri)}`;
+                if (qrImage) {
+                    qrImage.style.display = 'block';
+                    const oldFallback = qrImage.parentElement ? qrImage.parentElement.querySelector('.qr-fallback-msg') : null;
+                    if (oldFallback) oldFallback.remove();
+                    qrImage.src = qrUrl;
+                }
+
+                // Reset and start 10 min timer (600 seconds)
+                let timeLeft = 600;
+                
+                const formatTime = (seconds) => {
+                    const mins = Math.floor(seconds / 60);
+                    const secs = seconds % 60;
+                    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+                };
+
+                document.getElementById('deposit-timer-seconds').textContent = formatTime(timeLeft);
+                showDepositStep(2);
+
+                if (globalDepositTimerInterval) clearInterval(globalDepositTimerInterval);
+                
+                globalDepositTimerInterval = setInterval(() => {
+                    timeLeft--;
+                    const timerEl = document.getElementById('deposit-timer-seconds');
+                    if (timerEl) timerEl.textContent = formatTime(timeLeft);
+                    
+                    if (timeLeft <= 0) {
+                        clearInterval(globalDepositTimerInterval);
+                        globalDepositTimerInterval = null;
+                        
+                        // Auto-advance to Step 3
+                        showDepositStep(3);
+                        showToast("Scan period completed. Please enter your reference ID.", "info");
+                    }
+                }, 1000);
+            });
+
+            // Action button to manually proceed from Step 2 to Step 3
+            document.getElementById('qr-paid-next-btn').addEventListener('click', () => {
+                if (globalDepositTimerInterval) {
+                    clearInterval(globalDepositTimerInterval);
+                    globalDepositTimerInterval = null;
+                }
+                showDepositStep(3);
+            });
+
+            // Confirm UTR / Transaction ID in Step 3
+            confirmUtrBtn.addEventListener('click', () => {
+                const utrVal = document.getElementById('deposit-utr-input').value.trim();
+                const amount = parseFloat(depositInput.value);
+
+                if (!utrVal) {
+                    showToast("Please enter your transaction reference ID (UTR).", "error");
+                    return;
+                }
+                if (utrVal.length < 6) {
+                    showToast("Please enter a valid transaction reference ID.", "error");
+                    return;
+                }
+
+                // Add to custom transactions list as PENDING verification (we do NOT call updateWalletBalance yet)
+                const txnRef = 'REF-' + Math.floor(100000 + Math.random() * 900000);
+                
+                // Retrieve list of custom transactions
+                const list = getCustomTransactions();
+                list.unshift({
+                    date: new Date().toLocaleDateString(),
+                    ref: txnRef,
+                    type: 'Deposit (Pending)',
+                    desc: `UPI QR Deposit (Ref: ${utrVal})`,
+                    amount: amount
+                });
+                localStorage.setItem('elitex_custom_transactions', JSON.stringify(list));
+                
+                addActivity(`Requested deposit of ₹${amount.toFixed(2)} (Pending Verification)`, 'warning');
+                triggerSync(); // Sync to Firebase database
+
+                // Populate Receipt details for Step 4
+                document.getElementById('receipt-pending-amount').textContent = `₹${amount.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
+                document.getElementById('receipt-pending-utr').textContent = utrVal;
+
+                // Advance to Step 4 (Success / Verification Requested)
+                showDepositStep(4);
+            });
+
+            // Enter key shortcuts for deposit input fields
+            if (depositInput) {
+                depositInput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        proceedToPayBtn.click();
+                    }
+                });
+            }
+            const utrInput = document.getElementById('deposit-utr-input');
+            if (utrInput) {
+                utrInput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        confirmUtrBtn.click();
+                    }
+                });
+            }
+
+            // Done & Reset handler
+            document.getElementById('receipt-pending-close-btn').addEventListener('click', () => {
                 closeModal('depositModal');
-                renderWalletPage();
             });
 
             // 2. Withdraw Funds actions
             const withdrawModal = document.getElementById('withdrawModal');
             const withdrawInput = document.getElementById('withdraw-amount-input');
             const destInput = document.getElementById('withdraw-destination-input');
+            const saveUpiCheckbox = document.getElementById('withdraw-save-upi-checkbox');
+            const confirmWithdrawBtn = document.getElementById('confirm-withdraw-btn');
 
             document.getElementById('withdraw-funds-btn').addEventListener('click', () => {
                 const bal = getWalletBalance();
-                document.getElementById('withdraw-max-hint').textContent = `Max available: ₹${bal.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
+                
+                // Determine dynamic minimum withdrawal limit based on transaction history
+                const hasPastWithdrawal = hasUserWithdrawn();
+                const minWithdrawLimit = hasPastWithdrawal ? 499 : 99;
+                
+                const txns = getCustomTransactions();
+                const pendingPayouts = txns
+                    .filter(t => t.type === 'Withdrawal (Pending)')
+                    .reduce((sum, t) => sum + Math.abs(t.amount), 0);
+
+                const maxAvailable = Math.max(0, bal - 49 - pendingPayouts);
+                document.getElementById('withdraw-max-hint').innerHTML = `Min withdrawal: <strong>₹${minWithdrawLimit}</strong> ${!hasPastWithdrawal ? '(First-time Offer)' : ''} • Max available: <strong>₹${maxAvailable.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</strong> (₹49 Security Locked${pendingPayouts > 0 ? `, ₹${pendingPayouts.toFixed(2)} Pending` : ''})`;
                 
                 // Pre-populate saved destination if available
-                destInput.value = localStorage.getItem('elitex_withdraw_dest') || '';
+                const savedDest = localStorage.getItem('elitex_withdraw_dest') || '';
+                destInput.value = savedDest;
                 withdrawInput.value = '';
+                
+                if (saveUpiCheckbox) {
+                    saveUpiCheckbox.checked = savedDest !== '';
+                }
+
+                // Update text descriptions for dynamic limits
+                const manualDesc = document.getElementById('manual-payout-desc');
+                if (manualDesc) {
+                    manualDesc.innerHTML = hasPastWithdrawal 
+                        ? `Manually request a payout from your balance to your designated UPI address (minimum ₹499).` 
+                        : `Manually request a payout from your balance at a special reduced first-time minimum of **₹99**!`;
+                }
+                if (withdrawInput) {
+                    withdrawInput.placeholder = `Min ₹${minWithdrawLimit} to withdraw...`;
+                    withdrawInput.min = minWithdrawLimit;
+                }
+                
                 openModal('withdrawModal');
             });
 
             // Confirm withdrawal action
-            document.getElementById('confirm-withdraw-btn').addEventListener('click', () => {
+            confirmWithdrawBtn.addEventListener('click', () => {
                 const amount = parseFloat(withdrawInput.value);
                 const dest = destInput.value.trim();
                 const bal = getWalletBalance();
+
+                const hasPastWithdrawal = hasUserWithdrawn();
+                const minWithdrawLimit = hasPastWithdrawal ? 499 : 99;
+
+                const txns = getCustomTransactions();
+                const pendingPayouts = txns
+                    .filter(t => t.type === 'Withdrawal (Pending)')
+                    .reduce((sum, t) => sum + Math.abs(t.amount), 0);
+                const maxAvailable = Math.max(0, bal - 49 - pendingPayouts);
 
                 if (isNaN(amount) || amount <= 0) {
                     showToast("Please enter a valid withdrawal amount.", "error");
                     return;
                 }
 
-                if (amount > bal) {
-                    showToast("Insufficient balance for this withdrawal.", "error");
+                if (amount < minWithdrawLimit) {
+                    showToast(`Minimum withdrawal amount is ₹${minWithdrawLimit}.`, "error");
                     return;
                 }
 
-                if (!dest) {
-                    showToast("Please provide a transfer destination UPI or account ID.", "error");
+                if (amount > maxAvailable) {
+                    showToast(`Insufficient available balance. Maximum withdrawable amount right now is ₹${maxAvailable.toFixed(2)}.`, "error");
                     return;
                 }
 
-                // Save destination for future withdrawals
-                localStorage.setItem('elitex_withdraw_dest', dest);
+                if (!dest || !dest.includes('@')) {
+                    showToast("Please provide a valid transfer destination UPI ID (e.g. username@upi).", "error");
+                    return;
+                }
 
-                updateWalletBalance(-amount);
-                addCustomTransaction('Withdrawal', `Transferred balance to checking: ${dest}`, -amount);
-                addActivity(`Withdrew ₹${amount.toFixed(2)} to ${dest}`, 'rose');
+                // Save or clear destination based on checkbox option
+                if (saveUpiCheckbox && saveUpiCheckbox.checked) {
+                    localStorage.setItem('elitex_withdraw_dest', dest);
+                } else {
+                    localStorage.removeItem('elitex_withdraw_dest');
+                }
+
+                // Balance is NOT deducted here; it will be deducted when Admin approves the payout!
+                addCustomTransaction('Withdrawal (Pending)', `Manual Payout Request (UPI: ${dest})`, -amount);
+                localStorage.setItem('elitex_has_withdrawn', 'true'); // 🔥 Mark withdrawal complete to convert future limit to ₹499
+                addActivity(`Requested payout of ₹${amount.toFixed(2)} to UPI: ${dest} (Pending Admin Approval)`, 'warning');
                 triggerSync(); // 🔥 Firebase push sync trigger
 
-                showToast(`Withdrawal of ₹${amount.toLocaleString('en-IN', { minimumFractionDigits: 2 })} requested successfully!`, "success");
+                showToast(`Payout request of ₹${amount.toLocaleString('en-IN', { minimumFractionDigits: 2 })} submitted! Balance will be deducted upon admin approval.`, "success");
                 closeModal('withdrawModal');
-                renderWalletPage();
             });
+
+            // Enter key shortcuts for withdrawal input fields
+            if (withdrawInput) {
+                withdrawInput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        destInput.focus();
+                    }
+                });
+            }
+            if (destInput) {
+                destInput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        confirmWithdrawBtn.click();
+                    }
+                });
+            }
 
             // Mobile submission form handling
             const mobileSubmitBtn = document.getElementById('submit-video-btn-mobile');
             const mobileInputField = document.getElementById('video-link-input-mobile');
-            mobileSubmitBtn.addEventListener('click', () => {
-                const campId = document.getElementById('campaign-select-value-mobile').value;
-                const url = mobileInputField.value.trim();
-                
-                const res = addSubmission(campId, url);
-                if (res.success) {
-                    showToast("Link submitted successfully! Pending review.", "success");
-                    mobileInputField.value = '';
-                    const closeDrawerBtn = document.getElementById('closeMobileDrawerBtn');
-                    if (closeDrawerBtn) closeDrawerBtn.click();
-                    renderWalletPage();
-                } else {
-                    showToast(res.msg, "error");
-                }
-            });
+            if (mobileSubmitBtn && mobileInputField) {
+                mobileSubmitBtn.addEventListener('click', () => {
+                    const campId = document.getElementById('campaign-select-value-mobile').value;
+                    const url = mobileInputField.value.trim();
+                    
+                    const res = addSubmission(campId, url);
+                    if (res.success) {
+                        showToast("Link submitted successfully! Pending review.", "success");
+                        mobileInputField.value = '';
+                        const closeDrawerBtn = document.getElementById('closeMobileDrawerBtn');
+                        if (closeDrawerBtn) closeDrawerBtn.click();
+                        renderWalletPage();
+                    } else {
+                        showToast(res.msg, "error");
+                    }
+                });
+            }
 
             // Real-time synchronization listeners
             window.addEventListener('elitex_balance_updated', renderWalletPage);
