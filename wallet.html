@@ -69,15 +69,7 @@
             color: #fff;
         }
         
-        @media (max-width: 600px) {
-            .insights-bar-item {
-                font-size: 0.68rem;
-                gap: 4px;
-            }
-            .insights-bar-divider {
-                height: 12px;
-            }
-        }
+        /* Mobile media overrides are defined at the bottom of this style tag */
 
         /* ===== DEBIT CARD UI ===== */
         .debit-card-premium {
@@ -294,40 +286,110 @@
 
         /* Mobile specific overrides */
         @media (max-width: 768px) {
+            body {
+                width: 100% !important;
+                max-width: 100vw !important;
+                overflow-x: hidden !important;
+                box-sizing: border-box !important;
+            }
+            .dashboard-container {
+                width: 100% !important;
+                max-width: 100vw !important;
+                box-sizing: border-box !important;
+                overflow-x: hidden !important;
+                padding-left: 10px !important;
+                padding-right: 10px !important;
+            }
             .wallet-bento-grid {
-                gap: 14px;
+                gap: 14px !important;
+                width: 100% !important;
+                max-width: 100% !important;
             }
             .chart-card-premium {
-                padding: 16px;
+                padding: 16px !important;
+                max-width: 100% !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
             }
             .chart-container-inner {
-                height: 180px;
+                height: 180px !important;
             }
-            .txn-item-row {
-                padding: 10px 12px !important;
-                gap: 10px !important;
+            .span-8, .span-4, .span-12 {
+                grid-column: span 12 !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
             }
+
+            /* Stats cards row grid horizontal styling on mobile */
             .bento-stat {
-                min-height: 110px;
-                padding: 16px;
+                min-height: 0 !important;
+                height: auto !important;
+                padding: 10px 12px !important;
+                display: flex !important;
+                flex-direction: row !important;
+                align-items: center !important;
+                gap: 8px !important;
             }
             .bento-stat-val {
-                font-size: 1.35rem;
-                margin-top: 6px;
+                font-size: 0.92rem !important;
+                margin-top: 2px !important;
+                line-height: 1 !important;
             }
-            .span-8, .span-4 {
-                grid-column: span 12 !important;
+            .mini-stat-lbl {
+                font-size: 0.65rem !important;
+                display: block !important;
+                line-height: 1 !important;
             }
-            
-            /* Transactions Audit Trail Mobile Optimizations */
+            .bento-stat-sub {
+                font-size: 0.58rem !important;
+                margin-top: 2px !important;
+                line-height: 1 !important;
+            }
+            .bento-icon-box {
+                width: 28px !important;
+                height: 28px !important;
+                font-size: 0.95rem !important;
+                min-height: 28px !important;
+                flex-shrink: 0 !important;
+                align-self: center !important;
+                margin: 0 !important;
+            }
+
+            /* Custom responsive layout overrides for stats grid */
+            .stats-row-grid-custom {
+                grid-template-columns: repeat(2, 1fr) !important;
+            }
+
+            @media (max-width: 480px) {
+                .stats-row-grid-custom {
+                    grid-template-columns: 1fr !important;
+                }
+            }
+
+            /* Insights bar stacking */
+            .insights-bar-layout {
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                gap: 6px !important;
+            }
+            .insights-bar-divider {
+                display: none !important;
+            }
+            .insights-bar-item {
+                justify-content: flex-start !important;
+                width: 100% !important;
+                font-size: 0.72rem !important;
+            }
+
+            /* Transactions Audit Trail Mobile Layout */
             .txn-ledger-list {
                 overflow: hidden !important;
             }
             .txn-item-row {
-                padding: 12px 10px !important;
+                padding: 12px 14px !important;
                 display: flex !important;
-                justify-content: space-between !important;
-                align-items: center !important;
+                flex-direction: column !important;
+                align-items: flex-start !important;
                 width: 100% !important;
                 box-sizing: border-box !important;
                 gap: 8px !important;
@@ -337,7 +399,8 @@
                 align-items: center !important;
                 gap: 8px !important;
                 min-width: 0 !important;
-                flex: 1 !important;
+                width: 100% !important;
+                flex: none !important;
             }
             .txn-avatar-square {
                 width: 28px !important;
@@ -378,12 +441,14 @@
             }
             .txn-amount-group {
                 display: flex !important;
-                flex-direction: column-reverse !important;
-                align-items: flex-end !important;
-                justify-content: center !important;
-                gap: 2px !important;
+                flex-direction: row !important;
+                align-items: center !important;
+                justify-content: space-between !important;
+                width: 100% !important;
+                border-top: 1px dashed rgba(255,255,255,0.06) !important;
+                padding-top: 6px !important;
+                margin-top: 4px !important;
                 flex-shrink: 0 !important;
-                text-align: right !important;
             }
             .txn-value-number {
                 font-size: 0.82rem !important;
@@ -524,6 +589,15 @@
             display: flex;
             align-items: center;
             gap: 4px;
+        }
+
+        /* Custom layout for stats row grid */
+        .stats-row-grid-custom {
+            grid-column: span 12;
+            display: grid !important;
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 14px;
+            width: 100%;
         }
 
         /* Colors for icons and text */
@@ -1536,50 +1610,44 @@
             </div>
 
             <!-- Stats row grid container (Span 12) -->
-            <div class="stats-row-grid-custom" style="display: flex; flex-direction: column; gap: 14px;">
-                <!-- Row 1: Net Income & Security Amount -->
-                <div style="display: flex; gap: 12px; width: 100%;">
-                    <!-- Total Net Earnings -->
-                    <div class="bento-stat" style="flex: 1; min-width: 0; padding: 12px !important; display: flex; flex-direction: column; gap: 4px;">
-                        <div class="bento-icon-box clr-gold" style="width: 32px; height: 32px; font-size: 1.1rem; min-height: 32px;"><i class="ph ph-coins"></i></div>
-                        <div style="margin-top: 4px;">
-                            <span class="mini-stat-lbl" style="font-size: 0.72rem; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Total Net Income</span>
-                            <div class="bento-stat-val clr-gold" id="net-income-text" style="font-size: 1.05rem; margin-top: 2px;">₹0.00</div>
-                            <div class="bento-stat-sub" style="font-size: 0.65rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><i class="ph ph-shield-check clr-gold"></i> Audited</div>
-                        </div>
-                    </div>
-
-                    <!-- Security Amount -->
-                    <div class="bento-stat" style="flex: 1; min-width: 0; padding: 12px !important; display: flex; flex-direction: column; gap: 4px;">
-                        <div class="bento-icon-box" style="color: #14b8a6; border-color: rgba(20, 184, 166, 0.15); background: rgba(20, 184, 166, 0.05); width: 32px; height: 32px; font-size: 1.1rem; min-height: 32px;"><i class="ph ph-shield-check"></i></div>
-                        <div style="margin-top: 4px;">
-                            <span class="mini-stat-lbl" style="font-size: 0.72rem; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Security Amount</span>
-                            <div class="bento-stat-val" id="security-amount-text" style="color: #14b8a6; font-size: 1.05rem; margin-top: 2px;">₹2,000.00</div>
-                            <div class="bento-stat-sub" style="color: var(--text-muted); font-size: 0.65rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><i class="ph ph-lock-key-open" style="color: #14b8a6;"></i> Refundable</div>
-                        </div>
+            <div class="stats-row-grid-custom span-12">
+                <!-- Total Net Earnings -->
+                <div class="bento-stat" style="padding: 12px !important; display: flex; flex-direction: row; align-items: center; gap: 8px; min-height: 0 !important; height: auto !important;">
+                    <div class="bento-icon-box clr-gold" style="width: 28px; height: 28px; font-size: 0.95rem; min-height: 28px; flex-shrink: 0; align-self: center; margin: 0;"><i class="ph ph-coins"></i></div>
+                    <div style="min-width: 0; flex: 1;">
+                        <span class="mini-stat-lbl" style="font-size: 0.65rem; color: var(--text-muted); display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1;">Total Net Income</span>
+                        <div class="bento-stat-val clr-gold" id="net-income-text" style="font-size: 0.92rem; font-weight: 700; margin-top: 2px; line-height: 1; font-family: 'JetBrains Mono', monospace;">₹550.00</div>
+                        <span class="bento-stat-sub" style="font-size: 0.58rem; color: var(--text-muted); display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px; line-height: 1;">Audited</span>
                     </div>
                 </div>
 
-                <!-- Row 2: Performance Bonuses & Affiliate Earnings -->
-                <div style="display: flex; gap: 12px; width: 100%;">
-                    <!-- Performance Payouts -->
-                    <div class="bento-stat" style="flex: 1; min-width: 0; padding: 12px !important; display: flex; flex-direction: column; gap: 4px;">
-                        <div class="bento-icon-box clr-purple" style="width: 32px; height: 32px; font-size: 1.1rem; min-height: 32px;"><i class="ph ph-trophy"></i></div>
-                        <div style="margin-top: 4px;">
-                            <span class="mini-stat-lbl" style="font-size: 0.72rem; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Performance Bonus</span>
-                            <div class="bento-stat-val clr-purple" id="bonus-earnings-text" style="font-size: 1.05rem; margin-top: 2px;">₹0.00</div>
-                            <div class="bento-stat-sub" style="font-size: 0.65rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><i class="ph ph-star clr-purple"></i> Rewards</div>
-                        </div>
+                <!-- Security Amount -->
+                <div class="bento-stat" style="padding: 12px !important; display: flex; flex-direction: row; align-items: center; gap: 8px; min-height: 0 !important; height: auto !important;">
+                    <div class="bento-icon-box" style="color: #14b8a6; border-color: rgba(20, 184, 166, 0.15); background: rgba(20, 184, 166, 0.05); width: 28px; height: 28px; font-size: 0.95rem; min-height: 28px; flex-shrink: 0; align-self: center; margin: 0;"><i class="ph ph-shield-check"></i></div>
+                    <div style="min-width: 0; flex: 1;">
+                        <span class="mini-stat-lbl" style="font-size: 0.65rem; color: var(--text-muted); display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1;">Security Amount</span>
+                        <div class="bento-stat-val" id="security-amount-text" style="color: #14b8a6; font-size: 0.92rem; font-weight: 700; margin-top: 2px; line-height: 1; font-family: 'JetBrains Mono', monospace;">₹49.00</div>
+                        <span class="bento-stat-sub" style="color: var(--text-muted); font-size: 0.58rem; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px; line-height: 1;">Refundable</span>
                     </div>
+                </div>
 
-                    <!-- Affiliate Commissions -->
-                    <div class="bento-stat" style="flex: 1; min-width: 0; padding: 12px !important; display: flex; flex-direction: column; gap: 4px;">
-                        <div class="bento-icon-box clr-blue" style="color: var(--accent); border-color: rgba(99,102,241,0.15); background: rgba(99,102,241,0.05); width: 32px; height: 32px; font-size: 1.1rem; min-height: 32px;"><i class="ph ph-handshake"></i></div>
-                        <div style="margin-top: 4px;">
-                            <span class="mini-stat-lbl" style="font-size: 0.72rem; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Affiliate Earning</span>
-                            <div class="bento-stat-val" id="affiliate-earnings-text" style="color: var(--accent); font-size: 1.05rem; margin-top: 2px;">₹0.00</div>
-                            <div class="bento-stat-sub" style="font-size: 0.65rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><i class="ph ph-link" style="color: var(--accent);"></i> 10% Rate</div>
-                        </div>
+                <!-- Performance Payouts -->
+                <div class="bento-stat" style="padding: 12px !important; display: flex; flex-direction: row; align-items: center; gap: 8px; min-height: 0 !important; height: auto !important;">
+                    <div class="bento-icon-box clr-purple" style="width: 28px; height: 28px; font-size: 0.95rem; min-height: 28px; flex-shrink: 0; align-self: center; margin: 0;"><i class="ph ph-trophy"></i></div>
+                    <div style="min-width: 0; flex: 1;">
+                        <span class="mini-stat-lbl" style="font-size: 0.65rem; color: var(--text-muted); display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1;">Performance Bonus</span>
+                        <div class="bento-stat-val clr-purple" id="bonus-earnings-text" style="font-size: 0.92rem; font-weight: 700; margin-top: 2px; line-height: 1; font-family: 'JetBrains Mono', monospace;">₹0.00</div>
+                        <span class="bento-stat-sub" style="font-size: 0.58rem; color: var(--text-muted); display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px; line-height: 1;">Rewards</span>
+                    </div>
+                </div>
+
+                <!-- Affiliate Commissions -->
+                <div class="bento-stat" style="padding: 12px !important; display: flex; flex-direction: row; align-items: center; gap: 8px; min-height: 0 !important; height: auto !important;">
+                    <div class="bento-icon-box clr-blue" style="color: var(--accent); border-color: rgba(99,102,241,0.15); background: rgba(99,102,241,0.05); width: 28px; height: 28px; font-size: 0.95rem; min-height: 28px; flex-shrink: 0; align-self: center; margin: 0;"><i class="ph ph-handshake"></i></div>
+                    <div style="min-width: 0; flex: 1;">
+                        <span class="mini-stat-lbl" style="font-size: 0.65rem; color: var(--text-muted); display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1;">Affiliate Earning</span>
+                        <div class="bento-stat-val" id="affiliate-earnings-text" style="color: var(--accent); font-size: 0.92rem; font-weight: 700; margin-top: 2px; line-height: 1; font-family: 'JetBrains Mono', monospace;">₹550.00</div>
+                        <span class="bento-stat-sub" style="font-size: 0.58rem; color: var(--text-muted); display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px; line-height: 1;">10% Rate</span>
                     </div>
                 </div>
             </div>
@@ -2009,7 +2077,7 @@
             const netIncome = totalBonuses + totalAffiliate;
 
             // Security Amount value
-            const securityAmt = parseFloat(localStorage.getItem('elitex_security_amount') || '0.00');
+            const securityAmt = parseFloat(localStorage.getItem('elitex_security_amount') || '49.00');
 
             document.getElementById('security-amount-text').textContent = `₹${securityAmt.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
             document.getElementById('bonus-earnings-text').textContent = `₹${totalBonuses.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;

@@ -262,7 +262,7 @@ function initFirebase() {
                 let changed = false;
                 const keys = {
                     balance:             { cache: 'elitex_balance',             fallback: '5000.00' },
-                    security_amount:     { cache: 'elitex_security_amount',     fallback: '0.00' },
+                    security_amount:     { cache: 'elitex_security_amount',     fallback: '49.00' },
                     orders:              { cache: 'elitex_orders',              fallback: [] },
                     submissions:         { cache: 'elitex_submissions',         fallback: [] },
                     joined_campaigns:    { cache: 'elitex_joined_campaigns',    fallback: [] },
@@ -309,7 +309,7 @@ function _pushToFirebase() {
     if (!window.firebaseDb) return;
     window.firebaseDb.ref('elitex_demo').set({
         balance:             localStorage.getItem('elitex_balance') || '5000.00',
-        security_amount:     localStorage.getItem('elitex_security_amount') || '0.00',
+        security_amount:     localStorage.getItem('elitex_security_amount') || '49.00',
         orders:              _cacheGet('elitex_orders', []),
         submissions:         _cacheGet('elitex_submissions', []),
         joined_campaigns:    _cacheGet('elitex_joined_campaigns', []),

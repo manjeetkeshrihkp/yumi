@@ -2286,7 +2286,7 @@ window.approveDeposit = function(txnRef) {
     }
 
     // Determine security vs wallet breakdown
-    const currentSecurity = parseFloat(localStorage.getItem('elitex_security_amount') || '0.00');
+    const currentSecurity = parseFloat(localStorage.getItem('elitex_security_amount') || '49.00');
     let amountToSecurity = 0;
     let amountToWallet = tx.amount;
 
