@@ -417,14 +417,54 @@ function placeOrder(productId) {
     if (!product) return { success: false, msg: "Product not found." };
 
     const balance = getWalletBalance();
-    if (balance < product.price) return { success: false, msg: "Insufficient wallet balance." };
+    
+    // Check if there is an associated buy-to-review campaign
+    const campaign = DEFAULT_CAMPAIGNS.find(c => c.productId === productId);
+    let deductSecurity = false;
+    
+    if (campaign) {
+        const joined = getJoinedCampaigns();
+        if (!joined.includes(campaign.id)) {
+            deductSecurity = true;
+        }
+    }
+
+    const totalNeeded = product.price + (deductSecurity ? 10.00 : 0);
+    if (balance < totalNeeded) {
+        return { 
+            success: false, 
+            msg: deductSecurity 
+                ? `Insufficient balance. Product price (₹${product.price}) + ₹10.00 Security Deposit is required.` 
+                : "Insufficient wallet balance." 
+        };
+    }
 
     const orders = getOrders();
     if (orders.find(o => o.productId === productId && o.status !== 'returned')) {
         return { success: false, msg: "You have already ordered this product." };
     }
 
+    // Deduct price and optionally security
     updateWalletBalance(-product.price);
+    
+    if (deductSecurity) {
+        updateWalletBalance(-10.00);
+        const joined = getJoinedCampaigns();
+        joined.push(campaign.id);
+        _cacheSet('elitex_joined_campaigns', joined);
+        
+        addTransaction({
+            ref: 'TXN-' + Math.floor(100000 + Math.random() * 900000),
+            desc: `Security Deposit Frozen: ${campaign.brand}`,
+            amount: -10.00,
+            type: 'orders',
+            typeName: 'Security Freeze',
+            avatarClass: 'debit',
+            iconClass: 'ph-lock-simple',
+            date: new Date().toLocaleDateString()
+        });
+        addActivity(`Accepted task: Joined ${campaign.title} (₹10.00 Security Deposit Frozen)`, 'purple');
+    }
 
     const newOrder = {
         orderId:   'ORD-' + Math.floor(100000 + Math.random() * 900000),
@@ -477,6 +517,7 @@ function addSubmission(campaignId, videoUrl) {
     const campaign = DEFAULT_CAMPAIGNS.find(c => c.id === campaignId);
     if (!campaign) return { success: false, msg: "Campaign target not found." };
 
+    // Validation checks
     if (campaign.type === 'buy_to_review') {
         const orders = getOrders();
         const order = orders.find(o => o.productId === campaign.productId && o.status === 'ordered');
@@ -487,21 +528,39 @@ function addSubmission(campaignId, videoUrl) {
     }
 
     const submissions = getSubmissions();
-    if (submissions.find(s => s.campaignId === campaignId && s.status !== 'rejected')) {
-        return { success: false, msg: "You have already submitted a link for this campaign." };
+    const existing = submissions.find(s => s.campaignId === campaignId);
+
+    if (existing) {
+        if (existing.status !== 'rejected') {
+            return { success: false, msg: "You already have a pending or approved submission." };
+        }
+        if (existing.resubmitCount && existing.resubmitCount >= 1) {
+            return { success: false, msg: "Resubmission limit reached. You can only update the link once." };
+        }
+        
+        existing.status = 'pending';
+        existing.videoUrl = videoUrl;
+        existing.resubmitCount = (existing.resubmitCount || 0) + 1;
+        existing.date = new Date().toLocaleDateString();
+        
+        _cacheSet('elitex_submissions', submissions);
+        addActivity(`Updated link for ${campaign.title} (1-time resubmission used)`, 'indigo');
+        triggerSync();
+        return { success: true, submission: existing };
     }
 
     const newSub = {
-        subId:            'SUB-' + Math.floor(100000 + Math.random() * 900000),
-        campaignId:       campaignId,
-        campaignTitle:    campaign.title,
-        brand:            campaign.brand,
-        productId:        campaign.productId || null,
-        videoUrl:         videoUrl,
-        status:           'pending',
-        guaranteedPaid:   false,
+        subId:          'SUB-' + Math.floor(100000 + Math.random() * 900000),
+        campaignId:     campaignId,
+        campaignTitle:  campaign.title,
+        campaignBrand:  campaign.brand,
+        productId:      campaign.productId,
+        videoUrl:       videoUrl,
+        status:         'pending',
+        date:           new Date().toLocaleDateString(),
+        guaranteedPaid: false,
         performancePayout: 0,
-        date:             new Date().toLocaleDateString()
+        resubmitCount:  0
     };
 
     submissions.unshift(newSub);
@@ -525,9 +584,13 @@ function reviewSubmission(subId, status, bonus = 0) {
     if (status === 'approved') {
         sub.guaranteedPaid    = true;
         sub.performancePayout = parseFloat(bonus);
-        const payout          = 1.00 + parseFloat(bonus);
+        
+        // Payout consists of: ₹1.00 token + bonus + ₹10.00 security refund
+        const reward = 1.00 + parseFloat(bonus);
+        const refundAmount = 10.00;
+        const totalCredited = reward + refundAmount;
 
-        updateWalletBalance(payout);
+        updateWalletBalance(totalCredited);
 
         // Mark order as video_submitted so product can be returned
         const orders = getOrders();
@@ -537,12 +600,24 @@ function reviewSubmission(subId, status, bonus = 0) {
             _cacheSet('elitex_orders', orders);
         }
 
+        // Add transaction entry
+        addTransaction({
+            ref: 'TXN-' + Math.floor(100000 + Math.random() * 900000),
+            desc: `Deposit Refunded + Reward: ${sub.campaignBrand || 'Campaign'}`,
+            amount: totalCredited,
+            type: 'income',
+            typeName: 'Task Payout',
+            avatarClass: 'credit',
+            iconClass: 'ph-handshake',
+            date: new Date().toLocaleDateString()
+        });
+
         addActivity(
-            `Video approved! ₹${payout.toFixed(2)} credited (₹1.00 guaranteed + ₹${parseFloat(bonus).toFixed(2)} bonus)`,
+            `Video approved! ₹${totalCredited.toFixed(2)} credited (₹10.00 refund + ₹1.00 token + ₹${parseFloat(bonus).toFixed(2)} bonus)`,
             'emerald'
         );
     } else {
-        addActivity(`Video rejected for ${sub.campaignTitle}`, 'rose');
+        addActivity(`Video link rejected for ${sub.campaignTitle}. Deposit remains frozen.`, 'rose');
     }
 
     _cacheSet('elitex_submissions', submissions);
@@ -557,11 +632,35 @@ function getJoinedCampaigns() {
 function joinCampaign(campaignId) {
     const joined = getJoinedCampaigns();
     if (!joined.includes(campaignId)) {
+        const campaign = DEFAULT_CAMPAIGNS.find(c => c.id === campaignId);
+        if (!campaign) return { success: false, msg: "Campaign not found." };
+
+        // Check if balance is enough for security deposit (₹10.00)
+        const balance = getWalletBalance();
+        if (balance < 10.00) {
+            return { success: false, msg: "Insufficient balance for security deposit (₹10.00 required)." };
+        }
+
+        // Deduct 10.00 security deposit
+        updateWalletBalance(-10.00);
+
         joined.push(campaignId);
         _cacheSet('elitex_joined_campaigns', joined);
 
-        const campaign = DEFAULT_CAMPAIGNS.find(c => c.id === campaignId);
-        addActivity(`Accepted task: Joined ${campaign ? campaign.title : 'Campaign'}`, 'indigo');
+        addActivity(`Accepted task: Joined ${campaign.title} (₹10.00 Security Deposit Frozen)`, 'purple');
+        
+        // Add transaction entry
+        addTransaction({
+            ref: 'TXN-' + Math.floor(100000 + Math.random() * 900000),
+            desc: `Security Deposit Frozen: ${campaign.brand}`,
+            amount: -10.00,
+            type: 'orders',
+            typeName: 'Security Freeze',
+            avatarClass: 'debit',
+            iconClass: 'ph-lock-simple',
+            date: new Date().toLocaleDateString()
+        });
+
         triggerSync();
     }
     return { success: true };

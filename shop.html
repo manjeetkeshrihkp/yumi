@@ -395,7 +395,7 @@
                 bottom: 0 !important;
                 left: 0 !important;
                 width: 100% !important;
-                height: 60px !important;
+                height: 68px !important;
                 background: #09090b !important;
                 border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
                 z-index: 9999 !important;
@@ -411,21 +411,21 @@
                 justify-content: center !important;
                 color: var(--text-sub) !important;
                 text-decoration: none !important;
-                font-size: 0.65rem !important;
+                font-size: 0.72rem !important;
                 font-weight: 500 !important;
-                gap: 2px !important;
-                width: 50px !important;
+                gap: 4px !important;
+                width: 60px !important;
                 height: 100% !important;
             }
             .bottom-nav-item i {
-                font-size: 1.25rem !important;
+                font-size: 1.45rem !important;
             }
             .bottom-nav-item.active {
                 color: var(--accent-purple) !important;
             }
             .mobile-fab {
-                width: 44px !important;
-                height: 44px !important;
+                width: 50px !important;
+                height: 50px !important;
                 border-radius: 50% !important;
                 background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%) !important;
                 color: #fff !important;
@@ -433,9 +433,9 @@
                 display: flex !important;
                 align-items: center !important;
                 justify-content: center !important;
-                font-size: 1.2rem !important;
+                font-size: 1.3rem !important;
                 box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3) !important;
-                margin-top: -16px !important;
+                margin-top: -18px !important;
                 z-index: 10000 !important;
             }
         }
@@ -730,10 +730,16 @@
             </div>
             
             <div style="padding: 16px; border-top: 1px solid var(--card-border);" id="cartAddressSection">
-                <label style="display:block; font-size:0.7rem; font-weight:700; text-transform:uppercase; color:var(--text-sub); margin-bottom:6px; letter-spacing:0.5px;">Delivery Address *</label>
-                <textarea id="cartAddress" placeholder="Enter full delivery address (pincode, street)..." 
-                  style="width: 100%; height: 60px; background: rgba(255,255,255,0.03); border: 1px solid var(--card-border); border-radius: 10px; color: #fff; padding: 10px; font-size: 0.82rem; outline: none; resize: none; box-sizing: border-box;"
-                  onfocus="this.style.borderColor='#6366f1'" onblur="this.style.borderColor='var(--card-border)'"></textarea>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                    <label style="display:block; font-size:0.7rem; font-weight:700; text-transform:uppercase; color:var(--text-sub); letter-spacing:0.5px; margin:0;">Shipping Address *</label>
+                    <button type="button" onclick="clearCachedAddress()" style="background:none; border:none; color:#f87171; font-size:0.72rem; cursor:pointer; text-decoration:underline; font-weight:600; padding:0;">Clear Saved Address</button>
+                </div>
+                <div style="display:flex; flex-direction:column; gap:8px;">
+                    <input type="text" id="cartShippingName" placeholder="Full Name" style="width:100%; height:38px; background:rgba(255,255,255,0.03); border:1px solid var(--card-border); border-radius:8px; color:#fff; padding:0 10px; font-size:0.8rem; box-sizing:border-box;" oninput="cacheAddressFields()">
+                    <input type="tel" id="cartShippingPhone" placeholder="10-Digit Mobile Number" style="width:100%; height:38px; background:rgba(255,255,255,0.03); border:1px solid var(--card-border); border-radius:8px; color:#fff; padding:0 10px; font-size:0.8rem; box-sizing:border-box;" oninput="cacheAddressFields()">
+                    <input type="text" id="cartShippingPincode" placeholder="6-Digit Pincode" style="width:100%; height:38px; background:rgba(255,255,255,0.03); border:1px solid var(--card-border); border-radius:8px; color:#fff; padding:0 10px; font-size:0.8rem; box-sizing:border-box;" oninput="cacheAddressFields()">
+                    <textarea id="cartShippingAddress" placeholder="Street Address, Area, Landmark, City, State..." style="width: 100%; height: 50px; background: rgba(255,255,255,0.03); border: 1px solid var(--card-border); border-radius: 8px; color: #fff; padding: 10px; font-size: 0.8rem; outline: none; resize: none; box-sizing: border-box;" oninput="cacheAddressFields()"></textarea>
+                </div>
             </div>
 
             <div style="padding: 16px; background: rgba(0,0,0,0.4); border-top: 1px solid var(--card-border);">
@@ -778,49 +784,55 @@
         </div>
 
         <!-- STEP 3: Premium Success Animation -->
-        <div class="cart-step-panel" id="cartStep3" style="justify-content: center; align-items: center; padding: 24px; text-align: center;">
-            <div class="success-checkmark">
-                <div class="check-icon" id="successCheckIcon"></div>
+        <div class="cart-step-panel" id="cartStep3" style="justify-content: center; align-items: center; padding: 24px; text-align: center; display: none; height: 100%; box-sizing: border-box; flex-direction: column;">
+            <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%;">
+                <div style="width: 72px; height: 72px; border-radius: 50%; background: rgba(16,185,129,0.1); border: 2px solid #10b981; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; box-shadow: 0 0 15px rgba(16,185,129,0.2);">
+                    <i class="ph ph-check" style="font-size: 2.2rem; color: #10b981; font-weight: bold;"></i>
+                </div>
+                
+                <h3 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 8px; color: #10b981; text-align: center;">Order Confirmed!</h3>
+                <p style="font-size: 0.85rem; color: var(--text-sub); line-height: 1.4; margin-bottom: 24px; padding: 0 10px; text-align: center;">Your sample jewelry is being processed and will ship immediately.</p>
+                
+                <div style="margin-bottom: 30px; padding: 14px; background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); border-radius: 12px; width: 100%; box-sizing: border-box;">
+                    <div style="font-size: 0.72rem; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; text-align: center;">Remaining Wallet Balance</div>
+                    <div id="animWalletBalance" style="font-family: 'JetBrains Mono', monospace; font-size: 1.35rem; font-weight: 800; color: #34d399; text-align: center;">₹0.00</div>
+                </div>
             </div>
             
-            <h3 style="font-size: 1.25rem; font-weight: 800; margin-bottom: 8px; color: #10b981;">Order Placed!</h3>
-            <p style="font-size: 0.85rem; color: var(--text-sub); line-height: 1.4; margin-bottom: 24px; padding: 0 10px;">Your sample jewelry is being processed and will ship immediately.</p>
-            
-            <div style="margin-bottom: 30px; padding: 14px; background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); border-radius: 12px; width: 100%; box-sizing: border-box;">
-                <div style="font-size: 0.72rem; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">Remaining Wallet Balance</div>
-                <div id="animWalletBalance" style="font-family: 'JetBrains Mono', monospace; font-size: 1.35rem; font-weight: 800; color: #34d399;">₹0.00</div>
+            <div style="width: 100%; padding-bottom: 20px; display: flex; flex-direction: column; gap: 10px;">
+                <button class="buy-action-btn" style="height: 44px; font-size: 0.88rem; width: 100%; background: #10b981; color: #fff; border: none; box-shadow: 0 4px 12px rgba(16,185,129,0.2);" onclick="closeCartSuccessFlow()">Continue Shopping</button>
+                <button class="buy-action-btn" style="height: 44px; font-size: 0.88rem; width: 100%; background: transparent; border: 1px solid var(--card-border); color: var(--text-sub);" onclick="showToast('Track Order will be created later!', 'info'); closeCartSuccessFlow();">Track Order</button>
             </div>
-            
-            <button class="buy-action-btn" style="height: 42px; font-size: 0.85rem; width: 100%;" onclick="closeCartSuccessFlow()">Continue Shopping</button>
         </div>
     </div>
 
     <!-- Product Inspect Modal (Full Screen Inspect Sheet) -->
     <div id="productModal">
-        <div class="modal-card">
+        <div class="modal-card" style="padding: 20px; display:flex; flex-direction:column; gap:16px;">
             <!-- Top Right Close Button -->
-            <button class="cart-icon-btn" style="position: absolute; top: 20px; right: 20px; width: 36px; height: 36px; z-index: 10; background: rgba(0,0,0,0.5); border-radius: 50%; color: #fff; display: flex; align-items: center; justify-content: center; border: none; cursor: pointer;" onclick="closeModal()"><i class="ph ph-x" style="font-size: 1.2rem;"></i></button>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span id="mCategoryTag" style="font-size: 0.72rem; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; color: var(--accent-purple);">Necklaces</span>
+                <button class="cart-icon-btn" style="width: 32px; height: 32px; background: rgba(255,255,255,0.06); border-radius: 50%; color: #fff; display: flex; align-items: center; justify-content: center; border: none; cursor: pointer;" onclick="closeModal()"><i class="ph ph-x" style="font-size: 1rem;"></i></button>
+            </div>
             
-            <!-- Full Width Image Header -->
-            <div style="width: 100%; height: 45vh; min-height: 300px; position: relative; background: #000; overflow: hidden;">
-                <img id="mImg" src="" alt="Product Preview" style="width: 100%; height: 100%; object-fit: cover;">
-                <div style="position: absolute; bottom: 0; left: 0; width: 100%; height: 80px; background: linear-gradient(to top, #0d0e12 0%, rgba(13,14,18,0) 100%);"></div>
+            <!-- Premium Image Frame (Flipkart/Amazon style) -->
+            <div style="width: 100%; height: 280px; border-radius: 12px; border: 1px solid var(--card-border); background: #0b0c10; overflow: hidden; display: flex; align-items: center; justify-content: center; position: relative; box-shadow: inset 0 0 20px rgba(0,0,0,0.8);">
+                <img id="mImg" src="" alt="Product Preview" style="max-width: 100%; max-height: 100%; object-fit: contain; padding: 10px;">
             </div>
             
             <!-- Details Container -->
-            <div class="product-inspect-content">
-                <div id="mCategoryTag" style="display: inline-block; font-size: 0.68rem; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; color: var(--accent-purple); margin-bottom: 4px;">Necklaces</div>
-                <h3 id="mTitle" style="font-size: 1.4rem; font-weight: 800; margin-bottom: 6px; line-height: 1.2;">Title</h3>
-                <div id="mPrice" style="font-size: 1.35rem; font-weight: 800; color: #34d399; font-family: 'JetBrains Mono', monospace; margin-bottom: 12px;">₹0.00</div>
+            <div class="product-inspect-content" style="flex:1; display:flex; flex-direction:column; gap:6px;">
+                <h3 id="mTitle" style="font-size: 1.3rem; font-weight: 800; color:#fff; line-height: 1.2; margin: 0;">Title</h3>
+                <div id="mPrice" style="font-size: 1.25rem; font-weight: 800; color: #34d399; font-family: 'JetBrains Mono', monospace;">₹0.00</div>
                 
                 <div style="width: 100%; height: 1px; background: var(--card-border); margin: 6px 0;"></div>
                 
-                <h4 style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; color: var(--text-sub); margin-bottom: 6px; letter-spacing: 0.5px;">About this Sample</h4>
-                <p id="mDesc" style="font-size: 0.85rem; color: var(--text-sub); line-height: 1.5; margin-bottom: 16px;">Description</p>
+                <h4 style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); margin-bottom: 2px; letter-spacing: 0.5px;">About this Item</h4>
+                <p id="mDesc" style="font-size: 0.8rem; color: var(--text-sub); line-height: 1.4; margin: 0; overflow-y:auto; max-height:80px;">Description</p>
             </div>
             
             <!-- Bottom Actions Bar -->
-            <div class="modal-actions-bar" id="modalActionsContainer">
+            <div class="modal-actions-bar" id="modalActionsContainer" style="display:flex; gap:12px; margin-top:auto;">
                 <!-- Dynamically populated in JavaScript -->
             </div>
         </div>
@@ -953,14 +965,54 @@
             cartBadgeCount.textContent = totalCount;
         }
 
+        function cacheAddressFields() {
+            const name = document.getElementById('cartShippingName').value.trim();
+            const phone = document.getElementById('cartShippingPhone').value.trim();
+            const pincode = document.getElementById('cartShippingPincode').value.trim();
+            const address = document.getElementById('cartShippingAddress').value.trim();
+            
+            const shippingData = { name, phone, pincode, address };
+            localStorage.setItem('elitex_shipping_address', JSON.stringify(shippingData));
+        }
+
+        function loadCachedAddress() {
+            const raw = localStorage.getItem('elitex_shipping_address');
+            if (raw) {
+                try {
+                    const data = JSON.parse(raw);
+                    if (data.name) document.getElementById('cartShippingName').value = data.name;
+                    if (data.phone) document.getElementById('cartShippingPhone').value = data.phone;
+                    if (data.pincode) document.getElementById('cartShippingPincode').value = data.pincode;
+                    if (data.address) document.getElementById('cartShippingAddress').value = data.address;
+                } catch(e) {
+                    console.error("Failed to parse shipping cache", e);
+                }
+            }
+        }
+
+        function clearCachedAddress() {
+            localStorage.removeItem('elitex_shipping_address');
+            document.getElementById('cartShippingName').value = '';
+            document.getElementById('cartShippingPhone').value = '';
+            document.getElementById('cartShippingPincode').value = '';
+            document.getElementById('cartShippingAddress').value = '';
+            showToast("Saved address cleared.", "info");
+        }
+
         function cartGoToStep(step) {
             // Validate address in Step 1 before going to Step 2
             if (step === 2) {
-                const address = document.getElementById('cartAddress').value.trim();
-                if (!address) {
-                    showToast("Please enter your delivery address.", "error");
+                const name = document.getElementById('cartShippingName').value.trim();
+                const phone = document.getElementById('cartShippingPhone').value.trim();
+                const pincode = document.getElementById('cartShippingPincode').value.trim();
+                const address = document.getElementById('cartShippingAddress').value.trim();
+                
+                if (!name || !phone || !pincode || !address) {
+                    showToast("Please fill in all shipping details.", "error");
                     return;
                 }
+
+                const fullAddressString = `${name}\nPhone: ${phone}\n${address}\nPIN: ${pincode}`;
 
                 // Populate Summary
                 const summaryList = document.getElementById('summaryItemsList');
@@ -986,14 +1038,28 @@
                 });
 
                 // Set Address
-                document.getElementById('summaryAddressText').textContent = address;
+                document.getElementById('summaryAddressText').innerText = fullAddressString;
 
                 // Balance calculations
                 const balance = getWalletBalance();
-                const remaining = balance - total;
+                
+                // Calculate security deposit if applicable
+                let securityDepositTotal = 0;
+                cart.forEach(item => {
+                    const campaign = DEFAULT_CAMPAIGNS.find(c => c.productId === item.productId);
+                    if (campaign) {
+                        const joined = getJoinedCampaigns();
+                        if (!joined.includes(campaign.id)) {
+                            securityDepositTotal += 10.00;
+                        }
+                    }
+                });
+
+                const totalDeduction = total + securityDepositTotal;
+                const remaining = balance - totalDeduction;
 
                 document.getElementById('summaryWalletBal').textContent = `₹${balance.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
-                document.getElementById('summaryDeduction').textContent = `-₹${total.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
+                document.getElementById('summaryDeduction').textContent = `-₹${totalDeduction.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
                 
                 const remEl = document.getElementById('summaryRemainingBal');
                 remEl.textContent = `₹${remaining.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
@@ -1018,11 +1084,27 @@
         }
 
         function processPlaceOrder() {
-            const totalSum = cart.reduce((sum, item) => {
-                const p = getAllProducts().find(x => x.id === item.productId);
-                return sum + (p ? p.price * item.quantity : 0);
-            }, 0);
+            const products = getAllProducts();
+            
+            // Calculate total cost including any campaign security deposits
+            let productsSum = 0;
+            let securitySum = 0;
+            
+            cart.forEach(item => {
+                const p = products.find(x => x.id === item.productId);
+                if (!p) return;
+                productsSum += p.price * item.quantity;
+                
+                const campaign = DEFAULT_CAMPAIGNS.find(c => c.productId === p.id);
+                if (campaign) {
+                    const joined = getJoinedCampaigns();
+                    if (!joined.includes(campaign.id)) {
+                        securitySum += 10.00;
+                    }
+                }
+            });
 
+            const totalSum = productsSum + securitySum;
             const balance = getWalletBalance();
             if (balance < totalSum) {
                 showToast("Insufficient wallet balance.", "error");
@@ -1030,10 +1112,7 @@
             }
 
             // Deduct each item and record it
-            const products = getAllProducts();
             let orderedProducts = [];
-
-            // We make copies of balance and orders to process
             let tempBalance = balance;
             const orders = getOrders();
 
@@ -1041,7 +1120,7 @@
                 const p = products.find(x => x.id === item.productId);
                 if (!p) return;
 
-                // Deduct locally
+                // Deduct product price locally
                 tempBalance -= p.price * item.quantity;
                 
                 const newOrder = {
@@ -1055,6 +1134,29 @@
                 };
                 orders.unshift(newOrder);
                 orderedProducts.push(p.name);
+
+                // Auto join associated campaign & freeze deposit
+                const campaign = DEFAULT_CAMPAIGNS.find(c => c.productId === p.id);
+                if (campaign) {
+                    const joined = getJoinedCampaigns();
+                    if (!joined.includes(campaign.id)) {
+                        tempBalance -= 10.00;
+                        joined.push(campaign.id);
+                        _cacheSet('elitex_joined_campaigns', joined);
+                        
+                        addTransaction({
+                            ref: 'TXN-' + Math.floor(100000 + Math.random() * 900000),
+                            desc: `Security Deposit Frozen: ${campaign.brand}`,
+                            amount: -10.00,
+                            type: 'orders',
+                            typeName: 'Security Freeze',
+                            avatarClass: 'debit',
+                            iconClass: 'ph-lock-simple',
+                            date: new Date().toLocaleDateString()
+                        });
+                        addActivity(`Accepted task: Joined ${campaign.title} (₹10.00 Security Deposit Frozen)`, 'purple');
+                    }
+                }
             });
 
             // Write back
@@ -1340,6 +1442,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             syncBalance();
             renderShop();
+            loadCachedAddress();
 
             // Mobile submission drawer form handler
             const mobileSubmitBtn = document.getElementById('submit-video-btn-mobile');

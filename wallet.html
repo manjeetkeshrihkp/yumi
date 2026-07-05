@@ -1426,7 +1426,7 @@
                 <i class="ph ph-bell"></i>
                 <span class="badge"></span>
             </button>
-            <div class="profile-avatar">
+            <div class="profile-avatar" onclick="toggleProfileDrawer()" style="cursor: pointer;">
                 <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=150&auto=format&fit=crop" alt="Creator Profile">
             </div>
         </div>
@@ -1452,7 +1452,7 @@
 
 
         <div class="sidebar-footer">
-            <div class="user-profile">
+            <div class="user-profile" onclick="toggleProfileDrawer()" style="cursor: pointer;">
                 <div class="profile-avatar" style="width: 36px; height: 36px;">
                     <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=150&auto=format&fit=crop" alt="Creator Profile">
                 </div>
@@ -1852,6 +1852,40 @@
         </a>
     </nav>
 
+    <!-- Mobile Profile Info Drawer -->
+    <div class="drawer-overlay" id="profileDrawerOverlay" onclick="toggleProfileDrawer()"></div>
+    <div class="bottom-drawer" id="profileDrawer">
+        <div class="drawer-handle"></div>
+        <div class="drawer-header" style="border-bottom: 1px solid var(--card-border); padding-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
+            <h3 style="font-size: 1rem; font-weight: 700; margin: 0;">Creator Profile</h3>
+            <button class="icon-btn" onclick="toggleProfileDrawer()" style="background:transparent; border:none; color:#fff; cursor:pointer;"><i class="ph ph-x" style="font-size:1.2rem;"></i></button>
+        </div>
+        <div style="padding: 20px 0; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+            <div class="profile-avatar" style="width: 72px; height: 72px; border-radius: 50%; overflow: hidden; border: 2px solid var(--accent); margin-bottom: 6px;">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=150&auto=format&fit=crop" alt="Creator Profile" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+            <h4 style="font-size: 1.1rem; font-weight: 800; color: #fff; margin: 0;">Alex Carter</h4>
+            <span style="font-size: 0.72rem; padding: 4px 10px; background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.2); border-radius: 20px; color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Pro Creator Level 2</span>
+            
+            <div style="width: 100%; height: 1px; background: var(--card-border); margin: 12px 0;"></div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; box-sizing: border-box; text-align: left;">
+                <div style="padding: 10px; background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); border-radius: 8px;">
+                    <div style="font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase;">Reach</div>
+                    <div style="font-size: 0.95rem; font-weight: 700; color: #fff; font-family: 'JetBrains Mono', monospace; margin-top: 2px;">142.5K</div>
+                </div>
+                <div style="padding: 10px; background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); border-radius: 8px;">
+                    <div style="font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase;">Platform</div>
+                    <div style="font-size: 0.95rem; font-weight: 700; color: #fff; margin-top: 2px; display:flex; align-items:center; gap:4px;"><i class="ph ph-instagram-logo" style="color:#f43f5e;"></i> Instagram</div>
+                </div>
+            </div>
+            
+            <button class="btn-gradient" style="margin-top: 14px; width: 100%;" onclick="showToast('Profile sync request sent!', 'success'); toggleProfileDrawer();">
+                <i class="ph ph-arrows-clockwise"></i> Sync Social Analytics
+            </button>
+        </div>
+    </div>
+
     <!-- Mobile submission Drawer -->
     <div class="drawer-overlay" id="mobileDrawerOverlay"></div>
     <div class="bottom-drawer" id="mobileDrawer">
@@ -1894,6 +1928,11 @@
 
     <script src="shared.js"></script>
     <script>
+        function toggleProfileDrawer() {
+            document.getElementById('profileDrawerOverlay').classList.toggle('active');
+            document.getElementById('profileDrawer').classList.toggle('active');
+        }
+
         // --- CUSTOM TRANSACTION DATABASE LOGS ---
         function getCustomTransactions() {
             return JSON.parse(localStorage.getItem('elitex_custom_transactions') || '[]');

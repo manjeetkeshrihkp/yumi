@@ -960,14 +960,29 @@ body {
     .top-nav {
         background: #09090b !important;
         border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
-        height: 60px !important;
-        padding: 0 14px !important;
+        height: 66px !important;
+        padding: 0 16px !important;
     }
 
     .bottom-nav {
         background: #09090b !important;
         border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
-        height: 62px !important;
+        height: 68px !important;
+    }
+
+    .bottom-nav-item {
+        font-size: 0.72rem !important;
+        gap: 4px !important;
+        width: 60px !important;
+    }
+    .bottom-nav-item i {
+        font-size: 1.45rem !important;
+    }
+    .mobile-fab {
+        width: 50px !important;
+        height: 50px !important;
+        margin-top: -18px !important;
+        font-size: 1.3rem !important;
     }
 
     /* 2. Increase font sizes & touch targets for mobile readability */

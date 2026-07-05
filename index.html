@@ -154,33 +154,33 @@
                 <i class="ph ph-bell"></i>
                 <span class="badge"></span>
             </button>
-            <div class="profile-avatar">
+            <div class="profile-avatar" onclick="toggleProfileDrawer()" style="cursor: pointer;">
                 <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=150&auto=format&fit=crop" alt="Creator Profile">
             </div>
         </div>
     </header>
-
+ 
     <!-- Side Menu Overlay -->
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
-
+ 
     <!-- Desktop Sidebar Menu -->
     <aside class="sidebar" id="sidebarMenu">
         <div class="sidebar-header">
             <a href="index.html" class="logo"><i class="ph ph-lightning" style="color: var(--accent);"></i> Elite <span>X</span></a>
             <button class="icon-btn" id="closeMobileSidebar" style="display: none;"><i class="ph ph-x"></i></button>
         </div>
-
+ 
         <nav class="sidebar-links">
             <a href="index.html" class="active"><i class="ph ph-squares-four"></i> Dashboard</a>
             <a href="campaigns.html"><i class="ph ph-megaphone"></i> Campaigns</a>
             <a href="wallet.html"><i class="ph ph-wallet"></i> Wallet</a>
             <a href="shop.html"><i class="ph ph-shopping-bag"></i> Shop</a>
         </nav>
-
-
-
+ 
+ 
+ 
         <div class="sidebar-footer">
-            <div class="user-profile">
+            <div class="user-profile" onclick="toggleProfileDrawer()" style="cursor: pointer;">
                 <div class="profile-avatar" style="width: 36px; height: 36px;">
                     <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=150&auto=format&fit=crop" alt="Creator Profile">
                 </div>
@@ -240,17 +240,19 @@
                         <line x1="0" y1="25" x2="100" y2="25" stroke="rgba(255,255,255,0.03)" stroke-width="0.3" stroke-dasharray="2,2"/>
                         
                         <!-- Area path -->
-                        <path d="M 0 35 L 0 25 Q 15 20, 30 28 T 60 12 T 85 8 T 100 4 L 100 35 Z" fill="url(#chartGlow)" />
+                        <path id="earningsTrendArea" d="M 0 35 L 0 25 Q 15 20, 30 28 T 60 12 T 85 8 T 100 4 L 100 35 Z" fill="url(#chartGlow)" />
                         
                         <!-- Stroke path -->
-                        <path d="M 0 25 Q 15 20, 30 28 T 60 12 T 85 8 T 100 4" fill="none" stroke="#8b5cf6" stroke-width="1.8" stroke-linecap="round" />
+                        <path id="earningsTrendPath" d="M 0 25 Q 15 20, 30 28 T 60 12 T 85 8 T 100 4" fill="none" stroke="#8b5cf6" stroke-width="1.8" stroke-linecap="round" />
                         
                         <!-- Neon dots -->
-                        <circle cx="0" cy="25" r="1.2" fill="#fff" stroke="#8b5cf6" stroke-width="0.5"/>
-                        <circle cx="30" cy="28" r="1.2" fill="#fff" stroke="#8b5cf6" stroke-width="0.5"/>
-                        <circle cx="60" cy="12" r="1.2" fill="#fff" stroke="#8b5cf6" stroke-width="0.5"/>
-                        <circle cx="85" cy="8" r="1.2" fill="#fff" stroke="#8b5cf6" stroke-width="0.5"/>
-                        <circle cx="100" cy="4" r="1.2" fill="#fff" stroke="#8b5cf6" stroke-width="0.5" class="pulse-chart-dot"/>
+                        <g id="earningsTrendDots">
+                            <circle cx="0" cy="25" r="1.2" fill="#fff" stroke="#8b5cf6" stroke-width="0.5"/>
+                            <circle cx="30" cy="28" r="1.2" fill="#fff" stroke="#8b5cf6" stroke-width="0.5"/>
+                            <circle cx="60" cy="12" r="1.2" fill="#fff" stroke="var(--accent)" stroke-width="0.5"/>
+                            <circle cx="85" cy="8" r="1.2" fill="#fff" stroke="#8b5cf6" stroke-width="0.5"/>
+                            <circle cx="100" cy="4" r="1.2" fill="#fff" stroke="#8b5cf6" stroke-width="0.5" class="pulse-chart-dot"/>
+                        </g>
                     </svg>
                     
                     <!-- SVG dot pulse keyframe -->
@@ -356,6 +358,40 @@
             <span>Shop</span>
         </a>
     </nav>
+
+    <!-- Mobile Profile Info Drawer -->
+    <div class="drawer-overlay" id="profileDrawerOverlay" onclick="toggleProfileDrawer()"></div>
+    <div class="bottom-drawer" id="profileDrawer">
+        <div class="drawer-handle"></div>
+        <div class="drawer-header" style="border-bottom: 1px solid var(--card-border); padding-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
+            <h3 style="font-size: 1rem; font-weight: 700; margin: 0;">Creator Profile</h3>
+            <button class="icon-btn" onclick="toggleProfileDrawer()" style="background:transparent; border:none; color:#fff; cursor:pointer;"><i class="ph ph-x" style="font-size:1.2rem;"></i></button>
+        </div>
+        <div style="padding: 20px 0; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+            <div class="profile-avatar" style="width: 72px; height: 72px; border-radius: 50%; overflow: hidden; border: 2px solid var(--accent); margin-bottom: 6px;">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=150&auto=format&fit=crop" alt="Creator Profile" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+            <h4 style="font-size: 1.1rem; font-weight: 800; color: #fff; margin: 0;">Alex Carter</h4>
+            <span style="font-size: 0.72rem; padding: 4px 10px; background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.2); border-radius: 20px; color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Pro Creator Level 2</span>
+            
+            <div style="width: 100%; height: 1px; background: var(--card-border); margin: 12px 0;"></div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; box-sizing: border-box; text-align: left;">
+                <div style="padding: 10px; background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); border-radius: 8px;">
+                    <div style="font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase;">Reach</div>
+                    <div style="font-size: 0.95rem; font-weight: 700; color: #fff; font-family: 'JetBrains Mono', monospace; margin-top: 2px;">142.5K</div>
+                </div>
+                <div style="padding: 10px; background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); border-radius: 8px;">
+                    <div style="font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase;">Platform</div>
+                    <div style="font-size: 0.95rem; font-weight: 700; color: #fff; margin-top: 2px; display:flex; align-items:center; gap:4px;"><i class="ph ph-instagram-logo" style="color:#f43f5e;"></i> Instagram</div>
+                </div>
+            </div>
+            
+            <button class="btn-gradient" style="margin-top: 14px; width: 100%;" onclick="showToast('Profile sync request sent!', 'success'); toggleProfileDrawer();">
+                <i class="ph ph-arrows-clockwise"></i> Sync Social Analytics
+            </button>
+        </div>
+    </div>
 
     <!-- Mobile submission Drawer -->
     <div class="drawer-overlay" id="mobileDrawerOverlay"></div>
@@ -491,10 +527,8 @@
 
                 let platformIcon = 'ph-instagram-logo';
                 let iconColor = '#f43f5e';
-                let videoUrl = '#';
                 
                 if (s) {
-                    videoUrl = s.videoUrl;
                     if (s.videoUrl.includes('youtube.com') || s.videoUrl.includes('youtu.be')) {
                         platformIcon = 'ph-youtube-logo';
                         iconColor = '#ef4444';
@@ -511,9 +545,24 @@
                 let earningsStyle = '';
                 let playIconHtml = '';
                 let linkHtml = '';
+                let actionBtnHtml = '';
+                let cooldownText = '';
+
+                // Calculate date & cooldown
+                const dateString = s ? s.date : (o ? o.date : new Date().toLocaleDateString());
+                let elapsedDays = 0;
+                let daysLeft = 7;
+                
+                if (s) {
+                    const submissionDate = new Date(s.date);
+                    const today = new Date();
+                    const diffTime = Math.abs(today - submissionDate);
+                    elapsedDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+                    daysLeft = 7 - elapsedDays;
+                }
 
                 if (!s) {
-                    // No video submitted yet
+                    // Ready to Film
                     statusBadge = `<span style="display:inline-flex; align-items:center; gap:6px; color:var(--text-secondary); font-weight:600; font-size:0.75rem;"><span style="width:6px; height:6px; border-radius:50%; background:var(--text-muted);"></span> Ready to Film</span>`;
                     reachVal = 'Not uploaded';
                     earningsVal = '₹0.00';
@@ -526,11 +575,11 @@
                         <span style="font-weight:600; font-size:0.95rem; color:var(--text-primary);">
                             ${c.title}
                         </span>
-                        <div style="margin-top:4px;">
-                            <button class="btn-gradient" onclick="openSubmitForCampaign('${c.id}', '${c.brand}: ${c.title}')" style="width: auto; padding: 6px 12px; font-size: 0.72rem; border-radius: 6px; display: inline-flex; align-items: center; gap: 4px;">
-                                <i class="ph ph-video-camera"></i> Submit Video
-                            </button>
-                        </div>
+                    `;
+                    actionBtnHtml = `
+                        <button class="btn-gradient" onclick="openSubmitForCampaign('${c.id}', '${c.brand}: ${c.title}')" style="width: auto; padding: 6px 12px; font-size: 0.72rem; border-radius: 6px; display: inline-flex; align-items: center; gap: 4px;">
+                            <i class="ph ph-video-camera"></i> Submit Video
+                        </button>
                     `;
                 } else {
                     // Video submitted
@@ -538,16 +587,33 @@
                         statusBadge = `<span style="display:inline-flex; align-items:center; gap:6px; color:var(--success); font-weight:600; font-size:0.75rem;"><span style="width:6px; height:6px; border-radius:50%; background:var(--success); box-shadow:0 0 8px var(--success);"></span> Active</span>`;
                         
                         const seed = parseInt(s.subId.split('-')[1]) || 500;
-                        const views = Math.round((s.performancePayout * 1250) + (seed % 1000) * 10 + 5000);
+                        const views = Math.round(((s.performancePayout || 0) * 1250) + (seed % 1000) * 10 + 5000);
                         reachVal = views.toLocaleString('en-IN');
 
-                        const totalPay = 1.00 + s.performancePayout;
-                        earningsVal = `₹${totalPay.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
-                        earningsStyle = 'color:var(--success); font-weight:700;';
+                        if (daysLeft > 0) {
+                            earningsVal = '₹1.00';
+                            earningsStyle = 'color: #fbbf24; font-weight: 700;';
+                            cooldownText = `<span style="color:#fbbf24; font-size:0.7rem; font-weight:600;"><i class="ph ph-hourglass-high" style="vertical-align: middle;"></i> Payout in ${daysLeft}d</span>`;
+                        } else {
+                            const totalPay = 1.00 + (s.performancePayout || 0);
+                            earningsVal = `₹${totalPay.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
+                            earningsStyle = 'color:var(--success); font-weight:700;';
+                            cooldownText = `<span style="color:#34d399; font-size:0.7rem; font-weight:600;"><i class="ph ph-check-circle" style="vertical-align: middle;"></i> Paid Out</span>`;
+                        }
                     } else if (s.status === 'rejected') {
                         statusBadge = `<span style="display:inline-flex; align-items:center; gap:6px; color:var(--danger); font-weight:600; font-size:0.75rem;"><span style="width:6px; height:6px; border-radius:50%; background:var(--danger); box-shadow:0 0 8px var(--danger);"></span> Rejected</span>`;
                         reachVal = '0';
                         earningsVal = '₹0.00';
+                        
+                        if (!s.resubmitCount || s.resubmitCount < 1) {
+                            actionBtnHtml = `
+                                <button class="btn-outline" onclick="openSubmitForCampaign('${c.id}', '${c.brand}: ${c.title}')" style="width: auto; padding: 6px 12px; font-size: 0.72rem; border-radius: 6px; display: inline-flex; align-items: center; gap: 4px; border-color: var(--danger); color: #f87171;">
+                                    <i class="ph ph-pencil-simple-line"></i> Update Link
+                                </button>
+                            `;
+                        } else {
+                            cooldownText = `<span style="color:var(--text-muted); font-size:0.7rem; font-weight:600;">(Update limit reached)</span>`;
+                        }
                     } else {
                         statusBadge = `<span style="display:inline-flex; align-items:center; gap:6px; color:var(--warning); font-weight:600; font-size:0.75rem;"><span style="width:6px; height:6px; border-radius:50%; background:var(--warning); box-shadow:0 0 8px var(--warning);"></span> In Review</span>`;
                         reachVal = 'Evaluating';
@@ -574,7 +640,7 @@
 
                 const imgUrl = o ? o.image : (campaignThumbnails[c.id] || 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?q=80&w=200&auto=format&fit=crop');
                 const taskDetailsText = o ? `Order: ${o.orderId}` : `Task ID: TSK-${c.id.split('_')[1] || '928371'}`;
-                const dateText = o ? `Ordered: ${o.date}` : `Joined: 03/07/2026`;
+                const dateText = o ? `Ordered: ${o.date}` : `Joined: ${dateString}`;
 
                 div.innerHTML = `
                     <div style="display: flex; align-items: center; gap: 16px; flex-grow: 1; min-width: 0;">
@@ -594,17 +660,24 @@
                                 ${statusBadge}
                                 <span style="font-size:0.72rem; color:var(--text-muted);">•</span>
                                 <span style="font-size:0.72rem; color:var(--text-muted);"><i class="ph ph-calendar" style="vertical-align: middle;"></i> ${dateText}</span>
+                                ${cooldownText ? `<span style="font-size:0.72rem; color:var(--text-muted);">•</span> ${cooldownText}` : ''}
                             </div>
                         </div>
                     </div>
                     
                     <!-- Meta Stats columns aligned on the right -->
-                    <div class="ad-row-card-stats">
-                        <div style="text-align: right; min-width: 80px;">
-                            <div style="font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px;">Reach</div>
-                            <div style="font-size: 0.9rem; font-weight: 700; color: var(--text-primary); margin-top: 2px;">${reachVal}</div>
-                        </div>
-                        <div style="text-align: right; min-width: 100px;">
+                    <div class="ad-row-card-stats" style="display:flex; align-items:center; gap:16px;">
+                        ${actionBtnHtml ? `
+                            <div style="flex-shrink:0;">
+                                ${actionBtnHtml}
+                            </div>
+                        ` : `
+                            <div style="text-align: right; min-width: 80px;">
+                                <div style="font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px;">Reach</div>
+                                <div style="font-size: 0.9rem; font-weight: 700; color: var(--text-primary); margin-top: 2px;">${reachVal}</div>
+                            </div>
+                        `}
+                        <div style="text-align: right; min-width: 90px;">
                             <div style="font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px;">Amount Earned</div>
                             <div style="font-size: 1.15rem; ${earningsStyle}; margin-top: 2px;">${earningsVal}</div>
                         </div>
@@ -656,6 +729,79 @@
             if (lifetimeEl) lifetimeEl.textContent = `₹${lifetime.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
             if (pendingEl) pendingEl.textContent = `₹${pendingSum.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
             if (activeEl) activeEl.textContent = activeCount;
+
+            // Draw Trend Graph dynamically
+            const approvedChronological = [...approved].reverse(); // oldest first
+            
+            // Build cumulative history points
+            let cumulative = 0;
+            const historyPoints = [{ x: 0, val: 0 }];
+            
+            approvedChronological.forEach((s, idx) => {
+                cumulative += 1.00 + (s.performancePayout || 0);
+                historyPoints.push({
+                    x: ((idx + 1) / approvedChronological.length) * 100,
+                    val: cumulative
+                });
+            });
+            
+            if (historyPoints.length === 1) {
+                historyPoints.push({ x: 100, val: 0 });
+            }
+            
+            // Map values to coordinates
+            const maxVal = Math.max(...historyPoints.map(p => p.val), 10.00); // min scale peak ₹10.00
+            
+            const coordinates = historyPoints.map(p => {
+                const cx = p.x;
+                // Scale Y: val = 0 maps to 30, val = maxVal maps to 5
+                const cy = 30 - (p.val / maxVal) * 25;
+                return { x: cx, y: cy };
+            });
+            
+            // Build SVG path
+            let pathString = `M ${coordinates[0].x} ${coordinates[0].y}`;
+            for (let i = 1; i < coordinates.length; i++) {
+                pathString += ` L ${coordinates[i].x} ${coordinates[i].y}`;
+            }
+            
+            const lastCoord = coordinates[coordinates.length - 1];
+            const areaString = `${pathString} L ${lastCoord.x} 35 L 0 35 Z`;
+            
+            // Update paths in DOM
+            const pathEl = document.getElementById('earningsTrendPath');
+            const areaEl = document.getElementById('earningsTrendArea');
+            if (pathEl) pathEl.setAttribute('d', pathString);
+            if (areaEl) areaEl.setAttribute('d', areaString);
+            
+            // Draw points inside the SVG
+            const dotsEl = document.getElementById('earningsTrendDots');
+            if (dotsEl) {
+                dotsEl.innerHTML = '';
+                coordinates.forEach((c, idx) => {
+                    if (coordinates.length > 6 && idx !== 0 && idx !== coordinates.length - 1 && idx % 2 !== 0) {
+                        return;
+                    }
+                    
+                    const isLast = idx === coordinates.length - 1;
+                    const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                    circle.setAttribute('cx', c.x);
+                    circle.setAttribute('cy', c.y);
+                    circle.setAttribute('r', isLast ? '1.5' : '1.2');
+                    circle.setAttribute('fill', '#fff');
+                    circle.setAttribute('stroke', '#8b5cf6');
+                    circle.setAttribute('stroke-width', '0.5');
+                    if (isLast) {
+                        circle.setAttribute('class', 'pulse-chart-dot');
+                    }
+                    dotsEl.appendChild(circle);
+                });
+            }
+        }
+
+        function toggleProfileDrawer() {
+            document.getElementById('profileDrawerOverlay').classList.toggle('active');
+            document.getElementById('profileDrawer').classList.toggle('active');
         }
 
         // --- Desktop Submit Modal Handlers ---
