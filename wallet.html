@@ -1520,7 +1520,15 @@
             <a href="index.html"><i class="ph ph-squares-four"></i> Dashboard</a>
             <a href="campaigns.html"><i class="ph ph-megaphone"></i> Campaigns</a>
             <a href="wallet.html" class="active"><i class="ph ph-wallet"></i> Wallet</a>
-            <a href="shop.html"><i class="ph ph-shopping-bag"></i> Shop</a>
+            <div class="sidebar-submenu-container" id="nav-shop-container">
+                <a href="javascript:void(0)" class="nav-shop-toggle" onclick="toggleShopSubmenu(event)"><i class="ph ph-shopping-bag"></i> Shop <i class="ph ph-caret-down submenu-caret" style="margin-left: auto; font-size: 0.8rem; transition: transform 0.2s;"></i></a>
+                <div class="sidebar-submenu" id="shop-submenu" style="display: none; flex-direction: column; padding-left: 16px; gap: 8px; margin-top: 4px;">
+                    <a href="shop.html" class="submenu-item"><i class="ph ph-storefront"></i> Browse Shop</a>
+                    <a href="javascript:void(0)" onclick="openOrderPortal('track')" class="submenu-item"><i class="ph ph-truck"></i> Track Order</a>
+                    <a href="javascript:void(0)" onclick="openOrderPortal('cancel')" class="submenu-item"><i class="ph ph-x-circle"></i> Cancel Order</a>
+                    <a href="javascript:void(0)" onclick="openOrderPortal('return')" class="submenu-item"><i class="ph ph-arrow-counter-clockwise"></i> Return Order</a>
+                </div>
+            </div>
         </nav>
 
 

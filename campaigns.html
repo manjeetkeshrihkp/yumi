@@ -263,6 +263,15 @@
                 box-sizing: border-box !important;
             }
         }
+        .campaign-progress-steps span.active {
+            color: #a78bfa !important;
+        }
+        .campaign-progress-steps span.approved {
+            color: #10b981 !important;
+        }
+        .campaign-progress-steps span.rejected {
+            color: #ef4444 !important;
+        }
     </style>
 </head>
 <body>
@@ -304,7 +313,15 @@
             <a href="index.html"><i class="ph ph-squares-four"></i> Dashboard</a>
             <a href="campaigns.html" class="active"><i class="ph ph-megaphone"></i> Campaigns</a>
             <a href="wallet.html"><i class="ph ph-wallet"></i> Wallet</a>
-            <a href="shop.html"><i class="ph ph-shopping-bag"></i> Shop</a>
+            <div class="sidebar-submenu-container" id="nav-shop-container">
+                <a href="javascript:void(0)" class="nav-shop-toggle" onclick="toggleShopSubmenu(event)"><i class="ph ph-shopping-bag"></i> Shop <i class="ph ph-caret-down submenu-caret" style="margin-left: auto; font-size: 0.8rem; transition: transform 0.2s;"></i></a>
+                <div class="sidebar-submenu" id="shop-submenu" style="display: none; flex-direction: column; padding-left: 16px; gap: 8px; margin-top: 4px;">
+                    <a href="shop.html" class="submenu-item"><i class="ph ph-storefront"></i> Browse Shop</a>
+                    <a href="javascript:void(0)" onclick="openOrderPortal('track')" class="submenu-item"><i class="ph ph-truck"></i> Track Order</a>
+                    <a href="javascript:void(0)" onclick="openOrderPortal('cancel')" class="submenu-item"><i class="ph ph-x-circle"></i> Cancel Order</a>
+                    <a href="javascript:void(0)" onclick="openOrderPortal('return')" class="submenu-item"><i class="ph ph-arrow-counter-clockwise"></i> Return Order</a>
+                </div>
+            </div>
         </nav>
 
 
@@ -493,6 +510,11 @@
 
             // Filter
             const filtered = DEFAULT_CAMPAIGNS.filter(c => {
+                const isAccepted = c.type === 'buy_to_review' 
+                    ? !!orders.find(o => o.productId === c.productId && o.status !== 'returned') 
+                    : joined.includes(c.id);
+                if (isAccepted) return false;
+
                 return c.brand.toLowerCase().includes(searchFilter.toLowerCase()) || 
                        c.title.toLowerCase().includes(searchFilter.toLowerCase());
             });
@@ -547,8 +569,8 @@
                             statusBadge = `<span class="status-badge status-approved" style="background: rgba(99,102,241,0.08); border-color: rgba(99,102,241,0.2); color: var(--accent);">Ready for Content</span>`;
                             actionBtnHtml = `<button class="btn-outline submit-quick-btn" data-id="${c.id}" style="font-size:0.75rem; padding:8px 12px;">Submit Video</button>`;
                         } else {
-                            const subStatusClass = `status-${submission.status}`;
-                            const subStatusText = submission.status.charAt(0).toUpperCase() + submission.status.slice(1);
+                            const subStatusClass = `status-${submission.status || 'pending'}`;
+                            const subStatusText = (submission.status || 'pending').charAt(0).toUpperCase() + (submission.status || 'pending').slice(1);
                             statusBadge = `<span class="status-badge ${subStatusClass}">Video ${subStatusText}</span>`;
                             
                             if (submission.status === 'approved') {
@@ -584,8 +606,8 @@
                             if (c.type === 'onsite_video') submitText = "Submit Vlog Link";
                             actionBtnHtml = `<button class="btn-outline submit-quick-btn" data-id="${c.id}" style="font-size:0.75rem; padding:8px 12px;">${submitText}</button>`;
                         } else {
-                            const subStatusClass = `status-${submission.status}`;
-                            const subStatusText = submission.status.charAt(0).toUpperCase() + submission.status.slice(1);
+                            const subStatusClass = `status-${submission.status || 'pending'}`;
+                            const subStatusText = (submission.status || 'pending').charAt(0).toUpperCase() + (submission.status || 'pending').slice(1);
                             statusBadge = `<span class="status-badge ${subStatusClass}">Link ${subStatusText}</span>`;
                             
                             if (submission.status === 'approved') {
@@ -597,6 +619,60 @@
                             }
                         }
                     }
+                }
+
+                let progressTrackerHtml = '';
+                const isAccepted = c.type === 'buy_to_review' ? !!orders.find(o => o.productId === c.productId && o.status !== 'returned') : joined.includes(c.id);
+
+                if (isAccepted) {
+                    let pct = 35;
+                    let step1Class = 'active';
+                    let step2Class = '';
+                    let step3Class = '';
+                    let barColor = 'linear-gradient(90deg, #6366f1, #a855f7)';
+                    let statusLabel = 'Task Accepted';
+                    
+                    if (submission) {
+                        if (submission.status === 'pending') {
+                            pct = 70;
+                            step1Class = 'active';
+                            step2Class = 'active';
+                            statusLabel = 'Under Review';
+                        } else if (submission.status === 'approved') {
+                            pct = 100;
+                            step1Class = 'active';
+                            step2Class = 'active';
+                            step3Class = 'approved';
+                            barColor = '#10b981';
+                            statusLabel = 'Approved & Paid';
+                        } else if (submission.status === 'rejected') {
+                            pct = 100;
+                            step1Class = 'active';
+                            step2Class = 'active';
+                            step3Class = 'rejected';
+                            barColor = '#ef4444';
+                            statusLabel = 'Rejected (Resubmit)';
+                        }
+                    }
+
+                    progressTrackerHtml = `
+                        <div class="campaign-progress-container" style="padding: 12px 0 4px 0; border-top: 1px solid rgba(255,255,255,0.04); margin-top: 10px;">
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; font-size:0.68rem; font-weight:600; font-family:'Plus Jakarta Sans', sans-serif;">
+                                <span style="color: var(--text-secondary); display:flex; align-items:center; gap:4px;"><i class="ph ph-activity" style="color:#6366f1;"></i> Progress Tracker</span>
+                                <span style="color: ${submission && submission.status === 'approved' ? '#10b981' : (submission && submission.status === 'rejected' ? '#ef4444' : '#a78bfa')}; font-weight:700;">${statusLabel}</span>
+                            </div>
+                            <div class="campaign-progress-bar-bg" style="height:5px; background:rgba(255,255,255,0.05); border-radius:99px; position:relative; overflow:hidden; margin-bottom:8px;">
+                                <div class="campaign-progress-bar-fill" data-pct="${pct}" style="width:0%; height:100%; background: ${barColor}; border-radius:99px; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);"></div>
+                            </div>
+                            <div class="campaign-progress-steps" style="display:flex; justify-content:space-between; font-size:0.6rem; color:var(--text-muted); font-weight:600;">
+                                <span class="${step1Class}" style="transition: color 0.3s;"><i class="ph ph-circle-dashed"></i> Accepted</span>
+                                <span class="${step2Class}" style="transition: color 0.3s;"><i class="ph ph-circle-dashed"></i> Submitted</span>
+                                <span class="${step3Class}" style="transition: color 0.3s;">
+                                    ${submission && submission.status === 'approved' ? '<i class="ph ph-check-circle"></i> Approved' : (submission && submission.status === 'rejected' ? '<i class="ph ph-x-circle"></i> Rejected' : '<i class="ph ph-shield-check"></i> Final Review')}
+                                </span>
+                            </div>
+                        </div>
+                    `;
                 }
 
                 item.innerHTML = `
@@ -621,6 +697,7 @@
                             ${campaignDesc} 
                             <strong>₹1.00 Guaranteed</strong> content fee added upon review. Performance bonus declared based on performance.
                         </div>
+                        ${progressTrackerHtml}
                     </div>
                     <div class="campaign-bottom">
                         <div class="payout-puck">${c.payout}</div>
@@ -659,6 +736,14 @@
 
                 grid.appendChild(item);
             });
+
+            // Trigger progress bar filling animation
+            setTimeout(() => {
+                document.querySelectorAll('.campaign-progress-bar-fill').forEach(fill => {
+                    const pct = fill.getAttribute('data-pct');
+                    fill.style.width = `${pct}%`;
+                });
+            }, 100);
         }
 
         function toggleProfileDrawer() {

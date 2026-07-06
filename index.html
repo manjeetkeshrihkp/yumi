@@ -50,13 +50,23 @@
         .ad-row-card {
             padding: 14px 16px;
             display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 20px;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 0px;
             border: 1px solid var(--card-border) !important;
             transition: border-color 0.2s;
             border-radius: 12px;
             background: rgba(255, 255, 255, 0.01);
+        }
+        
+        .campaign-progress-steps span.active {
+            color: #a78bfa !important;
+        }
+        .campaign-progress-steps span.approved {
+            color: #10b981 !important;
+        }
+        .campaign-progress-steps span.rejected {
+            color: #ef4444 !important;
         }
         
         .ad-row-card:hover {
@@ -174,7 +184,15 @@
             <a href="index.html" class="active"><i class="ph ph-squares-four"></i> Dashboard</a>
             <a href="campaigns.html"><i class="ph ph-megaphone"></i> Campaigns</a>
             <a href="wallet.html"><i class="ph ph-wallet"></i> Wallet</a>
-            <a href="shop.html"><i class="ph ph-shopping-bag"></i> Shop</a>
+            <div class="sidebar-submenu-container" id="nav-shop-container">
+                <a href="javascript:void(0)" class="nav-shop-toggle" onclick="toggleShopSubmenu(event)"><i class="ph ph-shopping-bag"></i> Shop <i class="ph ph-caret-down submenu-caret" style="margin-left: auto; font-size: 0.8rem; transition: transform 0.2s;"></i></a>
+                <div class="sidebar-submenu" id="shop-submenu" style="display: none; flex-direction: column; padding-left: 16px; gap: 8px; margin-top: 4px;">
+                    <a href="shop.html" class="submenu-item"><i class="ph ph-storefront"></i> Browse Shop</a>
+                    <a href="javascript:void(0)" onclick="openOrderPortal('track')" class="submenu-item"><i class="ph ph-truck"></i> Track Order</a>
+                    <a href="javascript:void(0)" onclick="openOrderPortal('cancel')" class="submenu-item"><i class="ph ph-x-circle"></i> Cancel Order</a>
+                    <a href="javascript:void(0)" onclick="openOrderPortal('return')" class="submenu-item"><i class="ph ph-arrow-counter-clockwise"></i> Return Order</a>
+                </div>
+            </div>
         </nav>
  
  
@@ -219,41 +237,56 @@
             </div>
 
             <!-- Bento Graph Card (Span 6) -->
-            <div class="bento-card span-6" style="display:flex; flex-direction:column; gap:12px;">
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <h3 style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; color: var(--text-secondary); letter-spacing: 0.8px;">Performance Trend</h3>
-                    <span style="font-size: 0.72rem; padding: 3px 8px; background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.2); border-radius: 20px; color: #8b5cf6; font-weight: 600;">7D Chart</span>
+            <div class="bento-card span-6" style="display:flex; flex-direction:column; gap:12px; position:relative; overflow:hidden;">
+                <!-- Glowing accent glow in background -->
+                <div style="position:absolute; top:-30px; right:-30px; width:120px; height:120px; background:radial-gradient(circle, rgba(16, 185, 129, 0.08) 0%, transparent 70%); pointer-events:none;"></div>
+                
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; z-index:1;">
+                    <h3 style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; color: var(--text-secondary); letter-spacing: 0.8px; display:flex; align-items:center; gap:6px;"><i class="ph ph-chart-line-up clr-emerald" style="font-size:1.05rem;"></i> Performance Trend</h3>
+                    <span style="font-size: 0.72rem; padding: 3px 8px; background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.15); border-radius: 20px; color: #10b981; font-weight: 600; box-shadow: 0 0 8px rgba(16, 185, 129, 0.15);">7D Earnings</span>
                 </div>
                 
                 <!-- sleek SVG Line Chart -->
-                <div style="flex:1; width:100%; min-height:100px; max-height:120px; position:relative; margin-top:8px;">
-                    <svg viewBox="0 0 100 35" preserveAspectRatio="none" style="width: 100%; height: 100%; display: block; overflow: visible;">
+                <div style="flex:1; width:100%; min-height:115px; max-height:135px; position:relative; margin-top:8px;" id="dashboardChartContainer">
+                    <svg viewBox="0 0 100 35" preserveAspectRatio="none" style="width: 100%; height: 100%; display: block; overflow: visible;" id="dashboardSplineSvg">
                         <defs>
-                            <linearGradient id="chartGlow" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="0%" stop-color="#8b5cf6" stop-opacity="0.3"/>
-                                <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0"/>
+                            <linearGradient id="glowEarnings" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stop-color="#10b981" stop-opacity="0.35"/>
+                                <stop offset="100%" stop-color="#10b981" stop-opacity="0"/>
                             </linearGradient>
+                            
+                            <!-- Premium shiny filter effect -->
+                            <filter id="neonGlowGreen" x="-20%" y="-20%" width="140%" height="140%">
+                                <feGaussianBlur stdDeviation="0.6" result="blur" />
+                                <feComponentTransfer in="blur" result="glow1">
+                                    <feFuncA type="linear" slope="0.8"/>
+                                </feComponentTransfer>
+                                <feMerge>
+                                    <feMergeNode in="glow1" />
+                                    <feMergeNode in="SourceGraphic" />
+                                </feMerge>
+                            </filter>
                         </defs>
                         <!-- Grid lines -->
-                        <line x1="0" y1="5" x2="100" y2="5" stroke="rgba(255,255,255,0.03)" stroke-width="0.3" stroke-dasharray="2,2"/>
-                        <line x1="0" y1="15" x2="100" y2="15" stroke="rgba(255,255,255,0.03)" stroke-width="0.3" stroke-dasharray="2,2"/>
-                        <line x1="0" y1="25" x2="100" y2="25" stroke="rgba(255,255,255,0.03)" stroke-width="0.3" stroke-dasharray="2,2"/>
+                        <line x1="0" y1="5" x2="100" y2="5" stroke="rgba(255,255,255,0.025)" stroke-width="0.2" stroke-dasharray="2,2"/>
+                        <line x1="0" y1="15" x2="100" y2="15" stroke="rgba(255,255,255,0.025)" stroke-width="0.2" stroke-dasharray="2,2"/>
+                        <line x1="0" y1="25" x2="100" y2="25" stroke="rgba(255,255,255,0.025)" stroke-width="0.2" stroke-dasharray="2,2"/>
+                        
+                        <!-- Vertical hover tracking line -->
+                        <line id="chartCursorLine" x1="0" y1="0" x2="0" y2="35" stroke="rgba(16, 185, 129, 0.15)" stroke-width="0.25" style="display: none; pointer-events: none;"></line>
                         
                         <!-- Area path -->
-                        <path id="earningsTrendArea" d="M 0 35 L 0 25 Q 15 20, 30 28 T 60 12 T 85 8 T 100 4 L 100 35 Z" fill="url(#chartGlow)" />
+                        <path id="earningsTrendArea" d="" fill="url(#glowEarnings)" />
                         
                         <!-- Stroke path -->
-                        <path id="earningsTrendPath" d="M 0 25 Q 15 20, 30 28 T 60 12 T 85 8 T 100 4" fill="none" stroke="#8b5cf6" stroke-width="1.8" stroke-linecap="round" />
+                        <path id="earningsTrendPath" d="" fill="none" stroke="#10b981" stroke-width="1.8" stroke-linecap="round" filter="url(#neonGlowGreen)" />
                         
-                        <!-- Neon dots -->
-                        <g id="earningsTrendDots">
-                            <circle cx="0" cy="25" r="1.2" fill="#fff" stroke="#8b5cf6" stroke-width="0.5"/>
-                            <circle cx="30" cy="28" r="1.2" fill="#fff" stroke="#8b5cf6" stroke-width="0.5"/>
-                            <circle cx="60" cy="12" r="1.2" fill="#fff" stroke="var(--accent)" stroke-width="0.5"/>
-                            <circle cx="85" cy="8" r="1.2" fill="#fff" stroke="#8b5cf6" stroke-width="0.5"/>
-                            <circle cx="100" cy="4" r="1.2" fill="#fff" stroke="#8b5cf6" stroke-width="0.5" class="pulse-chart-dot"/>
-                        </g>
+                        <!-- Dots group -->
+                        <g id="dashboardChartDots"></g>
                     </svg>
+                    
+                    <!-- Dynamic Tooltip -->
+                    <div id="chartTooltip" style="position: absolute; display: none; background: rgba(10, 10, 15, 0.9); border: 1px solid rgba(16, 185, 129, 0.2); backdrop-filter: blur(12px); border-radius: 12px; padding: 8px 12px; font-size: 0.65rem; color: #fff; z-index: 10; pointer-events: none; box-shadow: 0 10px 35px rgba(0,0,0,0.75); font-family: 'Plus Jakarta Sans', sans-serif; transition: opacity 0.15s ease, transform 0.15s ease;"></div>
                     
                     <!-- SVG dot pulse keyframe -->
                     <style>
@@ -269,19 +302,23 @@
                     </style>
                 </div>
                 
-                <div style="display:flex; justify-content:space-between; font-size:0.65rem; color:var(--text-secondary); margin-top:2px;">
-                    <span>Mon</span>
-                    <span>Wed</span>
-                    <span>Fri</span>
-                    <span>Sun</span>
+                <div style="display:flex; justify-content:space-between; font-size:0.65rem; color:var(--text-secondary); margin-top:4px;" id="dashboardChartLabels">
+                    <!-- Labels injected dynamically -->
                 </div>
             </div>
 
             <!-- Square Ad List Manager (Span 12) -->
-            <div class="bento-card span-12">
-                <div style="display:flex; justify-content:flex-start; margin-bottom:20px; flex-wrap:wrap; gap:16px;">
+            <div class="bento-card span-12" style="display:flex; flex-direction:column; gap:16px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; border-bottom:1px solid rgba(255,255,255,0.04); padding-bottom:12px;">
+                    <h3 style="font-size:0.85rem; font-weight:700; text-transform:uppercase; color:var(--text-primary); letter-spacing:0.8px; display:flex; align-items:center; gap:8px; margin:0;">
+                        <i class="ph ph-briefcase clr-purple" style="font-size:1.1rem;"></i> Accepted Campaigns
+                    </h3>
+                    <span style="font-size:0.7rem; color:var(--text-muted);">Manage and track your accepted tasks</span>
+                </div>
+                
+                <div style="display:flex; justify-content:flex-start; flex-wrap:wrap; gap:16px;">
                     <div class="chart-tabs" id="adsFilterTabs">
-                        <button class="chart-tab active" data-filter="all">All Ads</button>
+                        <button class="chart-tab active" data-filter="all">All Accepted</button>
                         <button class="chart-tab" data-filter="approved">Active</button>
                         <button class="chart-tab" data-filter="pending">In Review</button>
                         <button class="chart-tab" data-filter="rejected">Rejected</button>
@@ -437,9 +474,25 @@
     <script>
         let currentFilter = 'all';
         window.openSubmitForCampaign = function(campId, campText) {
-            document.getElementById('campaign-select-value').value = campId;
-            document.getElementById('selected-campaign-name').textContent = campText;
-            openDesktopSubmitModal();
+            if (window.innerWidth <= 600) {
+                const hidden = document.getElementById('campaign-select-value-mobile');
+                const label = document.getElementById('selected-campaign-name-mobile');
+                if (hidden && label) {
+                    hidden.value = campId;
+                    label.textContent = campText;
+                }
+                const mobileDrawer = document.getElementById('mobileDrawer');
+                const mobileOverlay = document.getElementById('mobileDrawerOverlay');
+                if (mobileDrawer && mobileOverlay) {
+                    populateCampaignDropdown('campaignDropdownMobile', 'campaign-select-value-mobile', 'selected-campaign-name-mobile');
+                    mobileDrawer.classList.add('active');
+                    mobileOverlay.classList.add('active');
+                }
+            } else {
+                document.getElementById('campaign-select-value').value = campId;
+                document.getElementById('selected-campaign-name').textContent = campText;
+                openDesktopSubmitModal();
+            }
         }
 
         function renderAdsDashboard() {
@@ -468,12 +521,13 @@
             // 2. Add other joined campaigns
             joined.forEach(campId => {
                 const campaign = DEFAULT_CAMPAIGNS.find(c => c.id === campId);
-                if (campaign && campaign.type !== 'buy_to_review') {
+                if (campaign) {
                     if (!acceptedCampaigns.find(item => item.campaign.id === campId)) {
+                        const order = orders.find(o => o.productId === campaign.productId);
                         const sub = subs.find(s => s.campaignId === campId);
                         acceptedCampaigns.push({
                             campaign: campaign,
-                            order: null,
+                            order: order || null,
                             submission: sub
                         });
                     }
@@ -524,6 +578,17 @@
                 const s = item.submission;
                 const c = item.campaign;
                 const o = item.order;
+
+                let imgUrl = campaignThumbnails[c.id] || 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?q=80&w=200&auto=format&fit=crop';
+                if (c.productId) {
+                    const products = getAllProducts();
+                    const prod = products.find(p => p.id === c.productId);
+                    if (prod && prod.image) {
+                        imgUrl = prod.image;
+                    }
+                }
+                const taskDetailsText = c.type === 'buy_to_review' ? 'Buy & Review' : (c.type === 'direct_video' ? 'Direct Promo' : (c.type === 'app_review' ? 'App Review' : 'On-Site Video'));
+                const dateText = s ? s.date : (o ? o.date : new Date().toLocaleDateString('en-GB'));
 
                 let platformIcon = 'ph-instagram-logo';
                 let iconColor = '#f43f5e';
@@ -637,54 +702,110 @@
                         </span>
                     `;
                 }
+                // Calculate progress tracker values for the accepted campaign
+                let pct = 35;
+                let step1Class = 'active';
+                let step2Class = '';
+                let step3Class = '';
+                let barColor = 'linear-gradient(90deg, #6366f1, #a855f7)';
+                let statusLabel = 'Task Accepted';
+                
+                if (s) {
+                    if (s.status === 'pending') {
+                        pct = 70;
+                        step1Class = 'active';
+                        step2Class = 'active';
+                        statusLabel = 'Under Review';
+                    } else if (s.status === 'approved') {
+                        pct = 100;
+                        step1Class = 'active';
+                        step2Class = 'active';
+                        step3Class = 'approved';
+                        barColor = '#10b981';
+                        statusLabel = 'Approved & Paid';
+                    } else if (s.status === 'rejected') {
+                        pct = 100;
+                        step1Class = 'active';
+                        step2Class = 'active';
+                        step3Class = 'rejected';
+                        barColor = '#ef4444';
+                        statusLabel = 'Rejected';
+                    }
+                }
 
-                const imgUrl = o ? o.image : (campaignThumbnails[c.id] || 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?q=80&w=200&auto=format&fit=crop');
-                const taskDetailsText = o ? `Order: ${o.orderId}` : `Task ID: TSK-${c.id.split('_')[1] || '928371'}`;
-                const dateText = o ? `Ordered: ${o.date}` : `Joined: ${dateString}`;
-
-                div.innerHTML = `
-                    <div style="display: flex; align-items: center; gap: 16px; flex-grow: 1; min-width: 0;">
-                        <!-- Rectangular Video Thumbnail (16:9 aspect ratio) -->
-                        <div style="position:relative; width:100px; height:58px; border-radius:6px; overflow:hidden; border:1px solid rgba(255,255,255,0.06); flex-shrink:0; background:#18181b;">
-                            <img src="${imgUrl}" style="width:100%; height:100%; object-fit:cover;">
-                            ${playIconHtml}
+                const progressTrackerHtml = `
+                    <div class="campaign-progress-container" style="padding: 10px 0 2px 0; border-top: 1px solid rgba(255,255,255,0.04); margin-top: 10px; width: 100%;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; font-size:0.65rem; font-weight:600; font-family:'Plus Jakarta Sans', sans-serif;">
+                            <span style="color: var(--text-secondary); display:flex; align-items:center; gap:4px;"><i class="ph ph-activity" style="color:#6366f1;"></i> Progress Tracker</span>
+                            <span style="color: ${s && s.status === 'approved' ? '#10b981' : (s && s.status === 'rejected' ? '#ef4444' : '#a78bfa')}; font-weight:700;">${statusLabel}</span>
                         </div>
-                        <div style="display:flex; flex-direction:column; gap:4px; min-width: 0;">
-                            ${linkHtml}
-                            <div style="font-size:0.75rem; color:var(--text-secondary); display:flex; align-items:center; gap:6px; flex-wrap: wrap;">
-                                <span>${c.brand}</span>
-                                <span style="color: var(--text-muted);">•</span>
-                                <span>${taskDetailsText}</span>
-                            </div>
-                            <div style="margin-top:2px; display:flex; align-items:center; gap:8px; flex-wrap: wrap;">
-                                ${statusBadge}
-                                <span style="font-size:0.72rem; color:var(--text-muted);">•</span>
-                                <span style="font-size:0.72rem; color:var(--text-muted);"><i class="ph ph-calendar" style="vertical-align: middle;"></i> ${dateText}</span>
-                                ${cooldownText ? `<span style="font-size:0.72rem; color:var(--text-muted);">•</span> ${cooldownText}` : ''}
-                            </div>
+                        <div class="campaign-progress-bar-bg" style="height:5px; background:rgba(255,255,255,0.05); border-radius:99px; position:relative; overflow:hidden; margin-bottom:8px;">
+                            <div class="campaign-progress-bar-fill-dash" data-pct="${pct}" style="width:0%; height:100%; background: ${barColor}; border-radius:99px; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);"></div>
                         </div>
-                    </div>
-                    
-                    <!-- Meta Stats columns aligned on the right -->
-                    <div class="ad-row-card-stats" style="display:flex; align-items:center; gap:16px;">
-                        ${actionBtnHtml ? `
-                            <div style="flex-shrink:0;">
-                                ${actionBtnHtml}
-                            </div>
-                        ` : `
-                            <div style="text-align: right; min-width: 80px;">
-                                <div style="font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px;">Reach</div>
-                                <div style="font-size: 0.9rem; font-weight: 700; color: var(--text-primary); margin-top: 2px;">${reachVal}</div>
-                            </div>
-                        `}
-                        <div style="text-align: right; min-width: 90px;">
-                            <div style="font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px;">Amount Earned</div>
-                            <div style="font-size: 1.15rem; ${earningsStyle}; margin-top: 2px;">${earningsVal}</div>
+                        <div class="campaign-progress-steps" style="display:flex; justify-content:space-between; font-size:0.58rem; color:var(--text-muted); font-weight:600;">
+                            <span class="${step1Class}" style="transition: color 0.3s;"><i class="ph ph-circle-dashed"></i> Accepted</span>
+                            <span class="${step2Class}" style="transition: color 0.3s;"><i class="ph ph-circle-dashed"></i> Submitted</span>
+                            <span class="${step3Class}" style="transition: color 0.3s;">
+                                ${s && s.status === 'approved' ? '<i class="ph ph-check-circle"></i> Approved' : (s && s.status === 'rejected' ? '<i class="ph ph-x-circle"></i> Rejected' : '<i class="ph ph-shield-check"></i> Final Review')}
+                            </span>
                         </div>
                     </div>
                 `;
+
+                div.innerHTML = `
+                    <div style="display:flex; justify-content:space-between; align-items:center; width:100%; gap:20px; flex-wrap:wrap;">
+                        <div style="display: flex; align-items: center; gap: 16px; flex-grow: 1; min-width: 0;">
+                            <!-- Rectangular Video Thumbnail (16:9 aspect ratio) -->
+                            <div style="position:relative; width:100px; height:58px; border-radius:6px; overflow:hidden; border:1px solid rgba(255,255,255,0.06); flex-shrink:0; background:#18181b;">
+                                <img src="${imgUrl}" style="width:100%; height:100%; object-fit:cover;">
+                                ${playIconHtml}
+                            </div>
+                            <div style="display:flex; flex-direction:column; gap:4px; min-width: 0;">
+                                ${linkHtml}
+                                <div style="font-size:0.75rem; color:var(--text-secondary); display:flex; align-items:center; gap:6px; flex-wrap: wrap;">
+                                    <span>${c.brand}</span>
+                                    <span style="color: var(--text-muted);">•</span>
+                                    <span>${taskDetailsText}</span>
+                                </div>
+                                <div style="margin-top:2px; display:flex; align-items:center; gap:8px; flex-wrap: wrap;">
+                                    ${statusBadge}
+                                    <span style="font-size:0.72rem; color:var(--text-muted);">•</span>
+                                    <span style="font-size:0.72rem; color:var(--text-muted);"><i class="ph ph-calendar" style="vertical-align: middle;"></i> ${dateText}</span>
+                                    ${cooldownText ? `<span style="font-size:0.72rem; color:var(--text-muted);">•</span> ${cooldownText}` : ''}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Meta Stats columns aligned on the right -->
+                        <div class="ad-row-card-stats" style="display:flex; align-items:center; gap:16px;">
+                            ${actionBtnHtml ? `
+                                <div style="flex-shrink:0;">
+                                    ${actionBtnHtml}
+                                </div>
+                            ` : `
+                                <div style="text-align: right; min-width: 80px;">
+                                    <div style="font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px;">Reach</div>
+                                    <div style="font-size: 0.9rem; font-weight: 700; color: var(--text-primary); margin-top: 2px;">${reachVal}</div>
+                                </div>
+                            `}
+                            <div style="text-align: right; min-width: 90px;">
+                                <div style="font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px;">Amount Earned</div>
+                                <div style="font-size: 1.15rem; ${earningsStyle}; margin-top: 2px;">${earningsVal}</div>
+                            </div>
+                        </div>
+                    </div>
+                    ${progressTrackerHtml}
+                `;
                 container.appendChild(div);
             });
+
+            // Trigger progress bar filling animation
+            setTimeout(() => {
+                container.querySelectorAll('.campaign-progress-bar-fill-dash').forEach(fill => {
+                    const pct = fill.getAttribute('data-pct');
+                    fill.style.width = `${pct}%`;
+                });
+            }, 100);
         }
 
         function loadDashboardMetrics() {
@@ -731,70 +852,202 @@
             if (activeEl) activeEl.textContent = activeCount;
 
             // Draw Trend Graph dynamically
-            const approvedChronological = [...approved].reverse(); // oldest first
-            
-            // Build cumulative history points
-            let cumulative = 0;
-            const historyPoints = [{ x: 0, val: 0 }];
-            
-            approvedChronological.forEach((s, idx) => {
-                cumulative += 1.00 + (s.performancePayout || 0);
+            const dates = [];
+            const labels = [];
+            const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            for (let i = 6; i >= 0; i--) {
+                const d = new Date();
+                d.setDate(d.getDate() - i);
+                
+                const dd = String(d.getDate()).padStart(2, '0');
+                const mm = String(d.getMonth() + 1).padStart(2, '0');
+                const yyyy = d.getFullYear();
+                dates.push(`${dd}/${mm}/${yyyy}`);
+                labels.push(dayNames[d.getDay()]);
+            }
+
+            const historyPoints = [];
+            let cumEarnings = 0;
+            let cumSubs = 0;
+            let cumOrders = 0;
+
+            function parseDateStr(str) {
+                if (!str) return new Date(0);
+                const parts = str.split('/');
+                if (parts.length < 3) return new Date(0);
+                return new Date(parts[2], parts[1] - 1, parts[0]);
+            }
+
+            const allSubs = getSubmissions();
+            const allOrders = getOrders();
+            const firstRangeDate = parseDateStr(dates[0]);
+
+            allSubs.forEach(s => {
+                const sDate = parseDateStr(s.date);
+                if (sDate < firstRangeDate && s.status === 'approved') {
+                    cumEarnings += 1.00 + (s.performancePayout || 0);
+                }
+                if (sDate < firstRangeDate) {
+                    cumSubs++;
+                }
+            });
+
+            allOrders.forEach(o => {
+                const oDate = parseDateStr(o.date);
+                if (oDate < firstRangeDate && o.status !== 'returned') {
+                    cumOrders++;
+                }
+            });
+
+            dates.forEach((dateStr, idx) => {
+                const dayApprovedSubs = allSubs.filter(s => s.date === dateStr && s.status === 'approved');
+                const dayAllSubs = allSubs.filter(s => s.date === dateStr);
+                const dayOrders = allOrders.filter(o => o.date === dateStr && o.status !== 'returned');
+
+                const dayEarnings = dayApprovedSubs.reduce((sum, s) => sum + 1.00 + (s.performancePayout || 0), 0);
+                
+                cumEarnings += dayEarnings;
+                cumSubs += dayAllSubs.length;
+                cumOrders += dayOrders.length;
+
                 historyPoints.push({
-                    x: ((idx + 1) / approvedChronological.length) * 100,
-                    val: cumulative
+                    date: dateStr,
+                    label: labels[idx],
+                    earnings: cumEarnings,
+                    submissions: cumSubs,
+                    orders: cumOrders
                 });
             });
-            
-            if (historyPoints.length === 1) {
-                historyPoints.push({ x: 100, val: 0 });
+
+            const maxEarnings = Math.max(...historyPoints.map(p => p.earnings), 10.00);
+            const maxSubs = Math.max(...historyPoints.map(p => p.submissions), 5);
+            const maxOrders = Math.max(...historyPoints.map(p => p.orders), 5);
+
+            function getBezierPath(points, getValue, maxValue) {
+                const getX = (i) => (i / (points.length - 1)) * 100;
+                const getY = (val) => 30 - (val / maxValue) * 25;
+                
+                const tension = 0.15;
+                let pathD = `M ${getX(0)} ${getY(getValue(points[0]))}`;
+                
+                for (let i = 0; i < points.length - 1; i++) {
+                    const prev = points[i - 1] || points[i];
+                    const curr = points[i];
+                    const next = points[i + 1];
+                    const post = points[i + 2] || next;
+                    
+                    const cp1x = getX(i) + (getX(i + 1) - getX(i - 1 < 0 ? 0 : i - 1)) * tension;
+                    const cp1y = getY(getValue(curr)) + (getY(getValue(next)) - getY(getValue(prev))) * tension;
+                    
+                    const cp2x = getX(i + 1) - (getX(i + 2 >= points.length ? points.length - 1 : i + 2) - getX(i)) * tension;
+                    const cp2y = getY(getValue(next)) - (getY(getValue(post)) - getY(getValue(curr))) * tension;
+                    
+                    pathD += ` C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${getX(i+1)} ${getY(getValue(next))}`;
+                }
+                
+                return pathD;
             }
-            
-            // Map values to coordinates
-            const maxVal = Math.max(...historyPoints.map(p => p.val), 10.00); // min scale peak ₹10.00
-            
-            const coordinates = historyPoints.map(p => {
-                const cx = p.x;
-                // Scale Y: val = 0 maps to 30, val = maxVal maps to 5
-                const cy = 30 - (p.val / maxVal) * 25;
-                return { x: cx, y: cy };
-            });
-            
-            // Build SVG path
-            let pathString = `M ${coordinates[0].x} ${coordinates[0].y}`;
-            for (let i = 1; i < coordinates.length; i++) {
-                pathString += ` L ${coordinates[i].x} ${coordinates[i].y}`;
+
+            const earningsPathD = getBezierPath(historyPoints, p => p.earnings, maxEarnings);
+            const earningsAreaD = `${earningsPathD} L 100 35 L 0 35 Z`;
+
+            const ePathEl = document.getElementById('earningsTrendPath');
+            const eAreaEl = document.getElementById('earningsTrendArea');
+            if (ePathEl) ePathEl.setAttribute('d', earningsPathD);
+            if (eAreaEl) eAreaEl.setAttribute('d', earningsAreaD);
+
+            const labelsEl = document.getElementById('dashboardChartLabels');
+            if (labelsEl) {
+                labelsEl.innerHTML = historyPoints.map(p => `<span>${p.label}</span>`).join('');
             }
+
+            const chartContainer = document.getElementById('dashboardChartContainer');
+            const chartTooltip = document.getElementById('chartTooltip');
             
-            const lastCoord = coordinates[coordinates.length - 1];
-            const areaString = `${pathString} L ${lastCoord.x} 35 L 0 35 Z`;
-            
-            // Update paths in DOM
-            const pathEl = document.getElementById('earningsTrendPath');
-            const areaEl = document.getElementById('earningsTrendArea');
-            if (pathEl) pathEl.setAttribute('d', pathString);
-            if (areaEl) areaEl.setAttribute('d', areaString);
-            
-            // Draw points inside the SVG
-            const dotsEl = document.getElementById('earningsTrendDots');
-            if (dotsEl) {
+            window.updateDotsForIdx = function(dayIdx) {
+                const dotsEl = document.getElementById('dashboardChartDots');
+                if (!dotsEl) return;
                 dotsEl.innerHTML = '';
-                coordinates.forEach((c, idx) => {
-                    if (coordinates.length > 6 && idx !== 0 && idx !== coordinates.length - 1 && idx % 2 !== 0) {
-                        return;
+                const p = historyPoints[dayIdx];
+                const getX = (i) => (i / (historyPoints.length - 1)) * 100;
+                const getY = (val, max) => 30 - (val / max) * 25;
+                const cx = getX(dayIdx);
+
+                const c1 = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                c1.setAttribute('cx', cx);
+                c1.setAttribute('cy', getY(p.earnings, maxEarnings));
+                c1.setAttribute('r', '1.5');
+                c1.setAttribute('fill', '#fff');
+                c1.setAttribute('stroke', '#10b981');
+                c1.setAttribute('stroke-width', '0.5');
+                c1.setAttribute('class', 'pulse-chart-dot');
+                dotsEl.appendChild(c1);
+            };
+            
+            window.currentDayIdx = historyPoints.length - 1;
+            window.updateDotsForIdx(window.currentDayIdx);
+            
+            if (chartContainer && chartTooltip) {
+                const newContainer = chartContainer.cloneNode(true);
+                chartContainer.parentNode.replaceChild(newContainer, chartContainer);
+                
+                const refreshedCursor = document.getElementById('chartCursorLine');
+                
+                newContainer.addEventListener('mousemove', (e) => {
+                    const rect = newContainer.getBoundingClientRect();
+                    const mouseX = e.clientX - rect.left;
+                    const pct = mouseX / rect.width;
+                    
+                    const dayIdx = Math.min(Math.max(Math.round(pct * (historyPoints.length - 1)), 0), historyPoints.length - 1);
+                    window.currentDayIdx = dayIdx;
+                    const p = historyPoints[dayIdx];
+                    
+                    window.updateDotsForIdx(dayIdx);
+                    
+                    const cx = (dayIdx / (historyPoints.length - 1)) * 100;
+                    if (refreshedCursor) {
+                        refreshedCursor.setAttribute('x1', cx);
+                        refreshedCursor.setAttribute('x2', cx);
+                        refreshedCursor.style.display = 'block';
                     }
                     
-                    const isLast = idx === coordinates.length - 1;
-                    const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-                    circle.setAttribute('cx', c.x);
-                    circle.setAttribute('cy', c.y);
-                    circle.setAttribute('r', isLast ? '1.5' : '1.2');
-                    circle.setAttribute('fill', '#fff');
-                    circle.setAttribute('stroke', '#8b5cf6');
-                    circle.setAttribute('stroke-width', '0.5');
-                    if (isLast) {
-                        circle.setAttribute('class', 'pulse-chart-dot');
+                    let tooltipHtml = `
+                        <div style="font-weight:700; margin-bottom:5px; color:#a1a1aa; border-bottom:1px solid rgba(16, 185, 129, 0.15); padding-bottom:4px; font-size:0.6rem;">${p.date} (${p.label})</div>
+                        <div style="display:flex; justify-content:space-between; gap:16px; align-items:center;">
+                            <span style="color:#a7f3d0; display:flex; align-items:center; gap:4px;"><span style="width:5px; height:5px; border-radius:50%; background:#10b981; display:inline-block; box-shadow:0 0 4px #10b981;"></span> Earnings:</span>
+                            <span style="font-weight:700; font-family:'JetBrains Mono'; color:#10b981;">₹${p.earnings.toFixed(2)}</span>
+                        </div>
+                    `;
+                    
+                    chartTooltip.style.display = 'block';
+                    chartTooltip.style.opacity = '1';
+                    chartTooltip.style.transform = 'translateY(0) scale(1)';
+                    chartTooltip.innerHTML = tooltipHtml;
+                    
+                    const tooltipRect = chartTooltip.getBoundingClientRect();
+                    let xPos = mouseX + 15;
+                    if (xPos + tooltipRect.width > rect.width) {
+                        xPos = mouseX - tooltipRect.width - 15;
                     }
-                    dotsEl.appendChild(circle);
+                    chartTooltip.style.left = `${xPos}px`;
+                    chartTooltip.style.top = `${Math.max(0, e.clientY - rect.top - tooltipRect.height / 2)}px`;
+                });
+                
+                newContainer.addEventListener('mouseleave', () => {
+                    chartTooltip.style.opacity = '0';
+                    chartTooltip.style.transform = 'translateY(4px) scale(0.95)';
+                    setTimeout(() => {
+                        if (chartTooltip.style.opacity === '0') {
+                            chartTooltip.style.display = 'none';
+                        }
+                    }, 150);
+                    
+                    if (refreshedCursor) {
+                        refreshedCursor.style.display = 'none';
+                    }
+                    
+                    window.currentDayIdx = historyPoints.length - 1;
+                    window.updateDotsForIdx(window.currentDayIdx);
                 });
             }
         }
