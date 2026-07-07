@@ -519,6 +519,68 @@
             margin-bottom: 28px;
         }
 
+        .milestone-circle-btn-wrapper {
+            transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .milestone-circle-btn-wrapper:hover {
+            transform: translateY(-3px);
+        }
+
+        .milestone-circle-btn-wrapper:active {
+            transform: scale(0.95);
+        }
+
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #receiptModal, #receiptModal * {
+                visibility: visible;
+            }
+            #receiptModal {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                background: #07090f !important;
+                color: #fff !important;
+            }
+            .modal-close-btn, #receiptModal button {
+                display: none !important;
+            }
+        }
+
+        .btn-action-royal {
+            background: rgba(250, 204, 21, 0.05);
+            color: var(--accent);
+            border: 1px solid rgba(250, 204, 21, 0.25);
+            padding: 14px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-action-royal:hover {
+            transform: translateY(-2px);
+            background: rgba(250, 204, 21, 0.12);
+            border-color: rgba(250, 204, 21, 0.45);
+        }
+
+        .btn-action-royal:active {
+            transform: translateY(0);
+            transform: scale(0.98);
+        }
+
         .btn-action-premium {
             background: linear-gradient(135deg, #fde047 0%, #eab308 100%);
             color: #07090f;
@@ -1357,8 +1419,9 @@
                     <!-- CARD FRONT -->
                     <div class="card-face credit-card-front" onclick="handleCardClick(event)">
                         <div class="card-front-content">
-                            <div class="card-header-row">
+                            <div class="card-header-row" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
                                 <div class="card-brand-label">Elite<span>X</span> Premium</div>
+                                <div id="cardTierEmblem" style="background:rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color:var(--accent); font-size:8px; font-weight:800; padding:3px 8px; border-radius:6px; text-transform:uppercase; letter-spacing:0.5px; box-shadow: 0 0 10px rgba(250,204,21,0.15);">Gold Tier</div>
                             </div>
                             
                             <!-- Balance on Card Face (Always Visible) -->
@@ -1411,7 +1474,7 @@
                     <div class="balance-card-icon">
                         <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
                     </div>
-                    <h4>Available</h4>
+                    <h4>Bonus</h4>
                     <div class="amt-val wallet-balance-val">₹ 14,250.00</div>
                 </div>
                 <div class="balance-item-card">
@@ -1445,6 +1508,18 @@
                 <div class="milestone-footer-row">
                     <span class="milestone-footer-text" id="withdrawProgressFooter">Checking payout eligibility...</span>
                 </div>
+            </div>
+
+            <!-- 2-Column Actions Row -->
+            <div class="action-row" style="margin-bottom: 24px;">
+                <button class="btn-action-royal" onclick="openAddMoneyModal()">
+                    <svg viewBox="0 0 24 24" style="width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:2.5;"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    Add Money
+                </button>
+                <button class="btn-action-royal" onclick="openWithdrawModal()">
+                    <svg viewBox="0 0 24 24" style="width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:2.5;"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
+                    Withdraw
+                </button>
             </div>
 
             <!-- VIP Creator Fixed Income Card -->
@@ -1505,21 +1580,166 @@
                 </div>
             </div>
 
-            <!-- 3-Column Premium Actions Row -->
-            <div class="action-row-3">
-                <button class="btn-action-premium" onclick="openAddMoneyModal()">
-                    <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                    Add Money
-                </button>
-                <button class="btn-action-premium" onclick="openWithdrawModal()">
-                    <svg viewBox="0 0 24 24"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
-                    Withdraw
-                </button>
-                <button class="btn-action-premium" onclick="openBankDetailsModal()">
-                    <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                    Settings
-                </button>
+            <!-- Daily Creator Streak Tracker Card -->
+            <div class="milestone-card" id="creatorStreakCard" style="margin-bottom: 20px; padding: 20px;">
+                <div class="milestone-title-row" style="margin-bottom: 12px; display:flex; justify-content:space-between; align-items:center; width:100%;">
+                    <div class="milestone-title">
+                        <svg viewBox="0 0 24 24" style="width:16px; height:16px; stroke:var(--accent); fill:none; stroke-width:2;"><path d="M12 2c0 0-2.5 4-5 6.5s-2 5.5 0 7.5c2 2 5.5 2 7.5 0 2.5-2.5 1-7.5-2.5-12zM12 11.5c0 0-1.25 2-2.5 3.25s-1 2.75 0 3.75c1 1 2.75 1 3.75 0 1.25-1.25.5-3.75-1.25-6z"/></svg>
+                        <span style="text-transform: uppercase; font-weight:700; letter-spacing:0.5px;">Daily Creator Streak</span>
+                    </div>
+                    <span id="streakBoostBadge" style="font-size: 8px; font-weight:800; text-transform:uppercase; padding:3px 8px; border-radius:6px; color:#000; background:var(--accent); box-shadow:0 0 8px var(--accent-glow); animation: pulse 1.5s infinite;">1.2x Boost Active</span>
+                </div>
+                <p style="font-size: 11px; color: var(--text-muted); line-height: 1.4; margin-bottom: 16px; text-align:center;">
+                    Maintain a daily check-in streak to activate a 1.2x earnings multiplier on all campaign submissions!
+                </p>
+                <div class="streak-dots-row" style="display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:18px;">
+                    <div class="streak-dot-col" style="display:flex; flex-direction:column; align-items:center; gap:6px; flex:1;">
+                        <div class="streak-dot-circle" id="streakDay1" style="width:20px; height:20px; border-radius:50%; border:2px solid var(--accent); display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:900; background:rgba(250,204,21,0.1); color:#fff;">1</div>
+                        <span style="font-size:9px; color:var(--text-muted);">Day 1</span>
+                    </div>
+                    <div class="streak-dot-col" style="display:flex; flex-direction:column; align-items:center; gap:6px; flex:1;">
+                        <div class="streak-dot-circle" id="streakDay2" style="width:20px; height:20px; border-radius:50%; border:2px solid var(--accent); display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:900; background:rgba(250,204,21,0.1); color:#fff;">2</div>
+                        <span style="font-size:9px; color:var(--text-muted);">Day 2</span>
+                    </div>
+                    <div class="streak-dot-col" style="display:flex; flex-direction:column; align-items:center; gap:6px; flex:1;">
+                        <div class="streak-dot-circle" id="streakDay3" style="width:20px; height:20px; border-radius:50%; border:2px solid rgba(255,255,255,0.1); display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:900; color:var(--text-muted);">3</div>
+                        <span style="font-size:9px; color:var(--text-muted);">Day 3</span>
+                    </div>
+                    <div class="streak-dot-col" style="display:flex; flex-direction:column; align-items:center; gap:6px; flex:1;">
+                        <div class="streak-dot-circle" id="streakDay4" style="width:20px; height:20px; border-radius:50%; border:2px solid rgba(255,255,255,0.1); display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:900; color:var(--text-muted);">4</div>
+                        <span style="font-size:9px; color:var(--text-muted);">Day 4</span>
+                    </div>
+                    <div class="streak-dot-col" style="display:flex; flex-direction:column; align-items:center; gap:6px; flex:1;">
+                        <div class="streak-dot-circle" id="streakDay5" style="width:20px; height:20px; border-radius:50%; border:2px solid rgba(255,255,255,0.1); display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:900; color:var(--text-muted);">5</div>
+                        <span style="font-size:9px; color:var(--text-muted);">Day 5</span>
+                    </div>
+                </div>
+                <button class="btn-action-premium" id="btnCheckIn" onclick="handleStreakCheckIn()" style="width:100%; padding:10px; font-size:11px;">Claim Today's Check-In</button>
             </div>
+
+            <!-- VIP Creator Stipend Milestones Card (Circular Progress Row) -->
+            <div class="milestone-card" id="rewardMilestonesCard" style="margin-bottom: 24px; padding: 20px;">
+                <div class="milestone-title-row" style="margin-bottom:12px;">
+                    <div class="milestone-title">
+                        <svg viewBox="0 0 24 24" style="width:16px; height:16px; stroke:var(--accent); fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round;"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
+                        <span style="text-transform: uppercase; font-weight:700; letter-spacing:0.5px;">VIP Creator Stipend Milestones</span>
+                    </div>
+                </div>
+                
+                <p style="font-size: 11px; color: var(--text-muted); line-height: 1.4; margin-bottom: 20px; text-align: center;">
+                    Tap any circular button below to claim your stipend bonus when progress reaches 100%!
+                </p>
+                
+                <div class="milestone-circles-row" style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px; margin-bottom: 8px;">
+                    <!-- Circle 1: Videos (₹50) -->
+                    <div class="milestone-circle-btn-wrapper" onclick="handleCircleMilestoneClick('video')" style="display:flex; flex-direction:column; align-items:center; flex:1; cursor:pointer; position:relative; transition:transform 0.2s ease;">
+                        <div class="milestone-circle-container" style="position:relative; width:80px; height:80px; display:flex; align-items:center; justify-content:center; background: rgba(255, 255, 255, 0.02); border-radius: 50%;">
+                            <!-- SVG Ring -->
+                            <svg width="80" height="80" style="transform: rotate(-90deg); position:absolute; top:0; left:0;">
+                                <circle cx="40" cy="40" r="34" stroke="rgba(255, 255, 255, 0.04)" stroke-width="5" fill="transparent"/>
+                                <circle id="circleVideosBar" cx="40" cy="40" r="34" stroke="var(--accent)" stroke-width="5" fill="transparent"
+                                        stroke-dasharray="213.63" stroke-dashoffset="213.63" style="transition: stroke-dashoffset 0.6s cubic-bezier(0.4, 0, 0.2, 1); stroke-linecap: round;"/>
+                            </svg>
+                            <!-- Inner Content -->
+                            <div id="circleVideosIcon" style="display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:1; color:var(--text-main);">
+                                <svg viewBox="0 0 24 24" style="width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; overflow:visible;"><path d="M23 7l-7 5 7 5V7z"></path><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>
+                                <span id="circleVideosPercent" style="font-size:9px; font-weight:800; margin-top:3px; color:#fff;">0%</span>
+                            </div>
+                        </div>
+                        <span style="font-size:11px; font-weight:700; margin-top:10px; text-align:center; color:#fff;">Videos (₹50)</span>
+                        <span id="circleVideosStatus" style="font-size:9px; color:var(--text-muted); margin-top:2px; font-weight:600; text-transform:uppercase;">0/30</span>
+                        
+                        <!-- Badges -->
+                        <div id="circleVideosBadge" class="circle-claim-badge" style="display:none; position:absolute; top:-2px; right:12px; background:var(--accent); color:#000; font-size:8px; font-weight:900; padding:2px 5px; border-radius:8px; box-shadow:0 0 8px var(--accent-glow); text-transform:uppercase; pointer-events:none;">Claim</div>
+                        <div id="circleVideosClaimedCheck" class="circle-claimed-check" style="display:none; position:absolute; top:-2px; right:12px; background:#22c55e; color:#fff; font-size:8px; font-weight:900; padding:2px 4px; border-radius:50%; width:14px; height:14px; align-items:center; justify-content:center; pointer-events:none;">✓</div>
+                    </div>
+                    
+                    <!-- Circle 2: Sales (₹100) -->
+                    <div class="milestone-circle-btn-wrapper" onclick="handleCircleMilestoneClick('sales')" style="display:flex; flex-direction:column; align-items:center; flex:1; cursor:pointer; position:relative; transition:transform 0.2s ease;">
+                        <div class="milestone-circle-container" style="position:relative; width:80px; height:80px; display:flex; align-items:center; justify-content:center; background: rgba(255, 255, 255, 0.02); border-radius: 50%;">
+                            <!-- SVG Ring -->
+                            <svg width="80" height="80" style="transform: rotate(-90deg); position:absolute; top:0; left:0;">
+                                <circle cx="40" cy="40" r="34" stroke="rgba(255, 255, 255, 0.04)" stroke-width="5" fill="transparent"/>
+                                <circle id="circleSalesBar" cx="40" cy="40" r="34" stroke="var(--accent)" stroke-width="5" fill="transparent"
+                                        stroke-dasharray="213.63" stroke-dashoffset="213.63" style="transition: stroke-dashoffset 0.6s cubic-bezier(0.4, 0, 0.2, 1); stroke-linecap: round;"/>
+                            </svg>
+                            <!-- Inner Content -->
+                            <div id="circleSalesIcon" style="display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:1; color:var(--text-main);">
+                                <svg viewBox="0 0 24 24" style="width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; overflow:visible;"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                                <span id="circleSalesPercent" style="font-size:9px; font-weight:800; margin-top:3px; color:#fff;">0%</span>
+                            </div>
+                        </div>
+                        <span style="font-size:11px; font-weight:700; margin-top:10px; text-align:center; color:#fff;">Sales (₹100)</span>
+                        <span id="circleSalesStatus" style="font-size:9px; color:var(--text-muted); margin-top:2px; font-weight:600; text-transform:uppercase;">0/6</span>
+                        
+                        <!-- Badges -->
+                        <div id="circleSalesBadge" class="circle-claim-badge" style="display:none; position:absolute; top:-2px; right:12px; background:var(--accent); color:#000; font-size:8px; font-weight:900; padding:2px 5px; border-radius:8px; box-shadow:0 0 8px var(--accent-glow); text-transform:uppercase; pointer-events:none;">Claim</div>
+                        <div id="circleSalesClaimedCheck" class="circle-claimed-check" style="display:none; position:absolute; top:-2px; right:12px; background:#22c55e; color:#fff; font-size:8px; font-weight:900; padding:2px 4px; border-radius:50%; width:14px; height:14px; align-items:center; justify-content:center; pointer-events:none;">✓</div>
+                    </div>
+
+                    <!-- Circle 3: Views (₹30) -->
+                    <div class="milestone-circle-btn-wrapper" onclick="handleCircleMilestoneClick('views')" style="display:flex; flex-direction:column; align-items:center; flex:1; cursor:pointer; position:relative; transition:transform 0.2s ease;">
+                        <div class="milestone-circle-container" style="position:relative; width:80px; height:80px; display:flex; align-items:center; justify-content:center; background: rgba(255, 255, 255, 0.02); border-radius: 50%;">
+                            <!-- SVG Ring -->
+                            <svg width="80" height="80" style="transform: rotate(-90deg); position:absolute; top:0; left:0;">
+                                <circle cx="40" cy="40" r="34" stroke="rgba(255, 255, 255, 0.04)" stroke-width="5" fill="transparent"/>
+                                <circle id="circleViewsBar" cx="40" cy="40" r="34" stroke="var(--accent)" stroke-width="5" fill="transparent"
+                                        stroke-dasharray="213.63" stroke-dashoffset="213.63" style="transition: stroke-dashoffset 0.6s cubic-bezier(0.4, 0, 0.2, 1); stroke-linecap: round;"/>
+                            </svg>
+                            <!-- Inner Content -->
+                            <div id="circleViewsIcon" style="display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:1; color:var(--text-main);">
+                                <svg viewBox="0 0 24 24" style="width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; overflow:visible;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                                <span id="circleViewsPercent" style="font-size:9px; font-weight:800; margin-top:3px; color:#fff;">0%</span>
+                            </div>
+                        </div>
+                        <span style="font-size:11px; font-weight:700; margin-top:10px; text-align:center; color:#fff;">Views (₹30)</span>
+                        <span id="circleViewsStatus" style="font-size:9px; color:var(--text-muted); margin-top:2px; font-weight:600; text-transform:uppercase;">0K/100K</span>
+                        
+                        <!-- Badges -->
+                        <div id="circleViewsBadge" class="circle-claim-badge" style="display:none; position:absolute; top:-2px; right:12px; background:var(--accent); color:#000; font-size:8px; font-weight:900; padding:2px 5px; border-radius:8px; box-shadow:0 0 8px var(--accent-glow); text-transform:uppercase; pointer-events:none;">Claim</div>
+                        <div id="circleViewsClaimedCheck" class="circle-claimed-check" style="display:none; position:absolute; top:-2px; right:12px; background:#22c55e; color:#fff; font-size:8px; font-weight:900; padding:2px 4px; border-radius:50%; width:14px; height:14px; align-items:center; justify-content:center; pointer-events:none;">✓</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIP Creator Level Perks Card -->
+            <div class="milestone-card" id="creatorPerksCard" style="margin-bottom: 24px; padding: 20px;">
+                <div class="milestone-title-row" style="margin-bottom: 12px;">
+                    <div class="milestone-title">
+                        <svg viewBox="0 0 24 24" style="width:16px; height:16px; stroke:var(--accent); fill:none; stroke-width:2;"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                        <span style="text-transform: uppercase; font-weight:700; letter-spacing:0.5px;">VIP Creator Perks</span>
+                    </div>
+                </div>
+                
+                <p style="font-size: 11px; color: var(--text-muted); line-height: 1.4; margin-bottom: 16px;">
+                    Earn exclusive creator status privileges and benefits based on your level.
+                </p>
+                
+                <div style="display:flex; flex-direction:column; gap:12px; margin-bottom:16px;">
+                    <div style="display:flex; justify-content:space-between; font-size:11px; border-bottom:1px solid rgba(255,255,255,0.03); padding-bottom:6px;">
+                        <span style="color:var(--text-muted);">Current Creator Level:</span>
+                        <strong id="perksLevelText" style="color:var(--accent); text-transform:uppercase;">Gold Star Creator</strong>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; font-size:11px; border-bottom:1px solid rgba(255,255,255,0.03); padding-bottom:6px;">
+                        <span style="color:var(--text-muted);">Payout Fee Limit:</span>
+                        <span style="color:#fff; font-weight:600;">0% Service Fee</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; font-size:11px; border-bottom:1px solid rgba(255,255,255,0.03); padding-bottom:6px;">
+                        <span style="color:var(--text-muted);">Transfer Priority Speed:</span>
+                        <span style="color:#fff; font-weight:600;" id="perksSpeedText">Priority (2-4 Hours)</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; font-size:11px; border-bottom:1px solid rgba(255,255,255,0.03); padding-bottom:6px;">
+                        <span style="color:var(--text-muted);">Earning Boost Rate:</span>
+                        <span style="color:#4ade80; font-weight:600;" id="perksBoostText">1.0x Rate</span>
+                    </div>
+                </div>
+                
+                <div class="milestone-footer-row" style="border-top: 1px solid rgba(255,255,255,0.05); padding-top:10px;">
+                    <span class="milestone-footer-text" id="perksNextLevelProgress" style="font-size:10px;">Next Level (Diamond): Submit 15 more video reviews & complete 13 more sales.</span>
+                </div>
+            </div>
+
+
 
             <!-- Milestone Goal Progress Card -->
             <div class="milestone-card">
@@ -1553,6 +1773,58 @@
                         <button type="submit" class="creator-submit-btn">Submit Link</button>
                     </div>
                 </form>
+            </div>
+
+            <!-- Weekly Earnings Trend Card (SVG Spline Chart) -->
+            <div class="earnings-visualizer" id="weeklyEarningsTrendCard" style="margin-bottom: 24px; padding: 20px;">
+                <h3 style="margin-bottom: 12px; display:flex; justify-content:space-between; align-items:center; width:100%;">
+                    <span style="display:flex; align-items:center; gap:8px;">
+                        <svg viewBox="0 0 24 24" style="width:16px; height:16px; stroke:var(--accent); fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round;"><path d="M3 3v18h18M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"/></svg>
+                        Weekly Earnings Trend
+                    </span>
+                    <span id="chartTotalEarnings" style="font-size:11px; font-weight:700; color:var(--accent);">Total: ₹5,600</span>
+                </h3>
+                <p style="font-size: 11px; color: var(--text-muted); line-height: 1.4; margin-bottom: 16px;">
+                    Daily campaign rewards credited over the last 7 calendar days. Click any point to view details.
+                </p>
+                <div class="chart-container" style="position:relative; width:100%; height:130px; display:flex; justify-content:center; align-items:center;">
+                    <svg viewBox="0 0 300 100" style="width:100%; height:100%; overflow:visible;">
+                        <defs>
+                            <linearGradient id="chartStrokeGrad" x1="0" y1="0" x2="1" y2="0">
+                                <stop offset="0%" stop-color="#fbbf24" />
+                                <stop offset="100%" stop-color="#facc15" />
+                            </linearGradient>
+                            <linearGradient id="chartFillGrad" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stop-color="rgba(250, 204, 21, 0.12)" />
+                                <stop offset="100%" stop-color="rgba(250, 204, 21, 0)" />
+                            </linearGradient>
+                        </defs>
+                        <line x1="0" y1="20" x2="280" y2="20" stroke="rgba(255,255,255,0.03)" stroke-width="1" stroke-dasharray="2 2" />
+                        <line x1="0" y1="50" x2="280" y2="50" stroke="rgba(255,255,255,0.03)" stroke-width="1" stroke-dasharray="2 2" />
+                        <line x1="0" y1="80" x2="280" y2="80" stroke="rgba(255,255,255,0.03)" stroke-width="1" stroke-dasharray="2 2" />
+                        
+                        <path id="chartSplineFill" d="" fill="url(#chartFillGrad)" style="transition: d 0.5s ease;" />
+                        <path id="chartSplineStroke" d="" fill="none" stroke="url(#chartStrokeGrad)" stroke-width="2.5" stroke-linecap="round" style="transition: d 0.5s ease;" />
+                        
+                        <circle id="chartDot1" cx="10" cy="90" r="3.5" fill="var(--accent)" stroke="#07090f" stroke-width="1.5" class="chart-dot" style="cursor:pointer;" onclick="showChartTooltip(0, event)" />
+                        <circle id="chartDot2" cx="51.6" cy="70" r="3.5" fill="var(--accent)" stroke="#07090f" stroke-width="1.5" class="chart-dot" style="cursor:pointer;" onclick="showChartTooltip(1, event)" />
+                        <circle id="chartDot3" cx="93.3" cy="80" r="3.5" fill="var(--accent)" stroke="#07090f" stroke-width="1.5" class="chart-dot" style="cursor:pointer;" onclick="showChartTooltip(2, event)" />
+                        <circle id="chartDot4" cx="135" cy="55" r="3.5" fill="var(--accent)" stroke="#07090f" stroke-width="1.5" class="chart-dot" style="cursor:pointer;" onclick="showChartTooltip(3, event)" />
+                        <circle id="chartDot5" cx="176.6" cy="30" r="3.5" fill="var(--accent)" stroke="#07090f" stroke-width="1.5" class="chart-dot" style="cursor:pointer;" onclick="showChartTooltip(4, event)" />
+                        <circle id="chartDot6" cx="218.3" cy="40" r="3.5" fill="var(--accent)" stroke="#07090f" stroke-width="1.5" class="chart-dot" style="cursor:pointer;" onclick="showChartTooltip(5, event)" />
+                        <circle id="chartDot7" cx="260" cy="20" r="3.5" fill="var(--accent)" stroke="#07090f" stroke-width="1.5" class="chart-dot" style="cursor:pointer;" onclick="showChartTooltip(6, event)" />
+                    </svg>
+                    <div id="chartTooltip" style="position:absolute; display:none; background:rgba(15,23,42,0.95); border:1px solid rgba(250,204,21,0.4); padding:6px 10px; border-radius:8px; font-size:10px; font-weight:800; color:#fff; pointer-events:none; z-index:10; white-space:nowrap; box-shadow:0 4px 12px rgba(0,0,0,0.6);">₹0</div>
+                </div>
+                <div style="display:flex; justify-content:space-between; padding:0 8px; margin-top:8px; font-size:9px; color:var(--text-muted); font-weight:700;">
+                    <span>Mon</span>
+                    <span>Tue</span>
+                    <span>Wed</span>
+                    <span>Thu</span>
+                    <span>Fri</span>
+                    <span>Sat</span>
+                    <span>Sun</span>
+                </div>
             </div>
 
             <!-- Category-wise Earnings Visualizer -->
@@ -1592,6 +1864,45 @@
                 </div>
             </div>
 
+            <!-- Live Payout Tracking Timeline Card -->
+            <div class="milestone-card" id="payoutTimelineCard" style="margin-bottom: 24px; padding: 20px; display: none;">
+                <div class="milestone-title-row" style="margin-bottom: 14px; display:flex; justify-content:space-between; align-items:center; width:100%;">
+                    <div class="milestone-title">
+                        <svg viewBox="0 0 24 24" style="width:16px; height:16px; stroke:var(--accent); fill:none; stroke-width:2;"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                        <span style="text-transform: uppercase; font-weight:700; letter-spacing:0.5px;">Live Payout Tracker</span>
+                    </div>
+                    <span id="payoutTimelineStatus" style="font-size: 9px; font-weight:800; text-transform:uppercase; padding:3px 8px; border-radius:6px; color:#facc15; background:rgba(250,204,21,0.08);">In Progress</span>
+                </div>
+                
+                <div style="position:relative; margin: 18px 0 10px 0; display:flex; justify-content:space-between; align-items:center;">
+                    <div style="position:absolute; top:12px; left:12px; right:12px; height:2px; background:rgba(255,255,255,0.05); z-index:1;"></div>
+                    <div id="timelineProgressLine" style="position:absolute; top:12px; left:12px; width:33%; height:2px; background:var(--accent); z-index:2; transition: width 0.5s ease;"></div>
+                    
+                    <div style="display:flex; flex-direction:column; align-items:center; gap:6px; z-index:3; flex:1;">
+                        <div id="timelineStep1" style="width:24px; height:24px; border-radius:50%; background:var(--accent); border:2px solid var(--accent); color:#000; font-size:10px; font-weight:900; display:flex; align-items:center; justify-content:center; transition: all 0.3s ease;">✓</div>
+                        <span style="font-size:9px; font-weight:700; color:#fff;">Submitted</span>
+                    </div>
+                    <div style="display:flex; flex-direction:column; align-items:center; gap:6px; z-index:3; flex:1;">
+                        <div id="timelineStep2" style="width:24px; height:24px; border-radius:50%; background:#07090f; border:2px solid rgba(255,255,255,0.1); color:var(--text-muted); font-size:10px; font-weight:900; display:flex; align-items:center; justify-content:center; transition: all 0.3s ease;">2</div>
+                        <span id="timelineLabel2" style="font-size:9px; font-weight:600; color:var(--text-muted);">Review</span>
+                    </div>
+                    <div style="display:flex; flex-direction:column; align-items:center; gap:6px; z-index:3; flex:1;">
+                        <div id="timelineStep3" style="width:24px; height:24px; border-radius:50%; background:#07090f; border:2px solid rgba(255,255,255,0.1); color:var(--text-muted); font-size:10px; font-weight:900; display:flex; align-items:center; justify-content:center; transition: all 0.3s ease;">3</div>
+                        <span id="timelineLabel3" style="font-size:9px; font-weight:600; color:var(--text-muted);">Transfer</span>
+                    </div>
+                    <div style="display:flex; flex-direction:column; align-items:center; gap:6px; z-index:3; flex:1;">
+                        <div id="timelineStep4" style="width:24px; height:24px; border-radius:50%; background:#07090f; border:2px solid rgba(255,255,255,0.1); color:var(--text-muted); font-size:10px; font-weight:900; display:flex; align-items:center; justify-content:center; transition: all 0.3s ease;">4</div>
+                        <span id="timelineLabel4" style="font-size:9px; font-weight:600; color:var(--text-muted);">Settled</span>
+                    </div>
+                </div>
+                <p id="timelineDescription" style="font-size: 11px; color: var(--text-muted); text-align: center; margin-top:14px; line-height:1.4;">
+                    EliteX security administrators are verifying your banking credentials and transfer destination.
+                </p>
+                <div style="display:flex; justify-content:center; margin-top:12px; width: 100%;">
+                    <button class="btn-action-royal" id="btnDismissTimeline" onclick="dismissPayoutTimeline()" style="display:none; width:100%; padding:8px; font-size:11px;">Dismiss Timeline</button>
+                </div>
+            </div>
+
             <!-- Transaction History Filter and Search -->
             <div class="tx-list-header">
                 <div class="tx-list-title">Recent Transactions</div>
@@ -1621,7 +1932,7 @@
         </div>
 
         <!-- Future Tab -->
-        <div id="shopSection" class="content-section"><p style="color:var(--text-muted); text-align:center;">Shop integration coming soon...</p></div>
+        <div id="earnSection" class="content-section"><p style="color:var(--text-muted); text-align:center;">Earn section coming soon...</p></div>
 
 
         <!-- Professional Bottom Menu -->
@@ -1662,13 +1973,9 @@
                 <span>Wallet</span>
             </div>
             
-            <div class="menu-item" onclick="switchTab(this, 'shopSection', 'Rewards Shop', 'Redeem your points')">
-                <svg viewBox="0 0 24 24">
-                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
-                    <line x1="3" y1="6" x2="21" y2="6"></line>
-                    <path d="M16 10a4 4 0 0 1-8 0"></path>
-                </svg>
-                <span>Shop</span>
+            <div class="menu-item" onclick="switchTab(this, 'earnSection', 'Elite Earnings', 'Rewards & Bonuses')">
+                <svg viewBox="0 0 24 24" style="fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                <span>Earn</span>
             </div>
             
         </div>
@@ -1750,7 +2057,72 @@
                 <p style="font-size: 13px; color: var(--text-muted); line-height: 1.5; margin-bottom: 24px;">
                     An amount of <strong id="successAddMoneyAmount" style="color:#fff;">₹0</strong> has been successfully added to your Available Balance.
                 </p>
-                <button class="btn-action-premium" onclick="closeAddMoneyModal()" style="width:100%;">Done</button>
+                <button class="btn-action-royal" onclick="closeAddMoneyModal()" style="width:100%;">Done</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- DIGITAL RECEIPT MODAL -->
+    <div class="glass-modal-overlay" id="receiptModal" style="z-index: 10000;">
+        <div class="glass-modal-container" style="max-width: 380px; padding: 24px;">
+            <button class="modal-close-btn" onclick="closeReceiptModal()">
+                <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2.5;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+            
+            <div id="receiptContent" style="display:flex; flex-direction:column; align-items:center;">
+                <div style="font-size: 14px; font-weight:800; color:var(--text-muted); letter-spacing:1px; text-transform:uppercase; margin-bottom:4px;">EliteX Wallet</div>
+                <div style="font-size: 10px; color: var(--text-muted); margin-bottom: 20px;">DIGITAL TRANSACTION RECEIPT</div>
+                
+                <div id="receiptStatusCircle" style="width:48px; height:48px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin-bottom:12px;">
+                    <svg id="receiptStatusCheck" viewBox="0 0 24 24" style="width:24px; height:24px; stroke:#fff; fill:none; stroke-width:3; stroke-linecap:round; stroke-linejoin:round; display:none;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    <svg id="receiptStatusClock" viewBox="0 0 24 24" style="width:24px; height:24px; stroke:#fff; fill:none; stroke-width:3; stroke-linecap:round; stroke-linejoin:round; display:none;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                </div>
+                
+                <div id="receiptAmountVal" style="font-size:28px; font-weight:900; color:#fff; margin-bottom:4px;">₹0.00</div>
+                <span id="receiptStatusBadge" style="font-size:8px; font-weight:800; text-transform:uppercase; padding:3px 8px; border-radius:6px; margin-bottom:24px;">Success</span>
+                
+                <div style="width:100%; display:flex; flex-direction:column; gap:12px; border-top:1px solid rgba(255,255,255,0.06); border-bottom:1px solid rgba(255,255,255,0.06); padding:16px 0; margin-bottom:20px;">
+                    <div style="display:flex; justify-content:space-between; font-size:11px;">
+                        <span style="color:var(--text-muted);">Transaction ID:</span>
+                        <strong id="receiptTxId" style="color:#fff; font-family:monospace;">EX-TXN-10023</strong>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; font-size:11px;">
+                        <span style="color:var(--text-muted);">Date & Time:</span>
+                        <span id="receiptTimestamp" style="color:#fff;">Today, 11:42 AM</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; font-size:11px;">
+                        <span style="color:var(--text-muted);">Partner ID:</span>
+                        <span id="receiptPartnerId" style="color:#fff;">EX-USR-8432</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; font-size:11px;">
+                        <span style="color:var(--text-muted);">Transaction Title:</span>
+                        <span id="receiptTitle" style="color:#fff; text-align:right; max-width:60%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">Campaign Payout</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; font-size:11px;">
+                        <span style="color:var(--text-muted);">Transaction Type:</span>
+                        <span id="receiptType" style="color:#fff; text-transform:uppercase;">CREDIT</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; font-size:11px;">
+                        <span style="color:var(--text-muted);">Payment Channel:</span>
+                        <span id="receiptChannel" style="color:#fff;">UPI Network / Gateway</span>
+                    </div>
+                </div>
+                
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:24px; opacity:0.75;">
+                    <svg viewBox="0 0 24 24" style="width:16px; height:16px; stroke:#22c55e; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    <span style="font-size:9px; color:#22c55e; font-weight:800; letter-spacing:0.5px; text-transform:uppercase;">EliteX Security Verified</span>
+                </div>
+                
+                <div style="display:flex; gap:12px; width:100%;">
+                    <button class="btn-action-royal" onclick="window.printReceipt()" style="flex:1; padding:10px; font-size:11px;">
+                        <svg viewBox="0 0 24 24" style="width:12px; height:12px; stroke:currentColor; fill:none; stroke-width:2.5;"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                        Print
+                    </button>
+                    <button class="btn-action-premium" onclick="window.downloadReceiptPdf()" style="flex:1; padding:10px; font-size:11px;">
+                        <svg viewBox="0 0 24 24" style="width:12px; height:12px; stroke:currentColor; fill:none; stroke-width:2.5;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        Download PDF
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -1830,7 +2202,7 @@
                 <p style="font-size: 13px; color: var(--text-muted); line-height: 1.5; margin-bottom: 24px;">
                     Your request to withdraw <strong id="successWithdrawAmount" style="color:#fff;">₹0</strong> has been submitted. Funds will be deposited in 2-4 hours.
                 </p>
-                <button class="btn-action-premium" onclick="closeWithdrawModal()" style="width:100%;">Done</button>
+                <button class="btn-action-royal" onclick="closeWithdrawModal()" style="width:100%;">Done</button>
             </div>
         </div>
     </div>
@@ -1917,6 +2289,17 @@
         let completedVideosCount = 5;
         let completedSalesCount = 2;
         let salaryClaimedThisMonth = false;
+        
+        let maxVideoViews = 45000;
+        let videoBonusClaimed = false;
+        let salesBonusClaimed = false;
+        let viewsBonusClaimed = false;
+
+        let creatorTier = 'Gold';
+        let streakCount = 2;
+        let lastCheckInDate = '';
+        let activeWithdrawalPending = false;
+        let payoutTrackingState = 2;
 
         function loadUserSession() {
             let session = localStorage.getItem('eliteX_user_session');
@@ -1929,6 +2312,18 @@
                 completedVideosCount = (data.completedVideosCount !== undefined && data.completedVideosCount !== null) ? parseInt(data.completedVideosCount) : 5;
                 completedSalesCount = (data.completedSalesCount !== undefined && data.completedSalesCount !== null) ? parseInt(data.completedSalesCount) : 2;
                 salaryClaimedThisMonth = data.salaryClaimedThisMonth === true;
+                
+                maxVideoViews = (data.maxVideoViews !== undefined && data.maxVideoViews !== null) ? parseInt(data.maxVideoViews) : 45000;
+                videoBonusClaimed = data.videoBonusClaimed === true;
+                salesBonusClaimed = data.salesBonusClaimed === true;
+                viewsBonusClaimed = data.viewsBonusClaimed === true;
+
+                creatorTier = data.creatorTier || 'Gold';
+                streakCount = data.streakCount !== undefined ? parseInt(data.streakCount) : 2;
+                lastCheckInDate = data.lastCheckInDate || '';
+                activeWithdrawalPending = data.activeWithdrawalPending === true;
+                payoutTrackingState = data.payoutTrackingState !== undefined ? parseInt(data.payoutTrackingState) : 2;
+                
                 partnerId = data.partnerId || generateRandomPartnerId();
                 cardNumber = data.cardNumber || generateRandomCardNumber();
                 cardSecurityCode = data.cardSecurityCode || generateRandomSecurityCode();
@@ -1941,6 +2336,15 @@
                 completedVideosCount = 5;
                 completedSalesCount = 2;
                 salaryClaimedThisMonth = false;
+                maxVideoViews = 45000;
+                videoBonusClaimed = false;
+                salesBonusClaimed = false;
+                viewsBonusClaimed = false;
+                creatorTier = 'Gold';
+                streakCount = 2;
+                lastCheckInDate = '';
+                activeWithdrawalPending = false;
+                payoutTrackingState = 2;
             }
         }
 
@@ -1953,6 +2357,15 @@
                 completedVideosCount: completedVideosCount,
                 completedSalesCount: completedSalesCount,
                 salaryClaimedThisMonth: salaryClaimedThisMonth,
+                maxVideoViews: maxVideoViews,
+                videoBonusClaimed: videoBonusClaimed,
+                salesBonusClaimed: salesBonusClaimed,
+                viewsBonusClaimed: viewsBonusClaimed,
+                creatorTier: creatorTier,
+                streakCount: streakCount,
+                lastCheckInDate: lastCheckInDate,
+                activeWithdrawalPending: activeWithdrawalPending,
+                payoutTrackingState: payoutTrackingState,
                 partnerId: partnerId,
                 cardNumber: cardNumber,
                 cardSecurityCode: cardSecurityCode,
@@ -1977,6 +2390,11 @@
             cardSecurityCode = generateRandomSecurityCode();
             firstWithdrawalCompleted = false;
             cardDetailsHidden = true;
+            creatorTier = 'Gold';
+            streakCount = 2;
+            lastCheckInDate = '';
+            activeWithdrawalPending = false;
+            payoutTrackingState = 2;
             
             saveUserSession();
             
@@ -2403,6 +2821,21 @@
 
             // Update Elite Creator Salary Program progress tracker
             updateSalaryProgramUI();
+
+            // Update VIP Creator Achievement Bonuses progress tracker
+            updateAchievementMilestonesUI();
+
+            // Update Creator Tier rank & Perks
+            updateCreatorTierUI();
+
+            // Update Daily check-in streaks
+            updateCreatorStreakUI();
+
+            // Update Weekly earnings trend spline chart
+            updateSplineChartUI();
+
+            // Update Payout processing timeline
+            updatePayoutTimelineUI();
         }
 
         function updateSalaryProgramUI() {
@@ -2510,6 +2943,613 @@
             alert("Success! Your fixed Monthly Career Salary has been claimed and credited to your available balance. Next check unlocks in 30 days!");
         };
 
+        function updateAchievementMilestonesUI() {
+            const videoTarget = 30;
+            const salesTarget = 6;
+            const viewsTarget = 100000;
+            
+            // Calculate progress percentages
+            const videoPercent = Math.min((completedVideosCount / videoTarget) * 100, 100);
+            const salesPercent = Math.min((completedSalesCount / salesTarget) * 100, 100);
+            const viewsPercent = Math.min((maxVideoViews / viewsTarget) * 100, 100);
+            
+            // Circular progress stroke calculation
+            const circumference = 213.63; // 2 * pi * r (r=34)
+            const videoOffset = circumference - (videoPercent / 100) * circumference;
+            const salesOffset = circumference - (salesPercent / 100) * circumference;
+            const viewsOffset = circumference - (viewsPercent / 100) * circumference;
+            
+            // DOM SVG fills
+            const videoBar = document.getElementById('circleVideosBar');
+            const salesBar = document.getElementById('circleSalesBar');
+            const viewsBar = document.getElementById('circleViewsBar');
+            
+            if (videoBar) {
+                videoBar.style.strokeDashoffset = videoOffset;
+                videoBar.style.stroke = videoPercent >= 100 ? '#4ade80' : 'var(--accent)';
+            }
+            if (salesBar) {
+                salesBar.style.strokeDashoffset = salesOffset;
+                salesBar.style.stroke = salesPercent >= 100 ? '#4ade80' : 'var(--accent)';
+            }
+            if (viewsBar) {
+                viewsBar.style.strokeDashoffset = viewsOffset;
+                viewsBar.style.stroke = viewsPercent >= 100 ? '#4ade80' : 'var(--accent)';
+            }
+            
+            // Percent text inside circles
+            const videoPctText = document.getElementById('circleVideosPercent');
+            const salesPctText = document.getElementById('circleSalesPercent');
+            const viewsPctText = document.getElementById('circleViewsPercent');
+            
+            if (videoPctText) videoPctText.innerText = `${Math.floor(videoPercent)}%`;
+            if (salesPctText) salesPctText.innerText = `${Math.floor(salesPercent)}%`;
+            if (viewsPctText) viewsPctText.innerText = `${Math.floor(viewsPercent)}%`;
+            
+            // Status descriptions below circles
+            const videoStatus = document.getElementById('circleVideosStatus');
+            const salesStatus = document.getElementById('circleSalesStatus');
+            const viewsStatus = document.getElementById('circleViewsStatus');
+            
+            if (videoStatus) videoStatus.innerText = `${completedVideosCount}/${videoTarget}`;
+            if (salesStatus) salesStatus.innerText = `${completedSalesCount}/${salesTarget}`;
+            if (viewsStatus) viewsStatus.innerText = `${Math.floor(maxVideoViews / 1000)}K/${viewsTarget / 1000}K`;
+            
+            // Toggle Claim Badges and Success Icons
+            const videoBadge = document.getElementById('circleVideosBadge');
+            const videoCheck = document.getElementById('circleVideosClaimedCheck');
+            if (completedVideosCount >= videoTarget) {
+                if (videoBonusClaimed) {
+                    if (videoBadge) videoBadge.style.display = 'none';
+                    if (videoCheck) videoCheck.style.display = 'flex';
+                } else {
+                    if (videoBadge) videoBadge.style.display = 'block';
+                    if (videoCheck) videoCheck.style.display = 'none';
+                }
+            } else {
+                if (videoBadge) videoBadge.style.display = 'none';
+                if (videoCheck) videoCheck.style.display = 'none';
+            }
+            
+            const salesBadge = document.getElementById('circleSalesBadge');
+            const salesCheck = document.getElementById('circleSalesClaimedCheck');
+            if (completedSalesCount >= salesTarget) {
+                if (salesBonusClaimed) {
+                    if (salesBadge) salesBadge.style.display = 'none';
+                    if (salesCheck) salesCheck.style.display = 'flex';
+                } else {
+                    if (salesBadge) salesBadge.style.display = 'block';
+                    if (salesCheck) salesCheck.style.display = 'none';
+                }
+            } else {
+                if (salesBadge) salesBadge.style.display = 'none';
+                if (salesCheck) salesCheck.style.display = 'none';
+            }
+            
+            const viewsBadge = document.getElementById('circleViewsBadge');
+            const viewsCheck = document.getElementById('circleViewsClaimedCheck');
+            if (maxVideoViews >= viewsTarget) {
+                if (viewsBonusClaimed) {
+                    if (viewsBadge) viewsBadge.style.display = 'none';
+                    if (viewsCheck) viewsCheck.style.display = 'flex';
+                } else {
+                    if (viewsBadge) viewsBadge.style.display = 'block';
+                    if (viewsCheck) viewsCheck.style.display = 'none';
+                }
+            } else {
+                if (viewsBadge) viewsBadge.style.display = 'none';
+                if (viewsCheck) viewsCheck.style.display = 'none';
+            }
+        }
+
+        window.handleCircleMilestoneClick = function(type) {
+            if (type === 'video') {
+                if (completedVideosCount >= 30) {
+                    if (videoBonusClaimed) {
+                        alert("Video Creator Milestone bonus has already been claimed!");
+                    } else {
+                        claimVideosBonus();
+                    }
+                } else {
+                    alert(`Video Milestone Locked. Need ${30 - completedVideosCount} more video submissions to unlock!`);
+                }
+            } else if (type === 'sales') {
+                if (completedSalesCount >= 6) {
+                    if (salesBonusClaimed) {
+                        alert("Sales Conversion Milestone bonus has already been claimed!");
+                    } else {
+                        claimSalesBonus();
+                    }
+                } else {
+                    alert(`Sales Milestone Locked. Need ${6 - completedSalesCount} more campaign sales to unlock!`);
+                }
+            } else if (type === 'views') {
+                if (maxVideoViews >= 100000) {
+                    if (viewsBonusClaimed) {
+                        alert("Video Views Milestone bonus has already been claimed!");
+                    } else {
+                        claimViewsBonus();
+                    }
+                } else {
+                    alert(`Views Milestone Locked. Need ${(100000 - maxVideoViews).toLocaleString('en-IN')} more single-video views to unlock!`);
+                }
+            }
+        };
+
+        window.claimVideosBonus = function() {
+            if (videoBonusClaimed) return;
+            
+            availableBalance += 50;
+            videoBonusClaimed = true;
+            saveUserSession();
+            
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            transactions.unshift({
+                id: transactions.length + 1,
+                title: '30 Video Milestone Reward',
+                amount: 50,
+                date: `Today, ${timeStr}`,
+                type: 'credit',
+                status: 'completed'
+            });
+            
+            updateWalletUI();
+            updateCardVisibilityUI();
+            updateMilestoneUI();
+            renderTransactions();
+            
+            alert("Success! Your ₹50 Video Milestone reward bonus has been claimed and credited to your Available balance!");
+        };
+
+        window.claimSalesBonus = function() {
+            if (salesBonusClaimed) return;
+            
+            availableBalance += 100;
+            salesBonusClaimed = true;
+            saveUserSession();
+            
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            transactions.unshift({
+                id: transactions.length + 1,
+                title: '6 Sales Milestone Reward',
+                amount: 100,
+                date: `Today, ${timeStr}`,
+                type: 'credit',
+                status: 'completed'
+            });
+            
+            updateWalletUI();
+            updateCardVisibilityUI();
+            updateMilestoneUI();
+            renderTransactions();
+            
+            alert("Success! Your ₹100 Sales Milestone reward bonus has been claimed and credited to your Available balance!");
+        };
+
+        window.claimViewsBonus = function() {
+            if (viewsBonusClaimed) return;
+            
+            availableBalance += 30;
+            viewsBonusClaimed = true;
+            saveUserSession();
+            
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            transactions.unshift({
+                id: transactions.length + 1,
+                title: '100K Views Milestone Reward',
+                amount: 30,
+                date: `Today, ${timeStr}`,
+                type: 'credit',
+                status: 'completed'
+            });
+            
+            updateWalletUI();
+            updateCardVisibilityUI();
+            updateMilestoneUI();
+            renderTransactions();
+            
+            alert("Success! Your ₹30 Single-Video Views Milestone reward bonus has been claimed and credited to your Available balance!");
+        };
+
+        function updateCreatorTierUI() {
+            const emblem = document.getElementById('cardTierEmblem');
+            const perksText = document.getElementById('perksLevelText');
+            const speedText = document.getElementById('perksSpeedText');
+            const boostText = document.getElementById('perksBoostText');
+            const nextProgress = document.getElementById('perksNextLevelProgress');
+
+            if (emblem) {
+                emblem.innerText = `${creatorTier} Tier`;
+                if (creatorTier.toLowerCase() === 'bronze') {
+                    emblem.style.color = '#cd7f32';
+                    emblem.style.borderColor = 'rgba(205, 127, 50, 0.4)';
+                    emblem.style.boxShadow = '0 0 8px rgba(205, 127, 50, 0.15)';
+                } else if (creatorTier.toLowerCase() === 'gold') {
+                    emblem.style.color = 'var(--accent)';
+                    emblem.style.borderColor = 'rgba(250, 204, 21, 0.4)';
+                    emblem.style.boxShadow = '0 0 10px var(--accent-glow)';
+                } else if (creatorTier.toLowerCase() === 'diamond') {
+                    emblem.style.color = '#38bdf8';
+                    emblem.style.borderColor = 'rgba(56, 189, 248, 0.4)';
+                    emblem.style.boxShadow = '0 0 12px rgba(56, 189, 248, 0.3)';
+                }
+            }
+
+            if (perksText) {
+                perksText.innerText = `${creatorTier} Star Creator`;
+                if (creatorTier.toLowerCase() === 'bronze') perksText.style.color = '#cd7f32';
+                else if (creatorTier.toLowerCase() === 'gold') perksText.style.color = 'var(--accent)';
+                else if (creatorTier.toLowerCase() === 'diamond') perksText.style.color = '#38bdf8';
+            }
+
+            if (speedText) {
+                if (creatorTier.toLowerCase() === 'bronze') speedText.innerText = 'Standard (12-24 Hours)';
+                else if (creatorTier.toLowerCase() === 'gold') speedText.innerText = 'Priority (2-4 Hours)';
+                else if (creatorTier.toLowerCase() === 'diamond') speedText.innerText = 'Instant Transfer';
+            }
+
+            if (boostText) {
+                if (creatorTier.toLowerCase() === 'diamond') {
+                    boostText.innerText = '1.5x Rate';
+                } else {
+                    boostText.innerText = streakCount >= 1 ? '1.2x Rate (Streak Boost)' : '1.0x Rate';
+                }
+            }
+
+            if (nextProgress) {
+                if (creatorTier.toLowerCase() === 'bronze') {
+                    nextProgress.innerText = `Next Level (Gold): Submit ${Math.max(0, 30 - completedVideosCount)} more video reviews & complete ${Math.max(0, 10 - completedSalesCount)} more sales.`;
+                } else if (creatorTier.toLowerCase() === 'gold') {
+                    nextProgress.innerText = `Next Level (Diamond): Submit ${Math.max(0, 50 - completedVideosCount)} more video reviews & complete ${Math.max(0, 20 - completedSalesCount)} more sales.`;
+                } else if (creatorTier.toLowerCase() === 'diamond') {
+                    nextProgress.innerText = '✓ Maximum Creator Level Achieved! Premium perks fully active.';
+                }
+            }
+        }
+
+        function updateCreatorStreakUI() {
+            for (let i = 1; i <= 5; i++) {
+                const dot = document.getElementById(`streakDay${i}`);
+                if (dot) {
+                    if (i <= streakCount) {
+                        dot.style.background = 'var(--accent)';
+                        dot.style.borderColor = 'var(--accent)';
+                        dot.style.color = '#000';
+                        dot.innerText = '✓';
+                    } else {
+                        dot.style.background = 'transparent';
+                        dot.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                        dot.style.color = 'var(--text-muted)';
+                        dot.innerText = i;
+                    }
+                }
+            }
+
+            const badge = document.getElementById('streakBoostBadge');
+            if (badge) {
+                if (streakCount >= 1) {
+                    badge.style.display = 'inline-block';
+                    badge.innerText = '1.2x Boost Active';
+                } else {
+                    badge.style.display = 'none';
+                }
+            }
+
+            const btn = document.getElementById('btnCheckIn');
+            if (btn) {
+                const todayStr = new Date().toDateString();
+                if (lastCheckInDate === todayStr) {
+                    btn.disabled = true;
+                    btn.innerText = '✓ Checked-In Today';
+                    btn.style.background = 'rgba(255,255,255,0.04)';
+                    btn.style.color = 'var(--text-muted)';
+                    btn.style.borderColor = 'var(--surface-border)';
+                } else {
+                    btn.disabled = false;
+                    btn.innerText = "Claim Today's Check-In";
+                    btn.style.background = '';
+                    btn.style.color = '';
+                    btn.style.borderColor = '';
+                }
+            }
+        }
+
+        window.handleStreakCheckIn = function() {
+            const todayStr = new Date().toDateString();
+            if (lastCheckInDate === todayStr) {
+                alert("You have already checked-in today! Come back tomorrow.");
+                return;
+            }
+
+            streakCount++;
+            if (streakCount > 5) {
+                streakCount = 1;
+            }
+            lastCheckInDate = todayStr;
+            saveUserSession();
+
+            updateCreatorStreakUI();
+            updateCreatorTierUI();
+
+            alert(`Streak Checked In! Day ${streakCount} completed. Keep it up!`);
+        };
+
+        let weeklyEarnings = [450, 600, 150, 900, 1200, 800, 1500];
+
+        function updateSplineChartUI() {
+            const xCoords = [10, 51.6, 93.3, 135, 176.6, 218.3, 260];
+            const maxVal = Math.max(...weeklyEarnings, 500);
+            
+            const yCoords = weeklyEarnings.map(val => {
+                return 90 - (val / maxVal) * 70;
+            });
+            
+            let pathD = `M ${xCoords[0]} ${yCoords[0]}`;
+            for (let i = 0; i < xCoords.length - 1; i++) {
+                const xc = (xCoords[i] + xCoords[i+1]) / 2;
+                const yc = (yCoords[i] + yCoords[i+1]) / 2;
+                pathD += ` Q ${xCoords[i]} ${yCoords[i]} ${xc} ${yc}`;
+            }
+            pathD += ` L ${xCoords[xCoords.length - 1]} ${yCoords[yCoords.length - 1]}`;
+            
+            const strokePathEl = document.getElementById('chartSplineStroke');
+            if (strokePathEl) strokePathEl.setAttribute('d', pathD);
+            
+            const fillPathD = pathD + ` L 260 95 L 10 95 Z`;
+            const fillPathEl = document.getElementById('chartSplineFill');
+            if (fillPathEl) fillPathEl.setAttribute('d', fillPathD);
+            
+            for (let i = 0; i < xCoords.length; i++) {
+                const dot = document.getElementById(`chartDot${i+1}`);
+                if (dot) {
+                    dot.setAttribute('cx', xCoords[i]);
+                    dot.setAttribute('cy', yCoords[i]);
+                }
+            }
+            
+            const total = weeklyEarnings.reduce((a, b) => a + b, 0);
+            const totalLabel = document.getElementById('chartTotalEarnings');
+            if (totalLabel) totalLabel.innerText = `Total: ₹${total.toLocaleString('en-IN')}`;
+        }
+        
+        window.showChartTooltip = function(index, event) {
+            const tooltip = document.getElementById('chartTooltip');
+            if (!tooltip) return;
+            
+            const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+            const val = weeklyEarnings[index];
+            tooltip.innerHTML = `<span style="color:var(--accent); font-weight:800;">${days[index]}</span><br>₹${val}`;
+            
+            tooltip.style.display = 'block';
+            
+            const dot = event.currentTarget;
+            const cx = parseFloat(dot.getAttribute('cx'));
+            const cy = parseFloat(dot.getAttribute('cy'));
+            
+            tooltip.style.left = `${cx - 40}px`;
+            tooltip.style.top = `${cy - 40}px`;
+            
+            setTimeout(() => {
+                tooltip.style.display = 'none';
+            }, 3000);
+        };
+
+        function updatePayoutTimelineUI() {
+            const card = document.getElementById('payoutTimelineCard');
+            if (!card) return;
+            
+            if (!activeWithdrawalPending) {
+                card.style.display = 'none';
+                return;
+            }
+            
+            card.style.display = 'block';
+            
+            const line = document.getElementById('timelineProgressLine');
+            const step2 = document.getElementById('timelineStep2');
+            const step3 = document.getElementById('timelineStep3');
+            const step4 = document.getElementById('timelineStep4');
+            
+            const label2 = document.getElementById('timelineLabel2');
+            const label3 = document.getElementById('timelineLabel3');
+            const label4 = document.getElementById('timelineLabel4');
+            
+            const statusBadge = document.getElementById('payoutTimelineStatus');
+            const desc = document.getElementById('timelineDescription');
+            const dismissBtn = document.getElementById('btnDismissTimeline');
+            
+            if (!line || !step2 || !step3 || !step4) return;
+            
+            step2.style.background = '#07090f';
+            step2.style.borderColor = 'rgba(255,255,255,0.1)';
+            step2.style.color = 'var(--text-muted)';
+            step2.innerText = '2';
+            step2.style.boxShadow = '';
+            label2.style.color = 'var(--text-muted)';
+            
+            step3.style.background = '#07090f';
+            step3.style.borderColor = 'rgba(255,255,255,0.1)';
+            step3.style.color = 'var(--text-muted)';
+            step3.innerText = '3';
+            step3.style.boxShadow = '';
+            label3.style.color = 'var(--text-muted)';
+            
+            step4.style.background = '#07090f';
+            step4.style.borderColor = 'rgba(255,255,255,0.1)';
+            step4.style.color = 'var(--text-muted)';
+            step4.innerText = '4';
+            step4.style.boxShadow = '';
+            label4.style.color = 'var(--text-muted)';
+            
+            dismissBtn.style.display = 'none';
+            statusBadge.innerText = 'In Progress';
+            statusBadge.style.color = '#facc15';
+            statusBadge.style.background = 'rgba(250,204,21,0.08)';
+            
+            if (payoutTrackingState === 1) {
+                line.style.width = '0%';
+                desc.innerText = 'Your withdrawal request is in queue and awaiting security verification.';
+            } else if (payoutTrackingState === 2) {
+                line.style.width = '33%';
+                step2.style.borderColor = 'var(--accent)';
+                step2.style.color = 'var(--accent)';
+                step2.style.boxShadow = '0 0 10px var(--accent-glow)';
+                step2.innerText = '●';
+                label2.style.color = '#fff';
+                desc.innerText = 'EliteX security administrators are verifying your banking credentials and transfer destination.';
+            } else if (payoutTrackingState === 3) {
+                line.style.width = '66%';
+                
+                step2.style.background = 'var(--accent)';
+                step2.style.borderColor = 'var(--accent)';
+                step2.style.color = '#000';
+                step2.innerText = '✓';
+                label2.style.color = '#fff';
+                
+                step3.style.borderColor = 'var(--accent)';
+                step3.style.color = 'var(--accent)';
+                step3.style.boxShadow = '0 0 10px var(--accent-glow)';
+                step3.innerText = '●';
+                label3.style.color = '#fff';
+                desc.innerText = 'Clearance approved. Funds have been queued for direct UPI/IMPS bank transfer.';
+            } else if (payoutTrackingState === 4) {
+                line.style.width = '100%';
+                
+                step2.style.background = 'var(--accent)';
+                step2.style.borderColor = 'var(--accent)';
+                step2.style.color = '#000';
+                step2.innerText = '✓';
+                label2.style.color = '#fff';
+                
+                step3.style.background = 'var(--accent)';
+                step3.style.borderColor = 'var(--accent)';
+                step3.style.color = '#000';
+                step3.innerText = '✓';
+                label3.style.color = '#fff';
+                
+                step4.style.background = '#22c55e';
+                step4.style.borderColor = '#22c55e';
+                step4.style.color = '#fff';
+                step4.innerText = '✓';
+                label4.style.color = '#fff';
+                
+                statusBadge.innerText = 'Settled';
+                statusBadge.style.color = '#22c55e';
+                statusBadge.style.background = 'rgba(34,197,94,0.08)';
+                desc.innerText = '✓ Payout successfully settled. Funds deposited into your linked account.';
+                dismissBtn.style.display = 'block';
+            }
+        }
+        
+        window.dismissPayoutTimeline = function() {
+            activeWithdrawalPending = false;
+            saveUserSession();
+            updatePayoutTimelineUI();
+        };
+
+        let activeReceiptTxId = null;
+
+        window.openReceiptModal = function(txId) {
+            const tx = transactions.find(t => t.id === txId);
+            if (!tx) return;
+            
+            activeReceiptTxId = txId;
+            
+            const modal = document.getElementById('receiptModal');
+            const amtVal = document.getElementById('receiptAmountVal');
+            const statusBadge = document.getElementById('receiptStatusBadge');
+            const txIdEl = document.getElementById('receiptTxId');
+            const timestampEl = document.getElementById('receiptTimestamp');
+            const partnerIdEl = document.getElementById('receiptPartnerId');
+            const titleEl = document.getElementById('receiptTitle');
+            const typeEl = document.getElementById('receiptType');
+            const channelEl = document.getElementById('receiptChannel');
+            
+            const circle = document.getElementById('receiptStatusCircle');
+            const check = document.getElementById('receiptStatusCheck');
+            const clock = document.getElementById('receiptStatusClock');
+            
+            if (!modal) return;
+            
+            const isCredit = tx.type === 'credit';
+            amtVal.innerText = `${isCredit ? '+' : '-'} ₹${Math.abs(tx.amount).toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
+            amtVal.style.color = isCredit ? '#4ade80' : '#ef4444';
+            
+            txIdEl.innerText = `EX-TXN-${100000 + tx.id}`;
+            timestampEl.innerText = tx.date;
+            partnerIdEl.innerText = partnerId;
+            titleEl.innerText = tx.title;
+            typeEl.innerText = tx.type;
+            
+            if (tx.title.toLowerCase().includes('google pay') || tx.title.toLowerCase().includes('gpay')) {
+                channelEl.innerText = 'UPI / Google Pay';
+            } else if (tx.title.toLowerCase().includes('phonepe')) {
+                channelEl.innerText = 'UPI / PhonePe';
+            } else if (tx.title.toLowerCase().includes('paytm')) {
+                channelEl.innerText = 'UPI / Paytm';
+            } else if (tx.title.toLowerCase().includes('withdrawal') || tx.title.toLowerCase().includes('payout')) {
+                channelEl.innerText = 'Bank / IMPS Settlement';
+            } else {
+                channelEl.innerText = 'EliteX Internal System';
+            }
+            
+            if (tx.status === 'completed') {
+                statusBadge.innerText = 'Success';
+                statusBadge.style.color = '#fff';
+                statusBadge.style.background = '#22c55e';
+                
+                circle.style.background = 'rgba(34, 197, 94, 0.15)';
+                circle.style.borderColor = '#22c55e';
+                circle.style.borderStyle = 'solid';
+                circle.style.borderWidth = '2px';
+                
+                check.style.display = 'block';
+                clock.style.display = 'none';
+            } else {
+                statusBadge.innerText = tx.status;
+                statusBadge.style.color = '#000';
+                statusBadge.style.background = '#facc15';
+                
+                circle.style.background = 'rgba(250, 204, 21, 0.15)';
+                circle.style.borderColor = '#facc15';
+                circle.style.borderStyle = 'solid';
+                circle.style.borderWidth = '2px';
+                
+                check.style.display = 'none';
+                clock.style.display = 'block';
+            }
+            
+            modal.classList.add('active');
+        };
+        
+        window.closeReceiptModal = function() {
+            const modal = document.getElementById('receiptModal');
+            if (modal) modal.classList.remove('active');
+        };
+        
+        window.printReceipt = function() {
+            window.print();
+        };
+        
+        window.downloadReceiptPdf = function() {
+            const btn = event.currentTarget;
+            const originalText = btn.innerText;
+            btn.innerText = "Downloading...";
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                btn.innerText = "Downloaded ✓";
+                alert(`Receipt for EX-TXN-${100000 + activeReceiptTxId} has been simulated and saved to downloads directory!`);
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.disabled = false;
+                }, 1500);
+            }, 1200);
+        };
+
         function renderTransactions() {
             const listContainer = document.getElementById('txListContainer');
             if (!listContainer) return;
@@ -2552,7 +3592,7 @@
                 const badgeBorder = tx.status === 'completed' ? 'rgba(74, 222, 128, 0.15)' : 'rgba(250, 204, 21, 0.15)';
                 
                 const html = `
-                    <div class="tx-item">
+                    <div class="tx-item" onclick="openReceiptModal(${tx.id})" style="cursor:pointer;" title="Click to view digital receipt">
                         <div class="tx-left">
                             <div class="tx-icon" style="${!isCredit ? 'background: rgba(255, 255, 255, 0.05); border-color: var(--surface-border); color: var(--text-muted);' : ''}">
                                 ${iconSvg}
@@ -2633,6 +3673,8 @@
                 if (!firstWithdrawalCompleted) {
                     firstWithdrawalCompleted = true;
                 }
+                activeWithdrawalPending = true;
+                payoutTrackingState = 2; // Default to Reviewing step
                 saveUserSession();
                 
                 const now = new Date();
