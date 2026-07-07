@@ -3,1159 +3,2825 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Elite X — Ads Dashboard</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    <link rel="stylesheet" href="style.css">
+    <title>EliteX - Professional Portal</title>
     <style>
-        /* Table overrides to fit Meta Ads theme */
-        .admin-table th, .admin-table td {
-            padding: 14px 12px;
-            vertical-align: middle;
+        :root {
+            /* Professional Dark Palette with Yellow/Gold Theme */
+            --bg-dark: #07090f; 
+            --surface: rgba(30, 41, 59, 0.4); 
+            --surface-border: rgba(255, 255, 255, 0.06);
+            --accent: #facc15; 
+            --accent-glow: rgba(250, 204, 21, 0.4);
+            --text-main: #f8fafc;
+            --text-muted: #64748b; 
         }
 
-        .chart-tabs {
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+
+        body { 
+            background-color: var(--bg-dark); 
+            background-image: radial-gradient(circle at top right, rgba(250, 204, 21, 0.1), transparent 40%);
+            color: var(--text-main); 
+            display: flex; 
+            justify-content: center; 
+            min-height: 100vh; 
+            position: relative; 
+        }
+
+        .glass-panel { 
+            background: var(--surface); 
+            backdrop-filter: blur(16px); 
+            -webkit-backdrop-filter: blur(16px); 
+            border: 1px solid var(--surface-border); 
+            border-radius: 20px; 
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .mobile-container { 
+            width: 100%; 
+            max-width: 800px; 
+            height: 100vh; 
+            position: relative; 
+            overflow-y: auto; 
+            padding: 0 20px 110px 20px; 
+            display: block; 
+            margin: 0 auto; 
+        }
+        
+        /* Top Navigation Bar */
+        .top-bar {
+            position: sticky;
+            top: 0;
+            margin: 0 -20px 24px -20px; 
+            padding: 16px 20px;
+            background: rgba(7, 9, 15, 0.85); 
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-bottom: 1px solid var(--surface-border);
             display: flex;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid var(--card-border);
-            padding: 3px;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .top-bar-left, .top-bar-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .top-icon {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-main);
+            transition: 0.3s ease;
+        }
+
+        .top-icon:hover { color: var(--accent); }
+
+        .top-icon svg {
+            width: 24px;
+            height: 24px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2.2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .notification-wrapper { position: relative; }
+        .notification-dot {
+            position: absolute;
+            top: -2px;
+            right: 0px;
+            width: 8px;
+            height: 8px;
+            background-color: #ef4444; 
+            border-radius: 50%;
+            border: 2px solid #07090f;
+        }
+
+        .profile-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--surface);
+            border: 1px solid var(--surface-border);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+
+        .profile-avatar:hover { border-color: var(--accent); }
+
+        .profile-avatar svg {
+            width: 16px;
+            height: 16px;
+            fill: none;
+            stroke: var(--text-main);
+            stroke-width: 2;
+        }
+
+        .app-brand {
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            color: var(--text-main);
+        }
+        .app-brand span { color: var(--accent); }
+
+        h2 { font-weight: 700; font-size: 24px; letter-spacing: -0.03em; margin-bottom: 24px; }
+        
+        /* Stats Grid (Home Section) */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr; 
+            gap: 16px;
+        }
+
+        .stat-card { 
+            padding: 24px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .stat-value { font-size: 28px; font-weight: 800; color: #fff; text-shadow: 0 0 20px var(--accent-glow); }
+
+        /* Campaigns Section Styles */
+        .campaign-card {
+            padding: 20px;
+            margin-bottom: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .campaign-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .campaign-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .campaign-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .campaign-desc {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-badge.active { background: rgba(74, 222, 128, 0.1); color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.2); }
+        .status-badge.new { background: rgba(250, 204, 21, 0.1); color: var(--accent); border: 1px solid rgba(250, 204, 21, 0.2); }
+        .status-badge.urgent { background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2); }
+        .status-badge.premium { background: rgba(168, 85, 247, 0.1); color: #a855f7; border: 1px solid rgba(168, 85, 247, 0.2); }
+
+        .campaign-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 8px;
+            padding-top: 12px;
+            border-top: 1px solid var(--surface-border);
+        }
+
+        .campaign-reward {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .btn-action {
+            background: var(--accent);
+            color: #07090f;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+
+        .btn-action:hover {
+            box-shadow: 0 0 15px var(--accent-glow);
+            transform: scale(1.02);
+        }
+
+        /* --- NEW: Wallet Section Styles --- */
+        /* Perspective Container for 3D Card */
+        .card-perspective {
+            perspective: 1000px;
+            margin-bottom: 24px;
+            width: 100%;
+        }
+
+        .credit-card-3d {
+            width: 100%;
+            height: 210px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+
+        .credit-card-3d.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 24px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(250, 204, 21, 0.25);
+            background: linear-gradient(135deg, #101624 0%, #080c14 100%);
+            overflow: hidden;
+        }
+
+        /* Glass Glow Overlay on the Card */
+        .card-face::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(250, 204, 21, 0.08) 0%, transparent 60%);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .card-front-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+            position: relative;
+            z-index: 2;
+        }
+
+        .card-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-chip {
+            width: 42px;
+            height: 32px;
+            background: linear-gradient(135deg, #fde047 0%, #ca8a04 100%);
             border-radius: 8px;
+            position: relative;
+            box-shadow: 0 2px 8px rgba(250, 204, 21, 0.4);
+            overflow: hidden;
+        }
+
+        /* Chip Details Lines */
+        .card-chip::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border: 1px solid rgba(0, 0, 0, 0.15);
+            background-image: 
+                linear-gradient(90deg, transparent 45%, rgba(0,0,0,0.15) 45%, rgba(0,0,0,0.15) 55%, transparent 55%),
+                linear-gradient(0deg, transparent 45%, rgba(0,0,0,0.15) 45%, rgba(0,0,0,0.15) 55%, transparent 55%);
+        }
+
+        .card-brand-label {
+            font-size: 16px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255,255,255,0.2);
+        }
+        .card-brand-label span { color: var(--accent); }
+
+        .card-number {
+            font-size: 20px;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            color: #fff;
+            letter-spacing: 3px;
+            word-spacing: 5px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+            margin: 12px 0;
+        }
+
+        .card-meta-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .card-meta-item {
+            display: flex;
+            flex-direction: column;
             gap: 2px;
         }
 
-        .chart-tab {
-            background: transparent;
-            border: none;
-            color: var(--text-secondary);
-            font-size: 0.8rem;
+        .card-meta-label {
+            font-size: 9px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .card-meta-val {
+            font-size: 13px;
             font-weight: 600;
-            padding: 6px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.2s;
+            color: #f8fafc;
+            letter-spacing: 0.5px;
         }
 
-        .chart-tab:hover {
-            color: var(--text-primary);
-        }
-
-        .chart-tab.active {
-            background: rgba(255, 255, 255, 0.08);
-            color: var(--text-primary);
-        }
-
-        /* Responsive Campaign Ad Row Card */
-        .ad-row-card {
-            padding: 14px 16px;
+        .credit-card-back {
+            transform: rotateY(180deg);
+            background: linear-gradient(135deg, #090e1a 0%, #03050a 100%);
+            border: 1px solid rgba(250, 204, 21, 0.15);
+            padding: 20px 0;
             display: flex;
             flex-direction: column;
-            align-items: stretch;
-            gap: 0px;
-            border: 1px solid var(--card-border) !important;
-            transition: border-color 0.2s;
-            border-radius: 12px;
-            background: rgba(255, 255, 255, 0.01);
-        }
-        
-        .campaign-progress-steps span.active {
-            color: #a78bfa !important;
-        }
-        .campaign-progress-steps span.approved {
-            color: #10b981 !important;
-        }
-        .campaign-progress-steps span.rejected {
-            color: #ef4444 !important;
-        }
-        
-        .ad-row-card:hover {
-            border-color: var(--card-border-hover) !important;
-            background: rgba(255, 255, 255, 0.02);
+            justify-content: space-between;
         }
 
-        .ad-row-card-stats {
+        .card-mag-strip {
+            width: 100%;
+            height: 40px;
+            background: #000;
+            margin-top: 10px;
+        }
+
+        .card-back-info {
+            padding: 0 24px;
             display: flex;
-            gap: 32px;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .card-signature-bar {
+            display: flex;
             align-items: center;
-            flex-shrink: 0;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 6px;
+            height: 36px;
+            padding: 0 12px;
+            justify-content: space-between;
         }
 
-        @media (max-width: 600px) {
-            .ad-row-card {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 14px;
-            }
-            .ad-row-card-stats {
-                width: 100%;
-                justify-content: space-between;
-                border-top: 1px solid rgba(255, 255, 255, 0.04);
-                padding-top: 12px;
-                gap: 16px;
-            }
+        .signature-dummy {
+            font-family: 'Brush Script MT', cursive, sans-serif;
+            font-size: 16px;
+            color: #fff;
+            opacity: 0.8;
+            letter-spacing: 1px;
         }
 
-        /* Desktop Modal style */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.75);
-            backdrop-filter: blur(4px);
-            z-index: 2000;
-            display: none;
+        .cvv-box {
+            background: #fff;
+            color: #000;
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+
+        .card-back-disclaimer {
+            font-size: 8px;
+            color: var(--text-muted);
+            text-align: center;
+            line-height: 1.3;
+            padding: 0 24px;
+        }
+
+        /* Balance Grid Section */
+        .balance-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .balance-item-card {
+            background: rgba(30, 41, 59, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 16px;
+            padding: 14px 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .balance-item-card:hover {
+            transform: translateY(-2px);
+            background: rgba(30, 41, 59, 0.4);
+            border-color: rgba(250, 204, 21, 0.15);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        .balance-card-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(250, 204, 21, 0.08);
+            color: var(--accent);
+            border: 1px solid rgba(250, 204, 21, 0.12);
+        }
+        .balance-card-icon.pending {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-muted);
+            border-color: rgba(255, 255, 255, 0.05);
+        }
+        .balance-card-icon.withdrawn {
+            background: rgba(74, 222, 128, 0.08);
+            color: #4ade80;
+            border-color: rgba(74, 222, 128, 0.12);
+        }
+
+        .balance-card-icon svg {
+            width: 16px;
+            height: 16px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2.2;
+        }
+
+        .balance-item-card h4 {
+            font-size: 9px;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            text-align: center;
+        }
+
+        .balance-item-card .amt-val {
+            font-size: 13px;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: -0.2px;
+        }
+
+        /* Action Row Styles */
+        .action-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+
+        .action-row-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 28px;
+        }
+
+        .btn-action-premium {
+            background: linear-gradient(135deg, #fde047 0%, #eab308 100%);
+            color: #07090f;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px var(--accent-glow);
+        }
+
+        .btn-action-premium:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px var(--accent-glow);
+        }
+
+        .btn-outline-premium {
+            background: transparent;
+            border: 1px solid var(--surface-border);
+            color: var(--text-main);
+            padding: 14px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-outline-premium:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .btn-action-premium svg, .btn-outline-premium svg {
+            width: 16px;
+            height: 16px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2.2;
+        }
+
+        /* Earnings Category Visualizer */
+        .earnings-visualizer {
+            background: rgba(30, 41, 59, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 28px;
+        }
+
+        .earnings-visualizer h3 {
+            font-size: 14px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .earnings-visualizer h3 svg {
+            width: 16px;
+            height: 16px;
+            stroke: var(--accent);
+            fill: none;
+            stroke-width: 2;
+        }
+
+        .visualizer-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .visualizer-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .visualizer-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .visualizer-label {
+            color: var(--text-main);
+        }
+
+        .visualizer-percent {
+            color: var(--accent);
+        }
+
+        .visualizer-bar-bg {
+            height: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .visualizer-bar-fill {
+            height: 100%;
+            border-radius: 10px;
+            background: var(--accent);
+            width: 0; /* Animated dynamically or simple CSS transition */
+            transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Transaction List Filter & Search */
+        .tx-list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .tx-list-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        /* Search input wrapper */
+        .tx-search-wrapper {
+            position: relative;
+            margin-bottom: 16px;
+            width: 100%;
+        }
+
+        .tx-search-input {
+            width: 100%;
+            padding: 12px 16px 12px 42px;
+            background: rgba(0, 0, 0, 0.35);
+            border: 1px solid var(--surface-border);
+            border-radius: 12px;
+            color: var(--text-main);
+            font-size: 13px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .tx-search-input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        .tx-search-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            pointer-events: none;
+            display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        .modal-overlay.active {
-            display: flex;
+        .tx-search-icon svg {
+            width: 18px;
+            height: 18px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
         }
 
-        .modal-box {
-            background: #0f0f13;
-            border: 1px solid var(--card-border-hover);
+        /* Tabs Filter row */
+        .tx-filter-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+            scrollbar-width: none; /* Hide scrollbar Firefox */
+        }
+        .tx-filter-row::-webkit-scrollbar {
+            display: none; /* Hide scrollbar Chrome/Safari */
+        }
+
+        .tx-filter-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--surface-border);
+            color: var(--text-muted);
+            border-radius: 20px;
+            padding: 6px 16px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            white-space: nowrap;
+            width: auto;
+        }
+
+        .tx-filter-btn:hover {
+            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .tx-filter-btn.active {
+            background: var(--accent);
+            color: #07090f;
+            border-color: var(--accent);
+            box-shadow: 0 4px 12px var(--accent-glow);
+        }
+
+        .tx-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            margin-bottom: 12px;
             border-radius: 16px;
-            padding: 24px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: var(--surface);
+            border: 1px solid var(--surface-border);
+        }
+        .tx-item:hover {
+            transform: translateX(4px);
+            border-color: rgba(250, 204, 21, 0.2);
+            background: rgba(30, 41, 59, 0.6);
+        }
+        
+        .tx-left { display: flex; align-items: center; gap: 14px; }
+        .tx-icon { 
+            width: 40px;
+            height: 40px;
+            border-radius: 50%; 
+            background: rgba(74, 222, 128, 0.08);
+            border: 1px solid rgba(74, 222, 128, 0.12);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #4ade80;
+            transition: all 0.3s ease;
+        }
+        .tx-icon svg {
+            width: 18px;
+            height: 18px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2.2;
+        }
+        
+        .tx-info { display: flex; flex-direction: column; gap: 4px; }
+        .tx-title { font-size: 14px; font-weight: 600; color: #fff; }
+        .tx-date { font-size: 11px; color: var(--text-muted); }
+        
+        .tx-amount { font-size: 15px; font-weight: 700; text-align: right; }
+        .tx-amount.plus { color: #4ade80; }
+        .tx-amount.minus { color: var(--text-main); }
+
+        /* Premium Glass Modals */
+        .glass-modal-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(3, 5, 10, 0.75);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .glass-modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+            visibility: visible;
+        }
+
+        .glass-modal-container {
             width: 90%;
             max-width: 440px;
-            box-shadow: var(--glass-shadow);
+            background: rgba(15, 22, 38, 0.95);
+            border: 1px solid rgba(250, 204, 21, 0.2);
+            border-radius: 24px;
+            padding: 28px;
+            box-shadow: 0 24px 50px rgba(0, 0, 0, 0.6);
+            transform: scale(0.92);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+        }
+
+        .glass-modal-overlay.active .glass-modal-container {
+            transform: scale(1);
+        }
+
+        .modal-close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            width: auto;
+            padding: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.3s;
+        }
+        .modal-close-btn:hover {
+            color: #fff;
+        }
+        .modal-close-btn svg {
+            width: 20px;
+            height: 20px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2.2;
         }
 
         .modal-title {
-            font-size: 1.15rem;
+            font-size: 18px;
             font-weight: 700;
-            margin-bottom: 8px;
+            color: #fff;
+            margin-bottom: 20px;
+            letter-spacing: -0.2px;
         }
 
-        .modal-desc {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
+        /* Success Payout Screen */
+        .modal-success-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 24px 0 12px 0;
+            text-align: center;
+        }
+
+        .success-checkmark-circle {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: rgba(74, 222, 128, 0.1);
+            border: 2px solid #4ade80;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #4ade80;
             margin-bottom: 20px;
+            box-shadow: 0 0 20px rgba(74, 222, 128, 0.2);
+            animation: popScale 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .success-checkmark-circle svg {
+            width: 36px;
+            height: 36px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 3;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        @keyframes popScale {
+            0% { transform: scale(0.6); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .payout-method-selector {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .payout-method-card {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--surface-border);
+            border-radius: 12px;
+            padding: 12px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .payout-method-card:hover {
+            border-color: rgba(250, 204, 21, 0.3);
+            background: rgba(250, 204, 21, 0.02);
+        }
+
+        .payout-method-card.active {
+            border-color: var(--accent);
+            background: rgba(250, 204, 21, 0.05);
+        }
+
+        .payout-method-card svg {
+            width: 20px;
+            height: 20px;
+            stroke: var(--text-muted);
+            fill: none;
+            stroke-width: 2;
+        }
+
+        .payout-method-card.active svg {
+            stroke: var(--accent);
+        }
+
+        .payout-method-card span {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .payout-method-card.active span {
+            color: #fff;
+        }
+
+        /* View Sections */
+        .content-section {
+            display: none; 
+            animation: fadeIn 0.4s ease;
+        }
+        
+        .content-section.active-section {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (min-width: 600px) {
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .campaign-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+            .campaign-card { margin-bottom: 0; }
+        }
+
+        /* Bottom Menu */
+        .bottom-menu {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            max-width: 800px; 
+            background: rgba(7, 9, 15, 0.85); 
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-top: 1px solid var(--surface-border);
+            border-radius: 28px 28px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 16px 28px 16px; 
+            z-index: 1000;
+            left: 50%; 
+            transform: translateX(-50%);
+        }
+
+        .menu-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 10px; 
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            gap: 5px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            flex: 1;
+        }
+
+        .menu-item svg {
+            width: 22px;
+            height: 22px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            transition: all 0.4s ease;
+        }
+        
+        .menu-item:hover { color: #fff; }
+
+        .menu-item.active { color: var(--accent); }
+        
+        .menu-item.active svg {
+            stroke: var(--accent);
+            filter: drop-shadow(0 0 10px var(--accent-glow));
+            transform: translateY(-2px);
+        }
+
+        .fab-container {
+            position: relative;
+            flex: 1.2;
+            display: flex;
+            justify-content: center;
+        }
+
+        .fab {
+            position: absolute;
+            top: -50px; 
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, #fde047, #eab308);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 32px var(--accent-glow);
+            border: 5px solid #07090f; 
+            cursor: pointer;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+        }
+
+        .fab:hover {
+            transform: scale(1.08) translateY(-2px);
+            box-shadow: 0 12px 40px var(--accent-glow);
+        }
+
+        .fab svg {
+            width: 24px;
+            height: 24px;
+            fill: none;
+            stroke: #07090f;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* --- ADVANCED WALLET STYLES --- */
+        .card-eye-btn {
+            background: transparent;
+            border: none;
+            color: rgba(255, 255, 255, 0.6);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            padding: 8px;
+            border-radius: 50%;
+        }
+        .card-eye-btn:hover {
+            color: var(--accent);
+            background: rgba(255, 255, 255, 0.08);
+            transform: scale(1.05);
+        }
+        .card-eye-btn svg {
+            width: 20px;
+            height: 20px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2.2;
+        }
+
+        .milestone-card {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.3) 0%, rgba(15, 23, 42, 0.3) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+        .milestone-card:hover {
+            border-color: rgba(250, 204, 21, 0.1);
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.4) 0%, rgba(15, 23, 42, 0.4) 100%);
+        }
+        .milestone-title-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .milestone-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .milestone-title svg {
+            width: 16px;
+            height: 16px;
+            stroke: var(--accent);
+            fill: none;
+            stroke-width: 2;
+        }
+        .milestone-reward-text {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--accent);
+            background: rgba(250, 204, 21, 0.08);
+            padding: 4px 10px;
+            border-radius: 12px;
+            border: 1px solid rgba(250, 204, 21, 0.15);
+        }
+        .milestone-progress-bar-bg {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        .milestone-progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ca8a04, var(--accent));
+            border-radius: 10px;
+            width: 0%;
+            transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+        .milestone-footer-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+        }
+        .milestone-footer-text {
+            color: var(--text-muted);
             line-height: 1.4;
         }
+        .milestone-footer-val {
+            font-weight: 700;
+            color: #fff;
+        }
 
-        .action-row {
+        .creator-booster-card {
+            background: radial-gradient(circle at top right, rgba(250, 204, 21, 0.05), transparent 50%), rgba(30, 41, 59, 0.2);
+            border: 1px solid rgba(250, 204, 21, 0.15);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 28px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+        }
+        .creator-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: var(--accent);
+            color: #07090f;
+            font-size: 9px;
+            font-weight: 800;
+            padding: 4px 12px;
+            border-radius: 0 0 0 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .creator-title-row {
             display: flex;
-            justify-content: flex-end;
+            align-items: center;
             gap: 8px;
+            margin-bottom: 12px;
+        }
+        .creator-title-row svg {
+            width: 18px;
+            height: 18px;
+            stroke: var(--accent);
+            fill: none;
+            stroke-width: 2;
+        }
+        .creator-title-row h3 {
+            font-size: 14px;
+            font-weight: 700;
+            color: #fff;
+            margin: 0;
+        }
+        .creator-desc {
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.4;
+            margin-bottom: 16px;
+        }
+        .creator-submit-row {
+            display: flex;
+            gap: 10px;
+        }
+        .creator-url-input {
+            flex: 1;
+            padding: 12px 14px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--surface-border);
+            border-radius: 10px;
+            color: #fff;
+            font-size: 13px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        .creator-url-input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 8px var(--accent-glow);
+        }
+        .creator-submit-btn {
+            width: auto;
+            padding: 12px 20px;
+            background: var(--accent);
+            color: #07090f;
+            font-weight: 700;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+        .creator-submit-btn:hover {
+            box-shadow: 0 4px 15px var(--accent-glow);
+            transform: translateY(-1px);
+        }
+
+        .action-row-3 {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 28px;
+        }
+        .action-row-3 button {
+            padding: 12px 8px;
+            font-size: 11px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            width: 100%;
+        }
+        .action-row-3 button svg {
+            width: 14px;
+            height: 14px;
         }
     </style>
 </head>
 <body>
-    <div class="glow-bg">
-        <div class="glow-1"></div>
-        <div class="glow-2"></div>
-    </div>
 
-    <!-- Mobile Top Navigation Header -->
-    <header class="top-nav">
-        <div class="nav-left">
-            <button class="icon-btn" id="openMobileSidebar" aria-label="Menu">
-                <i class="ph ph-list"></i>
-            </button>
-            <a href="index.html" class="logo">Elite <span>X</span></a>
-        </div>
-        <div class="nav-actions">
-            <button class="icon-btn" aria-label="Notifications" id="notificationBellMobile">
-                <i class="ph ph-bell"></i>
-                <span class="badge"></span>
-            </button>
-            <div class="profile-avatar" onclick="toggleProfileDrawer()" style="cursor: pointer;">
-                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=150&auto=format&fit=crop" alt="Creator Profile">
-            </div>
-        </div>
-    </header>
- 
-    <!-- Side Menu Overlay -->
-    <div class="sidebar-overlay" id="sidebarOverlay"></div>
- 
-    <!-- Desktop Sidebar Menu -->
-    <aside class="sidebar" id="sidebarMenu">
-        <div class="sidebar-header">
-            <a href="index.html" class="logo"><i class="ph ph-lightning" style="color: var(--accent);"></i> Elite <span>X</span></a>
-            <button class="icon-btn" id="closeMobileSidebar" style="display: none;"><i class="ph ph-x"></i></button>
-        </div>
- 
-        <nav class="sidebar-links">
-            <a href="index.html" class="active"><i class="ph ph-squares-four"></i> Dashboard</a>
-            <a href="campaigns.html"><i class="ph ph-megaphone"></i> Campaigns</a>
-            <a href="wallet.html"><i class="ph ph-wallet"></i> Wallet</a>
-            <div class="sidebar-submenu-container" id="nav-shop-container">
-                <a href="javascript:void(0)" class="nav-shop-toggle" onclick="toggleShopSubmenu(event)"><i class="ph ph-shopping-bag"></i> Shop <i class="ph ph-caret-down submenu-caret" style="margin-left: auto; font-size: 0.8rem; transition: transform 0.2s;"></i></a>
-                <div class="sidebar-submenu" id="shop-submenu" style="display: none; flex-direction: column; padding-left: 16px; gap: 8px; margin-top: 4px;">
-                    <a href="shop.html" class="submenu-item"><i class="ph ph-storefront"></i> Browse Shop</a>
-                    <a href="javascript:void(0)" onclick="openOrderPortal('track')" class="submenu-item"><i class="ph ph-truck"></i> Track Order</a>
-                    <a href="javascript:void(0)" onclick="openOrderPortal('cancel')" class="submenu-item"><i class="ph ph-x-circle"></i> Cancel Order</a>
-                    <a href="javascript:void(0)" onclick="openOrderPortal('return')" class="submenu-item"><i class="ph ph-arrow-counter-clockwise"></i> Return Order</a>
-                </div>
-            </div>
-        </nav>
- 
- 
- 
-        <div class="sidebar-footer">
-            <div class="user-profile" onclick="toggleProfileDrawer()" style="cursor: pointer;">
-                <div class="profile-avatar" style="width: 36px; height: 36px;">
-                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=150&auto=format&fit=crop" alt="Creator Profile">
-                </div>
-                <div class="user-details">
-                    <h4>Alex Carter</h4>
-                    <p>Pro Creator</p>
-                </div>
-            </div>
-        </div>
-    </aside>
-
-    <!-- Main Workspace Container -->
-    <main class="dashboard-container">
-
-        <!-- Bento Grid System -->
-        <div class="bento-grid">
-            
-            <!-- Bento Stats Card (Span 6) -->
-            <div class="bento-card span-6" style="display:flex; flex-direction:column; justify-content:space-between; gap:16px;">
-                <div>
-                    <h3 style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; color: var(--text-secondary); letter-spacing: 0.8px; margin-bottom: 8px;">Earnings Overview</h3>
-                    <div style="font-size: 2rem; font-weight: 800; color: #fff; margin-bottom: 2px;" id="statLifetimeEarnings">₹0.00</div>
-                    <div style="font-size: 0.72rem; color: #34d399; font-weight: 600; display:flex; align-items:center; gap:4px;"><i class="ph ph-trend-up"></i> +12.4% vs last week</div>
-                </div>
-                
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px; border-top:1px solid var(--card-border); padding-top:14px;">
-                    <div>
-                        <div style="font-size:0.68rem; color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px;">Pending Payout</div>
-                        <div style="font-size:1.05rem; font-weight:700; color:#fbbf24; font-family:'JetBrains Mono',monospace;" id="statPendingEarnings">₹0.00</div>
-                    </div>
-                    <div>
-                        <div style="font-size:0.68rem; color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px;">Active Campaigns</div>
-                        <div style="font-size:1.05rem; font-weight:700; color:#8b5cf6; font-family:'JetBrains Mono',monospace;" id="statActiveCampaigns">0</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Bento Graph Card (Span 6) -->
-            <div class="bento-card span-6" style="display:flex; flex-direction:column; gap:12px; position:relative; overflow:hidden;">
-                <!-- Glowing accent glow in background -->
-                <div style="position:absolute; top:-30px; right:-30px; width:120px; height:120px; background:radial-gradient(circle, rgba(16, 185, 129, 0.08) 0%, transparent 70%); pointer-events:none;"></div>
-                
-                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; z-index:1;">
-                    <h3 style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; color: var(--text-secondary); letter-spacing: 0.8px; display:flex; align-items:center; gap:6px;"><i class="ph ph-chart-line-up clr-emerald" style="font-size:1.05rem;"></i> Performance Trend</h3>
-                    <span style="font-size: 0.72rem; padding: 3px 8px; background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.15); border-radius: 20px; color: #10b981; font-weight: 600; box-shadow: 0 0 8px rgba(16, 185, 129, 0.15);">7D Earnings</span>
-                </div>
-                
-                <!-- sleek SVG Line Chart -->
-                <div style="flex:1; width:100%; min-height:115px; max-height:135px; position:relative; margin-top:8px;" id="dashboardChartContainer">
-                    <svg viewBox="0 0 100 35" preserveAspectRatio="none" style="width: 100%; height: 100%; display: block; overflow: visible;" id="dashboardSplineSvg">
-                        <defs>
-                            <linearGradient id="glowEarnings" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="0%" stop-color="#10b981" stop-opacity="0.35"/>
-                                <stop offset="100%" stop-color="#10b981" stop-opacity="0"/>
-                            </linearGradient>
-                            
-                            <!-- Premium shiny filter effect -->
-                            <filter id="neonGlowGreen" x="-20%" y="-20%" width="140%" height="140%">
-                                <feGaussianBlur stdDeviation="0.6" result="blur" />
-                                <feComponentTransfer in="blur" result="glow1">
-                                    <feFuncA type="linear" slope="0.8"/>
-                                </feComponentTransfer>
-                                <feMerge>
-                                    <feMergeNode in="glow1" />
-                                    <feMergeNode in="SourceGraphic" />
-                                </feMerge>
-                            </filter>
-                        </defs>
-                        <!-- Grid lines -->
-                        <line x1="0" y1="5" x2="100" y2="5" stroke="rgba(255,255,255,0.025)" stroke-width="0.2" stroke-dasharray="2,2"/>
-                        <line x1="0" y1="15" x2="100" y2="15" stroke="rgba(255,255,255,0.025)" stroke-width="0.2" stroke-dasharray="2,2"/>
-                        <line x1="0" y1="25" x2="100" y2="25" stroke="rgba(255,255,255,0.025)" stroke-width="0.2" stroke-dasharray="2,2"/>
-                        
-                        <!-- Vertical hover tracking line -->
-                        <line id="chartCursorLine" x1="0" y1="0" x2="0" y2="35" stroke="rgba(16, 185, 129, 0.15)" stroke-width="0.25" style="display: none; pointer-events: none;"></line>
-                        
-                        <!-- Area path -->
-                        <path id="earningsTrendArea" d="" fill="url(#glowEarnings)" />
-                        
-                        <!-- Stroke path -->
-                        <path id="earningsTrendPath" d="" fill="none" stroke="#10b981" stroke-width="1.8" stroke-linecap="round" filter="url(#neonGlowGreen)" />
-                        
-                        <!-- Dots group -->
-                        <g id="dashboardChartDots"></g>
-                    </svg>
-                    
-                    <!-- Dynamic Tooltip -->
-                    <div id="chartTooltip" style="position: absolute; display: none; background: rgba(10, 10, 15, 0.9); border: 1px solid rgba(16, 185, 129, 0.2); backdrop-filter: blur(12px); border-radius: 12px; padding: 8px 12px; font-size: 0.65rem; color: #fff; z-index: 10; pointer-events: none; box-shadow: 0 10px 35px rgba(0,0,0,0.75); font-family: 'Plus Jakarta Sans', sans-serif; transition: opacity 0.15s ease, transform 0.15s ease;"></div>
-                    
-                    <!-- SVG dot pulse keyframe -->
-                    <style>
-                        @keyframes pulse-dot {
-                            0% { r: 1.2; opacity: 1; }
-                            50% { r: 2.5; opacity: 0.5; }
-                            100% { r: 1.2; opacity: 1; }
-                        }
-                        .pulse-chart-dot {
-                            animation: pulse-dot 2s infinite ease-in-out;
-                            transform-origin: center;
-                        }
-                    </style>
-                </div>
-                
-                <div style="display:flex; justify-content:space-between; font-size:0.65rem; color:var(--text-secondary); margin-top:4px;" id="dashboardChartLabels">
-                    <!-- Labels injected dynamically -->
-                </div>
-            </div>
-
-            <!-- Square Ad List Manager (Span 12) -->
-            <div class="bento-card span-12" style="display:flex; flex-direction:column; gap:16px;">
-                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; border-bottom:1px solid rgba(255,255,255,0.04); padding-bottom:12px;">
-                    <h3 style="font-size:0.85rem; font-weight:700; text-transform:uppercase; color:var(--text-primary); letter-spacing:0.8px; display:flex; align-items:center; gap:8px; margin:0;">
-                        <i class="ph ph-briefcase clr-purple" style="font-size:1.1rem;"></i> Accepted Campaigns
-                    </h3>
-                    <span style="font-size:0.7rem; color:var(--text-muted);">Manage and track your accepted tasks</span>
-                </div>
-                
-                <div style="display:flex; justify-content:flex-start; flex-wrap:wrap; gap:16px;">
-                    <div class="chart-tabs" id="adsFilterTabs">
-                        <button class="chart-tab active" data-filter="all">All Accepted</button>
-                        <button class="chart-tab" data-filter="approved">Active</button>
-                        <button class="chart-tab" data-filter="pending">In Review</button>
-                        <button class="chart-tab" data-filter="rejected">Rejected</button>
-                    </div>
-                </div>
-
-                <div style="display: flex; flex-direction: column; gap: 12px;" id="ads-list-container">
-                    <!-- Populated dynamically by JS -->
-                </div>
-            </div>
-
-
-
-        </div>
-    </main>
-
-    <!-- Desktop Submit Video Modal -->
-    <div class="modal-overlay" id="desktopSubmitModal">
-        <div class="modal-box">
-            <div class="modal-title">Submit Video Link</div>
-            <div class="modal-desc">Provide your promotional video URL. Only campaigns you have ordered products for will appear.</div>
-            
-            <div class="form-group">
-                <label class="input-label">Select Campaign Target</label>
-                <div class="custom-dropdown" id="campaignDropdown">
-                    <div class="dropdown-trigger">
-                        <span id="selected-campaign-name">Select Campaign Target...</span>
-                        <i class="ph ph-caret-down"></i>
-                    </div>
-                    <div class="dropdown-menu" id="dropdownMenu">
-                        <!-- Populated dynamically by JS -->
-                    </div>
-                    <input type="hidden" id="campaign-select-value" value="">
-                </div>
-            </div>
-
-            <div class="form-group" style="margin-bottom: 24px;">
-                <label class="input-label">Video URL</label>
-                <div class="input-box">
-                    <input type="url" id="video-link-input" class="input-field" placeholder="https://instagram.com/reel/...">
-                    <i class="ph ph-link"></i>
-                </div>
-            </div>
-
-            <div class="action-row">
-                <button class="btn-outline btn-sm" id="closeDesktopSubmitModalBtn" style="width:auto; padding:10px 16px;">Cancel</button>
-                <button class="btn-gradient btn-sm" id="submit-video-btn" style="width:auto; padding:10px 16px;"><i class="ph ph-paper-plane-tilt"></i> Submit Link</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Professional Full-Width Bottom Navigation for Mobile -->
-    <nav class="bottom-nav">
-        <a href="index.html" class="bottom-nav-item active">
-            <i class="ph ph-squares-four"></i>
-            <span>Home</span>
-        </a>
-        <a href="campaigns.html" class="bottom-nav-item">
-            <i class="ph ph-megaphone"></i>
-            <span>Campaigns</span>
-        </a>
+    <div id="userView" class="mobile-container">
         
-        <!-- Floating FAB to open submission drawer -->
-        <button class="mobile-fab" id="openMobileDrawerBtn" aria-label="Submit video">
-            <i class="ph ph-plus"></i>
-        </button>
+        <!-- Top Navigation Bar -->
+        <div class="top-bar">
+            <div class="top-bar-left">
+                <div class="top-icon">
+                    <svg viewBox="0 0 24 24">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </div>
+                <div class="app-brand">Elite<span>X</span></div>
+            </div>
 
-        <a href="wallet.html" class="bottom-nav-item">
-            <i class="ph ph-wallet"></i>
-            <span>Wallet</span>
-        </a>
-        <a href="shop.html" class="bottom-nav-item">
-            <i class="ph ph-shopping-bag"></i>
-            <span>Shop</span>
-        </a>
-    </nav>
-
-    <!-- Mobile Profile Info Drawer -->
-    <div class="drawer-overlay" id="profileDrawerOverlay" onclick="toggleProfileDrawer()"></div>
-    <div class="bottom-drawer" id="profileDrawer">
-        <div class="drawer-handle"></div>
-        <div class="drawer-header" style="border-bottom: 1px solid var(--card-border); padding-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
-            <h3 style="font-size: 1rem; font-weight: 700; margin: 0;">Creator Profile</h3>
-            <button class="icon-btn" onclick="toggleProfileDrawer()" style="background:transparent; border:none; color:#fff; cursor:pointer;"><i class="ph ph-x" style="font-size:1.2rem;"></i></button>
+            <div class="top-bar-right">
+                <div class="top-icon notification-wrapper">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                        <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                    </svg>
+                    <div class="notification-dot"></div>
+                </div>
+                <div class="profile-avatar">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                </div>
+            </div>
         </div>
-        <div style="padding: 20px 0; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 8px;">
-            <div class="profile-avatar" style="width: 72px; height: 72px; border-radius: 50%; overflow: hidden; border: 2px solid var(--accent); margin-bottom: 6px;">
-                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=150&auto=format&fit=crop" alt="Creator Profile" style="width: 100%; height: 100%; object-fit: cover;">
-            </div>
-            <h4 style="font-size: 1.1rem; font-weight: 800; color: #fff; margin: 0;">Alex Carter</h4>
-            <span style="font-size: 0.72rem; padding: 4px 10px; background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.2); border-radius: 20px; color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Pro Creator Level 2</span>
-            
-            <div style="width: 100%; height: 1px; background: var(--card-border); margin: 12px 0;"></div>
-            
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; box-sizing: border-box; text-align: left;">
-                <div style="padding: 10px; background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); border-radius: 8px;">
-                    <div style="font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase;">Reach</div>
-                    <div style="font-size: 0.95rem; font-weight: 700; color: #fff; font-family: 'JetBrains Mono', monospace; margin-top: 2px;">142.5K</div>
+
+        <!-- Dynamic Content Header -->
+        <div style="margin-bottom: 24px;">
+            <p id="headerSubtitle" style="color: var(--accent); font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Welcome back</p>
+            <h2 id="headerTitle" style="margin-bottom: 0;">Agency Overview</h2>
+        </div>
+
+        <!-- TAB 1: HOME SECTION -->
+        <div id="homeSection" class="content-section active-section">
+            <div class="stats-grid">
+                <div class="stat-card glass-panel">
+                    <div>
+                        <h3 style="margin: 0; font-size: 16px; color: #cbd5e1;">Active Campaigns</h3>
+                        <p style="color: var(--accent); font-size: 13px; margin-top: 4px; font-weight: 500;">+2 from last week</p>
+                    </div>
+                    <div class="stat-value">03</div>
                 </div>
-                <div style="padding: 10px; background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); border-radius: 8px;">
-                    <div style="font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase;">Platform</div>
-                    <div style="font-size: 0.95rem; font-weight: 700; color: #fff; margin-top: 2px; display:flex; align-items:center; gap:4px;"><i class="ph ph-instagram-logo" style="color:#f43f5e;"></i> Instagram</div>
+
+                <div class="stat-card glass-panel">
+                    <div>
+                        <h3 style="margin: 0; font-size: 16px; color: #cbd5e1;">Total Leads</h3>
+                        <p style="color: #4ade80; font-size: 13px; margin-top: 4px; font-weight: 500;">+14% conversion rate</p>
+                    </div>
+                    <div class="stat-value">142</div>
                 </div>
             </div>
+        </div>
+
+        <!-- TAB 2: CAMPAIGNS SECTION (Populated by Firebase) -->
+        <div id="campaignsSection" class="content-section">
+            <div class="campaign-grid" id="campaignsContainer">
+                <p style="color:var(--text-muted); text-align:center; grid-column: 1/-1;">Loading campaigns from database...</p>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- TAB 3: WALLET SECTION (NEW PREMIUM UI)     -->
+        <!-- ========================================== -->
+        <!-- ========================================== -->
+        <!-- TAB 3: WALLET SECTION (NEW PREMIUM UI)     -->
+        <!-- ========================================== -->
+        <div id="walletSection" class="content-section">
             
-            <button class="btn-gradient" style="margin-top: 14px; width: 100%;" onclick="showToast('Profile sync request sent!', 'success'); toggleProfileDrawer();">
-                <i class="ph ph-arrows-clockwise"></i> Sync Social Analytics
-            </button>
+            <!-- 3D Virtual Gold Credit Card -->
+            <div class="card-perspective">
+                <div class="credit-card-3d" id="creditCard">
+                    <!-- CARD FRONT -->
+                    <div class="card-face credit-card-front" onclick="handleCardClick(event)">
+                        <div class="card-front-content">
+                            <div class="card-header-row">
+                                <div class="card-brand-label">Elite<span>X</span> Premium</div>
+                            </div>
+                            
+                            <!-- Balance on Card Face (Always Visible) -->
+                            <div style="margin-top: 10px;">
+                                <span class="card-meta-label">Available Balance</span>
+                                <div class="card-number wallet-balance-val" style="font-size: 24px; font-weight: 800; margin: 4px 0; color: var(--accent); text-shadow: 0 2px 8px var(--accent-glow);">₹ 14,250.00</div>
+                            </div>
+                            
+                            <!-- Card Number with inline eye toggle -->
+                            <div style="display: flex; align-items: center; gap: 8px; margin: 6px 0;">
+                                <div class="card-number" id="cardNumberText" style="font-size: 16px; margin: 0; line-height: 1;">•••• •••• •••• 4250</div>
+                                <button class="card-eye-btn" onclick="toggleCardVisibility(event)" title="Hide/Show Card Number" style="position: static; padding: 4px; background: transparent; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; height: auto; width: auto; box-shadow: none;">
+                                    <!-- Eye Open Icon (Default) -->
+                                    <svg id="eyeOpenIcon" viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: none; stroke: #fff; stroke-width: 2;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                                    <!-- Eye Closed Icon (Hidden by default) -->
+                                    <svg id="eyeClosedIcon" viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: none; stroke: #fff; stroke-width: 2; display:none;"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
+                                </button>
+                            </div>
+                            
+                            <div class="card-meta-row">
+                                <div class="card-meta-item">
+                                    <span class="card-meta-label">Card Holder</span>
+                                    <span class="card-meta-val" id="cardHolderName">John Doe</span>
+                                </div>
+                                <div class="card-meta-item" style="text-align: right;">
+                                    <span class="card-meta-label">Partner ID</span>
+                                    <span class="card-meta-val" id="cardPartnerIdText">EX-USR-8432</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- CARD BACK -->
+                    <div class="card-face credit-card-back" onclick="handleCardClick(event)">
+                        <div class="card-mag-strip"></div>
+                        <div class="card-back-info">
+                            <div class="card-meta-label" style="text-align: right; padding-right: 24px;">Authorized Signature</div>
+                            <div class="card-signature-bar">
+                                <span class="signature-dummy" id="signatureVal">John Doe</span>
+                                <div class="cvv-box" id="cardCvvText" style="font-family:'Courier New', monospace; font-size:11px; letter-spacing:0.5px; width:auto; padding:4px 10px;">Password: 58392</div>
+                            </div>
+                        </div>
+                        <p class="card-back-disclaimer">This virtual card is proprietary to EliteX. Issued for partner reward accumulation and verified direct withdrawals only.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Balance Grid stats (Three Tier Balance) -->
+            <div class="balance-grid">
+                <div class="balance-item-card">
+                    <div class="balance-card-icon">
+                        <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
+                    </div>
+                    <h4>Available</h4>
+                    <div class="amt-val wallet-balance-val">₹ 14,250.00</div>
+                </div>
+                <div class="balance-item-card">
+                    <div class="balance-card-icon pending">
+                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    </div>
+                    <h4>Pending</h4>
+                    <div class="amt-val" id="pendingBalanceVal">₹ 2,400.00</div>
+                </div>
+                <div class="balance-item-card">
+                    <div class="balance-card-icon withdrawn">
+                        <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                    </div>
+                    <h4>Withdrawn</h4>
+                    <div class="amt-val" id="withdrawnBalanceVal">₹ 8,500.00</div>
+                </div>
+            </div>
+
+            <!-- Payout Threshold Progress Card -->
+            <div class="milestone-card" id="withdrawProgressCard" style="margin-bottom: 24px;">
+                <div class="milestone-title-row">
+                    <div class="milestone-title">
+                        <svg viewBox="0 0 24 24" style="width:16px; height:16px; stroke:var(--accent); fill:none; stroke-width:2;"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
+                        <span id="withdrawProgressLabel">Progress to Next Payout</span>
+                    </div>
+                    <span class="milestone-reward-text" id="withdrawProgressPercent" style="color: var(--accent); background: rgba(250, 204, 21, 0.08); border-color: rgba(250, 204, 21, 0.15);">0%</span>
+                </div>
+                <div class="milestone-progress-bar-bg" style="margin-bottom: 10px;">
+                    <div class="milestone-progress-bar-fill" id="withdrawProgressBarFill" style="width: 0%;"></div>
+                </div>
+                <div class="milestone-footer-row">
+                    <span class="milestone-footer-text" id="withdrawProgressFooter">Checking payout eligibility...</span>
+                </div>
+            </div>
+
+            <!-- VIP Creator Fixed Income Card -->
+            <div class="milestone-card" id="salaryProgramCard" style="margin-bottom: 24px;">
+                <div class="milestone-title-row">
+                    <div class="milestone-title">
+                        <svg viewBox="0 0 24 24" style="width:16px; height:16px; stroke:var(--accent); fill:none; stroke-width:2;"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                        <span style="text-transform: uppercase; font-weight:700; letter-spacing:0.5px;">VIP Creator Fixed Income</span>
+                    </div>
+                    <span class="milestone-reward-text" id="salaryStatusBadge" style="color:var(--accent); background:rgba(250,204,21,0.08);">Locked</span>
+                </div>
+                
+                <p style="font-size: 11px; color: var(--text-muted); line-height: 1.4; margin-bottom: 16px;">
+                    Meet all 3 targets to unlock a fixed monthly career salary credited directly to your wallet! Stipend amounts are evaluated based on your reach and channel performance.
+                </p>
+                
+                <div style="display:flex; flex-direction:column; gap:12px; margin-bottom: 16px;">
+                    <!-- Target 1: Earnings -->
+                    <div>
+                        <div style="display:flex; justify-content:space-between; font-size:11px; color:var(--text-main); margin-bottom:4px;">
+                            <span>Total Earnings (Target: ₹500)</span>
+                            <span id="salaryEarningProgressVal" style="font-weight:600; color:var(--accent);">₹0 / ₹500</span>
+                        </div>
+                        <div class="milestone-progress-bar-bg" style="height:6px; margin-bottom:0;">
+                            <div class="milestone-progress-bar-fill" id="salaryEarningBar" style="width: 0%; height:100%;"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Target 2: Video Reviews -->
+                    <div>
+                        <div style="display:flex; justify-content:space-between; font-size:11px; color:var(--text-main); margin-bottom:4px;">
+                            <span>Verified Video Submissions (Target: 30)</span>
+                            <span id="salaryVideoProgressVal" style="font-weight:600; color:var(--accent);">0 / 30</span>
+                        </div>
+                        <div class="milestone-progress-bar-bg" style="height:6px; margin-bottom:0;">
+                            <div class="milestone-progress-bar-fill" id="salaryVideoBar" style="width: 0%; height:100%;"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Target 3: Sales Conversions -->
+                    <div>
+                        <div style="display:flex; justify-content:space-between; font-size:11px; color:var(--text-main); margin-bottom:4px;">
+                            <span>Sales Conversions (Target: 10)</span>
+                            <span id="salarySalesProgressVal" style="font-weight:600; color:var(--accent);">0 / 10</span>
+                        </div>
+                        <div class="milestone-progress-bar-bg" style="height:6px; margin-bottom:0;">
+                            <div class="milestone-progress-bar-fill" id="salarySalesBar" style="width: 0%; height:100%;"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="salaryClaimContainer" style="display:none; justify-content:center; margin-top:14px;">
+                    <button class="btn-action-premium" id="btnClaimSalary" onclick="claimMonthlySalary()" style="width:100%; padding:10px;">Claim Monthly Salary</button>
+                </div>
+                
+                <div id="salaryClaimedSuccessMsg" style="display:none; text-align:center; font-size:11px; color:var(--success); font-weight:600; margin-top:8px;">
+                    ✓ Salary claimed! Next payout unlocks in 30 days.
+                </div>
+            </div>
+
+            <!-- 3-Column Premium Actions Row -->
+            <div class="action-row-3">
+                <button class="btn-action-premium" onclick="openAddMoneyModal()">
+                    <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    Add Money
+                </button>
+                <button class="btn-action-premium" onclick="openWithdrawModal()">
+                    <svg viewBox="0 0 24 24"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
+                    Withdraw
+                </button>
+                <button class="btn-action-premium" onclick="openBankDetailsModal()">
+                    <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    Settings
+                </button>
+            </div>
+
+            <!-- Milestone Goal Progress Card -->
+            <div class="milestone-card">
+                <div class="milestone-title-row">
+                    <div class="milestone-title">
+                        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                        Road to Premium Partner
+                    </div>
+                    <span class="milestone-reward-text" id="milestoneBoosterText">1.5x Booster</span>
+                </div>
+                <div class="milestone-progress-bar-bg">
+                    <div class="milestone-progress-bar-fill" id="milestoneBar"></div>
+                </div>
+                <div class="milestone-footer-row">
+                    <span class="milestone-footer-text">Earn ₹20,000 total to unlock Premium Partner status & get 1.5x higher payouts!</span>
+                    <span class="milestone-footer-val" id="milestoneProgressLabel">₹14,250 / ₹20,000</span>
+                </div>
+            </div>
+
+            <!-- Viral Video Submission Card -->
+            <div class="creator-booster-card">
+                <span class="creator-badge">₹250 Bonus</span>
+                <div class="creator-title-row">
+                    <svg viewBox="0 0 24 24"><path d="M23 7a2 2 0 0 0-2.45-1.45L16 7V5a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2l4.55 1.45A2 2 0 0 0 23 17V7z"/></svg>
+                    <h3>Viral Creator Program</h3>
+                </div>
+                <p class="creator-desc">Create a YouTube video or Instagram Reel review of EliteX showing your tasks or payouts. Submit the link below to get a flat ₹250 bonus directly into your available balance!</p>
+                <form id="creatorVideoForm" onsubmit="handleVideoSubmit(event)">
+                    <div class="creator-submit-row">
+                        <input type="url" id="creatorVideoUrl" class="creator-url-input" placeholder="Paste your Video/Reel URL here..." required>
+                        <button type="submit" class="creator-submit-btn">Submit Link</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Category-wise Earnings Visualizer -->
+            <div class="earnings-visualizer">
+                <h3>
+                    <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                    Earnings Distribution
+                </h3>
+                <div class="visualizer-list">
+                    <div class="visualizer-item">
+                        <div class="visualizer-header">
+                            <span class="visualizer-label">Lead Generation Campaigns</span>
+                            <span class="visualizer-percent">65%</span>
+                        </div>
+                        <div class="visualizer-bar-bg">
+                            <div class="visualizer-bar-fill" id="barLeads" style="width: 65%;"></div>
+                        </div>
+                    </div>
+                    <div class="visualizer-item">
+                        <div class="visualizer-header">
+                            <span class="visualizer-label">App Install Promotion</span>
+                            <span class="visualizer-percent">25%</span>
+                        </div>
+                        <div class="visualizer-bar-bg">
+                            <div class="visualizer-bar-fill" id="barInstalls" style="width: 25%;"></div>
+                        </div>
+                    </div>
+                    <div class="visualizer-item">
+                        <div class="visualizer-header">
+                            <span class="visualizer-label">Sales Referrals</span>
+                            <span class="visualizer-percent">10%</span>
+                        </div>
+                        <div class="visualizer-bar-bg">
+                            <div class="visualizer-bar-fill" id="barSales" style="width: 10%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Transaction History Filter and Search -->
+            <div class="tx-list-header">
+                <div class="tx-list-title">Recent Transactions</div>
+                <div style="font-size: 11px; color: var(--accent); cursor: pointer;" onclick="resetTxSearchFilters()">Reset</div>
+            </div>
+
+            <!-- Search wrapper -->
+            <div class="tx-search-wrapper">
+                <div class="tx-search-icon">
+                    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                </div>
+                <input type="text" id="txSearchInput" class="tx-search-input" placeholder="Search transactions..." oninput="renderTransactions()">
+            </div>
+
+            <!-- Filter tabs -->
+            <div class="tx-filter-row">
+                <button class="tx-filter-btn active" data-filter="all" onclick="filterTransactions(this)">All</button>
+                <button class="tx-filter-btn" data-filter="credit" onclick="filterTransactions(this)">Income</button>
+                <button class="tx-filter-btn" data-filter="debit" onclick="filterTransactions(this)">Withdrawals</button>
+            </div>
+
+            <!-- Transaction list container -->
+            <div id="txListContainer">
+                <!-- Dynamically populated -->
+            </div>
+
+        </div>
+
+        <!-- Future Tab -->
+        <div id="shopSection" class="content-section"><p style="color:var(--text-muted); text-align:center;">Shop integration coming soon...</p></div>
+
+
+        <!-- Professional Bottom Menu -->
+        <div class="bottom-menu">
+            
+            <div class="menu-item active" onclick="switchTab(this, 'homeSection', 'Agency Overview', 'Welcome back')">
+                <svg viewBox="0 0 24 24">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+                <span>Home</span>
+            </div>
+            
+            <div class="menu-item" onclick="switchTab(this, 'campaignsSection', 'Available Campaigns', 'Explore & Earn')">
+                <svg viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <circle cx="12" cy="12" r="6"></circle>
+                    <circle cx="12" cy="12" r="2"></circle>
+                </svg>
+                <span>Campaigns</span>
+            </div>
+            
+            <div class="fab-container">
+                <div class="fab" onclick="createNewAction()">
+                    <svg viewBox="0 0 24 24">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- UPDATED: Clicking this now triggers the new Wallet UI -->
+            <div class="menu-item" onclick="switchTab(this, 'walletSection', 'My Wallet', 'Earnings & Withdrawals')">
+                <svg viewBox="0 0 24 24">
+                    <rect x="2" y="5" width="20" height="14" rx="2"></rect>
+                    <line x1="2" y1="10" x2="22" y2="10"></line>
+                </svg>
+                <span>Wallet</span>
+            </div>
+            
+            <div class="menu-item" onclick="switchTab(this, 'shopSection', 'Rewards Shop', 'Redeem your points')">
+                <svg viewBox="0 0 24 24">
+                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <path d="M16 10a4 4 0 0 1-8 0"></path>
+                </svg>
+                <span>Shop</span>
+            </div>
+            
         </div>
     </div>
 
-    <!-- Mobile submission Drawer -->
-    <div class="drawer-overlay" id="mobileDrawerOverlay"></div>
-    <div class="bottom-drawer" id="mobileDrawer">
-        <div class="drawer-handle"></div>
-        <div class="drawer-header">
-            <h3>Submit Video Link</h3>
-            <button class="icon-btn" id="closeMobileDrawerBtn"><i class="ph ph-x"></i></button>
-        </div>
-        <div style="padding-top: 10px;">
-            <div class="form-group">
-                <label class="input-label">Campaign Target</label>
-                <div class="custom-dropdown" id="campaignDropdownMobile">
-                    <div class="dropdown-trigger">
-                        <span id="selected-campaign-name-mobile">Select Campaign...</span>
-                        <i class="ph ph-caret-down"></i>
-                    </div>
-                    <div class="dropdown-menu" id="dropdownMenuMobile">
-                        <!-- Populated dynamically by JS -->
-                    </div>
-                    <input type="hidden" id="campaign-select-value-mobile" value="">
-                </div>
-            </div>
-
-            <div class="form-group" style="margin-bottom: 24px;">
-                <label class="input-label">Video URL</label>
-                <div class="input-box">
-                    <input type="url" id="video-link-input-mobile" class="input-field" placeholder="https://instagram.com/reel/...">
-                    <i class="ph ph-link"></i>
-                </div>
-            </div>
-
-            <button class="btn-gradient" id="submit-video-btn-mobile" style="margin-bottom: 16px;">
-                <i class="ph ph-paper-plane-tilt"></i> Submit Link
+    <!-- ADD MONEY MODAL -->
+    <div class="glass-modal-overlay" id="addMoneyModal">
+        <div class="glass-modal-container">
+            <button class="modal-close-btn" onclick="closeAddMoneyModal()">
+                <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
             </button>
+            
+            <div id="addMoneyModalFormContent">
+                <h3 class="modal-title">Add Money to Wallet</h3>
+                
+                <div style="margin-bottom: 20px;">
+                    <span style="font-size:11px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Current Available Balance</span>
+                    <div class="wallet-balance-val" style="font-size:26px; font-weight:800; color:#fff; margin-top:4px;">₹ 14,250.00</div>
+                </div>
+
+                <!-- Form Inputs -->
+                <form id="addMoneyForm" onsubmit="handleAddMoneySubmit(event)">
+                    <div class="input-group" style="margin-bottom: 16px;">
+                        <label>Deposit Amount (₹)</label>
+                        <input type="number" id="addMoneyAmount" placeholder="Min. ₹100, Max. ₹20,000" min="100" max="20000" required>
+                        <span id="addMoneyErrorMsg" style="font-size:11px; color:#ef4444; margin-top:4px; display:none;"></span>
+                    </div>
+
+                    <!-- Payment Method Selector -->
+                    <div style="margin-bottom: 24px;">
+                        <label style="font-size: 11px; font-weight:600; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Payment Gateway</label>
+                        <div class="payout-method-selector" style="margin-top: 8px;">
+                            <div class="payout-method-card active" id="addMethodUPI" onclick="setAddPaymentMethod('upi')">
+                                <svg viewBox="0 0 24 24" style="width:20px; height:20px; stroke:currentColor; fill:none; stroke-width:2;"><circle cx="12" cy="12" r="10"></circle><path d="M12 8l-4 4h8z"/></svg>
+                                <span>UPI (GPay/PhonePe)</span>
+                            </div>
+                            <div class="payout-method-card" id="addMethodCard" onclick="setAddPaymentMethod('card')">
+                                <svg viewBox="0 0 24 24" style="width:20px; height:20px; stroke:currentColor; fill:none; stroke-width:2;"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
+                                <span>Credit/Debit Card</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- UPI App options -->
+                    <div id="addUPIAppsContainer" style="margin-bottom: 24px; display: flex; gap: 8px; justify-content: space-around;">
+                        <div style="font-size: 11px; color: var(--text-muted); border: 1px solid var(--surface-border); border-radius: 8px; padding: 8px; cursor: pointer; text-align: center; flex: 1; transition: 0.3s;" onclick="selectMockUPIApp(this, 'Google Pay')">Google Pay</div>
+                        <div style="font-size: 11px; color: var(--text-muted); border: 1px solid var(--surface-border); border-radius: 8px; padding: 8px; cursor: pointer; text-align: center; flex: 1; transition: 0.3s;" onclick="selectMockUPIApp(this, 'PhonePe')">PhonePe</div>
+                        <div style="font-size: 11px; color: var(--text-muted); border: 1px solid var(--surface-border); border-radius: 8px; padding: 8px; cursor: pointer; text-align: center; flex: 1; transition: 0.3s;" onclick="selectMockUPIApp(this, 'Paytm')">Paytm</div>
+                    </div>
+
+                    <!-- Card Details Fields (Hidden by default) -->
+                    <div id="addCardInputsContainer" style="display:none; flex-direction:column; gap:16px; margin-bottom: 24px;">
+                        <div class="input-group">
+                            <label>Card Number</label>
+                            <input type="text" id="addCardNum" placeholder="4532 9841 0284 3920">
+                        </div>
+                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+                            <div class="input-group">
+                                <label>Expiry Date</label>
+                                <input type="text" id="addCardExpiry" placeholder="MM/YY">
+                            </div>
+                            <div class="input-group">
+                                <label>CVV</label>
+                                <input type="password" id="addCardCVV" placeholder="•••">
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="addMoneySubmitBtn">Proceed to Pay</button>
+                </form>
+            </div>
+            
+            <!-- Success screen (Hidden by default) -->
+            <div id="addMoneyModalSuccessContent" class="modal-success-screen" style="display:none;">
+                <div class="success-checkmark-circle" style="background: rgba(74, 222, 128, 0.1); border-color: #4ade80; color: #4ade80;">
+                    <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+                <h3 style="margin-bottom: 8px;">Payment Successful</h3>
+                <p style="font-size: 13px; color: var(--text-muted); line-height: 1.5; margin-bottom: 24px;">
+                    An amount of <strong id="successAddMoneyAmount" style="color:#fff;">₹0</strong> has been successfully added to your Available Balance.
+                </p>
+                <button class="btn-action-premium" onclick="closeAddMoneyModal()" style="width:100%;">Done</button>
+            </div>
         </div>
     </div>
 
-    <!-- Toast container -->
-    <div class="toast-container" id="toastContainer"></div>
+    <!-- WITHDRAW MODAL -->
+    <div class="glass-modal-overlay" id="withdrawModal">
+        <div class="glass-modal-container">
+            <button class="modal-close-btn" onclick="closeWithdrawModal()">
+                <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+            
+            <div id="withdrawModalFormContent">
+                <h3 class="modal-title">Withdraw Funds</h3>
+                
+                <div style="margin-bottom: 20px;">
+                    <span style="font-size:11px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Available Balance</span>
+                    <div class="wallet-balance-val" style="font-size:26px; font-weight:800; color:#fff; margin-top:4px;">₹ 14,250.00</div>
+                </div>
+                
+                <!-- Payout Method Selection -->
+                <div style="margin-bottom: 16px;">
+                    <label style="font-size: 11px; font-weight:600; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Withdrawal Method</label>
+                    <div class="payout-method-selector" style="margin-top: 8px;">
+                        <div class="payout-method-card active" id="methodUPI" onclick="setWithdrawalMethod('upi')">
+                            <svg viewBox="0 0 24 24" style="width:20px; height:20px; stroke:currentColor; fill:none; stroke-width:2;"><circle cx="12" cy="12" r="10"></circle><path d="M12 8l-4 4h8z"/></svg>
+                            <span>UPI Transfer</span>
+                        </div>
+                        <div class="payout-method-card" id="methodBank" onclick="setWithdrawalMethod('bank')">
+                            <svg viewBox="0 0 24 24" style="width:20px; height:20px; stroke:currentColor; fill:none; stroke-width:2;"><path d="M3 21h18M3 10h18M5 6l7-3 7 3M4 10v11M20 10v11M8 14v3M12 14v3M16 14v3"/></svg>
+                            <span>Bank Account</span>
+                        </div>
+                    </div>
+                </div>
 
-    <script src="shared.js"></script>
+                <!-- Form Inputs -->
+                <form id="withdrawForm" onsubmit="handleWithdrawSubmit(event)">
+                    <div class="input-group" style="margin-bottom: 16px;">
+                        <label>Withdrawal Amount (₹)</label>
+                        <input type="number" id="withdrawAmount" placeholder="Min. ₹500, Max. ₹10,000" min="500" max="10000" required>
+                        <span id="withdrawErrorMsg" style="font-size:11px; color:#ef4444; margin-top:4px; display:none;"></span>
+                    </div>
+
+                    <!-- UPI Field Container -->
+                    <div class="input-group" id="upiInputContainer" style="margin-bottom: 24px;">
+                        <label>UPI ID (VPA)</label>
+                        <input type="text" id="withdrawUPI" placeholder="e.g. johndoe@okhdfc">
+                    </div>
+
+                    <!-- Bank Fields Container (Hidden by default) -->
+                    <div id="bankInputsContainer" style="display:none; flex-direction:column; gap:16px; margin-bottom: 24px;">
+                        <div class="input-group">
+                            <label>Account Number</label>
+                            <input type="text" id="withdrawAccNum" placeholder="Enter bank account number">
+                        </div>
+                        <div class="input-group">
+                            <label>IFSC Code</label>
+                            <input type="text" id="withdrawIFSC" placeholder="e.g. HDFC0000123" style="text-transform: uppercase;">
+                        </div>
+                    </div>
+
+                    <!-- Security Card Code Input -->
+                    <div class="input-group" style="margin-bottom: 24px;">
+                        <label>5-Digit Card Security Code</label>
+                        <input type="password" id="withdrawSecurityCode" placeholder="Enter the 5-digit code from back of card" maxlength="5" pattern="\d{5}" required>
+                    </div>
+ 
+                    <button type="submit" id="withdrawSubmitBtn">Request Withdrawal</button>
+                </form>
+            </div>
+            
+            <!-- Success screen (Hidden by default) -->
+            <div id="withdrawModalSuccessContent" class="modal-success-screen" style="display:none;">
+                <div class="success-checkmark-circle">
+                    <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+                <h3 style="margin-bottom: 8px;">Transfer Initiated</h3>
+                <p style="font-size: 13px; color: var(--text-muted); line-height: 1.5; margin-bottom: 24px;">
+                    Your request to withdraw <strong id="successWithdrawAmount" style="color:#fff;">₹0</strong> has been submitted. Funds will be deposited in 2-4 hours.
+                </p>
+                <button class="btn-action-premium" onclick="closeWithdrawModal()" style="width:100%;">Done</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- BANK DETAILS MODAL -->
+    <div class="glass-modal-overlay" id="bankDetailsModal">
+        <div class="glass-modal-container">
+            <button class="modal-close-btn" onclick="closeBankDetailsModal()">
+                <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+            
+            <h3 class="modal-title">Bank & UPI Settings</h3>
+            
+            <form id="bankDetailsForm" onsubmit="handleBankDetailsSave(event)">
+                <div style="display:flex; flex-direction:column; gap:16px; margin-bottom: 24px;">
+                    <div class="input-group">
+                        <label>Account Holder Name</label>
+                        <input type="text" id="bankHolderName" placeholder="Name as per bank records" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Bank Name</label>
+                        <input type="text" id="bankNameInput" placeholder="e.g. HDFC Bank" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Account Number</label>
+                        <input type="text" id="bankAccNumInput" placeholder="Enter bank account number" required>
+                    </div>
+                    <div class="input-group">
+                        <label>IFSC Code</label>
+                        <input type="text" id="bankIFSCInput" placeholder="e.g. HDFC0000123" style="text-transform: uppercase;" required>
+                    </div>
+                    <div class="input-group">
+                        <label>UPI ID (Optional)</label>
+                        <input type="text" id="bankUPIInput" placeholder="e.g. johndoe@okhdfc">
+                    </div>
+                </div>
+                
+                <button type="submit">Save Bank Profile</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- IDENTITY INITIALIZATION MODAL -->
+    <div class="glass-modal-overlay" id="identityModal" style="z-index: 9999;">
+        <div class="glass-modal-container" style="max-width: 380px;">
+            <h3 class="modal-title" style="text-align: center; margin-bottom: 12px;">Initialize Partner Identity</h3>
+            <p style="color: var(--text-muted); font-size: 13px; text-align: center; line-height: 1.5; margin-bottom: 24px;">
+                Enter your name to generate your unique EliteX Virtual Card and start earning rewards.
+            </p>
+            <form id="identityForm" onsubmit="handleIdentitySubmit(event)">
+                <div class="input-group" style="margin-bottom: 20px;">
+                    <label>Full Name</label>
+                    <input type="text" id="identityName" placeholder="e.g. Vikram Singh" required style="padding: 14px;">
+                </div>
+                <button type="submit" style="width: 100%; padding: 14px; background: var(--accent); color: #000; border: none; border-radius: 12px; font-weight: 700; cursor: pointer; transition: 0.3s;">Generate Partner ID & Card</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- UI Logic for Tab Switching & Wallet Operations -->
     <script>
-        let currentFilter = 'all';
-        window.openSubmitForCampaign = function(campId, campText) {
-            if (window.innerWidth <= 600) {
-                const hidden = document.getElementById('campaign-select-value-mobile');
-                const label = document.getElementById('selected-campaign-name-mobile');
-                if (hidden && label) {
-                    hidden.value = campId;
-                    label.textContent = campText;
-                }
-                const mobileDrawer = document.getElementById('mobileDrawer');
-                const mobileOverlay = document.getElementById('mobileDrawerOverlay');
-                if (mobileDrawer && mobileOverlay) {
-                    populateCampaignDropdown('campaignDropdownMobile', 'campaign-select-value-mobile', 'selected-campaign-name-mobile');
-                    mobileDrawer.classList.add('active');
-                    mobileOverlay.classList.add('active');
-                }
+        // --- 1. Wallet State & User Session Management ---
+        let availableBalance = 14250.00;
+        let pendingBalance = 2400.00;
+        let withdrawnBalance = 8500.00;
+        
+        let userName = "";
+        let partnerId = "EX-USR-8432";
+        let cardNumber = "5241 8309 9128 4250";
+        let cardSecurityCode = "58392";
+        let firstWithdrawalCompleted = false;
+        let cardDetailsHidden = true; 
+        let currentWithdrawalMethod = 'upi';
+        let currentAddPaymentMethod = 'upi';
+
+        let transactions = [
+            { id: 1, title: 'Tech Startup Promo', amount: 450, date: 'Today, 11:42 AM', type: 'credit', status: 'completed' },
+            { id: 2, title: 'Local Food Delivery', amount: 120, date: 'Yesterday, 04:15 PM', type: 'credit', status: 'completed' },
+            { id: 3, title: 'Bank Withdrawal', amount: -2000, date: 'Jul 4, 09:00 AM', type: 'debit', status: 'completed' },
+            { id: 4, title: 'E-commerce Campaign', amount: 850, date: 'Jul 2, 02:30 PM', type: 'credit', status: 'completed' },
+            { id: 5, title: 'App Install Campaign', amount: 1500, date: 'Jun 28, 10:15 AM', type: 'credit', status: 'completed' }
+        ];
+
+        let completedVideosCount = 5;
+        let completedSalesCount = 2;
+        let salaryClaimedThisMonth = false;
+
+        function loadUserSession() {
+            let session = localStorage.getItem('eliteX_user_session');
+            if (session) {
+                let data = JSON.parse(session);
+                userName = data.userName || '';
+                availableBalance = (data.availableBalance !== undefined && data.availableBalance !== null && !isNaN(parseFloat(data.availableBalance))) ? parseFloat(data.availableBalance) : 14250.00;
+                pendingBalance = (data.pendingBalance !== undefined && data.pendingBalance !== null && !isNaN(parseFloat(data.pendingBalance))) ? parseFloat(data.pendingBalance) : 2400.00;
+                withdrawnBalance = (data.withdrawnBalance !== undefined && data.withdrawnBalance !== null && !isNaN(parseFloat(data.withdrawnBalance))) ? parseFloat(data.withdrawnBalance) : 8500.00;
+                completedVideosCount = (data.completedVideosCount !== undefined && data.completedVideosCount !== null) ? parseInt(data.completedVideosCount) : 5;
+                completedSalesCount = (data.completedSalesCount !== undefined && data.completedSalesCount !== null) ? parseInt(data.completedSalesCount) : 2;
+                salaryClaimedThisMonth = data.salaryClaimedThisMonth === true;
+                partnerId = data.partnerId || generateRandomPartnerId();
+                cardNumber = data.cardNumber || generateRandomCardNumber();
+                cardSecurityCode = data.cardSecurityCode || generateRandomSecurityCode();
+                firstWithdrawalCompleted = data.firstWithdrawalCompleted === true;
+                cardDetailsHidden = data.cardDetailsHidden === true;
             } else {
-                document.getElementById('campaign-select-value').value = campId;
-                document.getElementById('selected-campaign-name').textContent = campText;
-                openDesktopSubmitModal();
+                partnerId = generateRandomPartnerId();
+                cardNumber = generateRandomCardNumber();
+                cardSecurityCode = generateRandomSecurityCode();
+                completedVideosCount = 5;
+                completedSalesCount = 2;
+                salaryClaimedThisMonth = false;
             }
         }
 
-        function renderAdsDashboard() {
-            const container = document.getElementById('ads-list-container');
-            container.innerHTML = '';
+        function saveUserSession() {
+            let data = {
+                userName: userName,
+                availableBalance: availableBalance,
+                pendingBalance: pendingBalance,
+                withdrawnBalance: withdrawnBalance,
+                completedVideosCount: completedVideosCount,
+                completedSalesCount: completedSalesCount,
+                salaryClaimedThisMonth: salaryClaimedThisMonth,
+                partnerId: partnerId,
+                cardNumber: cardNumber,
+                cardSecurityCode: cardSecurityCode,
+                firstWithdrawalCompleted: firstWithdrawalCompleted,
+                cardDetailsHidden: cardDetailsHidden
+            };
+            localStorage.setItem('eliteX_user_session', JSON.stringify(data));
+        }
 
-            const orders = getOrders().filter(o => o.status !== 'returned');
-            const subs = getSubmissions();
-            const joined = getJoinedCampaigns();
+        function handleIdentitySubmit(event) {
+            event.preventDefault();
+            const nameInput = document.getElementById('identityName');
+            const name = nameInput.value.trim();
+            if (!name) return;
+            
+            userName = name;
+            availableBalance = 14250.00;
+            pendingBalance = 2400.00;
+            withdrawnBalance = 8500.00;
+            partnerId = generateRandomPartnerId();
+            cardNumber = generateRandomCardNumber();
+            cardSecurityCode = generateRandomSecurityCode();
+            firstWithdrawalCompleted = false;
+            cardDetailsHidden = true;
+            
+            saveUserSession();
+            
+            // Sync to bank details profile for setting name
+            const profile = {
+                holderName: userName,
+                bankName: "HDFC Bank",
+                accountNumber: "50100234567890",
+                ifscCode: "HDFC0000123",
+                upiId: `${userName.toLowerCase().replace(/\s+/g, '')}@okhdfc`
+            };
+            localStorage.setItem('eliteX_bank_profile', JSON.stringify(profile));
+            
+            setupUserIdentityUI(userName);
+            
+            document.getElementById('identityModal').classList.remove('active');
+            
+            updateWalletUI();
+            updateCardVisibilityUI();
+            updateMilestoneUI();
+            renderTransactions();
+        }
 
-            const acceptedCampaigns = [];
+        function setupUserIdentityUI(name) {
+            const cardNameEl = document.getElementById('cardHolderName');
+            const sigNameEl = document.getElementById('signatureVal');
+            if (cardNameEl) cardNameEl.innerText = name;
+            if (sigNameEl) sigNameEl.innerText = name;
+            
+            const partnerEl = document.getElementById('cardPartnerIdText');
+            if (partnerEl) partnerEl.innerText = partnerId;
+            
+            const cvvEl = document.getElementById('cardCvvText');
+            if (cvvEl) cvvEl.innerText = `Password: ${cardSecurityCode}`;
+        }
 
-            // 1. Add Buy & Review campaigns
-            orders.forEach(order => {
-                const campaign = DEFAULT_CAMPAIGNS.find(c => c.productId === order.productId);
-                if (campaign) {
-                    const sub = subs.find(s => s.campaignId === campaign.id);
-                    acceptedCampaigns.push({
-                        campaign: campaign,
-                        order: order,
-                        submission: sub
-                    });
+        function generateRandomPartnerId() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let rand = '';
+            for(let i=0; i<4; i++) {
+                rand += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return `EX-USR-${rand}`;
+        }
+
+        function generateRandomCardNumber() {
+            let rand = '';
+            for(let i=0; i<16; i++) {
+                if (i > 0 && i % 4 === 0) rand += ' ';
+                rand += Math.floor(Math.random() * 10).toString();
+            }
+            return rand;
+        }
+
+        function generateRandomSecurityCode() {
+            let rand = '';
+            for(let i=0; i<5; i++) {
+                rand += Math.floor(Math.random() * 10).toString();
+            }
+            return rand;
+        }
+
+        // --- 2. Tab Switching Logic ---
+        function switchTab(element, sectionId, newTitle, newSubtitle) {
+            const items = document.querySelectorAll('.menu-item');
+            items.forEach(item => item.classList.remove('active'));
+            element.classList.add('active');
+
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(sec => sec.classList.remove('active-section'));
+            
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active-section');
+            }
+
+            document.getElementById('headerTitle').innerText = newTitle;
+            document.getElementById('headerSubtitle').innerText = newSubtitle;
+
+            // Trigger premium categories animation on Wallet tab switch
+            if (sectionId === 'walletSection') {
+                setTimeout(() => {
+                    const barLeads = document.getElementById('barLeads');
+                    const barInstalls = document.getElementById('barInstalls');
+                    const barSales = document.getElementById('barSales');
+                    if (barLeads) barLeads.style.width = '65%';
+                    if (barInstalls) barInstalls.style.width = '25%';
+                    if (barSales) barSales.style.width = '10%';
+                    
+                    updateMilestoneUI(); 
+                }, 100);
+            } else {
+                // Reset widths so they re-animate next time
+                const barLeads = document.getElementById('barLeads');
+                const barInstalls = document.getElementById('barInstalls');
+                const barSales = document.getElementById('barSales');
+                if (barLeads) barLeads.style.width = '0%';
+                if (barInstalls) barInstalls.style.width = '0%';
+                if (barSales) barSales.style.width = '0%';
+                
+                const milestoneBar = document.getElementById('milestoneBar');
+                if (milestoneBar) milestoneBar.style.width = '0%';
+            }
+        }
+
+        function createNewAction() {
+            alert("Open 'Create New' Modal (e.g. Submit a new Lead)");
+        }
+
+        // --- 3. Card Operations ---
+        function toggleCardFlip() {
+            document.getElementById('creditCard').classList.toggle('flipped');
+        }
+
+        function handleCardClick(event) {
+            if (event.target.closest('.card-eye-btn')) {
+                return;
+            }
+            toggleCardFlip();
+        }
+
+        function toggleCardVisibility(event) {
+            if (event) {
+                event.stopPropagation();
+            }
+            cardDetailsHidden = !cardDetailsHidden;
+            saveUserSession();
+            updateCardVisibilityUI();
+        }
+
+        function updateCardVisibilityUI() {
+            const numberText = document.getElementById('cardNumberText');
+            const eyeOpen = document.getElementById('eyeOpenIcon');
+            const eyeClosed = document.getElementById('eyeClosedIcon');
+            
+            if (cardDetailsHidden) {
+                if (numberText) {
+                    const last4 = cardNumber.slice(-4);
+                    numberText.innerText = `•••• •••• •••• ${last4}`;
                 }
-            });
+                if (eyeOpen) eyeOpen.style.display = 'none';
+                if (eyeClosed) eyeClosed.style.display = 'block';
+            } else {
+                if (numberText) numberText.innerText = cardNumber;
+                
+                if (eyeOpen) eyeOpen.style.display = 'block';
+                if (eyeClosed) eyeClosed.style.display = 'none';
+            }
+        }
 
-            // 2. Add other joined campaigns
-            joined.forEach(campId => {
-                const campaign = DEFAULT_CAMPAIGNS.find(c => c.id === campId);
-                if (campaign) {
-                    if (!acceptedCampaigns.find(item => item.campaign.id === campId)) {
-                        const order = orders.find(o => o.productId === campaign.productId);
-                        const sub = subs.find(s => s.campaignId === campId);
-                        acceptedCampaigns.push({
-                            campaign: campaign,
-                            order: order || null,
-                            submission: sub
-                        });
+        // --- 4. Milestone Goal Progress ---
+        function updateMilestoneUI() {
+            let totalEarnings = availableBalance + withdrawnBalance;
+            const targetVal = 20000;
+            let percentage = Math.min((totalEarnings / targetVal) * 100, 100);
+            
+            const milestoneBar = document.getElementById('milestoneBar');
+            const progressLabel = document.getElementById('milestoneProgressLabel');
+            const boosterText = document.getElementById('milestoneBoosterText');
+            
+            if (milestoneBar) {
+                const walletSec = document.getElementById('walletSection');
+                const isWalletActive = walletSec && walletSec.classList.contains('active-section');
+                if (isWalletActive) {
+                    milestoneBar.style.width = `${percentage}%`;
+                } else {
+                    milestoneBar.style.width = '0%';
+                }
+            }
+            
+            if (progressLabel) {
+                progressLabel.innerText = `₹ ${Math.floor(totalEarnings).toLocaleString('en-IN')} / ₹ ${targetVal.toLocaleString('en-IN')}`;
+            }
+            
+            if (boosterText) {
+                if (totalEarnings >= targetVal) {
+                    boosterText.innerText = "Booster Active! 🎉";
+                    boosterText.style.background = "rgba(74, 222, 128, 0.1)";
+                    boosterText.style.borderColor = "rgba(74, 222, 128, 0.3)";
+                    boosterText.style.color = "#4ade80";
+                } else {
+                    boosterText.innerText = "1.5x Booster";
+                    boosterText.style.background = "rgba(250, 204, 21, 0.08)";
+                    boosterText.style.borderColor = "rgba(250, 204, 21, 0.15)";
+                    boosterText.style.color = "var(--accent)";
+                }
+            }
+        }
+
+        // --- 5. Add Money Dialog Operations ---
+        function openAddMoneyModal() {
+            document.getElementById('addMoneyForm').reset();
+            document.getElementById('addMoneyErrorMsg').style.display = 'none';
+            document.getElementById('addMoneyModalFormContent').style.display = 'block';
+            document.getElementById('addMoneyModalSuccessContent').style.display = 'none';
+            
+            setAddPaymentMethod('upi');
+            document.getElementById('addMoneyModal').classList.add('active');
+        }
+
+        function closeAddMoneyModal() {
+            document.getElementById('addMoneyModal').classList.remove('active');
+        }
+
+        function setAddPaymentMethod(method) {
+            currentAddPaymentMethod = method;
+            const btnUPI = document.getElementById('addMethodUPI');
+            const btnCard = document.getElementById('addMethodCard');
+            const upiApps = document.getElementById('addUPIAppsContainer');
+            const cardInputs = document.getElementById('addCardInputsContainer');
+            
+            const cardNum = document.getElementById('addCardNum');
+            const cardExpiry = document.getElementById('addCardExpiry');
+            const cardCVV = document.getElementById('addCardCVV');
+            
+            if (method === 'upi') {
+                btnUPI.classList.add('active');
+                btnCard.classList.remove('active');
+                upiApps.style.display = 'flex';
+                cardInputs.style.display = 'none';
+                cardNum.required = false;
+                cardExpiry.required = false;
+                cardCVV.required = false;
+            } else {
+                btnUPI.classList.remove('active');
+                btnCard.classList.add('active');
+                upiApps.style.display = 'none';
+                cardInputs.style.display = 'flex';
+                cardNum.required = true;
+                cardExpiry.required = true;
+                cardCVV.required = true;
+            }
+        }
+
+        let selectedUPIAppText = '';
+        function selectMockUPIApp(element, appName) {
+            const options = document.querySelectorAll('#addUPIAppsContainer div');
+            options.forEach(opt => {
+                opt.style.borderColor = 'var(--surface-border)';
+                opt.style.color = 'var(--text-muted)';
+                opt.style.background = 'transparent';
+            });
+            element.style.borderColor = 'var(--accent)';
+            element.style.color = '#fff';
+            element.style.background = 'rgba(250, 204, 21, 0.05)';
+            selectedUPIAppText = appName;
+        }
+
+        function handleAddMoneySubmit(event) {
+            event.preventDefault();
+            const amtInput = document.getElementById('addMoneyAmount');
+            const amt = parseFloat(amtInput.value);
+            const errorEl = document.getElementById('addMoneyErrorMsg');
+            
+            if (isNaN(amt) || amt < 100) {
+                errorEl.innerText = "Minimum deposit amount is ₹100.";
+                errorEl.style.display = 'block';
+                return;
+            }
+            if (amt > 20000) {
+                errorEl.innerText = "Maximum deposit limit is ₹20,000.";
+                errorEl.style.display = 'block';
+                return;
+            }
+            errorEl.style.display = 'none';
+            
+            const submitBtn = document.getElementById('addMoneySubmitBtn');
+            const originalText = submitBtn.innerText;
+            submitBtn.innerText = "Initializing secure gateway...";
+            submitBtn.disabled = true;
+            
+            setTimeout(() => {
+                availableBalance += amt;
+                saveUserSession();
+                
+                const now = new Date();
+                const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                transactions.unshift({
+                    id: transactions.length + 1,
+                    title: currentAddPaymentMethod === 'upi' ? `Wallet Load (${selectedUPIAppText || 'UPI'})` : 'Wallet Load (Card)',
+                    amount: amt,
+                    date: `Today, ${timeStr}`,
+                    type: 'credit',
+                    status: 'completed'
+                });
+                
+                updateWalletUI();
+                updateCardVisibilityUI();
+                updateMilestoneUI();
+                renderTransactions();
+                
+                document.getElementById('successAddMoneyAmount').innerText = `₹${amt.toLocaleString('en-IN')}`;
+                document.getElementById('addMoneyModalFormContent').style.display = 'none';
+                document.getElementById('addMoneyModalSuccessContent').style.display = 'flex';
+                
+                submitBtn.innerText = originalText;
+                submitBtn.disabled = false;
+            }, 1500);
+        }
+
+        // --- 6. Withdraw Dialog Operations ---
+        function updateWithdrawProgressUI() {
+            const minLimit = firstWithdrawalCompleted ? 499 : 99;
+            const progress = Math.min((availableBalance / minLimit) * 100, 100);
+            
+            const barFill = document.getElementById('withdrawProgressBarFill');
+            const percentText = document.getElementById('withdrawProgressPercent');
+            const footerText = document.getElementById('withdrawProgressFooter');
+            
+            if (barFill) barFill.style.width = `${progress}%`;
+            if (percentText) percentText.innerText = `${Math.floor(progress)}%`;
+            
+            if (footerText) {
+                if (availableBalance >= minLimit) {
+                    footerText.innerHTML = `<span style="color:var(--success); font-weight:600;">✓ Threshold reached!</span> You can withdraw your funds now.`;
+                    if (barFill) barFill.style.background = 'linear-gradient(90deg, #4ade80, #22c55e)';
+                } else {
+                    const remaining = minLimit - availableBalance;
+                    footerText.innerHTML = `Need <strong style="color:#fff;">₹${remaining.toLocaleString('en-IN')}</strong> more to reach the ₹${minLimit} withdrawal threshold.`;
+                    if (barFill) barFill.style.background = 'linear-gradient(90deg, var(--accent), #eab308)';
+                }
+            }
+        }
+
+        function openWithdrawModal() {
+            document.getElementById('withdrawForm').reset();
+            document.getElementById('withdrawErrorMsg').style.display = 'none';
+            document.getElementById('withdrawModalFormContent').style.display = 'block';
+            document.getElementById('withdrawModalSuccessContent').style.display = 'none';
+            
+            const saved = localStorage.getItem('eliteX_bank_profile');
+            if (saved) {
+                const profile = JSON.parse(saved);
+                document.getElementById('withdrawUPI').value = profile.upiId || '';
+                document.getElementById('withdrawAccNum').value = profile.accountNumber || '';
+                document.getElementById('withdrawIFSC').value = profile.ifscCode || '';
+            }
+            
+            // Dynamically show correct minimum limit on placeholder
+            const minLimit = firstWithdrawalCompleted ? 499 : 99;
+            document.getElementById('withdrawAmount').placeholder = `Min. ₹${minLimit}, Max. ₹10,000`;
+            document.getElementById('withdrawAmount').min = minLimit;
+            
+            updateWithdrawProgressUI();
+            
+            setWithdrawalMethod('upi');
+            document.getElementById('withdrawModal').classList.add('active');
+        }
+
+        function closeWithdrawModal() {
+            document.getElementById('withdrawModal').classList.remove('active');
+        }
+
+        function openBankDetailsModal() {
+            const saved = localStorage.getItem('eliteX_bank_profile');
+            if (saved) {
+                const profile = JSON.parse(saved);
+                document.getElementById('bankHolderName').value = profile.holderName || '';
+                document.getElementById('bankNameInput').value = profile.bankName || '';
+                document.getElementById('bankAccNumInput').value = profile.accountNumber || '';
+                document.getElementById('bankIFSCInput').value = profile.ifscCode || '';
+                document.getElementById('bankUPIInput').value = profile.upiId || '';
+            } else {
+                // Initial defaults
+                document.getElementById('bankHolderName').value = "John Doe";
+                document.getElementById('bankNameInput').value = "HDFC Bank";
+                document.getElementById('bankAccNumInput').value = "50100234567890";
+                document.getElementById('bankIFSCInput').value = "HDFC0000123";
+                document.getElementById('bankUPIInput').value = "johndoe@okhdfc";
+            }
+            document.getElementById('bankDetailsModal').classList.add('active');
+        }
+
+        function closeBankDetailsModal() {
+            document.getElementById('bankDetailsModal').classList.remove('active');
+        }
+
+        function setWithdrawalMethod(method) {
+            currentWithdrawalMethod = method;
+            const btnUPI = document.getElementById('methodUPI');
+            const btnBank = document.getElementById('methodBank');
+            const upiContainer = document.getElementById('upiInputContainer');
+            const bankContainer = document.getElementById('bankInputsContainer');
+            
+            const inputUPI = document.getElementById('withdrawUPI');
+            const inputAcc = document.getElementById('withdrawAccNum');
+            const inputIFSC = document.getElementById('withdrawIFSC');
+            
+            if (method === 'upi') {
+                btnUPI.classList.add('active');
+                btnBank.classList.remove('active');
+                upiContainer.style.display = 'flex';
+                bankContainer.style.display = 'none';
+                inputUPI.required = true;
+                inputAcc.required = false;
+                inputIFSC.required = false;
+            } else {
+                btnUPI.classList.remove('active');
+                btnBank.classList.add('active');
+                upiContainer.style.display = 'none';
+                bankContainer.style.display = 'flex';
+                inputUPI.required = false;
+                inputAcc.required = true;
+                inputIFSC.required = true;
+            }
+        }
+
+        function updateWalletUI() {
+            // Available Balance
+            document.querySelectorAll('.wallet-balance-val').forEach(el => {
+                el.innerText = `₹ ${availableBalance.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+            });
+            
+            // Pending Balance
+            const pendingEl = document.getElementById('pendingBalanceVal');
+            if (pendingEl) pendingEl.innerText = `₹ ${pendingBalance.toLocaleString('en-IN')}`;
+            
+            // Withdrawn Balance
+            const withdrawnEl = document.getElementById('withdrawnBalanceVal');
+            if (withdrawnEl) withdrawnEl.innerText = `₹ ${withdrawnBalance.toLocaleString('en-IN')}`;
+            
+            // Update withdrawal threshold progress bar
+            updateWithdrawProgressUI();
+
+            // Update Elite Creator Salary Program progress tracker
+            updateSalaryProgramUI();
+        }
+
+        function updateSalaryProgramUI() {
+            let totalEarnings = availableBalance + withdrawnBalance;
+            
+            const earningTarget = 500;
+            const videoTarget = 30;
+            const salesTarget = 10;
+            
+            // Calculate progress percentages
+            const earnPercent = Math.min((totalEarnings / earningTarget) * 100, 100);
+            const videoPercent = Math.min((completedVideosCount / videoTarget) * 100, 100);
+            const salesPercent = Math.min((completedSalesCount / salesTarget) * 100, 100);
+            
+            // DOM Elements
+            const earnBar = document.getElementById('salaryEarningBar');
+            const videoBar = document.getElementById('salaryVideoBar');
+            const salesBar = document.getElementById('salarySalesBar');
+            
+            const earnVal = document.getElementById('salaryEarningProgressVal');
+            const videoVal = document.getElementById('salaryVideoProgressVal');
+            const salesVal = document.getElementById('salarySalesProgressVal');
+            
+            const badge = document.getElementById('salaryStatusBadge');
+            const claimContainer = document.getElementById('salaryClaimContainer');
+            const successMsg = document.getElementById('salaryClaimedSuccessMsg');
+            
+            // Update Progress Bar Fills
+            if (earnBar) {
+                earnBar.style.width = `${earnPercent}%`;
+                earnBar.style.background = earnPercent >= 100 ? 'linear-gradient(90deg, #4ade80, #22c55e)' : 'linear-gradient(90deg, var(--accent), #eab308)';
+            }
+            if (videoBar) {
+                videoBar.style.width = `${videoPercent}%`;
+                videoBar.style.background = videoPercent >= 100 ? 'linear-gradient(90deg, #4ade80, #22c55e)' : 'linear-gradient(90deg, var(--accent), #eab308)';
+            }
+            if (salesBar) {
+                salesBar.style.width = `${salesPercent}%`;
+                salesBar.style.background = salesPercent >= 100 ? 'linear-gradient(90deg, #4ade80, #22c55e)' : 'linear-gradient(90deg, var(--accent), #eab308)';
+            }
+            
+            // Update Label Text
+            if (earnVal) earnVal.innerText = `₹ ${Math.floor(totalEarnings).toLocaleString('en-IN')} / ₹ ${earningTarget}`;
+            if (videoVal) videoVal.innerText = `${completedVideosCount} / ${videoTarget}`;
+            if (salesVal) salesVal.innerText = `${completedSalesCount} / ${salesTarget}`;
+            
+            // Check Unlock State
+            const isUnlocked = (totalEarnings >= earningTarget) && (completedVideosCount >= videoTarget) && (completedSalesCount >= salesTarget);
+            
+            if (isUnlocked) {
+                if (salaryClaimedThisMonth) {
+                    if (badge) {
+                        badge.innerText = "Claimed";
+                        badge.style.background = "rgba(74, 222, 128, 0.08)";
+                        badge.style.color = "var(--success)";
+                        badge.style.borderColor = "rgba(74, 222, 128, 0.15)";
                     }
+                    if (claimContainer) claimContainer.style.display = 'none';
+                    if (successMsg) successMsg.style.display = 'block';
+                } else {
+                    if (badge) {
+                        badge.innerText = "Unlocked";
+                        badge.style.background = "rgba(74, 222, 128, 0.1)";
+                        badge.style.color = "var(--success)";
+                        badge.style.borderColor = "rgba(74, 222, 128, 0.3)";
+                    }
+                    if (claimContainer) claimContainer.style.display = 'flex';
+                    if (successMsg) successMsg.style.display = 'none';
                 }
+            } else {
+                if (badge) {
+                    badge.innerText = "Locked";
+                    badge.style.background = "rgba(250, 204, 21, 0.08)";
+                    badge.style.color = "var(--accent)";
+                    badge.style.borderColor = "rgba(250, 204, 21, 0.15)";
+                }
+                if (claimContainer) claimContainer.style.display = 'none';
+                if (successMsg) successMsg.style.display = 'none';
+            }
+        }
+
+        window.claimMonthlySalary = function() {
+            if (salaryClaimedThisMonth) return;
+            
+            availableBalance += 500;
+            salaryClaimedThisMonth = true;
+            saveUserSession();
+            
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            transactions.unshift({
+                id: transactions.length + 1,
+                title: 'Career Salary Payout',
+                amount: 500,
+                date: `Today, ${timeStr}`,
+                type: 'credit',
+                status: 'completed'
+            });
+            
+            updateWalletUI();
+            updateCardVisibilityUI();
+            updateMilestoneUI();
+            renderTransactions();
+            
+            alert("Success! Your fixed Monthly Career Salary has been claimed and credited to your available balance. Next check unlocks in 30 days!");
+        };
+
+        function renderTransactions() {
+            const listContainer = document.getElementById('txListContainer');
+            if (!listContainer) return;
+
+            const searchVal = document.getElementById('txSearchInput').value.toLowerCase();
+            const activeBtn = document.querySelector('.tx-filter-btn.active');
+            const activeTab = activeBtn ? activeBtn.dataset.filter : 'all';
+
+            let filtered = transactions.filter(tx => {
+                const matchesSearch = tx.title.toLowerCase().includes(searchVal);
+                const matchesTab = activeTab === 'all' || tx.type === activeTab;
+                return matchesSearch && matchesTab;
             });
 
-            // Filter campaigns based on submission status
-            const filtered = acceptedCampaigns.filter(item => {
-                if (currentFilter === 'all') return true;
-                if (currentFilter === 'pending') return item.submission && item.submission.status === 'pending';
-                if (currentFilter === 'approved') return item.submission && item.submission.status === 'approved';
-                if (currentFilter === 'rejected') return item.submission && item.submission.status === 'rejected';
-                return false;
-            });
+            listContainer.innerHTML = '';
 
             if (filtered.length === 0) {
-                if (acceptedCampaigns.length === 0) {
-                    container.innerHTML = `
-                        <div style="padding: 40px; text-align: center; color: var(--text-muted); font-size: 0.88rem;">
-                            You haven't accepted any campaigns yet.
-                            <div style="margin-top: 16px;">
-                                <a href="campaigns.html" class="btn-gradient" style="display: inline-flex; width: auto; padding: 8px 16px; font-size: 0.8rem; text-decoration: none; align-items: center; gap: 6px;">
-                                    <i class="ph ph-megaphone"></i> Browse Campaigns
-                                </a>
-                            </div>
-                        </div>
-                    `;
-                } else {
-                    container.innerHTML = `
-                        <div style="padding:40px; text-align:center; color:var(--text-muted); font-size:0.88rem;">
-                            No campaigns match this status filter.
-                        </div>
-                    `;
-                }
+                listContainer.innerHTML = `
+                    <div style="text-align: center; padding: 40px 16px; color: var(--text-muted);">
+                        <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-bottom: 8px; opacity: 0.5; stroke: var(--text-muted);">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="8" y1="12" x2="16" y2="12"></line>
+                        </svg>
+                        <div style="font-size: 13px; font-weight: 500;">No matching transactions found</div>
+                    </div>
+                `;
                 return;
             }
 
-            const campaignThumbnails = {
-                'camp_direct': 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?q=80&w=200&auto=format&fit=crop',
-                'camp_app': 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=200&auto=format&fit=crop',
-                'camp_onsite': 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=200&auto=format&fit=crop'
-            };
-
-            filtered.forEach(item => {
-                const div = document.createElement('div');
-                div.className = 'ad-row-card';
-
-                const s = item.submission;
-                const c = item.campaign;
-                const o = item.order;
-
-                let imgUrl = campaignThumbnails[c.id] || 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?q=80&w=200&auto=format&fit=crop';
-                if (c.productId) {
-                    const products = getAllProducts();
-                    const prod = products.find(p => p.id === c.productId);
-                    if (prod && prod.image) {
-                        imgUrl = prod.image;
-                    }
-                }
-                const taskDetailsText = c.type === 'buy_to_review' ? 'Buy & Review' : (c.type === 'direct_video' ? 'Direct Promo' : (c.type === 'app_review' ? 'App Review' : 'On-Site Video'));
-                const dateText = s ? s.date : (o ? o.date : new Date().toLocaleDateString('en-GB'));
-
-                let platformIcon = 'ph-instagram-logo';
-                let iconColor = '#f43f5e';
+            filtered.forEach(tx => {
+                const isCredit = tx.type === 'credit';
+                const amountText = isCredit ? `+ ₹${tx.amount.toLocaleString('en-IN')}` : `- ₹${Math.abs(tx.amount).toLocaleString('en-IN')}`;
+                const amountClass = isCredit ? 'tx-amount plus' : 'tx-amount minus';
+                const iconSvg = isCredit 
+                    ? `<svg viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>` 
+                    : `<svg viewBox="0 0 24 24"><line x1="17" y1="17" x2="7" y2="7"></line><polyline points="17 7 17 17 7 17"></polyline></svg>`;
                 
-                if (s) {
-                    if (s.videoUrl.includes('youtube.com') || s.videoUrl.includes('youtu.be')) {
-                        platformIcon = 'ph-youtube-logo';
-                        iconColor = '#ef4444';
-                    } else if (s.videoUrl.includes('tiktok.com')) {
-                        platformIcon = 'ph-tiktok-logo';
-                        iconColor = '#f4f4f5';
-                    }
-                }
-
-                // Delivery / Submission Status
-                let statusBadge = '';
-                let reachVal = '—';
-                let earningsVal = '₹0.00';
-                let earningsStyle = '';
-                let playIconHtml = '';
-                let linkHtml = '';
-                let actionBtnHtml = '';
-                let cooldownText = '';
-
-                // Calculate date & cooldown
-                const dateString = s ? s.date : (o ? o.date : new Date().toLocaleDateString());
-                let elapsedDays = 0;
-                let daysLeft = 7;
+                const badgeColor = tx.status === 'completed' ? '#4ade80' : '#facc15';
+                const badgeBg = tx.status === 'completed' ? 'rgba(74, 222, 128, 0.05)' : 'rgba(250, 204, 21, 0.05)';
+                const badgeBorder = tx.status === 'completed' ? 'rgba(74, 222, 128, 0.15)' : 'rgba(250, 204, 21, 0.15)';
                 
-                if (s) {
-                    const submissionDate = new Date(s.date);
-                    const today = new Date();
-                    const diffTime = Math.abs(today - submissionDate);
-                    elapsedDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-                    daysLeft = 7 - elapsedDays;
-                }
-
-                if (!s) {
-                    // Ready to Film
-                    statusBadge = `<span style="display:inline-flex; align-items:center; gap:6px; color:var(--text-secondary); font-weight:600; font-size:0.75rem;"><span style="width:6px; height:6px; border-radius:50%; background:var(--text-muted);"></span> Ready to Film</span>`;
-                    reachVal = 'Not uploaded';
-                    earningsVal = '₹0.00';
-                    playIconHtml = `
-                        <div style="position:absolute; inset:0; background:rgba(0,0,0,0.4); display:flex; align-items:center; justify-content:center;">
-                            <i class="ph ph-camera" style="font-size:1.15rem; color:#fff; opacity:0.85;"></i>
+                const html = `
+                    <div class="tx-item">
+                        <div class="tx-left">
+                            <div class="tx-icon" style="${!isCredit ? 'background: rgba(255, 255, 255, 0.05); border-color: var(--surface-border); color: var(--text-muted);' : ''}">
+                                ${iconSvg}
+                            </div>
+                            <div class="tx-info">
+                                <div class="tx-title">${tx.title}</div>
+                                <div class="tx-date">${tx.date}</div>
+                            </div>
                         </div>
-                    `;
-                    linkHtml = `
-                        <span style="font-weight:600; font-size:0.95rem; color:var(--text-primary);">
-                            ${c.title}
-                        </span>
-                    `;
-                    actionBtnHtml = `
-                        <button class="btn-gradient" onclick="openSubmitForCampaign('${c.id}', '${c.brand}: ${c.title}')" style="width: auto; padding: 6px 12px; font-size: 0.72rem; border-radius: 6px; display: inline-flex; align-items: center; gap: 4px;">
-                            <i class="ph ph-video-camera"></i> Submit Video
-                        </button>
-                    `;
-                } else {
-                    // Video submitted
-                    if (s.status === 'approved') {
-                        statusBadge = `<span style="display:inline-flex; align-items:center; gap:6px; color:var(--success); font-weight:600; font-size:0.75rem;"><span style="width:6px; height:6px; border-radius:50%; background:var(--success); box-shadow:0 0 8px var(--success);"></span> Active</span>`;
-                        
-                        const seed = parseInt(s.subId.split('-')[1]) || 500;
-                        const views = Math.round(((s.performancePayout || 0) * 1250) + (seed % 1000) * 10 + 5000);
-                        reachVal = views.toLocaleString('en-IN');
-
-                        if (daysLeft > 0) {
-                            earningsVal = '₹1.00';
-                            earningsStyle = 'color: #fbbf24; font-weight: 700;';
-                            cooldownText = `<span style="color:#fbbf24; font-size:0.7rem; font-weight:600;"><i class="ph ph-hourglass-high" style="vertical-align: middle;"></i> Payout in ${daysLeft}d</span>`;
-                        } else {
-                            const totalPay = 1.00 + (s.performancePayout || 0);
-                            earningsVal = `₹${totalPay.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
-                            earningsStyle = 'color:var(--success); font-weight:700;';
-                            cooldownText = `<span style="color:#34d399; font-size:0.7rem; font-weight:600;"><i class="ph ph-check-circle" style="vertical-align: middle;"></i> Paid Out</span>`;
-                        }
-                    } else if (s.status === 'rejected') {
-                        statusBadge = `<span style="display:inline-flex; align-items:center; gap:6px; color:var(--danger); font-weight:600; font-size:0.75rem;"><span style="width:6px; height:6px; border-radius:50%; background:var(--danger); box-shadow:0 0 8px var(--danger);"></span> Rejected</span>`;
-                        reachVal = '0';
-                        earningsVal = '₹0.00';
-                        
-                        if (!s.resubmitCount || s.resubmitCount < 1) {
-                            actionBtnHtml = `
-                                <button class="btn-outline" onclick="openSubmitForCampaign('${c.id}', '${c.brand}: ${c.title}')" style="width: auto; padding: 6px 12px; font-size: 0.72rem; border-radius: 6px; display: inline-flex; align-items: center; gap: 4px; border-color: var(--danger); color: #f87171;">
-                                    <i class="ph ph-pencil-simple-line"></i> Update Link
-                                </button>
-                            `;
-                        } else {
-                            cooldownText = `<span style="color:var(--text-muted); font-size:0.7rem; font-weight:600;">(Update limit reached)</span>`;
-                        }
-                    } else {
-                        statusBadge = `<span style="display:inline-flex; align-items:center; gap:6px; color:var(--warning); font-weight:600; font-size:0.75rem;"><span style="width:6px; height:6px; border-radius:50%; background:var(--warning); box-shadow:0 0 8px var(--warning);"></span> In Review</span>`;
-                        reachVal = 'Evaluating';
-                        earningsVal = 'Pending Review';
-                    }
-
-                    playIconHtml = `
-                        <div style="position:absolute; inset:0; background:rgba(0,0,0,0.25); display:flex; align-items:center; justify-content:center;">
-                            <i class="ph ph-play" style="font-size:1.15rem; color:#fff; filter:drop-shadow(0 2px 4px rgba(0,0,0,0.4));"></i>
-                        </div>
-                        <div style="position:absolute; bottom:4px; right:4px; background:rgba(9,9,11,0.85); width:18px; height:18px; border-radius:50%; display:flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,0.05);">
-                            <i class="ph ${platformIcon}" style="font-size:0.75rem; color:${iconColor};"></i>
-                        </div>
-                    `;
-
-                    linkHtml = `
-                        <span style="font-weight:600; font-size:0.95rem; display:flex; align-items:center; gap:8px;">
-                            <a href="${s.videoUrl}" target="_blank" style="color:var(--text-primary); text-decoration:none; display:inline-flex; align-items:center; gap:4px;">
-                                ${c.title} <i class="ph ph-arrow-square-out" style="font-size:0.72rem; color:var(--text-muted);"></i>
-                            </a>
-                        </span>
-                    `;
-                }
-                // Calculate progress tracker values for the accepted campaign
-                let pct = 35;
-                let step1Class = 'active';
-                let step2Class = '';
-                let step3Class = '';
-                let barColor = 'linear-gradient(90deg, #6366f1, #a855f7)';
-                let statusLabel = 'Task Accepted';
-                
-                if (s) {
-                    if (s.status === 'pending') {
-                        pct = 70;
-                        step1Class = 'active';
-                        step2Class = 'active';
-                        statusLabel = 'Under Review';
-                    } else if (s.status === 'approved') {
-                        pct = 100;
-                        step1Class = 'active';
-                        step2Class = 'active';
-                        step3Class = 'approved';
-                        barColor = '#10b981';
-                        statusLabel = 'Approved & Paid';
-                    } else if (s.status === 'rejected') {
-                        pct = 100;
-                        step1Class = 'active';
-                        step2Class = 'active';
-                        step3Class = 'rejected';
-                        barColor = '#ef4444';
-                        statusLabel = 'Rejected';
-                    }
-                }
-
-                const progressTrackerHtml = `
-                    <div class="campaign-progress-container" style="padding: 10px 0 2px 0; border-top: 1px solid rgba(255,255,255,0.04); margin-top: 10px; width: 100%;">
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; font-size:0.65rem; font-weight:600; font-family:'Plus Jakarta Sans', sans-serif;">
-                            <span style="color: var(--text-secondary); display:flex; align-items:center; gap:4px;"><i class="ph ph-activity" style="color:#6366f1;"></i> Progress Tracker</span>
-                            <span style="color: ${s && s.status === 'approved' ? '#10b981' : (s && s.status === 'rejected' ? '#ef4444' : '#a78bfa')}; font-weight:700;">${statusLabel}</span>
-                        </div>
-                        <div class="campaign-progress-bar-bg" style="height:5px; background:rgba(255,255,255,0.05); border-radius:99px; position:relative; overflow:hidden; margin-bottom:8px;">
-                            <div class="campaign-progress-bar-fill-dash" data-pct="${pct}" style="width:0%; height:100%; background: ${barColor}; border-radius:99px; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);"></div>
-                        </div>
-                        <div class="campaign-progress-steps" style="display:flex; justify-content:space-between; font-size:0.58rem; color:var(--text-muted); font-weight:600;">
-                            <span class="${step1Class}" style="transition: color 0.3s;"><i class="ph ph-circle-dashed"></i> Accepted</span>
-                            <span class="${step2Class}" style="transition: color 0.3s;"><i class="ph ph-circle-dashed"></i> Submitted</span>
-                            <span class="${step3Class}" style="transition: color 0.3s;">
-                                ${s && s.status === 'approved' ? '<i class="ph ph-check-circle"></i> Approved' : (s && s.status === 'rejected' ? '<i class="ph ph-x-circle"></i> Rejected' : '<i class="ph ph-shield-check"></i> Final Review')}
-                            </span>
+                        <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 6px;">
+                            <div class="${amountClass}">${amountText}</div>
+                            <span style="font-size: 9px; font-weight: 700; text-transform: uppercase; padding: 2px 6px; border-radius: 8px; color: ${badgeColor}; background: ${badgeBg}; border: 1px solid ${badgeBorder}; letter-spacing: 0.5px;">${tx.status}</span>
                         </div>
                     </div>
                 `;
-
-                div.innerHTML = `
-                    <div style="display:flex; justify-content:space-between; align-items:center; width:100%; gap:20px; flex-wrap:wrap;">
-                        <div style="display: flex; align-items: center; gap: 16px; flex-grow: 1; min-width: 0;">
-                            <!-- Rectangular Video Thumbnail (16:9 aspect ratio) -->
-                            <div style="position:relative; width:100px; height:58px; border-radius:6px; overflow:hidden; border:1px solid rgba(255,255,255,0.06); flex-shrink:0; background:#18181b;">
-                                <img src="${imgUrl}" style="width:100%; height:100%; object-fit:cover;">
-                                ${playIconHtml}
-                            </div>
-                            <div style="display:flex; flex-direction:column; gap:4px; min-width: 0;">
-                                ${linkHtml}
-                                <div style="font-size:0.75rem; color:var(--text-secondary); display:flex; align-items:center; gap:6px; flex-wrap: wrap;">
-                                    <span>${c.brand}</span>
-                                    <span style="color: var(--text-muted);">•</span>
-                                    <span>${taskDetailsText}</span>
-                                </div>
-                                <div style="margin-top:2px; display:flex; align-items:center; gap:8px; flex-wrap: wrap;">
-                                    ${statusBadge}
-                                    <span style="font-size:0.72rem; color:var(--text-muted);">•</span>
-                                    <span style="font-size:0.72rem; color:var(--text-muted);"><i class="ph ph-calendar" style="vertical-align: middle;"></i> ${dateText}</span>
-                                    ${cooldownText ? `<span style="font-size:0.72rem; color:var(--text-muted);">•</span> ${cooldownText}` : ''}
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Meta Stats columns aligned on the right -->
-                        <div class="ad-row-card-stats" style="display:flex; align-items:center; gap:16px;">
-                            ${actionBtnHtml ? `
-                                <div style="flex-shrink:0;">
-                                    ${actionBtnHtml}
-                                </div>
-                            ` : `
-                                <div style="text-align: right; min-width: 80px;">
-                                    <div style="font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px;">Reach</div>
-                                    <div style="font-size: 0.9rem; font-weight: 700; color: var(--text-primary); margin-top: 2px;">${reachVal}</div>
-                                </div>
-                            `}
-                            <div style="text-align: right; min-width: 90px;">
-                                <div style="font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px;">Amount Earned</div>
-                                <div style="font-size: 1.15rem; ${earningsStyle}; margin-top: 2px;">${earningsVal}</div>
-                            </div>
-                        </div>
-                    </div>
-                    ${progressTrackerHtml}
-                `;
-                container.appendChild(div);
+                listContainer.insertAdjacentHTML('beforeend', html);
             });
+        }
 
-            // Trigger progress bar filling animation
+        function filterTransactions(element) {
+            document.querySelectorAll('.tx-filter-btn').forEach(btn => btn.classList.remove('active'));
+            element.classList.add('active');
+            renderTransactions();
+        }
+
+        function resetTxSearchFilters() {
+            document.getElementById('txSearchInput').value = '';
+            document.querySelectorAll('.tx-filter-btn').forEach(btn => btn.classList.remove('active'));
+            const allBtn = document.querySelector('.tx-filter-btn[data-filter="all"]');
+            if (allBtn) allBtn.classList.add('active');
+            renderTransactions();
+        }
+
+        function handleWithdrawSubmit(event) {
+            event.preventDefault();
+            const amtInput = document.getElementById('withdrawAmount');
+            const amt = parseFloat(amtInput.value);
+            const errorEl = document.getElementById('withdrawErrorMsg');
+            
+            // Check 5-digit Card Security PIN Code
+            const pinInput = document.getElementById('withdrawSecurityCode');
+            const userPin = pinInput ? pinInput.value.trim() : '';
+            if (userPin !== cardSecurityCode) {
+                errorEl.innerText = "Invalid Card Security Code. Payout blocked.";
+                errorEl.style.display = 'block';
+                return;
+            }
+            
+            const minLimit = firstWithdrawalCompleted ? 499 : 99;
+            
+            if (isNaN(amt) || amt < minLimit) {
+                errorEl.innerText = `Minimum withdrawal amount is ₹${minLimit}.`;
+                errorEl.style.display = 'block';
+                return;
+            }
+            if (amt > 10000) {
+                errorEl.innerText = "Maximum withdrawal limit per transaction is ₹10,000.";
+                errorEl.style.display = 'block';
+                return;
+            }
+            if (amt > availableBalance) {
+                errorEl.innerText = `Insufficient funds. Your available balance is ₹${availableBalance.toLocaleString('en-IN')}.`;
+                errorEl.style.display = 'block';
+                return;
+            }
+            
+            errorEl.style.display = 'none';
+            
+            const submitBtn = document.getElementById('withdrawSubmitBtn');
+            const originalText = submitBtn.innerText;
+            submitBtn.innerText = "Processing transfer...";
+            submitBtn.disabled = true;
+            
             setTimeout(() => {
-                container.querySelectorAll('.campaign-progress-bar-fill-dash').forEach(fill => {
-                    const pct = fill.getAttribute('data-pct');
-                    fill.style.width = `${pct}%`;
+                availableBalance -= amt;
+                withdrawnBalance += amt;
+                
+                if (!firstWithdrawalCompleted) {
+                    firstWithdrawalCompleted = true;
+                }
+                saveUserSession();
+                
+                const now = new Date();
+                const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                transactions.unshift({
+                    id: transactions.length + 1,
+                    title: currentWithdrawalMethod === 'upi' ? 'UPI Withdrawal' : 'Bank Payout',
+                    amount: -amt,
+                    date: `Today, ${timeStr}`,
+                    type: 'debit',
+                    status: 'pending'
                 });
-            }, 100);
+                
+                updateWalletUI();
+                updateCardVisibilityUI();
+                updateMilestoneUI();
+                renderTransactions();
+                updateWithdrawProgressUI();
+                
+                document.getElementById('successWithdrawAmount').innerText = `₹${amt.toLocaleString('en-IN')}`;
+                document.getElementById('withdrawModalFormContent').style.display = 'none';
+                document.getElementById('withdrawModalSuccessContent').style.display = 'flex';
+                
+                submitBtn.innerText = originalText;
+                submitBtn.disabled = false;
+            }, 1500);
         }
 
-        function loadDashboardMetrics() {
-            renderAdsDashboard();
+        function handleBankDetailsSave(event) {
+            event.preventDefault();
             
-            const subs = getSubmissions();
-            const orders = getOrders();
-            const joined = getJoinedCampaigns();
-            
-            // Calculate Lifetime Earnings
-            const approved = subs.filter(s => s.status === 'approved');
-            const lifetime = approved.reduce((sum, s) => sum + 1.00 + (s.performancePayout || 0), 0);
-            
-            // Calculate Pending Payouts
-            const pending = subs.filter(s => s.status === 'pending');
-            const pendingSum = pending.reduce((sum, s) => sum + 1.00 + (s.performancePayout || 0), 0);
-            
-            // Calculate Active campaigns
-            // 1. Buy & Review campaigns
-            const acceptedCampaigns = [];
-            orders.forEach(order => {
-                const campaign = DEFAULT_CAMPAIGNS.find(c => c.productId === order.productId);
-                if (campaign && !acceptedCampaigns.some(item => item.id === campaign.id)) {
-                    acceptedCampaigns.push(campaign);
-                }
-            });
-            // 2. Joined campaigns
-            joined.forEach(campId => {
-                const campaign = DEFAULT_CAMPAIGNS.find(c => c.id === campId);
-                if (campaign && campaign.type !== 'buy_to_review' && !acceptedCampaigns.some(item => item.id === campaign.id)) {
-                    acceptedCampaigns.push(campaign);
-                }
-            });
-            
-            const activeCount = acceptedCampaigns.length;
-
-            // Update DOM
-            const lifetimeEl = document.getElementById('statLifetimeEarnings');
-            const pendingEl = document.getElementById('statPendingEarnings');
-            const activeEl = document.getElementById('statActiveCampaigns');
-            
-            if (lifetimeEl) lifetimeEl.textContent = `₹${lifetime.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
-            if (pendingEl) pendingEl.textContent = `₹${pendingSum.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
-            if (activeEl) activeEl.textContent = activeCount;
-
-            // Draw Trend Graph dynamically
-            const dates = [];
-            const labels = [];
-            const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-            for (let i = 6; i >= 0; i--) {
-                const d = new Date();
-                d.setDate(d.getDate() - i);
-                
-                const dd = String(d.getDate()).padStart(2, '0');
-                const mm = String(d.getMonth() + 1).padStart(2, '0');
-                const yyyy = d.getFullYear();
-                dates.push(`${dd}/${mm}/${yyyy}`);
-                labels.push(dayNames[d.getDay()]);
-            }
-
-            const historyPoints = [];
-            let cumEarnings = 0;
-            let cumSubs = 0;
-            let cumOrders = 0;
-
-            function parseDateStr(str) {
-                if (!str) return new Date(0);
-                const parts = str.split('/');
-                if (parts.length < 3) return new Date(0);
-                return new Date(parts[2], parts[1] - 1, parts[0]);
-            }
-
-            const allSubs = getSubmissions();
-            const allOrders = getOrders();
-            const firstRangeDate = parseDateStr(dates[0]);
-
-            allSubs.forEach(s => {
-                const sDate = parseDateStr(s.date);
-                if (sDate < firstRangeDate && s.status === 'approved') {
-                    cumEarnings += 1.00 + (s.performancePayout || 0);
-                }
-                if (sDate < firstRangeDate) {
-                    cumSubs++;
-                }
-            });
-
-            allOrders.forEach(o => {
-                const oDate = parseDateStr(o.date);
-                if (oDate < firstRangeDate && o.status !== 'returned') {
-                    cumOrders++;
-                }
-            });
-
-            dates.forEach((dateStr, idx) => {
-                const dayApprovedSubs = allSubs.filter(s => s.date === dateStr && s.status === 'approved');
-                const dayAllSubs = allSubs.filter(s => s.date === dateStr);
-                const dayOrders = allOrders.filter(o => o.date === dateStr && o.status !== 'returned');
-
-                const dayEarnings = dayApprovedSubs.reduce((sum, s) => sum + 1.00 + (s.performancePayout || 0), 0);
-                
-                cumEarnings += dayEarnings;
-                cumSubs += dayAllSubs.length;
-                cumOrders += dayOrders.length;
-
-                historyPoints.push({
-                    date: dateStr,
-                    label: labels[idx],
-                    earnings: cumEarnings,
-                    submissions: cumSubs,
-                    orders: cumOrders
-                });
-            });
-
-            const maxEarnings = Math.max(...historyPoints.map(p => p.earnings), 10.00);
-            const maxSubs = Math.max(...historyPoints.map(p => p.submissions), 5);
-            const maxOrders = Math.max(...historyPoints.map(p => p.orders), 5);
-
-            function getBezierPath(points, getValue, maxValue) {
-                const getX = (i) => (i / (points.length - 1)) * 100;
-                const getY = (val) => 30 - (val / maxValue) * 25;
-                
-                const tension = 0.15;
-                let pathD = `M ${getX(0)} ${getY(getValue(points[0]))}`;
-                
-                for (let i = 0; i < points.length - 1; i++) {
-                    const prev = points[i - 1] || points[i];
-                    const curr = points[i];
-                    const next = points[i + 1];
-                    const post = points[i + 2] || next;
-                    
-                    const cp1x = getX(i) + (getX(i + 1) - getX(i - 1 < 0 ? 0 : i - 1)) * tension;
-                    const cp1y = getY(getValue(curr)) + (getY(getValue(next)) - getY(getValue(prev))) * tension;
-                    
-                    const cp2x = getX(i + 1) - (getX(i + 2 >= points.length ? points.length - 1 : i + 2) - getX(i)) * tension;
-                    const cp2y = getY(getValue(next)) - (getY(getValue(post)) - getY(getValue(curr))) * tension;
-                    
-                    pathD += ` C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${getX(i+1)} ${getY(getValue(next))}`;
-                }
-                
-                return pathD;
-            }
-
-            const earningsPathD = getBezierPath(historyPoints, p => p.earnings, maxEarnings);
-            const earningsAreaD = `${earningsPathD} L 100 35 L 0 35 Z`;
-
-            const ePathEl = document.getElementById('earningsTrendPath');
-            const eAreaEl = document.getElementById('earningsTrendArea');
-            if (ePathEl) ePathEl.setAttribute('d', earningsPathD);
-            if (eAreaEl) eAreaEl.setAttribute('d', earningsAreaD);
-
-            const labelsEl = document.getElementById('dashboardChartLabels');
-            if (labelsEl) {
-                labelsEl.innerHTML = historyPoints.map(p => `<span>${p.label}</span>`).join('');
-            }
-
-            const chartContainer = document.getElementById('dashboardChartContainer');
-            const chartTooltip = document.getElementById('chartTooltip');
-            
-            window.updateDotsForIdx = function(dayIdx) {
-                const dotsEl = document.getElementById('dashboardChartDots');
-                if (!dotsEl) return;
-                dotsEl.innerHTML = '';
-                const p = historyPoints[dayIdx];
-                const getX = (i) => (i / (historyPoints.length - 1)) * 100;
-                const getY = (val, max) => 30 - (val / max) * 25;
-                const cx = getX(dayIdx);
-
-                const c1 = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-                c1.setAttribute('cx', cx);
-                c1.setAttribute('cy', getY(p.earnings, maxEarnings));
-                c1.setAttribute('r', '1.5');
-                c1.setAttribute('fill', '#fff');
-                c1.setAttribute('stroke', '#10b981');
-                c1.setAttribute('stroke-width', '0.5');
-                c1.setAttribute('class', 'pulse-chart-dot');
-                dotsEl.appendChild(c1);
+            const profile = {
+                holderName: document.getElementById('bankHolderName').value,
+                bankName: document.getElementById('bankNameInput').value,
+                accountNumber: document.getElementById('bankAccNumInput').value,
+                ifscCode: document.getElementById('bankIFSCInput').value,
+                upiId: document.getElementById('bankUPIInput').value
             };
             
-            window.currentDayIdx = historyPoints.length - 1;
-            window.updateDotsForIdx(window.currentDayIdx);
+            localStorage.setItem('eliteX_bank_profile', JSON.stringify(profile));
             
-            if (chartContainer && chartTooltip) {
-                const newContainer = chartContainer.cloneNode(true);
-                chartContainer.parentNode.replaceChild(newContainer, chartContainer);
-                
-                const refreshedCursor = document.getElementById('chartCursorLine');
-                
-                newContainer.addEventListener('mousemove', (e) => {
-                    const rect = newContainer.getBoundingClientRect();
-                    const mouseX = e.clientX - rect.left;
-                    const pct = mouseX / rect.width;
-                    
-                    const dayIdx = Math.min(Math.max(Math.round(pct * (historyPoints.length - 1)), 0), historyPoints.length - 1);
-                    window.currentDayIdx = dayIdx;
-                    const p = historyPoints[dayIdx];
-                    
-                    window.updateDotsForIdx(dayIdx);
-                    
-                    const cx = (dayIdx / (historyPoints.length - 1)) * 100;
-                    if (refreshedCursor) {
-                        refreshedCursor.setAttribute('x1', cx);
-                        refreshedCursor.setAttribute('x2', cx);
-                        refreshedCursor.style.display = 'block';
-                    }
-                    
-                    let tooltipHtml = `
-                        <div style="font-weight:700; margin-bottom:5px; color:#a1a1aa; border-bottom:1px solid rgba(16, 185, 129, 0.15); padding-bottom:4px; font-size:0.6rem;">${p.date} (${p.label})</div>
-                        <div style="display:flex; justify-content:space-between; gap:16px; align-items:center;">
-                            <span style="color:#a7f3d0; display:flex; align-items:center; gap:4px;"><span style="width:5px; height:5px; border-radius:50%; background:#10b981; display:inline-block; box-shadow:0 0 4px #10b981;"></span> Earnings:</span>
-                            <span style="font-weight:700; font-family:'JetBrains Mono'; color:#10b981;">₹${p.earnings.toFixed(2)}</span>
-                        </div>
-                    `;
-                    
-                    chartTooltip.style.display = 'block';
-                    chartTooltip.style.opacity = '1';
-                    chartTooltip.style.transform = 'translateY(0) scale(1)';
-                    chartTooltip.innerHTML = tooltipHtml;
-                    
-                    const tooltipRect = chartTooltip.getBoundingClientRect();
-                    let xPos = mouseX + 15;
-                    if (xPos + tooltipRect.width > rect.width) {
-                        xPos = mouseX - tooltipRect.width - 15;
-                    }
-                    chartTooltip.style.left = `${xPos}px`;
-                    chartTooltip.style.top = `${Math.max(0, e.clientY - rect.top - tooltipRect.height / 2)}px`;
-                });
-                
-                newContainer.addEventListener('mouseleave', () => {
-                    chartTooltip.style.opacity = '0';
-                    chartTooltip.style.transform = 'translateY(4px) scale(0.95)';
-                    setTimeout(() => {
-                        if (chartTooltip.style.opacity === '0') {
-                            chartTooltip.style.display = 'none';
-                        }
-                    }, 150);
-                    
-                    if (refreshedCursor) {
-                        refreshedCursor.style.display = 'none';
-                    }
-                    
-                    window.currentDayIdx = historyPoints.length - 1;
-                    window.updateDotsForIdx(window.currentDayIdx);
-                });
+            const cardNameEl = document.getElementById('cardHolderName');
+            const sigNameEl = document.getElementById('signatureVal');
+            if (cardNameEl) cardNameEl.innerText = profile.holderName;
+            if (sigNameEl) sigNameEl.innerText = profile.holderName;
+            
+            alert("Success! Your payout credentials have been securely stored.");
+            closeBankDetailsModal();
+        }
+
+        // --- 7. Creator Video review submission ---
+        function handleVideoSubmit(event) {
+            event.preventDefault();
+            const urlInput = document.getElementById('creatorVideoUrl');
+            const videoUrl = urlInput.value.trim();
+            
+            if (!videoUrl) return;
+            
+            if (!videoUrl.startsWith('http://') && !videoUrl.startsWith('https://')) {
+                alert("Please submit a valid video link.");
+                return;
             }
+            
+            const submitBtn = document.querySelector('#creatorVideoForm button');
+            const originalText = submitBtn.innerText;
+            submitBtn.innerText = "Uploading link...";
+            submitBtn.disabled = true;
+            
+            setTimeout(() => {
+                pendingBalance += 250;
+                completedVideosCount += 1;
+                saveUserSession();
+                
+                const now = new Date();
+                const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                transactions.unshift({
+                    id: transactions.length + 1,
+                    title: 'Promo Video Bonus',
+                    amount: 250,
+                    date: `Today, ${timeStr}`,
+                    type: 'credit',
+                    status: 'pending review'
+                });
+                
+                updateWalletUI();
+                updateMilestoneUI();
+                renderTransactions();
+                
+                alert("Success! The flat ₹250 bonus is added to your Pending Rewards. Once our verification team reviews your submission link, it will clear directly to your Available balance.");
+                urlInput.value = '';
+                
+                submitBtn.innerText = originalText;
+                submitBtn.disabled = false;
+            }, 1200);
         }
 
-        function toggleProfileDrawer() {
-            document.getElementById('profileDrawerOverlay').classList.toggle('active');
-            document.getElementById('profileDrawer').classList.toggle('active');
+        function initWallet() {
+            loadUserSession();
+            
+            if (!userName) {
+                // Show identity modal
+                document.getElementById('identityModal').classList.add('active');
+            } else {
+                setupUserIdentityUI(userName);
+            }
+            
+            updateWalletUI();
+            updateCardVisibilityUI();
+            updateMilestoneUI();
+            renderTransactions();
         }
 
-        // --- Desktop Submit Modal Handlers ---
-        const submitModal = document.getElementById('desktopSubmitModal');
+        // Initialize wallet on load
+        initWallet();
+
+        // Storage Listener to listen for admin edits in real-time
+        window.addEventListener('storage', (event) => {
+            if (event.key === 'eliteX_user_session') {
+                loadUserSession();
+                if (userName) {
+                    setupUserIdentityUI(userName);
+                }
+                updateWalletUI();
+                updateCardVisibilityUI();
+                updateMilestoneUI();
+            }
+        });
+    </script>
+
+
+
+    <!-- Firebase SDK (Version 10.8.1 for Stability) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getFirestore, collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBnE05VAXAfvFj1S6y-Ny4yBrNHJNc_DhU",
+            authDomain: "yumi-5902e.firebaseapp.com",
+            projectId: "yumi-5902e",
+            storageBucket: "yumi-5902e.firebasestorage.app",
+            messagingSenderId: "250995139526",
+            appId: "1:250995139526:web:da0c8fcded92686b3c88c7"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Real-time listener for campaigns
+        const campaignsContainer = document.getElementById('campaignsContainer');
+        const q = query(collection(db, "campaigns"), orderBy("createdAt", "desc"));
         
-        function openDesktopSubmitModal() {
-            populateCampaignDropdown('campaignDropdown', 'campaign-select-value', 'selected-campaign-name');
-            submitModal.classList.add('active');
-            document.getElementById('video-link-input').value = '';
-        }
-
-        function closeDesktopSubmitModal() {
-            submitModal.classList.remove('active');
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            renderHeaderAndSidebar('index.html');
-            setupSubmissionModal();
-            loadDashboardMetrics();
-
-            // Modal Button bindings
-            const openBtn = document.getElementById('openDesktopSubmitModalBtn');
-            if (openBtn) openBtn.addEventListener('click', openDesktopSubmitModal);
-            document.getElementById('closeDesktopSubmitModalBtn').addEventListener('click', closeDesktopSubmitModal);
-
-            // Filter Ads Tabs
-            document.querySelectorAll('#adsFilterTabs .chart-tab').forEach(tab => {
-                tab.addEventListener('click', (e) => {
-                    document.querySelectorAll('#adsFilterTabs .chart-tab').forEach(t => t.classList.remove('active'));
-                    e.currentTarget.classList.add('active');
-                    currentFilter = e.currentTarget.getAttribute('data-filter');
-                    renderAdsDashboard();
-                });
-            });
-
-            // Desktop Form Submission inside modal
-            const submitBtn = document.getElementById('submit-video-btn');
-            const inputField = document.getElementById('video-link-input');
-            submitBtn.addEventListener('click', () => {
-                const campId = document.getElementById('campaign-select-value').value;
-                const url = inputField.value.trim();
-                
-                const res = addSubmission(campId, url);
-                if (res.success) {
-                    showToast("Link submitted successfully! Pending review.", "success");
-                    
-                    // Reset dropdown
-                    document.getElementById('campaign-select-value').value = '';
-                    document.getElementById('selected-campaign-name').textContent = 'Select Campaign Target...';
-                    inputField.value = '';
-
-                    closeDesktopSubmitModal();
-                    loadDashboardMetrics();
-                } else {
-                    showToast(res.msg, "error");
-                }
-            });
-
-            // Mobile Form Submission (drawer)
-            const mobileSubmitBtn = document.getElementById('submit-video-btn-mobile');
-            const mobileInputField = document.getElementById('video-link-input-mobile');
-            mobileSubmitBtn.addEventListener('click', () => {
-                const campId = document.getElementById('campaign-select-value-mobile').value;
-                const url = mobileInputField.value.trim();
-                
-                const res = addSubmission(campId, url);
-                if (res.success) {
-                    showToast("Link submitted successfully! Pending review.", "success");
-                    
-                    // Reset dropdown
-                    document.getElementById('campaign-select-value-mobile').value = '';
-                    document.getElementById('selected-campaign-name-mobile').textContent = 'Select Campaign...';
-                    mobileInputField.value = '';
-
-                    const closeDrawerBtn = document.getElementById('closeMobileDrawerBtn');
-                    if (closeDrawerBtn) closeDrawerBtn.click();
-
-                    loadDashboardMetrics();
-                } else {
-                    showToast(res.msg, "error");
-                }
-            });
-
-            // Check if page loaded from campaign link redirect (?submit=true)
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.get('submit') === 'true') {
-                openDesktopSubmitModal();
-                const targetCampId = urlParams.get('campaign');
-                if (targetCampId) {
-                    const campaign = DEFAULT_CAMPAIGNS.find(c => c.id === targetCampId);
-                    if (campaign) {
-                        document.getElementById('campaign-select-value').value = targetCampId;
-                        document.getElementById('selected-campaign-name').textContent = `${campaign.brand}: ${campaign.title}`;
-                    }
-                }
+        onSnapshot(q, (snapshot) => {
+            campaignsContainer.innerHTML = ''; 
+            
+            if (snapshot.empty) {
+                campaignsContainer.innerHTML = '<p style="color:var(--text-muted); text-align:center; grid-column: 1/-1;">No active campaigns currently available.</p>';
+                return;
             }
 
-            window.addEventListener('elitex_balance_updated', loadDashboardMetrics);
-            window.addEventListener('elitex_activities_updated', loadDashboardMetrics);
-            // 🔥 Re-render whenever Firebase pushes new data (cross-device real-time)
-            window.addEventListener('elitex_data_changed', loadDashboardMetrics);
+            snapshot.forEach((doc) => {
+                const data = doc.data();
+                
+                let badgeClass = 'new';
+                if(data.tag === 'urgent') badgeClass = 'urgent';
+                else if(data.tag === 'premium') badgeClass = 'premium';
+                else if(data.tag === 'active') badgeClass = 'active';
+                
+                const campaignCard = `
+                    <div class="glass-panel campaign-card">
+                        <div class="campaign-header">
+                            <div>
+                                <div class="campaign-title">${data.title}</div>
+                                <div class="campaign-desc">${data.desc}</div>
+                            </div>
+                            <span class="status-badge ${badgeClass}" style="text-transform: capitalize;">${data.tag}</span>
+                        </div>
+                        <div class="campaign-footer">
+                            <div class="campaign-reward">₹${data.reward} <span style="font-size:11px; color:var(--text-muted); font-weight:normal;">/per ${data.action}</span></div>
+                            <button class="btn-action">Join Now</button>
+                        </div>
+                    </div>
+                `;
+                
+                campaignsContainer.innerHTML += campaignCard;
+            });
+        }, (error) => {
+            console.error("Firebase Error:", error);
+            campaignsContainer.innerHTML = '<p style="color:#ef4444; text-align:center; grid-column: 1/-1;">Connection error. Please check Firebase rules.</p>';
         });
     </script>
 </body>
