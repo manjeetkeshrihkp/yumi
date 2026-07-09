@@ -160,11 +160,9 @@
 
         /* Campaigns Section Styles */
         .campaign-card {
-            padding: 20px;
             margin-bottom: 16px;
             display: flex;
             flex-direction: column;
-            gap: 12px;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         
@@ -236,6 +234,293 @@
         .btn-action:hover {
             box-shadow: 0 0 15px var(--accent-glow);
             transform: scale(1.02);
+        }
+
+        /* Jewelry Campaigns New Styles */
+        .campaign-image-wrapper {
+            position: relative;
+            width: 100%;
+            height: 140px;
+            border-radius: 12px 12px 0 0;
+            overflow: hidden;
+            background: #111827;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .campaign-product-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        .campaign-card:hover .campaign-product-img {
+            transform: scale(1.05);
+        }
+        .task-type-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 9px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 4px 8px;
+            border-radius: 6px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+        }
+        .badge-reels { background: linear-gradient(45deg, #f9ce34, #ee2a7b, #6228d7); color: #fff; }
+        .badge-youtube { background: #ef4444; color: #fff; }
+        .badge-post { background: #3b82f6; color: #fff; }
+        .badge-task { background: #8b5cf6; color: #fff; }
+
+        /* Meta Ads Dashboard Style */
+        .meta-status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .meta-status-dot.active {
+            background-color: #22c55e;
+            box-shadow: 0 0 8px #22c55e;
+            animation: meta-blink 2s infinite;
+        }
+        @keyframes meta-blink {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
+        
+        @keyframes premiumShimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        
+        .campaign-workspace-card {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.7), rgba(20, 25, 35, 0.4)) !important;
+            border: 1px solid rgba(255, 255, 255, 0.05) !important;
+            border-radius: 20px !important;
+            padding: 20px !important;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.03);
+            margin-bottom: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: fadeIn 0.45s cubic-bezier(0.4, 0, 0.2, 1) both;
+        }
+        .campaign-workspace-card:hover {
+            border-color: rgba(250, 204, 21, 0.3) !important;
+            background: linear-gradient(135deg, rgba(20, 25, 35, 0.8), rgba(28, 33, 45, 0.5)) !important;
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.55), 0 0 20px rgba(250, 204, 21, 0.1);
+        }
+        
+        .btn-premium-ai {
+            background: linear-gradient(90deg, #fde047 0%, #eab308 50%, #fde047 100%);
+            background-size: 200% auto;
+            color: #07090f;
+            border: 1px solid rgba(250, 204, 21, 0.3);
+            border-radius: 12px;
+            padding: 8px 16px;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 12px rgba(250, 204, 21, 0.15);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .btn-premium-ai:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 8px 20px rgba(250, 204, 21, 0.3);
+            animation: premiumShimmer 1.8s infinite linear;
+            border-color: rgba(250, 204, 21, 0.6);
+        }
+        .btn-premium-ai:active {
+            transform: translateY(0) scale(0.98);
+        }
+        
+        .btn-outline-cancel {
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #94a3b8;
+            border-radius: 12px;
+            padding: 10px 16px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .btn-outline-cancel:hover {
+            background: rgba(239, 68, 68, 0.07);
+            border-color: rgba(239, 68, 68, 0.35);
+            color: #f87171;
+            transform: translateY(-1.5px);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.1);
+        }
+        .btn-outline-cancel:active {
+            transform: translateY(0);
+        }
+
+        .btn-outline-close {
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #94a3b8;
+            border-radius: 12px;
+            padding: 10px 16px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .btn-outline-close:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            transform: translateY(-1.5px);
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.05);
+        }
+        .btn-outline-close:active {
+            transform: translateY(0);
+        }
+
+        .pulse-dot-green {
+            width: 6px; height: 6px; border-radius: 50%; background: #10b981;
+            display: inline-block; box-shadow: 0 0 6px rgba(16, 185, 129, 0.6);
+            animation: pulse-dot 1.2s infinite ease-in-out;
+        }
+        .pulse-dot-orange {
+            width: 6px; height: 6px; border-radius: 50%; background: #fb923c;
+            display: inline-block; box-shadow: 0 0 6px rgba(251, 146, 60, 0.6);
+            animation: pulse-dot 1.2s infinite ease-in-out;
+        }
+        @keyframes pulse-dot {
+            0% { transform: scale(0.9); opacity: 0.7; }
+            50% { transform: scale(1.3); opacity: 1; box-shadow: 0 0 10px rgba(16, 185, 129, 0.8); }
+            100% { transform: scale(0.9); opacity: 0.7; }
+        }
+        
+        .campaign-workspace-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
+        }
+
+        .brand-header-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            width: 100%;
+        }
+
+        .brand-logo-frame {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.03);
+            flex-shrink: 0;
+        }
+        .campaign-workspace-card:hover .brand-logo-frame {
+            border-color: var(--accent);
+            box-shadow: 0 0 8px var(--accent-glow);
+        }
+        .brand-logo-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .campaign-desc-text {
+            font-size: 11px;
+            color: var(--text-muted);
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding-top: 10px;
+        }
+
+        .campaign-footer-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            width: 100%;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding-top: 10px;
+        }
+
+        .campaign-payout-amount {
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--accent);
+            text-shadow: 0 0 6px var(--accent-glow);
+        }
+
+        .campaign-steps-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+        .campaign-step-card {
+            background: rgba(15, 23, 42, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 10px 14px;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        .step-number {
+            font-size: 16px;
+            font-weight: 900;
+            color: var(--accent);
+            opacity: 0.8;
+            font-family: monospace;
+            line-height: 1;
+        }
+
+        /* Campaigns Stats Dashboard Layout */
+        .campaign-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+        
+        .campaign-stats-grid .stat-value-mini {
+            font-size: 13px !important;
+            font-weight: 800 !important;
+        }
+        
+        .campaign-stats-grid .stat-label-mini {
+            font-size: 8px !important;
+            text-transform: uppercase !important;
         }
 
         /* --- NEW: Wallet Section Styles --- */
@@ -890,28 +1175,35 @@
 
         .modal-close-btn {
             position: absolute;
-            top: 20px;
-            right: 20px;
-            background: transparent;
-            border: none;
-            color: var(--text-muted);
+            top: 16px;
+            right: 16px;
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #cbd5e1;
             cursor: pointer;
-            width: auto;
-            padding: 4px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: color 0.3s;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 10002;
         }
         .modal-close-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
             color: #fff;
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: scale(1.08);
         }
         .modal-close-btn svg {
-            width: 20px;
-            height: 20px;
+            width: 14px;
+            height: 14px;
             stroke: currentColor;
             fill: none;
-            stroke-width: 2.2;
+            stroke-width: 2.5;
         }
 
         .modal-title {
@@ -1027,6 +1319,13 @@
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+
+        .campaign-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 14px;
+            width: 100%;
         }
 
         @media (min-width: 600px) {
@@ -1335,6 +1634,428 @@
             width: 14px;
             height: 14px;
         }
+
+        /* --- ADVANCED POLYMARKET STYLE CLASSES --- */
+        .polymarket-pulse {
+            position: relative;
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: var(--accent);
+            box-shadow: 0 0 0 0 rgba(250, 204, 21, 0.7);
+            animation: polymarket-pulse-keyframes 1.6s infinite cubic-bezier(0.66, 0, 0, 1);
+        }
+        @keyframes polymarket-pulse-keyframes {
+            0% { box-shadow: 0 0 0 0 rgba(250, 204, 21, 0.7), 0 0 0 0 rgba(250, 204, 21, 0.4); }
+            50% { box-shadow: 0 0 0 6px rgba(250, 204, 21, 0), 0 0 0 3px rgba(250, 204, 21, 0.3); }
+            100% { box-shadow: 0 0 0 0 rgba(250, 204, 21, 0), 0 0 0 6px rgba(250, 204, 21, 0); }
+        }
+        .polymarket-pulse.green {
+            background-color: #10b981;
+            box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+            animation: polymarket-pulse-green-kf 1.6s infinite cubic-bezier(0.66, 0, 0, 1);
+        }
+        @keyframes polymarket-pulse-green-kf {
+            0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7), 0 0 0 0 rgba(16, 185, 129, 0.4); }
+            50% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0), 0 0 0 3px rgba(16, 185, 129, 0.3); }
+            100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0), 0 0 0 6px rgba(16, 185, 129, 0); }
+        }
+        .polymarket-pulse.blue {
+            background-color: #6366f1;
+            box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.7);
+            animation: polymarket-pulse-blue-kf 1.6s infinite cubic-bezier(0.66, 0, 0, 1);
+        }
+        @keyframes polymarket-pulse-blue-kf {
+            0% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.7), 0 0 0 0 rgba(99, 102, 241, 0.4); }
+            50% { box-shadow: 0 0 0 6px rgba(99, 102, 241, 0), 0 0 0 3px rgba(99, 102, 241, 0.3); }
+            100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0), 0 0 0 6px rgba(99, 102, 241, 0); }
+        }
+        .polymarket-pulse.orange {
+            background-color: #f97316;
+            box-shadow: 0 0 0 0 rgba(249, 115, 22, 0.7);
+            animation: polymarket-pulse-orange-kf 1.6s infinite cubic-bezier(0.66, 0, 0, 1);
+        }
+        @keyframes polymarket-pulse-orange-kf {
+            0% { box-shadow: 0 0 0 0 rgba(249, 115, 22, 0.7), 0 0 0 0 rgba(249, 115, 22, 0.4); }
+            50% { box-shadow: 0 0 0 6px rgba(249, 115, 22, 0), 0 0 0 3px rgba(249, 115, 22, 0.3); }
+            100% { box-shadow: 0 0 0 0 rgba(249, 115, 22, 0), 0 0 0 6px rgba(249, 115, 22, 0); }
+        }
+
+        .trend-percentage {
+            display: inline-flex;
+            align-items: center;
+            gap: 2px;
+            font-size: 9px;
+            font-weight: 800;
+        }
+        .trend-percentage.up { color: #10b981; }
+        .trend-percentage.down { color: #f87171; }
+
+        .polymarket-dashboard {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+        @media (min-width: 600px) {
+            .polymarket-dashboard {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+        .polymarket-stat-card {
+            background: rgba(15, 23, 42, 0.35);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 10px 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .polymarket-stat-card:hover {
+            background: rgba(15, 23, 42, 0.55);
+            border-color: rgba(250, 204, 21, 0.2);
+            transform: translateY(-2px);
+        }
+        .polymarket-stat-label {
+            font-size: 8px;
+            font-weight: 800;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+        .polymarket-stat-value {
+            font-size: 14px;
+            font-weight: 900;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .polymarket-sparkline {
+            width: 100%;
+            height: 18px;
+            margin-top: 6px;
+            opacity: 0.85;
+        }
+
+        .collapsible-trigger {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+            padding: 12px 16px;
+            background: rgba(15, 23, 42, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            transition: all 0.3s;
+        }
+        .collapsible-trigger:hover {
+            background: rgba(15, 23, 42, 0.6);
+            border-color: rgba(250, 204, 21, 0.15);
+        }
+        .collapsible-trigger svg.chevron {
+            transition: transform 0.3s ease;
+        }
+        .collapsible-trigger.active svg.chevron {
+            transform: rotate(180deg);
+        }
+        .collapsible-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0, 1, 0, 1);
+        }
+        .collapsible-content.expanded {
+            max-height: 1200px;
+            transition: max-height 0.4s cubic-bezier(0.9, 0, 0.1, 1);
+        }
+
+        .yield-simulator-container {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.6) 0%, rgba(30, 41, 59, 0.25) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 16px;
+            margin-top: 8px;
+            margin-bottom: 16px;
+        }
+        .yield-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+        @media (min-width: 600px) {
+            .yield-grid {
+                grid-template-columns: 1.2fr 1fr;
+                gap: 16px;
+            }
+        }
+        .yield-input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .yield-label {
+            font-size: 9px;
+            font-weight: 800;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .yield-select, .yield-range {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            color: #fff;
+            padding: 8px 12px;
+            font-size: 11px;
+            outline: none;
+            transition: border-color 0.25s;
+        }
+        .yield-select:focus {
+            border-color: var(--accent);
+        }
+        .yield-result-panel {
+            background: rgba(250, 204, 21, 0.01);
+            border: 1px dashed rgba(250, 204, 21, 0.15);
+            border-radius: 12px;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 6px;
+        }
+        .yield-result-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+        }
+        .yield-result-val {
+            font-size: 20px;
+            font-weight: 900;
+            color: var(--accent);
+            text-shadow: 0 0 8px var(--accent-glow);
+        }
+
+        .activity-feed-container {
+            background: rgba(15, 23, 42, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 16px;
+            padding: 12px;
+            margin-top: 14px;
+            margin-bottom: 16px;
+        }
+        .activity-feed-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 9px;
+            font-weight: 800;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 6px;
+            margin-bottom: 8px;
+        }
+        .activity-feed-scroller {
+            max-height: 110px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            scrollbar-width: none;
+        }
+        .activity-feed-scroller::-webkit-scrollbar {
+            display: none;
+        }
+        .activity-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            padding: 4px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+            animation: feedFadeIn 0.3s ease;
+        }
+        @keyframes feedFadeIn {
+            from { opacity: 0; transform: translateY(-4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Slots Progress Bar */
+        .slots-progress-container {
+            margin-top: 8px;
+            width: 100%;
+        }
+        .slots-progress-bar-bg {
+            height: 4px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 4px;
+        }
+        .slots-progress-bar-fill {
+            height: 100%;
+            border-radius: 4px;
+            background: linear-gradient(90deg, #10b981, #34d399);
+            width: 0%;
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .slots-progress-bar-fill.urgent {
+            background: linear-gradient(90deg, #f97316, #fb923c);
+        }
+
+        /* --- FLASHING GLOW KEYFRAMES --- */
+        @keyframes flash-green-glow {
+            0% { color: #10b981; text-shadow: 0 0 12px rgba(16, 185, 129, 0.8); }
+            100% { color: #fff; text-shadow: none; }
+        }
+        @keyframes flash-red-glow {
+            0% { color: #f87171; text-shadow: 0 0 12px rgba(248, 113, 113, 0.8); }
+            100% { color: #fff; text-shadow: none; }
+        }
+        .flash-up {
+            animation: flash-green-glow 0.8s ease-out;
+        }
+        .flash-down {
+            animation: flash-red-glow 0.8s ease-out;
+        }
+
+        /* --- POLYMARKET CONTRACT BUTTONS --- */
+        .pm-btn-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            width: 100%;
+            margin-top: 10px;
+        }
+        .pm-btn {
+            border: none;
+            border-radius: 8px;
+            padding: 8px 10px;
+            font-size: 10px;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            height: 32px;
+        }
+        .pm-btn.yes {
+            background: var(--accent);
+            color: #07090f;
+            border: 1px solid var(--accent);
+        }
+        .pm-btn.yes:hover {
+            background: #fde047;
+            color: #07090f;
+            border-color: #fde047;
+            box-shadow: 0 4px 15px var(--accent-glow);
+            transform: translateY(-1.5px);
+        }
+        .pm-btn.no {
+            background: rgba(30, 41, 59, 0.4);
+            color: #94a3b8;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .pm-btn.no:hover {
+            background: rgba(239, 68, 68, 0.12);
+            color: #ef4444;
+            border-color: rgba(239, 68, 68, 0.35);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.15);
+        }
+        .pm-btn.joined-state {
+            background: rgba(99, 102, 241, 0.08);
+            color: #818cf8;
+            border: 1px solid rgba(99, 102, 241, 0.25);
+            cursor: default;
+            grid-column: 1 / -1;
+        }
+
+        /* --- REFINED CATEGORY PILLS --- */
+        .pm-categories-row {
+            display: flex;
+            gap: 6px;
+            overflow-x: auto;
+            padding: 4px 0;
+            scrollbar-width: none;
+            margin-top: 4px;
+        }
+        .pm-categories-row::-webkit-scrollbar {
+            display: none;
+        }
+        .pm-category-pill {
+            background: rgba(30, 41, 59, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            color: #94a3b8;
+            border-radius: 6px;
+            padding: 5px 12px;
+            font-size: 9px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .pm-category-pill:hover {
+            color: #fff;
+            background: rgba(30, 41, 59, 0.55);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+        .pm-category-pill.active {
+            background: rgba(37, 99, 235, 0.08);
+            color: #3b82f6;
+            border-color: rgba(59, 130, 246, 0.4);
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.1);
+        }
+
+        /* --- TICKER MARQUEE --- */
+        .pm-ticker-wrap {
+            background: #04060a;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 6px 14px;
+            overflow: hidden;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 9px;
+            font-weight: 700;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            border-radius: 8px;
+        }
+        .pm-ticker-scroll {
+            display: inline-flex;
+            gap: 24px;
+            animation: pmTickerAnimation 35s linear infinite;
+        }
+        @keyframes pmTickerAnimation {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .pm-ticker-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .pm-ticker-price {
+            font-weight: 800;
+        }
+        .pm-ticker-price.up { color: #10b981; }
+        .pm-ticker-price.down { color: #f87171; }
     </style>
 </head>
 <body>
@@ -1372,7 +2093,7 @@
         </div>
 
         <!-- Dynamic Content Header -->
-        <div style="margin-bottom: 24px;">
+        <div id="appHeaderContainer" style="margin-bottom: 24px;">
             <p id="headerSubtitle" style="color: var(--accent); font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Welcome back</p>
             <h2 id="headerTitle" style="margin-bottom: 0;">Agency Overview</h2>
         </div>
@@ -1396,12 +2117,224 @@
                     <div class="stat-value">142</div>
                 </div>
             </div>
+
+            <!-- My Active Briefs Section -->
+            <div style="margin-top: 25px; margin-bottom: 20px;">
+                <h3 style="margin: 0 0 12px 0; font-size: 16px; color: #cbd5e1; display:flex; align-items:center; gap:8px;">
+                    <span class="meta-status-dot active" style="width: 8px; height: 8px; box-shadow: 0 0 8px #6366f1; background-color:#6366f1; animation: none;"></span>
+                    My Active Briefs
+                </h3>
+                <div id="homeAcceptedCampaignsContainer" class="campaign-grid" style="width: 100%;">
+                    <p style="color:var(--text-muted); text-align:center; font-size: 12px; padding: 20px; border: 1px dashed rgba(255,255,255,0.06); border-radius:12px; background:rgba(255,255,255,0.01);">
+                        No active briefs. Visit the Campaigns tab to accept/join tasks and start earning.
+                    </p>
+                </div>
+            </div>
         </div>
 
-        <!-- TAB 2: CAMPAIGNS SECTION (Populated by Firebase) -->
+        <!-- TAB 2: CAMPAIGNS SECTION (Meta Ads Manager Style Console) -->
         <div id="campaignsSection" class="content-section">
-            <div class="campaign-grid" id="campaignsContainer">
-                <p style="color:var(--text-muted); text-align:center; grid-column: 1/-1;">Loading campaigns from database...</p>
+            <!-- Live Activity Ticker -->
+            <div class="glass-panel" style="padding:10px 14px; margin-bottom:14px; background:rgba(16, 185, 129, 0.02); border: 1px solid rgba(16, 185, 129, 0.15); border-radius:12px; display:flex; align-items:center; justify-content:space-between; overflow:hidden;">
+                <div style="display:flex; align-items:center; gap:8px; overflow:hidden; width:100%;">
+                    <span class="pulse-dot-green"></span>
+                    <span style="font-size:8px; font-weight:850; color:#10b981; letter-spacing:1px; text-transform:uppercase; flex-shrink:0;">Live Feed</span>
+                    <span style="height:10px; width:1px; background:rgba(255,255,255,0.1); margin:0 4px;"></span>
+                    <div id="liveActivityText" style="font-size:11px; color:#e2e8f0; font-weight:600; white-space:nowrap; transition:all 0.4s ease; text-overflow:ellipsis; overflow:hidden; flex:1;">
+                        Monitoring platform brief submissions & approvals...
+                    </div>
+                </div>
+            </div>
+
+            <!-- POLYMARKET STYLE DASHBOARD & METRIC CARDS -->
+            <div class="polymarket-dashboard" style="margin-top: 14px;">
+                <!-- Card 1: Escrow Protection -->
+                <div class="polymarket-stat-card">
+                    <div>
+                        <div class="polymarket-stat-label">Security Guarantee</div>
+                        <div class="polymarket-stat-value" style="font-size: 13.5px; font-weight: 850;">
+                            Escrow Active
+                            <span class="trend-percentage up" style="color: #10b981;">
+                                <svg viewBox="0 0 24 24" style="width:10px; height:10px; stroke:currentColor; fill:none; stroke-width:3;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                100% Safe
+                            </span>
+                        </div>
+                    </div>
+                    <svg class="polymarket-sparkline" viewBox="0 0 100 20" style="overflow:visible;">
+                        <defs>
+                            <linearGradient id="sparklineGrad1" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stop-color="#10b981" stop-opacity="0.25" />
+                                <stop offset="100%" stop-color="#10b981" stop-opacity="0" />
+                            </linearGradient>
+                        </defs>
+                        <path d="M0,18 Q15,10 30,12 T60,5 T90,2 T100,6 L100,20 L0,20 Z" fill="url(#sparklineGrad1)"></path>
+                        <path d="M0,18 Q15,10 30,12 T60,5 T90,2 T100,6" fill="none" stroke="#10b981" stroke-width="1.6" stroke-linecap="round" style="filter: drop-shadow(0px 1px 3px rgba(16, 185, 129, 0.35));"></path>
+                        <circle cx="100" cy="6" r="1.5" fill="#10b981" style="filter: drop-shadow(0 0 3px #10b981);"></circle>
+                    </svg>
+                </div>
+                <!-- Card 2: Settlement Speed -->
+                <div class="polymarket-stat-card">
+                    <div>
+                        <div class="polymarket-stat-label">Settle Target</div>
+                        <div class="polymarket-stat-value" style="font-size: 13.5px; font-weight: 850;">
+                            24h Fast Audits
+                            <span class="trend-percentage up" style="color: #3b82f6;">
+                                <svg viewBox="0 0 24 24" style="width:10px; height:10px; stroke:currentColor; fill:none; stroke-width:3;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                Auto Settle
+                            </span>
+                        </div>
+                    </div>
+                    <svg class="polymarket-sparkline" viewBox="0 0 100 20" style="overflow:visible;">
+                        <defs>
+                            <linearGradient id="sparklineGrad2" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.25" />
+                                <stop offset="100%" stop-color="#3b82f6" stop-opacity="0" />
+                            </linearGradient>
+                        </defs>
+                        <path d="M0,15 Q15,18 30,10 T60,12 T90,4 T100,2 L100,20 L0,20 Z" fill="url(#sparklineGrad2)"></path>
+                        <path d="M0,15 Q15,18 30,10 T60,12 T90,4 T100,2" fill="none" stroke="#3b82f6" stroke-width="1.6" stroke-linecap="round" style="filter: drop-shadow(0px 1px 3px rgba(59, 130, 246, 0.35));"></path>
+                        <circle cx="100" cy="2" r="1.5" fill="#3b82f6" style="filter: drop-shadow(0 0 3px #3b82f6);"></circle>
+                    </svg>
+                </div>
+                <!-- Card 3: Formats -->
+                <div class="polymarket-stat-card">
+                    <div>
+                        <div class="polymarket-stat-label">Task Formats</div>
+                        <div class="polymarket-stat-value" style="font-size: 13.5px; font-weight: 850;">
+                            Reels & YouTube
+                            <span class="trend-percentage up" style="color: #a855f7;">
+                                <svg viewBox="0 0 24 24" style="width:10px; height:10px; stroke:currentColor; fill:none; stroke-width:3;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                Verified
+                            </span>
+                        </div>
+                    </div>
+                    <svg class="polymarket-sparkline" viewBox="0 0 100 20" style="overflow:visible;">
+                        <defs>
+                            <linearGradient id="sparklineGrad3" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stop-color="#a855f7" stop-opacity="0.25" />
+                                <stop offset="100%" stop-color="#a855f7" stop-opacity="0" />
+                            </linearGradient>
+                        </defs>
+                        <path d="M0,10 Q15,10 30,8 T60,6 T90,3 T100,1 L100,20 L0,20 Z" fill="url(#sparklineGrad3)"></path>
+                        <path d="M0,10 Q15,10 30,8 T60,6 T90,3 T100,1" fill="none" stroke="#a855f7" stroke-width="1.6" stroke-linecap="round" style="filter: drop-shadow(0px 1px 3px rgba(168, 85, 247, 0.35));"></path>
+                        <circle cx="100" cy="1" r="1.5" fill="#a855f7" style="filter: drop-shadow(0 0 3px #a855f7);"></circle>
+                    </svg>
+                </div>
+                <!-- Card 4: Streak Boost -->
+                <div class="polymarket-stat-card">
+                    <div>
+                        <div class="polymarket-stat-label">Performance Boost</div>
+                        <div class="polymarket-stat-value" style="font-size: 13.5px; font-weight: 850;">
+                            Streak Multiplier
+                            <span class="trend-percentage up" style="color: #fb923c;">
+                                <svg viewBox="0 0 24 24" style="width:10px; height:10px; stroke:currentColor; fill:none; stroke-width:3;"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+                                Up to 1.5x
+                            </span>
+                        </div>
+                    </div>
+                    <svg class="polymarket-sparkline" viewBox="0 0 100 20" style="overflow:visible;">
+                        <defs>
+                            <linearGradient id="sparklineGrad4" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stop-color="#fb923c" stop-opacity="0.25" />
+                                <stop offset="100%" stop-color="#fb923c" stop-opacity="0" />
+                            </linearGradient>
+                        </defs>
+                        <path d="M0,20 Q15,15 30,17 T60,10 T90,2 T100,1 L100,20 L0,20 Z" fill="url(#sparklineGrad4)"></path>
+                        <path d="M0,20 Q15,15 30,17 T60,10 T90,2 T100,1" fill="none" stroke="#fb923c" stroke-width="1.6" stroke-linecap="round" style="filter: drop-shadow(0px 1px 3px rgba(251, 146, 60, 0.35));"></path>
+                        <circle cx="100" cy="1" r="1.5" fill="#fb923c" style="filter: drop-shadow(0 0 3px #fb923c);"></circle>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- COLLAPSIBLE SIMULATOR BOARD -->
+            <div class="collapsible-trigger" onclick="window.toggleYieldSimulator(this)" style="margin-bottom: 12px;">
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <div class="polymarket-pulse green"></div>
+                    <span style="font-size:11px; font-weight:800; color:#fff; text-transform:uppercase; letter-spacing:0.5px;">Simulate Yield & Earnings Boosts</span>
+                </div>
+                <svg class="chevron" viewBox="0 0 24 24" style="width:16px; height:16px; stroke:#cbd5e1; fill:none; stroke-width:2.5;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="collapsible-content" id="yieldSimulatorContent">
+                <div class="yield-simulator-container">
+                    <div class="yield-grid">
+                        <div style="display:flex; flex-direction:column; gap:12px;">
+                            <!-- Input 1: Platform/Type -->
+                            <div class="yield-input-group">
+                                <label class="yield-label">Payout Type & Scale</label>
+                                <select class="yield-select" id="simPayoutType" onchange="window.updateYieldSimulation()">
+                                    <option value="flat">Flat Rate Campaign Review</option>
+                                    <option value="cpm" selected>CPM (Views-Based Payout)</option>
+                                    <option value="reach">Reach-Based Promotion</option>
+                                    <option value="conversion">Leads & Sales Conversions</option>
+                                </select>
+                            </div>
+                            <!-- Input 2: Reach Slider -->
+                            <div class="yield-input-group">
+                                <div style="display:flex; justify-content:space-between; align-items:center;">
+                                    <label class="yield-label" id="simScaleLabel">Projected YouTube/Reels Views</label>
+                                    <span id="simScaleValText" style="font-size:11px; font-weight:800; color:var(--accent);">50,000</span>
+                                </div>
+                                <input type="range" class="yield-range" id="simScaleRange" min="1000" max="500000" step="1000" value="50000" oninput="window.updateYieldSimulation()" style="width:100%;">
+                            </div>
+                            <!-- Input 3: Creator Tier -->
+                            <div class="yield-input-group">
+                                <label class="yield-label">Your VIP Partner Tier</label>
+                                <select class="yield-select" id="simCreatorTier" onchange="window.updateYieldSimulation()">
+                                    <option value="1.0">Standard Star Creator (1.0x Payout)</option>
+                                    <option value="1.2">Gold Star Creator (1.2x Payout)</option>
+                                    <option value="1.5">Diamond Star Creator (1.5x Boost)</option>
+                                    <option value="2.0">VIP Sovereign Creator (2.0x Boost)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- Projections Panel -->
+                        <div class="yield-result-panel">
+                            <div class="yield-label" style="border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:4px; margin-bottom:4px;">Estimated Creator Yield</div>
+                            <div class="yield-result-row">
+                                <span style="color:var(--text-muted);">Base Campaign Rate:</span>
+                                <span style="color:#fff; font-weight:700;" id="simBaseRateText">₹120 / 1k Views</span>
+                            </div>
+                            <div class="yield-result-row">
+                                <span style="color:var(--text-muted);">Daily Streak Boost:</span>
+                                <span style="color:#4ade80; font-weight:700;" id="simStreakBoostText">1.2x Boost</span>
+                            </div>
+                            <div class="yield-result-row">
+                                <span style="color:var(--text-muted);">VIP Tier Boost:</span>
+                                <span style="color:#4ade80; font-weight:700;" id="simTierBoostText">1.0x Boost</span>
+                            </div>
+                            <div class="yield-result-row" style="border-top:1px solid rgba(255,255,255,0.05); padding-top:6px; margin-top:4px;">
+                                <span style="color:#fff; font-weight:800;">Estimated Net Payout:</span>
+                                <span class="yield-result-val" id="simNetPayoutText">₹7,200.00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <!-- Filter Row & Search -->
+            <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:16px;">
+                <!-- Search Briefs Input -->
+                <div style="position:relative; width:100%;">
+                    <input type="text" id="campaignSearchInput" placeholder="Search brands, titles, or tags..." oninput="window.renderCampaignList()"
+                        style="width: 100%; padding: 12px 14px 12px 38px; background: rgba(5, 7, 12, 0.4); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; color: #fff; font-size: 12px; outline: none; transition: border-color 0.25s;">
+                    <svg viewBox="0 0 24 24" style="position:absolute; left:12px; top:12px; width:14px; height:14px; stroke:var(--text-muted); fill:none; stroke-width:2.5;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                </div>
+
+                <!-- Custom Filter Tabs -->
+                <div class="pm-categories-row">
+                    <button class="pm-category-pill active" data-campaign-filter="all" onclick="window.filterCampaigns(this)">All</button>
+                    <button class="pm-category-pill" data-campaign-filter="reels" onclick="window.filterCampaigns(this)">Reels</button>
+                    <button class="pm-category-pill" data-campaign-filter="youtube" onclick="window.filterCampaigns(this)">YouTube</button>
+                    <button class="pm-category-pill" data-campaign-filter="post" onclick="window.filterCampaigns(this)">Tasks</button>
+                </div>
+            </div>
+
+
+
+            <div id="campaignsContainer" class="campaign-grid" style="margin-top: 0; margin-bottom: 25px; width:100%;">
+                <p style="color:var(--text-muted); text-align:center;">Loading active campaigns...</p>
             </div>
         </div>
 
@@ -1934,9 +2867,151 @@
         <!-- Future Tab -->
         <div id="earnSection" class="content-section"><p style="color:var(--text-muted); text-align:center;">Earn section coming soon...</p></div>
 
+        <!-- Affiliate Section (New Referral UI) -->
+        <div id="affiliateSection" class="content-section" style="padding-bottom: 80px;">
+            
+            <!-- Affiliate Stats Card -->
+            <div class="milestone-card" style="background: linear-gradient(135deg, rgba(250, 204, 21, 0.1) 0%, rgba(15, 23, 42, 0.4) 100%); border-color: rgba(250, 204, 21, 0.2);">
+                <div class="milestone-title-row">
+                    <span class="milestone-title">
+                        <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; stroke: var(--accent); fill: none; stroke-width: 2;"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                        Affiliate Earnings
+                    </span>
+                    <span class="milestone-reward-text" style="color: var(--accent); font-weight: 800;">5% Lifetime Bonus</span>
+                </div>
+                
+                <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 15px;">
+                    <div>
+                        <span class="card-meta-label" style="font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Total Referrals Payout</span>
+                        <div style="font-size: 28px; font-weight: 800; color: #fff; margin-top: 5px;" id="affiliateEarningsVal">₹ 2,750.00</div>
+                    </div>
+                    <div style="text-align: right;">
+                        <span class="card-meta-label" style="font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Active / Total Referred</span>
+                        <div style="font-size: 18px; font-weight: 700; color: var(--accent); margin-top: 5px;">11 / 14</div>
+                    </div>
+                </div>
+            </div>
 
-        <!-- Professional Bottom Menu -->
-        <div class="bottom-menu">
+            <!-- Referral Link and Code Sharing Card -->
+            <div class="milestone-card" style="padding: 20px;">
+                <div class="milestone-title-row" style="margin-bottom: 15px;">
+                    <span class="milestone-title">
+                        <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; stroke: var(--accent); fill: none; stroke-width: 2;"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg>
+                        Share Your Referral Link
+                    </span>
+                </div>
+
+                <!-- Referral Link Input & Copy Button -->
+                <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px;">
+                    <label style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Referral Link</label>
+                    <div style="display: flex; gap: 8px; width: 100%;">
+                        <input type="text" id="referralLinkInput" readonly value="https://elitex.agency/join?ref=EX-USR-8432" 
+                            style="flex: 1; background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 10px 14px; color: #fff; font-family: monospace; font-size: 12px; outline: none; text-overflow: ellipsis; white-space: nowrap;">
+                        <button onclick="copyReferralLink()" id="copyLinkBtn"
+                            style="background: linear-gradient(135deg, #fde047, #eab308); border: none; border-radius: 12px; padding: 0 16px; font-weight: 700; color: #07090f; cursor: pointer; transition: all 0.3s; font-size: 12px; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 4px 12px var(--accent-glow); height: 38px;">
+                            <svg viewBox="0 0 24 24" style="width: 14px; height: 14px; stroke: #07090f; stroke-width: 2.5; fill: none;"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                            <span>Copy</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Referral Code Input & Copy Button -->
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                    <label style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Referral Code</label>
+                    <div style="display: flex; gap: 8px; width: 100%;">
+                        <input type="text" id="referralCodeInput" readonly value="EX-USR-8432" 
+                            style="flex: 1; background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 10px 14px; color: #fff; font-family: monospace; font-size: 12px; outline: none; text-overflow: ellipsis; white-space: nowrap;">
+                        <button onclick="copyReferralCode()" id="copyCodeBtn"
+                            style="background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px; padding: 0 16px; font-weight: 700; color: #fff; cursor: pointer; transition: all 0.3s; font-size: 12px; display: flex; align-items: center; justify-content: center; gap: 6px; height: 38px;">
+                            <svg viewBox="0 0 24 24" style="width: 14px; height: 14px; stroke: #fff; stroke-width: 2.5; fill: none;"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                            <span>Copy</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- How Referral Program Works (Steps Grid) -->
+            <h4 style="color:#fff; font-size:12px; font-weight:800; text-transform:uppercase; letter-spacing:1px; margin: 24px 0 12px 4px;">How it works</h4>
+            <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px;">
+                <div class="milestone-card" style="padding: 16px; margin-bottom: 0; display: flex; gap: 14px; align-items: center;">
+                    <div style="width: 42px; height: 42px; border-radius: 12px; background: rgba(250, 204, 21, 0.1); border: 1px solid rgba(250, 204, 21, 0.2); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                        <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; stroke: var(--accent); fill: none; stroke-width: 2;"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg>
+                    </div>
+                    <div>
+                        <h5 style="color:#fff; font-size:13px; font-weight:700; margin:0 0 4px 0;">1. Share Invite Link</h5>
+                        <p style="color:var(--text-muted); font-size:11px; margin:0; line-height:1.4;">Send your unique referral link to creators, influencers, or friends.</p>
+                    </div>
+                </div>
+
+                <div class="milestone-card" style="padding: 16px; margin-bottom: 0; display: flex; gap: 14px; align-items: center;">
+                    <div style="width: 42px; height: 42px; border-radius: 12px; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.2); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                        <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; stroke: #3b82f6; fill: none; stroke-width: 2;"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                    </div>
+                    <div>
+                        <h5 style="color:#fff; font-size:13px; font-weight:700; margin:0 0 4px 0;">2. They Complete Campaigns</h5>
+                        <p style="color:var(--text-muted); font-size:11px; margin:0; line-height:1.4;">Your referred friends join EliteX and earn money by completing available tasks.</p>
+                    </div>
+                </div>
+
+                <div class="milestone-card" style="padding: 16px; margin-bottom: 0; display: flex; gap: 14px; align-items: center;">
+                    <div style="width: 42px; height: 42px; border-radius: 12px; background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.2); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                        <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; stroke: #22c55e; fill: none; stroke-width: 2;"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
+                    </div>
+                    <div>
+                        <h5 style="color:#fff; font-size:13px; font-weight:700; margin:0 0 4px 0;">3. Get Paid Lifetime Bonus</h5>
+                        <p style="color:var(--text-muted); font-size:11px; margin:0; line-height:1.4;">Get ₹250 flat on signup + 5% lifetime commission credited directly to your wallet!</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Referred Friends List -->
+            <h4 style="color:#fff; font-size:12px; font-weight:800; text-transform:uppercase; letter-spacing:1px; margin: 24px 0 12px 4px;">My Referred Friends</h4>
+            <div class="milestone-card" style="padding: 0; overflow: hidden; margin-bottom: 40px;">
+                <div style="overflow-x: auto; width:100%;">
+                    <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 12px;">
+                        <thead>
+                            <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.05); background: rgba(255, 255, 255, 0.02);">
+                                <th style="padding: 14px 16px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; font-size: 10px; letter-spacing: 0.5px;">User</th>
+                                <th style="padding: 14px 16px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; font-size: 10px; letter-spacing: 0.5px;">Join Date</th>
+                                <th style="padding: 14px 16px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; font-size: 10px; letter-spacing: 0.5px; text-align: right;">Commission</th>
+                                <th style="padding: 14px 16px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; font-size: 10px; letter-spacing: 0.5px; text-align: center;">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.03);">
+                                <td style="padding: 14px 16px; color: #fff; font-weight: 700;">rohit_creations</td>
+                                <td style="padding: 14px 16px; color: var(--text-muted);">Jul 5, 2026</td>
+                                <td style="padding: 14px 16px; color: var(--accent); font-weight: 700; text-align: right;">₹ 1,250.00</td>
+                                <td style="padding: 14px 16px; text-align: center;"><span style="background: rgba(34, 197, 94, 0.1); color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.2); font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 6px; text-transform: uppercase;">Active</span></td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.03);">
+                                <td style="padding: 14px 16px; color: #fff; font-weight: 700;">sneha_vlogs</td>
+                                <td style="padding: 14px 16px; color: var(--text-muted);">Jul 2, 2026</td>
+                                <td style="padding: 14px 16px; color: var(--accent); font-weight: 700; text-align: right;">₹ 850.00</td>
+                                <td style="padding: 14px 16px; text-align: center;"><span style="background: rgba(34, 197, 94, 0.1); color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.2); font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 6px; text-transform: uppercase;">Active</span></td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.03);">
+                                <td style="padding: 14px 16px; color: #fff; font-weight: 700;">rahul_gaming</td>
+                                <td style="padding: 14px 16px; color: var(--text-muted);">Jun 29, 2026</td>
+                                <td style="padding: 14px 16px; color: var(--accent); font-weight: 700; text-align: right;">₹ 650.00</td>
+                                <td style="padding: 14px 16px; text-align: center;"><span style="background: rgba(34, 197, 94, 0.1); color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.2); font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 6px; text-transform: uppercase;">Active</span></td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 14px 16px; color: #fff; font-weight: 700;">aman_sharma</td>
+                                <td style="padding: 14px 16px; color: var(--text-muted);">Jun 27, 2026</td>
+                                <td style="padding: 14px 16px; color: var(--text-muted); font-weight: 700; text-align: right;">₹ 0.00</td>
+                                <td style="padding: 14px 16px; text-align: center;"><span style="background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2); font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 6px; text-transform: uppercase;">Inactive</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Professional Bottom Menu -->
+    <div class="bottom-menu">
             
             <div class="menu-item active" onclick="switchTab(this, 'homeSection', 'Agency Overview', 'Welcome back')">
                 <svg viewBox="0 0 24 24">
@@ -1946,7 +3021,7 @@
                 <span>Home</span>
             </div>
             
-            <div class="menu-item" onclick="switchTab(this, 'campaignsSection', 'Available Campaigns', 'Explore & Earn')">
+            <div class="menu-item" onclick="switchTab(this, 'campaignsSection', 'Campaign Marketplace', 'Live Briefs')">
                 <svg viewBox="0 0 24 24">
                     <circle cx="12" cy="12" r="10"></circle>
                     <circle cx="12" cy="12" r="6"></circle>
@@ -1955,17 +3030,22 @@
                 <span>Campaigns</span>
             </div>
             
-            <div class="fab-container">
-                <div class="fab" onclick="createNewAction()">
-                    <svg viewBox="0 0 24 24">
-                        <line x1="12" y1="5" x2="12" y2="19"></line>
-                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                    </svg>
-                </div>
+            <div class="menu-item" onclick="switchTab(this, 'earnSection', 'Elite Earnings', 'Rewards & Bonuses')">
+                <svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                <span>Earn</span>
             </div>
 
-            <!-- UPDATED: Clicking this now triggers the new Wallet UI -->
-            <div class="menu-item" onclick="switchTab(this, 'walletSection', 'My Wallet', 'Earnings & Withdrawals')">
+            <div class="menu-item" onclick="switchTab(this, 'affiliateSection', '', '')">
+                <svg viewBox="0 0 24 24">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+                <span>Affiliate</span>
+            </div>
+
+            <div class="menu-item" onclick="switchTab(this, 'walletSection', '', '')">
                 <svg viewBox="0 0 24 24">
                     <rect x="2" y="5" width="20" height="14" rx="2"></rect>
                     <line x1="2" y1="10" x2="22" y2="10"></line>
@@ -1973,13 +3053,7 @@
                 <span>Wallet</span>
             </div>
             
-            <div class="menu-item" onclick="switchTab(this, 'earnSection', 'Elite Earnings', 'Rewards & Bonuses')">
-                <svg viewBox="0 0 24 24" style="fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-                <span>Earn</span>
-            </div>
-            
         </div>
-    </div>
 
     <!-- ADD MONEY MODAL -->
     <div class="glass-modal-overlay" id="addMoneyModal">
@@ -2127,6 +3201,14 @@
         </div>
     </div>
 
+    <div class="glass-modal-overlay" id="campaignDetailModal" style="z-index: 10001;">
+        <div class="glass-modal-container" style="max-width: 500px; padding: 24px; max-height: 90vh; overflow-y: auto;">
+            <div id="campaignDetailContent">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
+    </div>
+
     <!-- WITHDRAW MODAL -->
     <div class="glass-modal-overlay" id="withdrawModal">
         <div class="glass-modal-container">
@@ -2264,6 +3346,148 @@
 
     <!-- UI Logic for Tab Switching & Wallet Operations -->
     <script>
+        /* --- DYNAMIC POLYMARKET YIELD & FEED SIMULATION LOGIC --- */
+        window.toggleYieldSimulator = function(element) {
+            element.classList.toggle('active');
+            const content = document.getElementById('yieldSimulatorContent');
+            if (content) {
+                content.classList.toggle('expanded');
+            }
+        };
+
+        window.updateYieldSimulation = function() {
+            const payoutType = document.getElementById('simPayoutType').value;
+            const scaleRange = document.getElementById('simScaleRange');
+            const scaleValText = document.getElementById('simScaleValText');
+            const scaleLabel = document.getElementById('simScaleLabel');
+            const creatorTierSel = document.getElementById('simCreatorTier').value;
+
+            if (!scaleRange || !scaleValText || !scaleLabel) return;
+
+            const scaleVal = parseInt(scaleRange.value);
+            
+            // Adjust range limits and labels based on payoutType
+            if (payoutType === 'flat') {
+                scaleRange.min = 1;
+                scaleRange.max = 20;
+                scaleRange.step = 1;
+                scaleLabel.innerText = "Projected Completed Videos";
+                if (parseInt(scaleRange.value) > 20) {
+                    scaleRange.value = 5;
+                }
+                scaleValText.innerText = scaleRange.value + " Videos";
+            } else if (payoutType === 'cpm') {
+                scaleRange.min = 1000;
+                scaleRange.max = 1000000;
+                scaleRange.step = 1000;
+                scaleLabel.innerText = "Projected YouTube/Reels Views";
+                if (parseInt(scaleRange.value) < 1000) {
+                    scaleRange.value = 50000;
+                }
+                scaleValText.innerText = parseInt(scaleRange.value).toLocaleString('en-IN') + " Views";
+            } else if (payoutType === 'reach') {
+                scaleRange.min = 1000;
+                scaleRange.max = 1000000;
+                scaleRange.step = 1000;
+                scaleLabel.innerText = "Projected Creator Reach";
+                if (parseInt(scaleRange.value) < 1000) {
+                    scaleRange.value = 50000;
+                }
+                scaleValText.innerText = parseInt(scaleRange.value).toLocaleString('en-IN') + " Reach";
+            } else if (payoutType === 'conversion') {
+                scaleRange.min = 1;
+                scaleRange.max = 200;
+                scaleRange.step = 1;
+                scaleLabel.innerText = "Projected Leads / Conversions";
+                if (parseInt(scaleRange.value) > 200) {
+                    scaleRange.value = 25;
+                }
+                scaleValText.innerText = scaleRange.value + " Conversions";
+            }
+
+            const currentScale = parseInt(scaleRange.value);
+
+            // Determine rates based on payoutType
+            let baseRate = 0;
+            let rateUnitStr = '';
+            let baseYield = 0;
+
+            if (payoutType === 'flat') {
+                baseRate = 250; // ₹250 flat per video
+                rateUnitStr = '₹250 / Video';
+                baseYield = currentScale * baseRate;
+            } else if (payoutType === 'cpm') {
+                baseRate = 120; // ₹120 per 1k views
+                rateUnitStr = '₹120 / 1k Views';
+                baseYield = (currentScale / 1000) * baseRate;
+            } else if (payoutType === 'reach') {
+                baseRate = 80; // ₹80 per 1k reach
+                rateUnitStr = '₹80 / 1k Reach';
+                baseYield = (currentScale / 1000) * baseRate;
+            } else if (payoutType === 'conversion') {
+                baseRate = 45; // ₹45 per lead
+                rateUnitStr = '₹45 / Lead';
+                baseYield = currentScale * baseRate;
+            }
+
+            // Streak Boost (calculated dynamically)
+            const hasStreakBoost = (typeof streakCount !== 'undefined' && streakCount >= 1);
+            const streakBoostMult = hasStreakBoost ? 1.2 : 1.0;
+            
+            // VIP Tier Boost
+            const tierBoostMult = parseFloat(creatorTierSel);
+
+            // Calculate Net Payout
+            const netPayout = baseYield * streakBoostMult * tierBoostMult;
+
+            // Update UI Elements
+            document.getElementById('simBaseRateText').innerText = rateUnitStr;
+            document.getElementById('simStreakBoostText').innerText = streakBoostMult.toFixed(1) + 'x ' + (hasStreakBoost ? 'Active' : 'Inactive');
+            document.getElementById('simTierBoostText').innerText = tierBoostMult.toFixed(1) + 'x Boost';
+            document.getElementById('simNetPayoutText').innerText = '₹' + netPayout.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        };
+
+
+
+
+
+        function parseRichText(text) {
+            if (!text) return '';
+            let escaped = text
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;");
+            
+            escaped = escaped.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            escaped = escaped.replace(/\*(.*?)\*/g, '<em>$1</em>');
+            
+            let lines = escaped.split('\n');
+            let inList = false;
+            let result = [];
+            
+            lines.forEach(line => {
+                let trimmed = line.trim();
+                if (trimmed.startsWith('- ')) {
+                    if (!inList) {
+                        result.push('<ul style="margin: 4px 0; padding-left: 18px; display: flex; flex-direction: column; gap: 3px;">');
+                        inList = true;
+                    }
+                    result.push(`<li>${trimmed.substring(2)}</li>`);
+                } else {
+                    if (inList) {
+                        result.push('</ul>');
+                        inList = false;
+                    }
+                    result.push(line);
+                }
+            });
+            if (inList) {
+                result.push('</ul>');
+            }
+            
+            return result.join('\n').replace(/\n/g, '<br>');
+        }
+
         // --- 1. Wallet State & User Session Management ---
         let availableBalance = 14250.00;
         let pendingBalance = 2400.00;
@@ -2278,13 +3502,16 @@
         let currentWithdrawalMethod = 'upi';
         let currentAddPaymentMethod = 'upi';
 
-        let transactions = [
+        const defaultTransactions = [
             { id: 1, title: 'Tech Startup Promo', amount: 450, date: 'Today, 11:42 AM', type: 'credit', status: 'completed' },
             { id: 2, title: 'Local Food Delivery', amount: 120, date: 'Yesterday, 04:15 PM', type: 'credit', status: 'completed' },
             { id: 3, title: 'Bank Withdrawal', amount: -2000, date: 'Jul 4, 09:00 AM', type: 'debit', status: 'completed' },
             { id: 4, title: 'E-commerce Campaign', amount: 850, date: 'Jul 2, 02:30 PM', type: 'credit', status: 'completed' },
             { id: 5, title: 'App Install Campaign', amount: 1500, date: 'Jun 28, 10:15 AM', type: 'credit', status: 'completed' }
         ];
+        let transactions = [...defaultTransactions];
+        let creditedSubmissions = [];
+        let refundedCampaigns = [];
 
         let completedVideosCount = 5;
         let completedSalesCount = 2;
@@ -2328,7 +3555,11 @@
                 cardNumber = data.cardNumber || generateRandomCardNumber();
                 cardSecurityCode = data.cardSecurityCode || generateRandomSecurityCode();
                 firstWithdrawalCompleted = data.firstWithdrawalCompleted === true;
-                cardDetailsHidden = data.cardDetailsHidden === true;
+                cardDetailsHidden = true; // Always default to hidden on load
+                
+                transactions = data.transactions || [...defaultTransactions];
+                creditedSubmissions = data.creditedSubmissions || [];
+                refundedCampaigns = data.refundedCampaigns || [];
             } else {
                 partnerId = generateRandomPartnerId();
                 cardNumber = generateRandomCardNumber();
@@ -2345,6 +3576,10 @@
                 lastCheckInDate = '';
                 activeWithdrawalPending = false;
                 payoutTrackingState = 2;
+                
+                transactions = [...defaultTransactions];
+                creditedSubmissions = [];
+                refundedCampaigns = [];
             }
         }
 
@@ -2370,7 +3605,9 @@
                 cardNumber: cardNumber,
                 cardSecurityCode: cardSecurityCode,
                 firstWithdrawalCompleted: firstWithdrawalCompleted,
-                cardDetailsHidden: cardDetailsHidden
+                transactions: transactions,
+                creditedSubmissions: creditedSubmissions,
+                refundedCampaigns: refundedCampaigns
             };
             localStorage.setItem('eliteX_user_session', JSON.stringify(data));
         }
@@ -2416,6 +3653,11 @@
             updateCardVisibilityUI();
             updateMilestoneUI();
             renderTransactions();
+            
+            // Start listening to this user's submissions
+            if (typeof window.startSubmissionsListener === 'function') {
+                window.startSubmissionsListener();
+            }
         }
 
         function setupUserIdentityUI(name) {
@@ -2429,6 +3671,12 @@
             
             const cvvEl = document.getElementById('cardCvvText');
             if (cvvEl) cvvEl.innerText = `Password: ${cardSecurityCode}`;
+
+            // Populate Affiliate details
+            const refLinkInput = document.getElementById('referralLinkInput');
+            const refCodeInput = document.getElementById('referralCodeInput');
+            if (refLinkInput) refLinkInput.value = `https://elitex.agency/join?ref=${partnerId}`;
+            if (refCodeInput) refCodeInput.value = partnerId;
         }
 
         function generateRandomPartnerId() {
@@ -2471,11 +3719,25 @@
                 targetSection.classList.add('active-section');
             }
 
+            const headerContainer = document.getElementById('appHeaderContainer');
+            if (headerContainer) {
+                if (sectionId === 'campaignsSection') {
+                    headerContainer.style.display = 'none';
+                    if (window.updateYieldSimulation) {
+                        window.updateYieldSimulation();
+                    }
+                } else {
+                    headerContainer.style.display = 'block';
+                }
+            }
+
             document.getElementById('headerTitle').innerText = newTitle;
             document.getElementById('headerSubtitle').innerText = newSubtitle;
 
             // Trigger premium categories animation on Wallet tab switch
             if (sectionId === 'walletSection') {
+                cardDetailsHidden = true;
+                updateCardVisibilityUI();
                 setTimeout(() => {
                     const barLeads = document.getElementById('barLeads');
                     const barInstalls = document.getElementById('barInstalls');
@@ -2535,13 +3797,934 @@
                     const last4 = cardNumber.slice(-4);
                     numberText.innerText = `•••• •••• •••• ${last4}`;
                 }
-                if (eyeOpen) eyeOpen.style.display = 'none';
-                if (eyeClosed) eyeClosed.style.display = 'block';
+                if (eyeOpen) eyeOpen.style.display = 'block';
+                if (eyeClosed) eyeClosed.style.display = 'none';
             } else {
                 if (numberText) numberText.innerText = cardNumber;
                 
-                if (eyeOpen) eyeOpen.style.display = 'block';
-                if (eyeClosed) eyeClosed.style.display = 'none';
+                if (eyeOpen) eyeOpen.style.display = 'none';
+                if (eyeClosed) eyeClosed.style.display = 'block';
+            }
+        }
+
+        // --- Campaigns Filter and Rendering Helper Functions ---
+        let allCampaigns = [];
+        let currentCampaignFilter = 'all';
+        let acceptedCampaigns = JSON.parse(localStorage.getItem('eliteX_accepted_campaigns') || '[]');
+
+        window.updateCampaignStatsUI = function() {
+            // Count active accepted tasks
+            const activeCount = acceptedCampaigns.length;
+            const activeEl = document.getElementById('activeTasksCountVal');
+            if (activeEl) activeEl.innerText = `${activeCount} Briefs`;
+
+            // Calculate total campaign earnings
+            let totalEarnings = 0;
+            if (typeof transactions !== 'undefined') {
+                transactions.forEach(tx => {
+                    if (tx.type === 'credit' && (tx.title.includes('Campaign') || tx.title.includes('Ad') || tx.title.includes('Promo'))) {
+                        totalEarnings += tx.amount;
+                    }
+                });
+            }
+            const earningsEl = document.getElementById('campaignEarningsVal');
+            if (earningsEl) earningsEl.innerText = `₹${totalEarnings.toFixed(0)}`;
+
+            // Count pending submissions
+            const pendingCount = localStorage.getItem('eliteX_pending_count') || '0';
+            const pendingEl = document.getElementById('submissionStatusCountVal');
+            if (pendingEl) pendingEl.innerText = `${pendingCount} Review`;
+        };
+
+        window.acceptCampaign = function(id, title) {
+            if (acceptedCampaigns.includes(id)) return;
+            
+            // Check available balance
+            if (availableBalance < 10) {
+                alert(`Insufficient wallet balance! Joining a campaign requires a security deposit fee of ₹10.00.`);
+                return;
+            }
+            
+            // Deduct ₹10 security fee
+            availableBalance -= 10;
+            acceptedCampaigns.push(id);
+            localStorage.setItem('eliteX_accepted_campaigns', JSON.stringify(acceptedCampaigns));
+            
+            // Create debit transaction
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            transactions.unshift({
+                id: transactions.length + 1,
+                title: `Brief Entry Fee: ${title}`,
+                amount: 10,
+                date: `Today, ${timeStr}`,
+                type: 'debit',
+                status: 'completed'
+            });
+            
+            // Save user session
+            saveUserSession();
+            
+            // Update UI elements
+            updateWalletUI();
+            renderTransactions();
+            renderCampaignList();
+            if (window.updateCampaignStatsUI) window.updateCampaignStatsUI();
+            if (window.renderHomeActiveBriefs) window.renderHomeActiveBriefs();
+            
+            // Close modal if open
+            window.closeCampaignDetailModal();
+            
+            alert(`Campaign "${title}" accepted! A ₹10 security deposit has been debited. View and submit it on your Home Tab.`);
+        };
+
+        window.filterCampaigns = function(element) {
+            const btns = document.querySelectorAll('[data-campaign-filter]');
+            btns.forEach(btn => btn.classList.remove('active'));
+            element.classList.add('active');
+            currentCampaignFilter = element.getAttribute('data-campaign-filter');
+            renderCampaignList();
+        };
+
+        window.renderCampaignList = function() {
+            const container = document.getElementById('campaignsContainer');
+            if (!container) return;
+            container.innerHTML = '';
+            
+            let activeStreak = 0;
+            const sessionStr = localStorage.getItem('eliteX_user_session');
+            if (sessionStr) {
+                try {
+                    const session = JSON.parse(sessionStr);
+                    activeStreak = parseInt(session.streakCount) || 0;
+                } catch(e) {}
+            }
+            
+            const searchVal = (document.getElementById('campaignSearchInput')?.value || '').toLowerCase().trim();
+            
+            const filtered = allCampaigns.filter(c => {
+                // Hide already joined campaigns from the marketplace discovery feed
+                if (acceptedCampaigns.includes(c.id)) return false;
+                
+                // Hide campaigns with 0 remaining spots (slots occupied limit)
+                const maxSlots = c.maxSlots || 50;
+                const filledSlots = c.filledSlots !== undefined ? c.filledSlots : Math.round(maxSlots * (0.4 + (c.id.charCodeAt(0) % 5) * 0.15));
+                const remainingSlots = Math.max(0, maxSlots - filledSlots);
+                if (remainingSlots <= 0) return false;
+
+                // Hide expired campaigns
+                const now = Date.now();
+                let expiryMs = null;
+                if (c.expiresAt) {
+                    if (c.expiresAt.seconds) {
+                        expiryMs = c.expiresAt.seconds * 1000;
+                    } else {
+                        expiryMs = new Date(c.expiresAt).getTime();
+                    }
+                } else {
+                    const offsetHours = 12 + (c.id.charCodeAt(1) % 150);
+                    const baseDate = new Date(c.createdAt || 1783584000000);
+                    expiryMs = baseDate.getTime() + offsetHours * 60 * 60 * 1000;
+                }
+                if (expiryMs && now > expiryMs) return false;
+
+                // Category filter
+                let matchesCategory = true;
+                if (currentCampaignFilter !== 'all') {
+                    matchesCategory = (c.tag || '').toLowerCase() === currentCampaignFilter;
+                }
+                
+                // Search filter
+                let matchesSearch = true;
+                if (searchVal) {
+                    const title = (c.title || '').toLowerCase();
+                    const name = (c.productName || '').toLowerCase();
+                    const desc = (c.desc || c.productDesc || '').toLowerCase();
+                    const language = (c.language || '').toLowerCase();
+                    matchesSearch = title.includes(searchVal) || name.includes(searchVal) || desc.includes(searchVal) || language.includes(searchVal);
+                }
+                
+                return matchesCategory && matchesSearch;
+            });
+            
+            if (filtered.length === 0) {
+                container.innerHTML = '<p style="color:var(--text-muted); text-align:center; padding:24px; font-size:12px;">No active campaigns match your search/filter parameters.</p>';
+                return;
+            }
+            
+            filtered.forEach((c, index) => {
+                let badgeClass = 'badge-reels';
+                let tagLabel = 'Reel';
+                const tagLower = (c.tag || '').toLowerCase();
+                if (tagLower === 'reels') { badgeClass = 'badge-reels'; tagLabel = 'Reel'; }
+                else if (tagLower === 'youtube') { badgeClass = 'badge-youtube'; tagLabel = 'YT Video'; }
+                else if (tagLower === 'post') { badgeClass = 'badge-post'; tagLabel = 'Post'; }
+                else if (tagLower === 'other') { badgeClass = 'badge-task'; tagLabel = 'Task'; }
+
+                let productImg = c.productImage;
+                if (!productImg) {
+                    if (tagLower === 'reels') {
+                        productImg = 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&w=400&q=80';
+                    } else if (tagLower === 'youtube') {
+                        productImg = 'https://images.unsplash.com/photo-161162616305-c69b3fa7fbe0?auto=format&fit=crop&w=400&q=80';
+                    } else if (tagLower === 'post') {
+                        productImg = 'https://images.unsplash.com/photo-1611590027211-b954fd027b51?auto=format&fit=crop&w=400&q=80';
+                    } else {
+                        productImg = 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=400&q=80';
+                    }
+                }
+                
+                const isAccepted = acceptedCampaigns.includes(c.id);
+                const payoutType = c.payoutType || 'flat';
+                
+                let rateLabel = 'Est. Payout';
+                if (payoutType === 'cpm') rateLabel = 'CPM Rate';
+                else if (payoutType === 'reach') rateLabel = 'Reach Rate';
+                else if (payoutType === 'conversion') rateLabel = 'Lead Rate';
+                else if (payoutType === 'performance') rateLabel = 'Performance Rate';
+                
+                let rateSuffix = '';
+                if (payoutType === 'cpm') rateSuffix = '<span style="font-size:10px; font-weight:500; color:var(--text-muted);">/1k views</span>';
+                else if (payoutType === 'reach') rateSuffix = '<span style="font-size:10px; font-weight:500; color:var(--text-muted);">/1k reach</span>';
+                else if (payoutType === 'conversion') rateSuffix = '<span style="font-size:10px; font-weight:500; color:var(--text-muted);">/lead</span>';
+                else if (payoutType === 'performance') rateSuffix = '<span style="font-size:8px; font-weight:500; color:var(--text-muted);"> (Hybrid)</span>';
+
+                const rewardVal = parseFloat(c.reward || 0).toFixed(0);
+                let rewardDisplayStr = `₹${rewardVal}${rateSuffix}`;
+                if (payoutType === 'performance') {
+                    rewardDisplayStr = `Dynamic Rate`;
+                }
+
+                // Polymarket-style Seeds
+                const activeCount = 40 + (c.id.charCodeAt(0) % 60);
+                const approvalRating = 94 + (c.id.charCodeAt(1) % 6);
+                const totalPaid = (12 + (c.id.charCodeAt(2) % 25)) * 1250;
+                
+                // Slots Progress Bar Calculations
+                const maxSlots = c.maxSlots || 50;
+                const filledSlots = Math.round(maxSlots * (0.4 + (c.id.charCodeAt(0) % 5) * 0.1));
+                const remainingSlots = Math.max(0, maxSlots - filledSlots);
+                const slotsPercent = Math.round((filledSlots / maxSlots) * 100);
+                const isUrgentSlots = remainingSlots <= 10;
+
+                // Non-emoji trend badges
+                let trendBadgeHTML = '';
+                const rateVal = parseFloat(c.reward || 0);
+                if (rateVal >= 1000 || (payoutType !== 'flat' && rateVal >= 150)) {
+                    trendBadgeHTML = `
+                        <span style="font-size:8px; font-weight:800; color:#fbbf24; background:rgba(251, 191, 36, 0.06); border:1px solid rgba(251, 191, 36, 0.2); padding:2px 6px; border-radius:5px; display:inline-flex; align-items:center; gap:4px;">
+                            <span class="polymarket-pulse"></span>
+                            HIGH PAY
+                        </span>
+                    `;
+                } else if (tagLower === 'reels') {
+                    trendBadgeHTML = `
+                        <span style="font-size:8px; font-weight:800; color:#f97316; background:rgba(249, 115, 22, 0.06); border:1px solid rgba(249, 115, 22, 0.2); padding:2px 6px; border-radius:5px; display:inline-flex; align-items:center; gap:4px;">
+                            <span class="polymarket-pulse orange"></span>
+                            TRENDING
+                        </span>
+                    `;
+                } else {
+                    trendBadgeHTML = `
+                        <span style="font-size:8px; font-weight:800; color:#3b82f6; background:rgba(59, 130, 246, 0.06); border:1px solid rgba(59, 130, 246, 0.2); padding:2px 6px; border-radius:5px; display:inline-flex; align-items:center; gap:4px;">
+                            <span class="polymarket-pulse blue"></span>
+                            NEW BRIEF
+                        </span>
+                    `;
+                }
+                const languageText = c.language || 'English';
+
+                // Platform badges
+                const platforms = c.allowedPlatforms || [tagLower];
+                const platformBadges = platforms.map(p => {
+                    let color = '#6366f1';
+                    let displayName = p;
+                    if (p === 'tiktok') { color = '#22d3ee'; displayName = 'TikTok'; }
+                    else if (p === 'reels') { color = '#ec4899'; displayName = 'Instagram Reel'; }
+                    else if (p === 'shorts') { color = '#ef4444'; displayName = 'YouTube Video'; }
+                    else if (p === 'twitter') { color = '#38bdf8'; displayName = 'Twitter / X'; }
+                    else if (p === 'linkedin') { color = '#0284c7'; displayName = 'LinkedIn'; }
+                    else if (p === 'google maps') { color = '#22c55e'; displayName = 'Google Map Review'; }
+                    else if (p === 'app review') { color = '#a855f7'; displayName = 'App Store Review'; }
+                    else if (p === 'repost') { color = '#fb923c'; displayName = 'Repost / Share'; }
+                    else if (p === 'custom task') { color = '#14b8a6'; displayName = 'Custom Task'; }
+                    return `<span style="font-size:8px; font-weight:700; text-transform:uppercase; color:${color}; background:${color}12; border:1px solid ${color}25; padding:2px 5px; border-radius:4px; margin-right:4px; display:inline-block; margin-top:2px;">${displayName}</span>`;
+                }).join('');
+
+                // Dynamic Mini Graph Spline Path
+                const chartSeed = c.id.charCodeAt(0) % 4;
+                let chartPath = '';
+                let lastY = 2;
+                if (chartSeed === 0) { chartPath = 'M0,15 L20,10 L40,12 L60,5 L80,8 L100,2'; lastY = 2; }
+                else if (chartSeed === 1) { chartPath = 'M0,18 L20,15 L40,8 L60,10 L80,3 L100,1'; lastY = 1; }
+                else if (chartSeed === 2) { chartPath = 'M0,12 L20,14 L40,10 L60,12 L80,6 L100,4'; lastY = 4; }
+                else { chartPath = 'M0,16 L20,12 L40,15 L60,8 L80,9 L100,3'; lastY = 3; }
+
+                // FOMO Badge Calculation
+                let fomoBadgeHTML = '';
+                if (remainingSlots <= 15) {
+                    fomoBadgeHTML = `
+                        <span style="font-size:8px; font-weight:800; color:#ef4444; background:rgba(239, 68, 68, 0.06); border:1px solid rgba(239, 68, 68, 0.2); padding:2px 6px; border-radius:5px; display:inline-flex; align-items:center; gap:4.5px;">
+                            <span class="polymarket-pulse orange" style="background:#ef4444; box-shadow:0 0 0 0 rgba(239,68,68,0.7); animation: polymarket-pulse-orange-kf 1.6s infinite cubic-bezier(0.66, 0, 0, 1);"></span>
+                            LIMITED SPOTS
+                        </span>
+                    `;
+                }
+
+                // Streak Boost Calculation
+                let streakInfoHTML = '';
+                if (payoutType !== 'performance') {
+                    const boostedVal = Math.round(rewardVal * 1.2);
+                    if (activeStreak >= 1) {
+                        streakInfoHTML = `
+                            <div style="font-size: 8px; font-weight: 800; color: #fbbf24; background:rgba(251, 191, 36, 0.08); border:1px dashed rgba(251, 191, 36, 0.3); padding:2px 6px; border-radius:4px; display:inline-flex; align-items:center; gap:3px; margin-top:4.5px; width:fit-content;">
+                                <span class="polymarket-pulse" style="width:4px; height:4px; background:#fbbf24; animation:none; box-shadow:none;"></span>
+                                1.2x Streak Boosted: ₹${boostedVal}
+                            </div>
+                        `;
+                    } else {
+                        streakInfoHTML = `
+                            <div style="font-size: 8px; font-weight: 700; color: #94a3b8; border:1px dashed rgba(255,255,255,0.06); padding:2px 6px; border-radius:4px; display:inline-flex; align-items:center; gap:3px; margin-top:4.5px; width:fit-content;">
+                                <span class="polymarket-pulse blue" style="width:4px; height:4px; animation:none; box-shadow:none; background:#94a3b8;"></span>
+                                Check-in to unlock ₹${boostedVal} (1.2x Boost)
+                            </div>
+                        `;
+                    }
+                }
+
+                // Expiry calculation and HTML badge
+                const nowTime = Date.now();
+                let expiryMs = null;
+                if (c.expiresAt) {
+                    if (c.expiresAt.seconds) {
+                        expiryMs = c.expiresAt.seconds * 1000;
+                    } else {
+                        expiryMs = new Date(c.expiresAt).getTime();
+                    }
+                } else {
+                    const offsetHours = 12 + (c.id.charCodeAt(1) % 150);
+                    const baseDate = new Date(c.createdAt || 1783584000000);
+                    expiryMs = baseDate.getTime() + offsetHours * 60 * 60 * 1000;
+                }
+
+                const diffMs = expiryMs - nowTime;
+                const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+                const diffDays = Math.floor(diffHours / 24);
+
+                let expiryHTML = '';
+                if (diffMs > 0) {
+                    if (diffHours < 24) {
+                        expiryHTML = `
+                            <span style="font-size:8px; font-weight:800; color:#f87171; background:rgba(248, 113, 113, 0.06); border:1px solid rgba(248, 113, 113, 0.2); padding:2px 6px; border-radius:5px; display:inline-flex; align-items:center; gap:4px;">
+                                <span class="polymarket-pulse orange" style="background:#f87171; box-shadow:0 0 0 0 rgba(248,113,113,0.7); animation: polymarket-pulse-orange-kf 1.6s infinite cubic-bezier(0.66, 0, 0, 1);"></span>
+                                <span class="campaign-countdown-timer" data-expire-ms="${expiryMs}">--h --m --s left</span>
+                            </span>
+                        `;
+                    } else {
+                        const expDate = new Date(expiryMs);
+                        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                        const formattedDate = `${months[expDate.getMonth()]} ${expDate.getDate()}`;
+                        expiryHTML = `
+                            <span style="font-size:8px; font-weight:800; color:var(--text-muted); background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); padding:2px 6px; border-radius:5px; display:inline-flex; align-items:center; gap:3px;">
+                                <svg viewBox="0 0 24 24" style="width:9px; height:9px; stroke:currentColor; fill:none; stroke-width:3;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                                Ends ${formattedDate} (${diffDays}d left)
+                            </span>
+                        `;
+                    }
+                }
+                
+                // Spacious Campaign Workspace Card for Mobile
+                const card = `
+                    <div class="glass-panel campaign-workspace-card" style="animation-delay: ${index * 60}ms;">
+                        <!-- Top Header: Logo, Client Handles, and Tag Badge -->
+                        <div class="brand-header-row">
+                            <div style="display:flex; align-items:center; gap:10px; overflow:hidden; flex:1;">
+                                <div class="brand-logo-frame">
+                                    <img class="brand-logo-img" src="${productImg}" alt="${c.productName || 'Client'}">
+                                </div>
+                                <div style="overflow:hidden;">
+                                    <div style="font-size: 14.5px; font-weight: 850; color: #fff; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; margin-bottom: 2px; letter-spacing:-0.2px;">${c.title}</div>
+                                    <div style="font-size: 10px; color: var(--accent); font-weight: 700; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">@${c.productName || 'client'}</div>
+                                </div>
+                            </div>
+                            <div style="display:flex; gap:6px; align-items:center; flex-shrink:0;">
+                                ${trendBadgeHTML}
+                                ${fomoBadgeHTML}
+                                <span class="task-type-badge ${badgeClass}" style="position:static; box-shadow:none; padding:3px 8px; font-size:8px; border-radius: 6px; flex-shrink:0;">${tagLabel}</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Middle Body: Short Description -->
+                        <div style="font-size: 11.5px; color: rgba(255,255,255,0.7); line-height: 1.45; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-top:2px;">
+                            ${c.desc}
+                        </div>
+
+                        <!-- Platforms allowed (Simple list of tags) -->
+                        <div style="display:flex; flex-wrap:wrap; gap:4px; margin-top:2px;">
+                            ${platformBadges}
+                        </div>
+
+                        <!-- Slots & Escrow & Expiry (Clear metadata row) -->
+                        <div style="display:flex; justify-content:space-between; align-items:center; font-size:10px; background:rgba(255,255,255,0.015); border:1px solid rgba(255,255,255,0.03); border-radius:10px; padding:8px 12px; margin-top:2px; margin-bottom:2px;">
+                            <span style="color:var(--text-muted); font-weight:700;">
+                                Slots: <strong style="color:var(--accent); font-weight:900;">${remainingSlots} / ${maxSlots} open</strong>
+                            </span>
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                ${expiryHTML}
+                                <span style="color:var(--text-muted); font-weight:700; display:inline-flex; align-items:center; gap:4px;">
+                                    Status: 
+                                    <span class="polymarket-pulse green" style="width:5px; height:5px; box-shadow:none; animation:none; background:#10b981; display:inline-block; border-radius:50%;"></span>
+                                    <strong style="color:#10b981; font-weight:800;">Funded</strong>
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Bottom Footer: Payout and Action Buttons -->
+                        <div class="campaign-footer-row" style="margin-top: auto; border-top: 1px solid rgba(255,255,255,0.04); padding-top: 12px; align-items:center;">
+                            <div>
+                                <div style="font-size: 8px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px;">${rateLabel}</div>
+                                <div class="campaign-payout-amount" style="font-size:18px; font-weight:900; color:#fff; letter-spacing:-0.4px;">${rewardDisplayStr}</div>
+                                ${streakInfoHTML}
+                            </div>
+                            <div style="display:flex; gap:8px;">
+                                ${isAccepted ? `
+                                    <button class="pm-btn joined-state" style="grid-column: span 1; background:rgba(99,102,241,0.08); border-color:rgba(99,102,241,0.25); color:#818cf8; font-size:9.5px; height:32px; padding:0 12px; border-radius:8px;">
+                                        Joined
+                                    </button>
+                                ` : `
+                                    <button class="pm-btn yes" onclick="window.openCampaignDetailModal('${c.id}')" style="background:var(--accent); color:#07090f; border-color:var(--accent); font-size:9.5px; height:32px; padding:0 12px; border-radius:8px;">
+                                        Join Task
+                                    </button>
+                                `}
+                                <button class="pm-btn no" onclick="window.openCampaignDetailModal('${c.id}')" style="font-size:9.5px; height:32px; padding:0 12px; border-radius:8px;">
+                                    Brief
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += card;
+            });
+            window.updateCampaignStatsUI();
+
+            // Setup real-time countdown updates
+            if (window.campaignCountdownInterval) {
+                clearInterval(window.campaignCountdownInterval);
+                window.campaignCountdownInterval = null;
+            }
+            window.campaignCountdownInterval = setInterval(() => {
+                const timers = document.querySelectorAll('.campaign-countdown-timer');
+                if (timers.length === 0) {
+                    clearInterval(window.campaignCountdownInterval);
+                    window.campaignCountdownInterval = null;
+                    return;
+                }
+                timers.forEach(el => {
+                    const expireMs = parseInt(el.getAttribute('data-expire-ms'));
+                    if (!expireMs) return;
+                    const now = Date.now();
+                    const diff = expireMs - now;
+                    if (diff <= 0) {
+                        el.innerText = 'Expired';
+                        el.style.color = '#ef4444';
+                        setTimeout(() => {
+                            if (typeof window.renderCampaignList === 'function') {
+                                window.renderCampaignList();
+                            }
+                        }, 1500);
+                        return;
+                    }
+                    const h = Math.floor(diff / (1000 * 60 * 60));
+                    const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                    const s = Math.floor((diff % (1000 * 60)) / 1000);
+                    el.innerText = `${h}h ${m}m ${s}s left`;
+                });
+            }, 1000);
+        }
+
+        window.openCampaignDetailModal = function(id) {
+            const campaign = allCampaigns.find(c => c.id === id);
+            if (!campaign) return;
+            
+            const modal = document.getElementById('campaignDetailModal');
+            const content = document.getElementById('campaignDetailContent');
+            if (!modal || !content) return;
+            
+            let tagLower = (campaign.tag || '').toLowerCase();
+            let productImg = campaign.productImage;
+            if (!productImg) {
+                if (tagLower === 'reels') {
+                    productImg = 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&w=400&q=80';
+                } else if (tagLower === 'youtube') {
+                    productImg = 'https://images.unsplash.com/photo-161162616305-c69b3fa7fbe0?auto=format&fit=crop&w=400&q=80';
+                } else if (tagLower === 'post') {
+                    productImg = 'https://images.unsplash.com/photo-1611590027211-b954fd027b51?auto=format&fit=crop&w=400&q=80';
+                } else {
+                    productImg = 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=400&q=80';
+                }
+            }
+            
+            let actionBadge = 'Campaign Brief';
+            if (tagLower === 'reels') actionBadge = 'Instagram Reel';
+            else if (tagLower === 'youtube') actionBadge = 'YouTube Video';
+            else if (tagLower === 'post') actionBadge = 'Social Post';
+            else if (tagLower === 'other') actionBadge = 'Special Task';
+
+            const payoutType = campaign.payoutType || 'flat';
+            let rewardDisplay = '';
+            if (payoutType === 'cpm') rewardDisplay = `₹${parseFloat(campaign.reward || 0).toFixed(0)} / 1k Views`;
+            else if (payoutType === 'reach') rewardDisplay = `₹${parseFloat(campaign.reward || 0).toFixed(0)} / 1k Reach`;
+            else if (payoutType === 'conversion') rewardDisplay = `₹${parseFloat(campaign.reward || 0).toFixed(0)} / Lead`;
+            else if (payoutType === 'performance') rewardDisplay = `Dynamic Payout`;
+            else rewardDisplay = `₹${parseFloat(campaign.reward || 0).toFixed(0)} Flat`;
+
+            // Parse YouTube URL to embed iframe
+            function getYouTubeEmbedHTML(url) {
+                if (!url) return '';
+                let videoId = '';
+                const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+                const match = url.match(regExp);
+                if (match && match[2].length === 11) {
+                    videoId = match[2];
+                } else {
+                    return '';
+                }
+                return `
+                    <div style="position: relative; width: 100%; height: 0; padding-bottom: 56.25%; border-radius: 16px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 0 15px rgba(99, 102, 241, 0.1); margin-bottom: 16px; background: #000;">
+                        <iframe src="https://www.youtube.com/embed/${videoId}" 
+                            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                `;
+            }
+
+            const introVideoHTML = getYouTubeEmbedHTML(campaign.introVideoUrl);
+            const headerImageHTML = introVideoHTML || `
+                <div class="campaign-image-wrapper" style="height:180px; margin-bottom:16px; border-radius:12px; overflow:hidden;">
+                    <img class="campaign-product-img" src="${productImg}" style="object-fit:cover; width:100%; height:100%;">
+                </div>
+            `;
+
+            // Platform badges
+            const platforms = campaign.allowedPlatforms || ['reels', 'shorts', 'tiktok'];
+            const platformBadges = platforms.map(p => {
+                let color = '#6366f1';
+                let displayName = p;
+                if (p === 'tiktok') { color = '#22d3ee'; displayName = 'TikTok'; }
+                else if (p === 'reels') { color = '#ec4899'; displayName = 'Instagram Reel'; }
+                else if (p === 'shorts') { color = '#ef4444'; displayName = 'YouTube Video'; }
+                else if (p === 'twitter') { color = '#38bdf8'; displayName = 'Twitter / X'; }
+                else if (p === 'linkedin') { color = '#0284c7'; displayName = 'LinkedIn'; }
+                else if (p === 'google maps') { color = '#22c55e'; displayName = 'Google Map Review'; }
+                else if (p === 'app review') { color = '#a855f7'; displayName = 'App Store Review'; }
+                else if (p === 'repost') { color = '#fb923c'; displayName = 'Repost / Share'; }
+                else if (p === 'custom task') { color = '#14b8a6'; displayName = 'Custom Task'; }
+                return `<span style="font-size:9px; font-weight:700; text-transform:uppercase; color:${color}; background:${color}12; border:1px solid ${color}25; padding:3px 7px; border-radius:6px; margin-right:4px; display:inline-block; margin-top:2px;">${displayName}</span>`;
+            }).join('');
+
+            // Boost Badges
+            let boostBadgesHTML = '';
+            if (payoutType === 'cpm' || payoutType === 'reach') {
+                boostBadgesHTML = `
+                    <span style="font-size:9px; font-weight:700; color:#4ade80; background:rgba(74, 222, 128, 0.08); border:1px solid rgba(74, 222, 128, 0.2); padding:3px 7px; border-radius:6px; display:inline-flex; align-items:center; gap:3.5px;">
+                        <span class="polymarket-pulse green"></span>
+                        Milestones Active
+                    </span>
+                    <span style="font-size:9px; font-weight:700; color:#38bdf8; background:rgba(56, 189, 248, 0.08); border:1px solid rgba(56, 189, 248, 0.2); padding:3px 7px; border-radius:6px; display:inline-flex; align-items:center; gap:3.5px;">
+                        <span class="polymarket-pulse blue"></span>
+                        High-Yield Rate
+                    </span>
+                `;
+            } else if (payoutType === 'conversion') {
+                boostBadgesHTML = `
+                    <span style="font-size:9px; font-weight:700; color:#a855f7; background:rgba(168, 85, 247, 0.08); border:1px solid rgba(168, 85, 247, 0.2); padding:3px 7px; border-radius:6px; display:inline-flex; align-items:center; gap:3.5px;">
+                        <span class="polymarket-pulse orange"></span>
+                        High Demand
+                    </span>
+                    <span style="font-size:9px; font-weight:700; color:#facc15; background:rgba(250, 204, 21, 0.08); border:1px solid rgba(250, 204, 21, 0.2); padding:3px 7px; border-radius:6px; display:inline-flex; align-items:center; gap:3.5px;">
+                        <span class="polymarket-pulse"></span>
+                        Boost Eligible
+                    </span>
+                `;
+            } else {
+                boostBadgesHTML = `
+                    <span style="font-size:9px; font-weight:700; color:#fb923c; background:rgba(251, 146, 60, 0.08); border:1px solid rgba(251, 146, 60, 0.2); padding:3px 7px; border-radius:6px; display:inline-flex; align-items:center; gap:3.5px;">
+                        <span class="polymarket-pulse orange"></span>
+                        Escrow Guaranteed
+                    </span>
+                `;
+            }
+
+            const languageText = campaign.language || 'English';
+            const targetObjectiveHTML = campaign.targetObjective ? `
+                <div style="margin-bottom:16px;">
+                    <label style="font-size:10px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Video Target & Objective</label>
+                    <div style="font-size:12px; color:#e2e8f0; line-height:1.4; margin-top:4px; padding:12px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.04); border-radius:12px;">
+                        ${parseRichText(campaign.targetObjective)}
+                    </div>
+                </div>
+            ` : '';
+
+            const captionHTML = campaign.captionTemplate ? `
+                <div style="margin-bottom:16px;">
+                    <label style="font-size:10px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Caption Template</label>
+                    <div style="position:relative; margin-top:4px;">
+                        <textarea readonly id="briefCaptionText" style="width:100%; height:60px; background:rgba(15,23,42,0.6); border:1px solid rgba(255,255,255,0.08); border-radius:10px; padding:8px 36px 8px 10px; color:#cbd5e1; font-size:11px; resize:none; outline:none; font-family:inherit; line-height:1.4;">${campaign.captionTemplate}</textarea>
+                        <button onclick="window.copyBriefText('briefCaptionText', this)" style="position:absolute; right:8px; top:8px; background:none; border:none; cursor:pointer; padding:4px; color:var(--accent);">
+                            <svg viewBox="0 0 24 24" style="width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:2.5;"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                        </button>
+                    </div>
+                </div>
+            ` : '';
+
+            const tagsHTML = campaign.tagsHashtags ? `
+                <div style="margin-bottom:16px;">
+                    <label style="font-size:10px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Required Hashtags</label>
+                    <div style="position:relative; margin-top:4px;">
+                        <input type="text" readonly id="briefTagsText" value="${campaign.tagsHashtags}" style="width:100%; background:rgba(15,23,42,0.6); border:1px solid rgba(255,255,255,0.08); border-radius:10px; padding:8px 36px 8px 10px; color:var(--accent); font-size:11px; outline:none; font-weight:700;">
+                        <button onclick="window.copyBriefText('briefTagsText', this)" style="position:absolute; right:8px; top:8px; background:none; border:none; cursor:pointer; padding:4px; color:var(--accent);">
+                            <svg viewBox="0 0 24 24" style="width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:2.5;"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                        </button>
+                    </div>
+                </div>
+            ` : '';
+
+            const termsHTML = campaign.termsConditions ? `
+                <div style="margin-bottom:20px; padding:12px; border-radius:12px; background:rgba(239,68,68,0.02); border:1px solid rgba(239,68,68,0.15);">
+                    <label style="font-size:10px; font-weight:700; color:#f87171; text-transform:uppercase; letter-spacing:0.5px;">Terms & Conditions</label>
+                    <div style="font-size:11px; color:#f87171; line-height:1.4; margin-top:4px;">
+                        ${parseRichText(campaign.termsConditions)}
+                    </div>
+                </div>
+            ` : '';
+
+            // Slider parameters
+            let sliderMax = 100000;
+            let sliderStep = 1000;
+            let sliderStart = 10000;
+            if (payoutType === 'conversion') {
+                sliderMax = 500;
+                sliderStep = 5;
+                sliderStart = 20;
+            } else if (payoutType === 'flat') {
+                sliderMax = 10000;
+                sliderStep = 500;
+                sliderStart = 2000;
+            }
+
+            content.innerHTML = `
+                ${headerImageHTML}
+                
+                <h3 style="color:#fff; margin:0 0 6px 0; font-size:18px;">${campaign.title}</h3>
+                
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                    <span style="font-size:11px; font-weight:700; text-transform:uppercase; color:var(--accent); background:rgba(250,204,21,0.08); padding:4px 8px; border-radius:6px;">${actionBadge}</span>
+                    <span style="font-size:16px; font-weight:800; color:var(--accent); text-shadow:0 0 8px var(--accent-glow);">${rewardDisplay}</span>
+                </div>
+
+                <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px;">
+                    ${boostBadgesHTML}
+                </div>
+
+                <!-- Silicon Valley Specs Block -->
+                <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:14px; margin-bottom:18px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.04); border-radius:16px; padding:14px;">
+                    <div>
+                        <div style="font-size:8px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Creator Tier Limit</div>
+                        <div style="font-size:11px; font-weight:800; color:#fff; margin-top:2px; display:flex; align-items:center; gap:4px;">
+                            <svg viewBox="0 0 24 24" style="width:12px; height:12px; stroke:var(--accent); fill:none; stroke-width:2.5;"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                            ${campaign.minFollowers || 'No Minimum'}
+                        </div>
+                    </div>
+                    <div>
+                        <div style="font-size:8px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Target Region</div>
+                        <div style="font-size:11px; font-weight:800; color:#fff; margin-top:2px; display:flex; align-items:center; gap:4px;">
+                            <svg viewBox="0 0 24 24" style="width:12px; height:12px; stroke:var(--accent); fill:none; stroke-width:2.5;"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                            ${campaign.audienceRegion || 'Global'}
+                        </div>
+                    </div>
+                    <div>
+                        <div style="font-size:8px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Video Duration</div>
+                        <div style="font-size:11px; font-weight:800; color:#fff; margin-top:2px; display:flex; align-items:center; gap:4px;">
+                            <svg viewBox="0 0 24 24" style="width:12px; height:12px; stroke:var(--accent); fill:none; stroke-width:2.5;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                            ${campaign.videoDuration || '15-60 seconds'}
+                        </div>
+                    </div>
+                    <div>
+                        <div style="font-size:8px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Brief Expiry Date</div>
+                        <div style="font-size:11px; font-weight:800; color:#f87171; margin-top:2px; display:flex; align-items:center; gap:4px;">
+                            <svg viewBox="0 0 24 24" style="width:12px; height:12px; stroke:#f87171; fill:none; stroke-width:2.5;"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                            ${campaign.expiryDate || 'Active'}
+                        </div>
+                    </div>
+                    <div>
+                        <div style="font-size:8px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Language</div>
+                        <div style="font-size:11px; font-weight:800; color:#fff; margin-top:2px; display:flex; align-items:center; gap:4px;">
+                            <svg viewBox="0 0 24 24" style="width:12px; height:12px; stroke:var(--accent); fill:none; stroke-width:2.5;"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                            ${languageText}
+                        </div>
+                    </div>
+                    <div>
+                        <div style="font-size:8px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Spots Available</div>
+                        <div style="font-size:11px; font-weight:800; color:#4ade80; margin-top:2px; display:flex; align-items:center; gap:4px;">
+                            <svg viewBox="0 0 24 24" style="width:12px; height:12px; stroke:#4ade80; fill:none; stroke-width:2.5;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                            ${campaign.maxSlots ? `${campaign.maxSlots} Open Spots` : 'High Capacity'}
+                        </div>
+                    </div>
+                    <div style="grid-column: 1/-1; border-top:1px solid rgba(255,255,255,0.04); padding-top:10px; margin-top:4px;">
+                        <div style="font-size:8px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px;">Allowed Channels</div>
+                        <div>${platformBadges}</div>
+                    </div>
+                </div>
+
+                <!-- Interactive Revenue Estimator -->
+                <div style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.05), rgba(168, 85, 247, 0.05)); border: 1px solid rgba(168, 85, 247, 0.15); border-radius: 16px; padding: 16px; margin-bottom: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); position:relative; overflow:hidden;">
+                    <div style="position:absolute; top:-30px; right:-30px; width:100px; height:100px; background:radial-gradient(circle, rgba(168, 85, 247, 0.1) 0%, transparent 70%); pointer-events:none;"></div>
+                    
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                        <h4 style="margin:0; font-size:11px; font-weight:700; color:#fff; text-transform:uppercase; letter-spacing:0.5px; display:flex; align-items:center; gap:6px;">
+                            <svg viewBox="0 0 24 24" style="width:14px; height:14px; stroke:var(--accent); fill:none; stroke-width:2.5;"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+                            Revenue Estimator
+                        </h4>
+                        <span id="calcSliderVal" style="font-size:12px; font-weight:800; color:var(--accent); text-shadow:0 0 6px var(--accent-glow);">0 Views</span>
+                    </div>
+
+                    <div style="margin-bottom:14px;">
+                        <input type="range" min="0" max="${sliderMax}" step="${sliderStep}" value="${sliderStart}" 
+                            oninput="window.updateCalculatorEarnings(this.value, ${campaign.reward}, '${payoutType}')"
+                            style="width: 100%; height: 6px; border-radius: 3px; background: rgba(255,255,255,0.08); outline: none; -webkit-appearance: none; cursor: pointer; transition: background 0.3s; margin:0;">
+                        
+                        <div style="display:flex; justify-content:space-between; font-size:9px; color:var(--text-muted); margin-top:6px;">
+                            <span>0</span>
+                            <span>${(sliderMax/2).toLocaleString()}</span>
+                            <span>${sliderMax.toLocaleString()}+</span>
+                        </div>
+                    </div>
+
+                    <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(15,23,42,0.4); padding:10px 12px; border-radius:10px; border:1px solid rgba(255,255,255,0.04); margin-bottom:10px;">
+                        <span style="font-size:10px; color:var(--text-muted); font-weight:600;">Estimated Payout</span>
+                        <span id="calcEstimatedEarnings" style="font-size:16px; font-weight:800; color:#4ade80; text-shadow: 0 0 8px rgba(74, 222, 128, 0.25);">₹0.00</span>
+                    </div>
+
+                    <div id="calcBonusAlert" style="font-size:10px; color:#cbd5e1; padding:8px 10px; border-radius:8px; border:1px solid rgba(255,255,255,0.06); background:rgba(255,255,255,0.01); line-height:1.4; transition:all 0.3s;">
+                        Unlocking milestones...
+                    </div>
+                </div>
+
+                <div style="margin-bottom:16px;">
+                    <label style="font-size:10px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Brief Overview</label>
+                    <div style="font-size:13px; color:#fff; font-weight:700; margin-top:2px;">Creator: ${campaign.productName || 'Verified Partner'}</div>
+                    <div style="font-size:12px; color:var(--text-muted); margin-top:4px; line-height:1.4;">${parseRichText(campaign.productDesc || campaign.desc)}</div>
+                    ${campaign.productLink ? `<a href="${campaign.productLink}" target="_blank" style="display:inline-flex; align-items:center; gap:4px; font-size:11px; font-weight:700; color:var(--accent); text-decoration:underline; margin-top:6px;">
+                        <svg viewBox="0 0 24 24" style="width:12px; height:12px; stroke:currentColor; stroke-width:2.5; fill:none; stroke-linecap:round; stroke-linejoin:round;"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                        Get Source Video Asset
+                    </a>` : ''}
+                </div>
+
+                ${targetObjectiveHTML}
+
+                <div style="margin-bottom:16px;">
+                    <label style="font-size:10px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Clipping Rules & Guidelines</label>
+                    <div style="font-size:12px; color:#cbd5e1; line-height:1.4; margin-top:4px; padding:12px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.04); border-radius:12px;">
+                        ${parseRichText(campaign.requirements)}
+                    </div>
+                </div>
+
+                ${captionHTML}
+                ${tagsHTML}
+                ${termsHTML}
+            `;
+            
+            const isAccepted = acceptedCampaigns.includes(campaign.id);
+            
+            if (!isAccepted) {
+                content.innerHTML += `
+                    <div style="margin-top: 10px; display:flex; flex-direction:column; gap:10px;">
+                        <button class="btn-premium-ai" onclick="window.acceptCampaign('${campaign.id}', '${campaign.title.replace(/'/g, "\\'")}')"
+                            style="width: 100%; padding: 12px; font-size: 13px; box-shadow: 0 4px 12px rgba(250, 204, 21, 0.25); height: 40px; font-weight:800;">
+                            Join Campaign (Deposit ₹10)
+                        </button>
+                        <button class="btn-outline-cancel" onclick="window.closeCampaignDetailModal()"
+                            style="width: 100%; height: 38px;">
+                            Cancel & Close
+                        </button>
+                        <div style="font-size:10px; color:var(--text-muted); text-align:center;">
+                            * A ₹10 deposit is required to join. Fully refunded once clip is approved.
+                        </div>
+                    </div>
+                `;
+            } else {
+                content.innerHTML += `
+                    <form id="campaignSubmissionForm" onsubmit="window.handleCampaignSubmit(event, '${campaign.id}', '${campaign.title.replace(/'/g, "\\'")}', ${campaign.reward}, '${payoutType}', '${productImg.replace(/'/g, "\\'")}')">
+                        <div style="display:flex; flex-direction:column; gap:6px; margin-bottom:12px;">
+                            <label style="font-size:10px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Social Platform</label>
+                            <select id="submissionPlatform" required
+                                style="background:rgba(15,23,42,0.6); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:10px 14px; color:#fff; font-size:12px; outline:none; width:100%;">
+                                <option value="tiktok">TikTok Video</option>
+                                <option value="reels">Instagram Reel</option>
+                                <option value="shorts">YouTube Short</option>
+                                <option value="other">Other Link</option>
+                            </select>
+                        </div>
+                        <div style="display:flex; flex-direction:column; gap:6px; margin-bottom:16px;">
+                            <label style="font-size:10px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Submit Posted Clip Link</label>
+                            <input type="url" id="submissionUrl" placeholder="e.g. https://tiktok.com/@yourusername/video/..." required
+                                style="background:rgba(15,23,42,0.6); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:10px 14px; color:#fff; font-size:12px; outline:none; width:100%;">
+                        </div>
+                        <div style="display:flex; gap:10px; margin-top:10px;">
+                            <button type="button" class="btn-outline-close" onclick="window.closeCampaignDetailModal()"
+                                style="flex:1; height:40px; margin:0;">
+                                Close
+                            </button>
+                            <button type="submit" id="submissionSubmitBtn" class="btn-premium-ai"
+                                style="flex:2; padding:12px; font-size:13px; height:40px; margin:0; box-shadow: 0 4px 12px rgba(250, 204, 21, 0.25);">
+                                Submit Clip URL
+                            </button>
+                        </div>
+                    </form>
+                `;
+            }
+            
+            modal.classList.add('active');
+            
+            // Set initial calculator values
+            setTimeout(() => {
+                window.updateCalculatorEarnings(sliderStart, campaign.reward, payoutType);
+            }, 50);
+        };
+
+        window.updateCalculatorEarnings = function(val, rate, payoutType) {
+            const displayVal = document.getElementById('calcSliderVal');
+            const displayEarnings = document.getElementById('calcEstimatedEarnings');
+            const bonusAlert = document.getElementById('calcBonusAlert');
+            if (!displayVal || !displayEarnings) return;
+            
+            const numVal = parseInt(val) || 0;
+            let label = 'Views';
+            let earnings = 0;
+            let bonus = 0;
+            
+            if (payoutType === 'cpm') {
+                label = 'Views';
+                earnings = (numVal * rate) / 1000;
+                displayVal.innerText = numVal.toLocaleString() + ' ' + label;
+                
+                if (numVal >= 50000) {
+                    bonus = 2500;
+                } else if (numVal >= 10000) {
+                    bonus = 500;
+                }
+            } else if (payoutType === 'reach') {
+                label = 'Reach';
+                earnings = (numVal * rate) / 1000;
+                displayVal.innerText = numVal.toLocaleString() + ' ' + label;
+                
+                if (numVal >= 50000) {
+                    bonus = 2500;
+                } else if (numVal >= 10000) {
+                    bonus = 500;
+                }
+            } else if (payoutType === 'conversion') {
+                label = 'Conversions (Leads)';
+                earnings = numVal * rate;
+                displayVal.innerText = numVal.toLocaleString() + ' ' + label;
+                
+                if (numVal >= 100) {
+                    bonus = 2000;
+                } else if (numVal >= 20) {
+                    bonus = 400;
+                }
+            } else if (payoutType === 'performance') {
+                label = 'Views';
+                const estConversions = Math.floor(numVal * 0.01);
+                earnings = ((numVal * rate) / 2000) + ((estConversions * rate) / 2);
+                displayVal.innerText = `${numVal.toLocaleString()} Views (+${estConversions} Est. Leads)`;
+                
+                if (numVal >= 50000) {
+                    bonus = 2500;
+                } else if (numVal >= 10000) {
+                    bonus = 500;
+                }
+            } else { // flat
+                label = 'Views';
+                earnings = rate;
+                displayVal.innerText = numVal.toLocaleString() + ' ' + label;
+                
+                if (numVal >= 10000) {
+                    bonus = 200;
+                }
+            }
+            
+            const total = earnings + bonus;
+            displayEarnings.innerHTML = `₹${total.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+            
+            if (bonusAlert) {
+                if (bonus > 0) {
+                    bonusAlert.innerHTML = `<span style="color:#4ade80; font-weight:700;">★ Milestone Unlocked!</span> You get a <strong style="color:var(--accent);">+₹${bonus}</strong> bonus!`;
+                    bonusAlert.style.borderColor = 'rgba(74, 222, 128, 0.3)';
+                    bonusAlert.style.background = 'rgba(74, 222, 128, 0.05)';
+                } else {
+                    let nextThreshold = payoutType === 'conversion' ? 20 : 10000;
+                    let needed = nextThreshold - numVal;
+                    if (needed > 0) {
+                        bonusAlert.innerHTML = `Get <strong style="color:var(--accent);">${needed.toLocaleString()}</strong> more ${label.split(' ')[0]} to unlock the <strong style="color:#fff;">₹${payoutType === 'conversion' ? '400' : '500'}</strong> milestone bonus!`;
+                    } else {
+                        let nextMax = payoutType === 'conversion' ? 100 : 50000;
+                        needed = nextMax - numVal;
+                        if (needed > 0) {
+                            bonusAlert.innerHTML = `Get <strong style="color:var(--accent);">${needed.toLocaleString()}</strong> more ${label.split(' ')[0]} to unlock the next <strong style="color:#fff;">₹${payoutType === 'conversion' ? '2,000' : '2,500'}</strong> milestone bonus!`;
+                        } else {
+                            bonusAlert.innerHTML = `<span style="color:var(--accent); font-weight:700;">⚡ MAX BONUS ACTIVE!</span> You've unlocked all milestones!`;
+                        }
+                    }
+                    bonusAlert.style.borderColor = 'rgba(255,255,255,0.06)';
+                    bonusAlert.style.background = 'rgba(255,255,255,0.01)';
+                }
+            }
+        };
+
+        window.closeCampaignDetailModal = function() {
+            const modal = document.getElementById('campaignDetailModal');
+            if (modal) modal.classList.remove('active');
+        };
+
+        // --- Clipboard Copy Helpers for Affiliate Section ---
+        function copyReferralLink() {
+            const input = document.getElementById('referralLinkInput');
+            const btn = document.getElementById('copyLinkBtn');
+            if (input && btn) {
+                navigator.clipboard.writeText(input.value).then(() => {
+                    const originalHTML = btn.innerHTML;
+                    btn.innerHTML = `
+                        <svg viewBox="0 0 24 24" style="width: 14px; height: 14px; stroke: #07090f; stroke-width: 2.5; fill: none;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        <span>Copied!</span>
+                    `;
+                    setTimeout(() => {
+                        btn.innerHTML = originalHTML;
+                    }, 2000);
+                }).catch(err => {
+                    console.error("Could not copy link: ", err);
+                });
+            }
+        }
+
+        function copyReferralCode() {
+            const input = document.getElementById('referralCodeInput');
+            const btn = document.getElementById('copyCodeBtn');
+            if (input && btn) {
+                navigator.clipboard.writeText(input.value).then(() => {
+                    const originalHTML = btn.innerHTML;
+                    btn.innerHTML = `
+                        <svg viewBox="0 0 24 24" style="width: 14px; height: 14px; stroke: #fff; stroke-width: 2.5; fill: none;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        <span style="color: #22c55e;">Copied!</span>
+                    `;
+                    setTimeout(() => {
+                        btn.innerHTML = originalHTML;
+                    }, 2000);
+                }).catch(err => {
+                    console.error("Could not copy code: ", err);
+                });
             }
         }
 
@@ -3610,6 +5793,7 @@
                 `;
                 listContainer.insertAdjacentHTML('beforeend', html);
             });
+            if (window.updateCampaignStatsUI) window.updateCampaignStatsUI();
         }
 
         function filterTransactions(element) {
@@ -3785,6 +5969,8 @@
             updateCardVisibilityUI();
             updateMilestoneUI();
             renderTransactions();
+            if (window.updateCampaignStatsUI) window.updateCampaignStatsUI();
+            if (window.updateYieldSimulation) window.updateYieldSimulation();
         }
 
         // Initialize wallet on load
@@ -3809,7 +5995,7 @@
     <!-- Firebase SDK (Version 10.8.1 for Stability) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getFirestore, collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        import { getFirestore, collection, query, where, orderBy, onSnapshot, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyBnE05VAXAfvFj1S6y-Ny4yBrNHJNc_DhU",
@@ -3828,43 +6014,530 @@
         const q = query(collection(db, "campaigns"), orderBy("createdAt", "desc"));
         
         onSnapshot(q, (snapshot) => {
-            campaignsContainer.innerHTML = ''; 
-            
-            if (snapshot.empty) {
-                campaignsContainer.innerHTML = '<p style="color:var(--text-muted); text-align:center; grid-column: 1/-1;">No active campaigns currently available.</p>';
-                return;
-            }
-
+            allCampaigns = [];
             snapshot.forEach((doc) => {
                 const data = doc.data();
+                allCampaigns.push({
+                    id: doc.id,
+                    ...data
+                });
+            });
+            renderCampaignList();
+            if (window.renderHomeActiveBriefs) window.renderHomeActiveBriefs();
+        }, (error) => {
+            console.error("Firebase Error:", error);
+            if (campaignsContainer) {
+                campaignsContainer.innerHTML = '<p style="color:#ef4444; text-align:center; grid-column: 1/-1;">Connection error. Please check Firebase rules.</p>';
+            }
+        });
+
+        // Global variable to store submissions
+        window.userSubmissions = [];
+
+        window.renderHomeActiveBriefs = function() {
+            const container = document.getElementById('homeAcceptedCampaignsContainer');
+            if (!container) return;
+            
+            const accepted = allCampaigns.filter(c => acceptedCampaigns.includes(c.id));
+            
+            if (accepted.length === 0) {
+                container.innerHTML = `
+                    <p style="color:var(--text-muted); text-align:center; font-size: 12px; padding: 20px; border: 1px dashed rgba(255,255,255,0.06); border-radius:12px; background:rgba(255,255,255,0.01); grid-column: 1/-1;">
+                        No active briefs. Visit the Campaigns tab to accept/join tasks and start earning.
+                    </p>
+                `;
+                return;
+            }
+            
+            container.innerHTML = '';
+            accepted.forEach((c, index) => {
+                const sub = window.userSubmissions.find(s => s.campaignId === c.id);
                 
-                let badgeClass = 'new';
-                if(data.tag === 'urgent') badgeClass = 'urgent';
-                else if(data.tag === 'premium') badgeClass = 'premium';
-                else if(data.tag === 'active') badgeClass = 'active';
+                let badgeClass = 'badge-reels';
+                let tagLabel = 'Reel';
+                const tagLower = (c.tag || '').toLowerCase();
+                if (tagLower === 'reels') { badgeClass = 'badge-reels'; tagLabel = 'Reel'; }
+                else if (tagLower === 'youtube') { badgeClass = 'badge-youtube'; tagLabel = 'YT Video'; }
+                else if (tagLower === 'post') { badgeClass = 'badge-post'; tagLabel = 'Post'; }
+                else if (tagLower === 'other') { badgeClass = 'badge-task'; tagLabel = 'Task'; }
+
+                let productImg = c.productImage;
+                if (!productImg) {
+                    if (tagLower === 'reels') {
+                        productImg = 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&w=400&q=80';
+                    } else if (tagLower === 'youtube') {
+                        productImg = 'https://images.unsplash.com/photo-161162616305-c69b3fa7fbe0?auto=format&fit=crop&w=400&q=80';
+                    } else if (tagLower === 'post') {
+                        productImg = 'https://images.unsplash.com/photo-1611590027211-b954fd027b51?auto=format&fit=crop&w=400&q=80';
+                    } else {
+                        productImg = 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=400&q=80';
+                    }
+                }
                 
-                const campaignCard = `
-                    <div class="glass-panel campaign-card">
-                        <div class="campaign-header">
-                            <div>
-                                <div class="campaign-title">${data.title}</div>
-                                <div class="campaign-desc">${data.desc}</div>
+                let submissionHTML = '';
+                if (!sub) {
+                    submissionHTML = `
+                        <div style="display:flex; flex-direction:column; gap:10px; width:100%; border-top: 1px solid rgba(255,255,255,0.05); padding-top:12px; margin-top:4px;">
+                            <div style="display:flex; justify-content:space-between; align-items:center;">
+                                <span style="font-size:10px; color:var(--text-muted); font-weight:700; text-transform:uppercase;">Status</span>
+                                <span style="font-size:10px; color:#cbd5e1; font-weight:700;">Pending Submission</span>
                             </div>
-                            <span class="status-badge ${badgeClass}" style="text-transform: capitalize;">${data.tag}</span>
+                            <button class="btn-premium-ai" onclick="window.openCampaignDetailModal('${c.id}')" style="width:100%; padding: 8px; font-size:11px;">
+                                <svg viewBox="0 0 24 24" style="width:12px; height:12px; stroke:currentColor; fill:none; stroke-width:2.5; vertical-align:middle; margin-right:4px;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                                View Brief & Submit
+                            </button>
                         </div>
-                        <div class="campaign-footer">
-                            <div class="campaign-reward">₹${data.reward} <span style="font-size:11px; color:var(--text-muted); font-weight:normal;">/per ${data.action}</span></div>
-                            <button class="btn-action">Join Now</button>
+                    `;
+                } else {
+                    let statusColor = '#eab308'; 
+                    let statusLabel = 'In Review';
+                    if (sub.status === 'approved') { statusColor = '#22c55e'; statusLabel = 'Approved'; }
+                    else if (sub.status === 'rejected') { statusColor = '#ef4444'; statusLabel = 'Rejected'; }
+                    else if (sub.status === 'tracking') { statusColor = '#38bdf8'; statusLabel = 'Tracking'; }
+                    
+                    const views = parseInt(sub.views || 0);
+                    const reach = parseInt(sub.reach || 0);
+                    const conversions = parseInt(sub.conversions || 0);
+                    
+                    let earnings = 0;
+                    const payoutType = c.payoutType || 'flat';
+                    const rewardRate = parseFloat(c.reward || 0);
+                    
+                    if (payoutType === 'cpm') {
+                        earnings = (views * rewardRate) / 1000;
+                        if (sub.status === 'approved') {
+                            if (views >= 50000) earnings += 2500;
+                            else if (views >= 10000) earnings += 500;
+                        }
+                    } else if (payoutType === 'reach') {
+                        earnings = (reach * rewardRate) / 1000;
+                        if (sub.status === 'approved') {
+                            if (reach >= 50000) earnings += 2500;
+                            else if (reach >= 10000) earnings += 500;
+                        }
+                    } else if (payoutType === 'conversion') {
+                        earnings = conversions * rewardRate;
+                        if (sub.status === 'approved') {
+                            if (conversions >= 100) earnings += 2000;
+                            else if (conversions >= 20) earnings += 400;
+                        }
+                    } else if (payoutType === 'performance') {
+                        earnings = ((views * rewardRate) / 2000) + ((conversions * rewardRate) / 2);
+                        if (sub.status === 'approved') {
+                            if (views >= 50000) earnings += 2500;
+                            else if (views >= 10000) earnings += 500;
+                        }
+                    } else {
+                        earnings = sub.status === 'approved' ? rewardRate : 0;
+                        if (sub.status === 'approved' && views >= 10000) {
+                            earnings += 200;
+                        }
+                    }
+                    
+                    let targetGoal = payoutType === 'conversion' ? 100 : 50000;
+                    let currentProgressMetric = payoutType === 'conversion' ? conversions : (payoutType === 'reach' ? reach : views);
+                    let percentage = Math.min(Math.round((currentProgressMetric / targetGoal) * 100), 100);
+                    
+                    let milestoneText = `Get ${targetGoal.toLocaleString()} ${payoutType === 'conversion' ? 'leads' : 'views'} for bonus!`;
+                    if (percentage >= 100) milestoneText = `★ MAX MILESTONE UNLOCKED!`;
+                    
+                    let progressBarHTML = `
+                        <div>
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                                <span style="font-size:9px; color:var(--text-muted); font-weight:700;">Progress to Milestone</span>
+                                <span style="font-size:9px; color:var(--accent); font-weight:800;">${percentage}%</span>
+                            </div>
+                            <div style="width:100%; height:6px; background:rgba(255,255,255,0.06); border-radius:3px; overflow:hidden;">
+                                <div style="width:${percentage}%; height:100%; background:linear-gradient(90deg, var(--accent) 0%, #eab308 100%); border-radius:3px; box-shadow:0 0 8px var(--accent-glow);"></div>
+                            </div>
+                            <div style="font-size:8px; color:var(--text-muted); text-align:right; margin-top:3px; font-weight:600;">${milestoneText}</div>
+                        </div>
+                    `;
+                    
+                    let analyticsPanelHTML = '';
+                    if (sub.status === 'tracking' || sub.status === 'approved') {
+                        let growthRate = '+14.2%';
+                        if (views > 10000) growthRate = '+42.5%';
+                        else if (views > 5000) growthRate = '+28.9%';
+                        else if (views === 0) growthRate = '0%';
+                        
+                        analyticsPanelHTML = `
+                            <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:8px; width:100%; background:rgba(15, 23, 42, 0.4); border: 1px solid rgba(255,255,255,0.05); border-radius:12px; padding:10px; margin-top:10px;">
+                                <div style="display:flex; flex-direction:column; gap:2px; align-items:center;">
+                                    <span style="font-size:8px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Views</span>
+                                    <span style="font-size:11px; color:#fff; font-weight:800;">${views.toLocaleString('en-US')}</span>
+                                </div>
+                                <div style="display:flex; flex-direction:column; gap:2px; align-items:center;">
+                                    <span style="font-size:8px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Earnings</span>
+                                    <span style="font-size:11px; color:var(--accent); font-weight:800;">₹${earnings.toLocaleString('en-IN', {maximumFractionDigits:0})}</span>
+                                </div>
+                                <div style="display:flex; flex-direction:column; gap:2px; align-items:center;">
+                                    <span style="font-size:8px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Status</span>
+                                    <span style="font-size:10px; color:${statusColor}; font-weight:800;">${statusLabel}</span>
+                                </div>
+                            </div>
+                        `;
+                    }
+                    
+                    submissionHTML = `
+                        <div style="display:flex; flex-direction:column; gap:6px; width:100%; border-top: 1px solid rgba(255,255,255,0.05); padding-top:12px; margin-top:4px;">
+                            ${progressBarHTML}
+                            ${analyticsPanelHTML}
+                            <button class="btn-outline-close" onclick="window.openCampaignDetailModal('${c.id}')" style="width:100%; height:32px; font-size:11px; margin-top:6px; padding:0; font-weight:700;">
+                                View Brief Details
+                            </button>
+                        </div>
+                    `;
+                }
+                
+                const card = `
+                    <div class="glass-panel campaign-workspace-card" style="margin-bottom:0; animation-delay: ${index * 60}ms;">
+                        <div class="brand-header-row">
+                            <div style="display:flex; align-items:center; gap:10px; overflow:hidden; flex:1;">
+                                <div class="brand-logo-frame">
+                                    <img class="brand-logo-img" src="${productImg}" alt="${c.productName || 'Client'}">
+                                </div>
+                                <div style="overflow:hidden;">
+                                    <div style="font-size: 13px; font-weight: 700; color: #fff; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; margin-bottom: 2px;">${c.title}</div>
+                                    <div style="font-size: 10px; color: var(--accent); font-weight: 700; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">@${c.productName || 'client'}</div>
+                                </div>
+                            </div>
+                            <span class="task-type-badge ${badgeClass}" style="position:static; box-shadow:none; padding:3px 8px; font-size:8px; border-radius: 6px; flex-shrink:0;">${tagLabel}</span>
+                        </div>
+                        ${submissionHTML}
+                    </div>
+                `;
+                container.innerHTML += card;
+            });
+        };
+
+        let activeSubmissionsListener = null;
+
+        // Start listening for user submissions
+        window.startSubmissionsListener = function() {
+            if (!partnerId) return;
+            
+            // Clean up any existing listener
+            if (activeSubmissionsListener) {
+                activeSubmissionsListener();
+                activeSubmissionsListener = null;
+            }
+
+            const subQ = query(
+                collection(db, "submissions"), 
+                where("partnerId", "==", partnerId)
+            );
+            
+            activeSubmissionsListener = onSnapshot(subQ, (snapshot) => {
+                window.userSubmissions = [];
+                snapshot.forEach((doc) => {
+                    window.userSubmissions.push({
+                        id: doc.id,
+                        ...doc.data()
+                    });
+                });
+                
+                // Client-side sort by createdAt descending
+                window.userSubmissions.sort((a, b) => {
+                    const timeA = a.createdAt ? (a.createdAt.seconds || 0) : 0;
+                    const timeB = b.createdAt ? (b.createdAt.seconds || 0) : 0;
+                    return timeB - timeA;
+                });
+                
+                window.updateCampaignEarningsAndSync();
+                window.renderUserSubmissionsList();
+            }, (error) => {
+                console.error("Submissions Firebase Error:", error);
+            });
+        };
+
+        // Render User Submissions List
+        window.renderUserSubmissionsList = function() {
+            const trackerContainer = document.getElementById('submissionsTrackerContainer');
+            if (!trackerContainer) return;
+            
+            if (!window.userSubmissions || window.userSubmissions.length === 0) {
+                trackerContainer.innerHTML = `
+                    <p style="color:var(--text-muted); text-align:center; font-size: 12px; padding: 20px; border: 1px dashed rgba(255,255,255,0.06); border-radius:12px; background:rgba(255,255,255,0.01);">
+                        No submissions tracked yet. Accept a task and submit your clip link to start earning.
+                    </p>
+                `;
+                return;
+            }
+            
+            trackerContainer.innerHTML = '';
+            window.userSubmissions.forEach(sub => {
+                const views = sub.views || 0;
+                const reward = parseFloat(sub.reward || 0);
+                const payoutType = sub.payoutType || 'flat';
+                const platform = sub.platform || 'other';
+                
+                // Calculate clip earnings
+                let earnings = 0;
+                if (payoutType === 'cpm') {
+                    earnings = (views * reward) / 1000;
+                } else {
+                    earnings = sub.status === 'approved' ? reward : 0;
+                }
+                
+                // Select status badge classes and text
+                let statusBadgeHTML = '';
+                if (sub.status === 'pending') {
+                    statusBadgeHTML = `<span class="status-badge" style="background: rgba(234, 179, 8, 0.1); color: #facc15; border: 1px solid rgba(234, 179, 8, 0.2); font-size:9px; padding:3px 8px; border-radius:6px; display:inline-flex; align-items:center; gap:4px;">
+                        <span style="width:5px; height:5px; border-radius:50%; background:#facc15;"></span> Reviewing
+                    </span>`;
+                } else if (sub.status === 'tracking') {
+                    statusBadgeHTML = `<span class="status-badge" style="background: rgba(34, 197, 94, 0.1); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.2); font-size:9px; padding:3px 8px; border-radius:6px; display:inline-flex; align-items:center; gap:4px; box-shadow: 0 0 10px rgba(74, 222, 128, 0.2); animation: pulse 1.5s infinite;">
+                        <span style="width:5px; height:5px; border-radius:50%; background:#4ade80;"></span> Tracking Views
+                    </span>`;
+                } else if (sub.status === 'approved') {
+                    statusBadgeHTML = `<span class="status-badge" style="background: rgba(59, 130, 246, 0.1); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.2); font-size:9px; padding:3px 8px; border-radius:6px; display:inline-flex; align-items:center; gap:4px;">
+                        <span style="width:5px; height:5px; border-radius:50%; background:#60a5fa;"></span> Approved & Paid
+                    </span>`;
+                } else if (sub.status === 'rejected') {
+                    statusBadgeHTML = `<span class="status-badge" style="background: rgba(239, 68, 68, 0.1); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.2); font-size:9px; padding:3px 8px; border-radius:6px; display:inline-flex; align-items:center; gap:4px;">
+                        <span style="width:5px; height:5px; border-radius:50%; background:#f87171;"></span> Rejected
+                    </span>`;
+                }
+                
+                // Select platform icon
+                let platformIcon = '';
+                if (platform === 'tiktok') {
+                    platformIcon = `<svg style="width:14px; height:14px; fill:currentColor; vertical-align:middle; margin-right:2px;" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.02 1.59 4.23.97.94 2.27 1.5 3.63 1.63v3.83c-1.84-.04-3.62-.67-5.07-1.81v7.65c.09 4.41-3.13 8.3-7.53 8.87-4.14.73-8.23-1.63-9.59-5.61A8.937 8.937 0 0 1 3.2 10.37c1.42-3.89 5.37-6.49 9.53-6.19v3.91c-2.42-.14-4.63 1.4-5.32 3.74-.83 2.24.28 4.79 2.5 5.62 2.21.94 4.88-.13 5.69-2.39.2-.5.29-1.04.28-1.58V.02z"/></svg>`;
+                } else if (platform === 'reels') {
+                    platformIcon = `<svg style="width:14px; height:14px; fill:none; stroke:currentColor; stroke-width:2; vertical-align:middle; margin-right:2px;" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>`;
+                } else if (platform === 'shorts') {
+                    platformIcon = `<svg style="width:14px; height:14px; fill:currentColor; vertical-align:middle; margin-right:2px;" viewBox="0 0 24 24"><path d="M23.498 6.163a3.003 3.003 0 0 0-2.11-2.11C19.517 3.545 12 3.545 12 3.545s-7.517 0-9.388.508a3.003 3.003 0 0 0-2.11 2.11C0 8.033 0 12 0 12s0 3.967.502 5.837a3.003 3.003 0 0 0 2.11 2.11c1.871.508 9.388.508 9.388.508s7.517 0 9.388-.508a3.003 3.003 0 0 0 2.11-2.11C24 15.967 24 12 24 12s0-3.967-.502-5.837zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>`;
+                } else {
+                    platformIcon = `<svg style="width:14px; height:14px; fill:none; stroke:currentColor; stroke-width:2.5; vertical-align:middle; margin-right:2px;" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>`;
+                }
+                
+                let fallbackImg = 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&w=100&q=80';
+                if (platform === 'shorts') fallbackImg = 'https://images.unsplash.com/photo-161162616305-c69b3fa7fbe0?auto=format&fit=crop&w=100&q=80';
+                
+                const cardImg = sub.productImage || fallbackImg;
+                const formattedViews = views.toLocaleString('en-US');
+                
+                const subCard = `
+                    <div class="glass-panel" style="display:flex; align-items:center; gap:12px; padding:12px; border-radius:14px; background:rgba(13, 20, 38, 0.45); border:1px solid rgba(255,255,255,0.06); width:100%;">
+                        <div style="width:40px; height:40px; border-radius:8px; overflow:hidden; flex-shrink:0; border:1px solid rgba(255,255,255,0.08);">
+                            <img src="${cardImg}" style="width:100%; height:100%; object-fit:cover;">
+                        </div>
+                        <div style="flex:1; overflow:hidden;">
+                            <div style="font-size:12px; font-weight:700; color:#fff; text-overflow:ellipsis; overflow:hidden; white-space:nowrap; margin-bottom:2px;">${sub.campaignTitle}</div>
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <span style="display:flex; align-items:center; font-size:10px; color:var(--text-muted);">
+                                    ${platformIcon}
+                                    <a href="${sub.submissionUrl}" target="_blank" style="color:var(--text-muted); text-decoration:underline;">View Clip</a>
+                                </span>
+                                <span style="font-size:10px; color:rgba(255,255,255,0.25);">•</span>
+                                <span style="font-size:10px; color:var(--accent); font-weight:600; display:flex; align-items:center; gap:3px;">
+                                    <svg viewBox="0 0 24 24" style="width:10px; height:10px; fill:none; stroke:currentColor; stroke-width:2.5;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                                    ${formattedViews} views
+                                </span>
+                            </div>
+                        </div>
+                        <div style="text-align:right; flex-shrink:0; display:flex; flex-direction:column; align-items:flex-end; gap:4px;">
+                            <div style="font-size:13px; font-weight:800; color:var(--accent); text-shadow:0 0 6px var(--accent-glow);">₹${earnings.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
+                            ${statusBadgeHTML}
                         </div>
                     </div>
                 `;
-                
-                campaignsContainer.innerHTML += campaignCard;
+                trackerContainer.innerHTML += subCard;
             });
-        }, (error) => {
-            console.error("Firebase Error:", error);
-            campaignsContainer.innerHTML = '<p style="color:#ef4444; text-align:center; grid-column: 1/-1;">Connection error. Please check Firebase rules.</p>';
-        });
+        };
+
+        // Update Campaign Earnings and Sync to Local Storage Balance
+        window.updateCampaignEarningsAndSync = function() {
+            let totalViews = 0;
+            let totalEarnings = 0;
+            let pendingCount = 0;
+            
+            let currentApprovedClipEarnings = 0;
+            let currentPendingClipEarnings = 0;
+            
+            if (window.userSubmissions && window.userSubmissions.length > 0) {
+                window.userSubmissions.forEach(sub => {
+                    const views = sub.views || 0;
+                    const reward = parseFloat(sub.reward || 0);
+                    const payoutType = sub.payoutType || 'flat';
+                    
+                    let clipEarnings = 0;
+                    if (payoutType === 'cpm') {
+                        clipEarnings = (views * reward) / 1000;
+                    } else {
+                        clipEarnings = sub.status === 'approved' ? reward : 0;
+                    }
+                    
+                    totalViews += views;
+                    
+                    if (sub.status === 'pending') {
+                        pendingCount++;
+                        if (payoutType === 'flat') {
+                            currentPendingClipEarnings += reward;
+                        }
+                    } else if (sub.status === 'tracking') {
+                        currentPendingClipEarnings += clipEarnings;
+                    } else if (sub.status === 'approved') {
+                        currentApprovedClipEarnings += clipEarnings;
+                        totalEarnings += clipEarnings;
+                        
+                        // Sync with availableBalance in localStorage once
+                        const sessionStr = localStorage.getItem('eliteX_user_session');
+                        if (sessionStr) {
+                            const session = JSON.parse(sessionStr);
+                            const credited = session.creditedSubmissions || [];
+                            const refunded = session.refundedCampaigns || [];
+                            const sessionTx = session.transactions || [];
+                            
+                            let balanceChanged = false;
+                            
+                            // 1. Credit Clip Earnings
+                            if (!credited.includes(sub.id)) {
+                                credited.push(sub.id);
+                                session.availableBalance = (parseFloat(session.availableBalance) || 0) + clipEarnings;
+                                session.creditedSubmissions = credited;
+                                balanceChanged = true;
+                            }
+                            
+                            // 2. Refund ₹10 Deposit Fee
+                            if (!refunded.includes(sub.campaignId)) {
+                                refunded.push(sub.campaignId);
+                                session.availableBalance = (parseFloat(session.availableBalance) || 0) + 10;
+                                session.refundedCampaigns = refunded;
+                                
+                                // Create refund credit transaction
+                                const now = new Date();
+                                const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                                sessionTx.unshift({
+                                    id: sessionTx.length + 1,
+                                    title: `Deposit Refund: ${sub.campaignTitle}`,
+                                    amount: 10,
+                                    date: `Today, ${timeStr}`,
+                                    type: 'credit',
+                                    status: 'completed'
+                                });
+                                session.transactions = sessionTx;
+                                
+                                balanceChanged = true;
+                            }
+                            
+                            if (balanceChanged) {
+                                localStorage.setItem('eliteX_user_session', JSON.stringify(session));
+                                
+                                // Call wallet sync immediately
+                                if (typeof window.loadUserSession === 'function') {
+                                    window.loadUserSession();
+                                    if (typeof window.updateWalletUI === 'function') {
+                                        window.updateWalletUI();
+                                    }
+                                    if (typeof window.renderTransactions === 'function') {
+                                        window.renderTransactions();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            
+            // Render Stats in Campaigns tab
+            const activeTasksCountValEl = document.getElementById('activeTasksCountVal');
+            if (activeTasksCountValEl) {
+                activeTasksCountValEl.innerText = `${totalViews.toLocaleString('en-US')} Views`;
+            }
+            
+            const campaignEarningsValEl = document.getElementById('campaignEarningsVal');
+            if (campaignEarningsValEl) {
+                campaignEarningsValEl.innerText = `₹${totalEarnings.toFixed(2)}`;
+            }
+            
+            const submissionStatusCountValEl = document.getElementById('submissionStatusCountVal');
+            if (submissionStatusCountValEl) {
+                submissionStatusCountValEl.innerText = `${pendingCount} Pending`;
+            }
+            
+            // Also dynamically update the pendingBalance UI in wallet
+            const pendingBalanceValEl = document.getElementById('pendingBalanceVal');
+            if (pendingBalanceValEl) {
+                const sessionStr = localStorage.getItem('eliteX_user_session');
+                let basePending = 2400.00;
+                if (sessionStr) {
+                    const session = JSON.parse(sessionStr);
+                    basePending = parseFloat(session.pendingBalance) || 0;
+                }
+                const displayPending = basePending + currentPendingClipEarnings;
+                pendingBalanceValEl.innerText = `₹ ${displayPending.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+            }
+        };
+
+        // Redefine window.updateCampaignStatsUI to pull from new sync function
+        window.updateCampaignStatsUI = function() {
+            window.updateCampaignEarningsAndSync();
+            
+            // Also update campaigns count inside marketplace banner
+            const activeMarketplaceCount = allCampaigns.filter(c => !acceptedCampaigns.includes(c.id)).length;
+            const activeCountEl = document.getElementById('campActiveCount');
+            if (activeCountEl) {
+                activeCountEl.innerText = `${activeMarketplaceCount} Live Briefs`;
+            }
+
+        };
+
+        // Submit creator task to Firestore
+        window.handleCampaignSubmit = async function(event, campaignId, campaignTitle, reward, payoutType, productImage) {
+            event.preventDefault();
+            
+            const urlInput = document.getElementById('submissionUrl');
+            const platformSelect = document.getElementById('submissionPlatform');
+            const submitBtn = document.getElementById('submissionSubmitBtn');
+            if (!urlInput || !submitBtn) return;
+            
+            const submissionUrl = urlInput.value.trim();
+            if (!submissionUrl) return;
+            
+            const platform = platformSelect ? platformSelect.value : 'other';
+            const originalText = submitBtn.innerText;
+            submitBtn.innerText = "Submitting task...";
+            submitBtn.disabled = true;
+            
+            try {
+                // Save to submissions collection in Firestore
+                await addDoc(collection(db, "submissions"), {
+                    campaignId: campaignId,
+                    campaignTitle: campaignTitle,
+                    reward: parseFloat(reward),
+                    payoutType: payoutType || 'flat',
+                    productImage: productImage || '',
+                    userName: userName || "Anonymous Partner",
+                    partnerId: partnerId || "EX-USR-GUEST",
+                    submissionUrl: submissionUrl,
+                    platform: platform,
+                    views: 0,
+                    status: 'pending',
+                    createdAt: serverTimestamp()
+                });
+                
+                // Show success feedback
+                alert("Clip submitted successfully! Our verification team will review your post/video link. Once approved, the reward will be credited directly to your wallet.");
+                
+                // Close modal
+                window.closeCampaignDetailModal();
+                
+            } catch (error) {
+                console.error("Submission Error: ", error);
+                alert("Failed to submit task. Please check your internet connection.");
+            } finally {
+                submitBtn.innerText = originalText;
+                submitBtn.disabled = false;
+            }
+        };
+
+        // Start listener if partnerId is already initialized
+        if (partnerId) {
+            window.startSubmissionsListener();
+            if (window.renderHomeActiveBriefs) window.renderHomeActiveBriefs();
+        }
     </script>
 </body>
 </html>
