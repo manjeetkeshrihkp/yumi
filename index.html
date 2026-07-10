@@ -294,7 +294,24 @@
             0% { background-position: -200% 0; }
             100% { background-position: 200% 0; }
         }
-        
+
+        @keyframes slideInCloseBtn {
+            0% { transform: translate3d(40px, 0, 0) scale(0.85); opacity: 0; }
+            100% { transform: translate3d(0, 0, 0) scale(1); opacity: 1; }
+        }
+
+        @keyframes eqBar1 { 0%, 100% { height: 10px; y: 10px; } 50% { height: 16px; y: 4px; } }
+        @keyframes eqBar2 { 0%, 100% { height: 16px; y: 4px; } 50% { height: 8px; y: 12px; } }
+        @keyframes eqBar3 { 0%, 100% { height: 8px; y: 12px; } 50% { height: 18px; y: 2px; } }
+        @keyframes eqBar4 { 0%, 100% { height: 14px; y: 6px; } 50% { height: 6px; y: 14px; } }
+        @keyframes eqBar5 { 0%, 100% { height: 18px; y: 2px; } 50% { height: 10px; y: 10px; } }
+        @keyframes eqBar6 { 0%, 100% { height: 12px; y: 8px; } 50% { height: 16px; y: 4px; } }
+        @keyframes radarWave { 0% { transform: scale(0.6); opacity: 0.8; } 100% { transform: scale(1.6); opacity: 0; } }
+
+        .modal-close-btn:hover {
+            transform: scale(1.08) !important;
+        }
+
         .campaign-workspace-card {
             background: linear-gradient(135deg, rgba(15, 23, 42, 0.7), rgba(20, 25, 35, 0.4)) !important;
             border: 1px solid rgba(255, 255, 255, 0.05) !important;
@@ -2148,168 +2165,81 @@
 
             <!-- POLYMARKET STYLE DASHBOARD & METRIC CARDS -->
             <div class="polymarket-dashboard" style="margin-top: 14px;">
-                <!-- Card 1: Escrow Protection -->
+                <!-- Card 1: Active Creators -->
                 <div class="polymarket-stat-card">
                     <div>
-                        <div class="polymarket-stat-label">Security Guarantee</div>
-                        <div class="polymarket-stat-value" style="font-size: 13.5px; font-weight: 850;">
-                            Escrow Active
-                            <span class="trend-percentage up" style="color: #10b981;">
-                                <svg viewBox="0 0 24 24" style="width:10px; height:10px; stroke:currentColor; fill:none; stroke-width:3;"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                                100% Safe
-                            </span>
+                        <div class="polymarket-stat-label">Creators Network</div>
+                        <div class="polymarket-stat-value" style="font-size: 13.5px; font-weight: 850; color:#fff; display:inline-flex; align-items:center; gap:4.5px; margin-top:2px;">
+                            <span class="polymarket-pulse green"></span>
+                            <span id="creatorOnlineVal">95 Online</span>
                         </div>
                     </div>
                     <svg class="polymarket-sparkline" viewBox="0 0 100 20" style="overflow:visible;">
-                        <defs>
-                            <linearGradient id="sparklineGrad1" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="0%" stop-color="#10b981" stop-opacity="0.25" />
-                                <stop offset="100%" stop-color="#10b981" stop-opacity="0" />
-                            </linearGradient>
-                        </defs>
-                        <path d="M0,18 Q15,10 30,12 T60,5 T90,2 T100,6 L100,20 L0,20 Z" fill="url(#sparklineGrad1)"></path>
-                        <path d="M0,18 Q15,10 30,12 T60,5 T90,2 T100,6" fill="none" stroke="#10b981" stroke-width="1.6" stroke-linecap="round" style="filter: drop-shadow(0px 1px 3px rgba(16, 185, 129, 0.35));"></path>
-                        <circle cx="100" cy="6" r="1.5" fill="#10b981" style="filter: drop-shadow(0 0 3px #10b981);"></circle>
+                        <!-- 6 vertical equalizer bars -->
+                        <rect x="15" y="10" width="4" height="10" rx="2" fill="#38bdf8" style="animation: eqBar1 1.2s infinite ease-in-out;"></rect>
+                        <rect x="25" y="4" width="4" height="16" rx="2" fill="#38bdf8" style="animation: eqBar2 1.2s infinite ease-in-out;"></rect>
+                        <rect x="35" y="12" width="4" height="8" rx="2" fill="#38bdf8" style="animation: eqBar3 1.2s infinite ease-in-out;"></rect>
+                        <rect x="45" y="6" width="4" height="14" rx="2" fill="#38bdf8" style="animation: eqBar4 1.2s infinite ease-in-out;"></rect>
+                        <rect x="55" y="2" width="4" height="18" rx="2" fill="#38bdf8" style="animation: eqBar5 1.2s infinite ease-in-out;"></rect>
+                        <rect x="65" y="8" width="4" height="12" rx="2" fill="#38bdf8" style="animation: eqBar6 1.2s infinite ease-in-out;"></rect>
                     </svg>
                 </div>
-                <!-- Card 2: Settlement Speed -->
+                <!-- Card 2: Potential Earnings -->
                 <div class="polymarket-stat-card">
                     <div>
-                        <div class="polymarket-stat-label">Settle Target</div>
-                        <div class="polymarket-stat-value" style="font-size: 13.5px; font-weight: 850;">
-                            24h Fast Audits
-                            <span class="trend-percentage up" style="color: #3b82f6;">
-                                <svg viewBox="0 0 24 24" style="width:10px; height:10px; stroke:currentColor; fill:none; stroke-width:3;"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                                Auto Settle
-                            </span>
+                        <div class="polymarket-stat-label">Total Available Payout</div>
+                        <div class="polymarket-stat-value" id="statTotalRewards" style="font-size: 15px; font-weight: 850; color:#fff; margin-top:2px;">
+                            ₹10,911
                         </div>
                     </div>
                     <svg class="polymarket-sparkline" viewBox="0 0 100 20" style="overflow:visible;">
                         <defs>
                             <linearGradient id="sparklineGrad2" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.25" />
-                                <stop offset="100%" stop-color="#3b82f6" stop-opacity="0" />
+                                <stop offset="0%" stop-color="#10b981" stop-opacity="0.25" />
+                                <stop offset="100%" stop-color="#10b981" stop-opacity="0" />
                             </linearGradient>
                         </defs>
-                        <path d="M0,15 Q15,18 30,10 T60,12 T90,4 T100,2 L100,20 L0,20 Z" fill="url(#sparklineGrad2)"></path>
-                        <path d="M0,15 Q15,18 30,10 T60,12 T90,4 T100,2" fill="none" stroke="#3b82f6" stroke-width="1.6" stroke-linecap="round" style="filter: drop-shadow(0px 1px 3px rgba(59, 130, 246, 0.35));"></path>
-                        <circle cx="100" cy="2" r="1.5" fill="#3b82f6" style="filter: drop-shadow(0 0 3px #3b82f6);"></circle>
+                        <path d="M0,18 L20,18 L20,12 L50,12 L50,8 L80,8 L80,2 L100,2 L100,20 L0,20 Z" fill="url(#sparklineGrad2)"></path>
+                        <path d="M0,18 L20,18 L20,12 L50,12 L50,8 L80,8 L80,2 L100,2" fill="none" stroke="#10b981" stroke-width="1.6" stroke-linecap="round" style="filter: drop-shadow(0px 1px 3px rgba(16,185,129,0.35));"></path>
+                        <circle cx="100" cy="2" r="1.5" fill="#10b981" style="filter: drop-shadow(0 0 3px #10b981);"></circle>
                     </svg>
                 </div>
-                <!-- Card 3: Formats -->
+                <!-- Card 3: Avg Payout -->
                 <div class="polymarket-stat-card">
                     <div>
-                        <div class="polymarket-stat-label">Task Formats</div>
-                        <div class="polymarket-stat-value" style="font-size: 13.5px; font-weight: 850;">
-                            Reels & YouTube
-                            <span class="trend-percentage up" style="color: #a855f7;">
-                                <svg viewBox="0 0 24 24" style="width:10px; height:10px; stroke:currentColor; fill:none; stroke-width:3;"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                                Verified
-                            </span>
+                        <div class="polymarket-stat-label">Average Payout Rate</div>
+                        <div class="polymarket-stat-value" id="statAvgReward" style="font-size: 15px; font-weight: 850; color:#fff; margin-top:2px;">
+                            ₹2,182 Avg. Payout
                         </div>
                     </div>
                     <svg class="polymarket-sparkline" viewBox="0 0 100 20" style="overflow:visible;">
-                        <defs>
-                            <linearGradient id="sparklineGrad3" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="0%" stop-color="#a855f7" stop-opacity="0.25" />
-                                <stop offset="100%" stop-color="#a855f7" stop-opacity="0" />
-                            </linearGradient>
-                        </defs>
-                        <path d="M0,10 Q15,10 30,8 T60,6 T90,3 T100,1 L100,20 L0,20 Z" fill="url(#sparklineGrad3)"></path>
-                        <path d="M0,10 Q15,10 30,8 T60,6 T90,3 T100,1" fill="none" stroke="#a855f7" stroke-width="1.6" stroke-linecap="round" style="filter: drop-shadow(0px 1px 3px rgba(168, 85, 247, 0.35));"></path>
-                        <circle cx="100" cy="1" r="1.5" fill="#a855f7" style="filter: drop-shadow(0 0 3px #a855f7);"></circle>
+                        <line x1="0" y1="10" x2="100" y2="10" stroke="rgba(168,85,247,0.15)" stroke-width="0.8" stroke-dasharray="2 2"></line>
+                        <circle cx="10" cy="15" r="2" fill="#a855f7" opacity="0.6"></circle>
+                        <circle cx="25" cy="6" r="2" fill="#a855f7" opacity="0.8"></circle>
+                        <circle cx="40" cy="12" r="2" fill="#a855f7" opacity="0.5"></circle>
+                        <circle cx="55" cy="4" r="2.5" fill="#a855f7" style="filter: drop-shadow(0 0 3px #a855f7);"></circle>
+                        <circle cx="70" cy="14" r="2" fill="#a855f7" opacity="0.7"></circle>
+                        <circle cx="85" cy="8" r="2" fill="#a855f7" opacity="0.9"></circle>
+                        <circle cx="100" cy="3" r="2.5" fill="#a855f7" style="filter: drop-shadow(0 0 4px #a855f7);"></circle>
                     </svg>
                 </div>
-                <!-- Card 4: Streak Boost -->
+                <!-- Card 4: Platform Security -->
                 <div class="polymarket-stat-card">
                     <div>
-                        <div class="polymarket-stat-label">Performance Boost</div>
-                        <div class="polymarket-stat-value" style="font-size: 13.5px; font-weight: 850;">
-                            Streak Multiplier
-                            <span class="trend-percentage up" style="color: #fb923c;">
-                                <svg viewBox="0 0 24 24" style="width:10px; height:10px; stroke:currentColor; fill:none; stroke-width:3;"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
-                                Up to 1.5x
-                            </span>
+                        <div class="polymarket-stat-label">Verified Escrow</div>
+                        <div class="polymarket-stat-value" style="font-size: 15px; font-weight: 850; color:#4ade80; display:inline-flex; align-items:center; gap:4.5px; margin-top:2px;">
+                            <span class="polymarket-pulse green" style="background:#4ade80;"></span>
+                            100% Secured
                         </div>
                     </div>
-                    <svg class="polymarket-sparkline" viewBox="0 0 100 20" style="overflow:visible;">
-                        <defs>
-                            <linearGradient id="sparklineGrad4" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="0%" stop-color="#fb923c" stop-opacity="0.25" />
-                                <stop offset="100%" stop-color="#fb923c" stop-opacity="0" />
-                            </linearGradient>
-                        </defs>
-                        <path d="M0,20 Q15,15 30,17 T60,10 T90,2 T100,1 L100,20 L0,20 Z" fill="url(#sparklineGrad4)"></path>
-                        <path d="M0,20 Q15,15 30,17 T60,10 T90,2 T100,1" fill="none" stroke="#fb923c" stroke-width="1.6" stroke-linecap="round" style="filter: drop-shadow(0px 1px 3px rgba(251, 146, 60, 0.35));"></path>
-                        <circle cx="100" cy="1" r="1.5" fill="#fb923c" style="filter: drop-shadow(0 0 3px #fb923c);"></circle>
+                    <svg class="polymarket-sparkline" viewBox="0 0 100 20" style="overflow:visible; display:flex; align-items:center; justify-content:center;">
+                        <circle cx="80" cy="10" r="8" fill="none" stroke="#4ade80" stroke-width="1" opacity="0.3" style="transform-origin: 80px 10px; animation: radarWave 2s infinite linear;"></circle>
+                        <path d="M75,5 L80,3 L85,5 L85,9 C85,13 80,16 80,16 C80,16 75,13 75,9 Z" fill="rgba(74, 222, 128, 0.15)" stroke="#4ade80" stroke-width="1.5" style="filter: drop-shadow(0 0 4px rgba(74, 222, 128, 0.4));"></path>
                     </svg>
                 </div>
             </div>
 
-            <!-- COLLAPSIBLE SIMULATOR BOARD -->
-            <div class="collapsible-trigger" onclick="window.toggleYieldSimulator(this)" style="margin-bottom: 12px;">
-                <div style="display:flex; align-items:center; gap:8px;">
-                    <div class="polymarket-pulse green"></div>
-                    <span style="font-size:11px; font-weight:800; color:#fff; text-transform:uppercase; letter-spacing:0.5px;">Simulate Yield & Earnings Boosts</span>
-                </div>
-                <svg class="chevron" viewBox="0 0 24 24" style="width:16px; height:16px; stroke:#cbd5e1; fill:none; stroke-width:2.5;"><polyline points="6 9 12 15 18 9"></polyline></svg>
-            </div>
-            <div class="collapsible-content" id="yieldSimulatorContent">
-                <div class="yield-simulator-container">
-                    <div class="yield-grid">
-                        <div style="display:flex; flex-direction:column; gap:12px;">
-                            <!-- Input 1: Platform/Type -->
-                            <div class="yield-input-group">
-                                <label class="yield-label">Payout Type & Scale</label>
-                                <select class="yield-select" id="simPayoutType" onchange="window.updateYieldSimulation()">
-                                    <option value="flat">Flat Rate Campaign Review</option>
-                                    <option value="cpm" selected>CPM (Views-Based Payout)</option>
-                                    <option value="reach">Reach-Based Promotion</option>
-                                    <option value="conversion">Leads & Sales Conversions</option>
-                                </select>
-                            </div>
-                            <!-- Input 2: Reach Slider -->
-                            <div class="yield-input-group">
-                                <div style="display:flex; justify-content:space-between; align-items:center;">
-                                    <label class="yield-label" id="simScaleLabel">Projected YouTube/Reels Views</label>
-                                    <span id="simScaleValText" style="font-size:11px; font-weight:800; color:var(--accent);">50,000</span>
-                                </div>
-                                <input type="range" class="yield-range" id="simScaleRange" min="1000" max="500000" step="1000" value="50000" oninput="window.updateYieldSimulation()" style="width:100%;">
-                            </div>
-                            <!-- Input 3: Creator Tier -->
-                            <div class="yield-input-group">
-                                <label class="yield-label">Your VIP Partner Tier</label>
-                                <select class="yield-select" id="simCreatorTier" onchange="window.updateYieldSimulation()">
-                                    <option value="1.0">Standard Star Creator (1.0x Payout)</option>
-                                    <option value="1.2">Gold Star Creator (1.2x Payout)</option>
-                                    <option value="1.5">Diamond Star Creator (1.5x Boost)</option>
-                                    <option value="2.0">VIP Sovereign Creator (2.0x Boost)</option>
-                                </select>
-                            </div>
-                        </div>
-                        <!-- Projections Panel -->
-                        <div class="yield-result-panel">
-                            <div class="yield-label" style="border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:4px; margin-bottom:4px;">Estimated Creator Yield</div>
-                            <div class="yield-result-row">
-                                <span style="color:var(--text-muted);">Base Campaign Rate:</span>
-                                <span style="color:#fff; font-weight:700;" id="simBaseRateText">₹120 / 1k Views</span>
-                            </div>
-                            <div class="yield-result-row">
-                                <span style="color:var(--text-muted);">Daily Streak Boost:</span>
-                                <span style="color:#4ade80; font-weight:700;" id="simStreakBoostText">1.2x Boost</span>
-                            </div>
-                            <div class="yield-result-row">
-                                <span style="color:var(--text-muted);">VIP Tier Boost:</span>
-                                <span style="color:#4ade80; font-weight:700;" id="simTierBoostText">1.0x Boost</span>
-                            </div>
-                            <div class="yield-result-row" style="border-top:1px solid rgba(255,255,255,0.05); padding-top:6px; margin-top:4px;">
-                                <span style="color:#fff; font-weight:800;">Estimated Net Payout:</span>
-                                <span class="yield-result-val" id="simNetPayoutText">₹7,200.00</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
 
 
 
@@ -2323,11 +2253,13 @@
                 </div>
 
                 <!-- Custom Filter Tabs -->
-                <div class="pm-categories-row">
-                    <button class="pm-category-pill active" data-campaign-filter="all" onclick="window.filterCampaigns(this)">All</button>
-                    <button class="pm-category-pill" data-campaign-filter="reels" onclick="window.filterCampaigns(this)">Reels</button>
-                    <button class="pm-category-pill" data-campaign-filter="youtube" onclick="window.filterCampaigns(this)">YouTube</button>
-                    <button class="pm-category-pill" data-campaign-filter="post" onclick="window.filterCampaigns(this)">Tasks</button>
+                <div class="pm-categories-row" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                    <div style="display:flex; gap:6px;">
+                        <button class="pm-category-pill active" data-campaign-filter="all" onclick="window.filterCampaigns(this)">All</button>
+                        <button class="pm-category-pill" data-campaign-filter="reels" onclick="window.filterCampaigns(this)">Reels</button>
+                        <button class="pm-category-pill" data-campaign-filter="youtube" onclick="window.filterCampaigns(this)">YouTube</button>
+                        <button class="pm-category-pill" data-campaign-filter="post" onclick="window.filterCampaigns(this)">Tasks</button>
+                    </div>
                 </div>
             </div>
 
@@ -3202,6 +3134,10 @@
     </div>
 
     <div class="glass-modal-overlay" id="campaignDetailModal" style="z-index: 10001;">
+        <!-- Fixed Sliding Close Button -->
+        <button class="modal-close-btn" onclick="window.closeCampaignDetailModal()" style="position: fixed; right: 20px; top: 20px; z-index: 10002; background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; color: rgba(255, 255, 255, 0.85); cursor: pointer; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 4px 12px rgba(0,0,0,0.25); animation: slideInCloseBtn 0.45s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: 150ms;">
+            <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2.5;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
         <div class="glass-modal-container" style="max-width: 500px; padding: 24px; max-height: 90vh; overflow-y: auto;">
             <div id="campaignDetailContent">
                 <!-- Dynamically populated -->
@@ -3347,105 +3283,7 @@
     <!-- UI Logic for Tab Switching & Wallet Operations -->
     <script>
         /* --- DYNAMIC POLYMARKET YIELD & FEED SIMULATION LOGIC --- */
-        window.toggleYieldSimulator = function(element) {
-            element.classList.toggle('active');
-            const content = document.getElementById('yieldSimulatorContent');
-            if (content) {
-                content.classList.toggle('expanded');
-            }
-        };
 
-        window.updateYieldSimulation = function() {
-            const payoutType = document.getElementById('simPayoutType').value;
-            const scaleRange = document.getElementById('simScaleRange');
-            const scaleValText = document.getElementById('simScaleValText');
-            const scaleLabel = document.getElementById('simScaleLabel');
-            const creatorTierSel = document.getElementById('simCreatorTier').value;
-
-            if (!scaleRange || !scaleValText || !scaleLabel) return;
-
-            const scaleVal = parseInt(scaleRange.value);
-            
-            // Adjust range limits and labels based on payoutType
-            if (payoutType === 'flat') {
-                scaleRange.min = 1;
-                scaleRange.max = 20;
-                scaleRange.step = 1;
-                scaleLabel.innerText = "Projected Completed Videos";
-                if (parseInt(scaleRange.value) > 20) {
-                    scaleRange.value = 5;
-                }
-                scaleValText.innerText = scaleRange.value + " Videos";
-            } else if (payoutType === 'cpm') {
-                scaleRange.min = 1000;
-                scaleRange.max = 1000000;
-                scaleRange.step = 1000;
-                scaleLabel.innerText = "Projected YouTube/Reels Views";
-                if (parseInt(scaleRange.value) < 1000) {
-                    scaleRange.value = 50000;
-                }
-                scaleValText.innerText = parseInt(scaleRange.value).toLocaleString('en-IN') + " Views";
-            } else if (payoutType === 'reach') {
-                scaleRange.min = 1000;
-                scaleRange.max = 1000000;
-                scaleRange.step = 1000;
-                scaleLabel.innerText = "Projected Creator Reach";
-                if (parseInt(scaleRange.value) < 1000) {
-                    scaleRange.value = 50000;
-                }
-                scaleValText.innerText = parseInt(scaleRange.value).toLocaleString('en-IN') + " Reach";
-            } else if (payoutType === 'conversion') {
-                scaleRange.min = 1;
-                scaleRange.max = 200;
-                scaleRange.step = 1;
-                scaleLabel.innerText = "Projected Leads / Conversions";
-                if (parseInt(scaleRange.value) > 200) {
-                    scaleRange.value = 25;
-                }
-                scaleValText.innerText = scaleRange.value + " Conversions";
-            }
-
-            const currentScale = parseInt(scaleRange.value);
-
-            // Determine rates based on payoutType
-            let baseRate = 0;
-            let rateUnitStr = '';
-            let baseYield = 0;
-
-            if (payoutType === 'flat') {
-                baseRate = 250; // ₹250 flat per video
-                rateUnitStr = '₹250 / Video';
-                baseYield = currentScale * baseRate;
-            } else if (payoutType === 'cpm') {
-                baseRate = 120; // ₹120 per 1k views
-                rateUnitStr = '₹120 / 1k Views';
-                baseYield = (currentScale / 1000) * baseRate;
-            } else if (payoutType === 'reach') {
-                baseRate = 80; // ₹80 per 1k reach
-                rateUnitStr = '₹80 / 1k Reach';
-                baseYield = (currentScale / 1000) * baseRate;
-            } else if (payoutType === 'conversion') {
-                baseRate = 45; // ₹45 per lead
-                rateUnitStr = '₹45 / Lead';
-                baseYield = currentScale * baseRate;
-            }
-
-            // Streak Boost (calculated dynamically)
-            const hasStreakBoost = (typeof streakCount !== 'undefined' && streakCount >= 1);
-            const streakBoostMult = hasStreakBoost ? 1.2 : 1.0;
-            
-            // VIP Tier Boost
-            const tierBoostMult = parseFloat(creatorTierSel);
-
-            // Calculate Net Payout
-            const netPayout = baseYield * streakBoostMult * tierBoostMult;
-
-            // Update UI Elements
-            document.getElementById('simBaseRateText').innerText = rateUnitStr;
-            document.getElementById('simStreakBoostText').innerText = streakBoostMult.toFixed(1) + 'x ' + (hasStreakBoost ? 'Active' : 'Inactive');
-            document.getElementById('simTierBoostText').innerText = tierBoostMult.toFixed(1) + 'x Boost';
-            document.getElementById('simNetPayoutText').innerText = '₹' + netPayout.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-        };
 
 
 
@@ -3723,9 +3561,7 @@
             if (headerContainer) {
                 if (sectionId === 'campaignsSection') {
                     headerContainer.style.display = 'none';
-                    if (window.updateYieldSimulation) {
-                        window.updateYieldSimulation();
-                    }
+
                 } else {
                     headerContainer.style.display = 'block';
                 }
@@ -3908,7 +3744,7 @@
                 
                 // Hide campaigns with 0 remaining spots (slots occupied limit)
                 const maxSlots = c.maxSlots || 50;
-                const filledSlots = c.filledSlots !== undefined ? c.filledSlots : Math.round(maxSlots * (0.4 + (c.id.charCodeAt(0) % 5) * 0.15));
+                const filledSlots = c.filledSlots !== undefined ? c.filledSlots : Math.round(maxSlots * (0.2 + (c.id.charCodeAt(0) % 4) * 0.15));
                 const remainingSlots = Math.max(0, maxSlots - filledSlots);
                 if (remainingSlots <= 0) return false;
 
@@ -3921,10 +3757,21 @@
                     } else {
                         expiryMs = new Date(c.expiresAt).getTime();
                     }
+                } else if (c.expiryDate) {
+                    const expDate = new Date(c.expiryDate);
+                    expDate.setHours(23, 59, 59, 999);
+                    expiryMs = expDate.getTime();
                 } else {
                     const offsetHours = 12 + (c.id.charCodeAt(1) % 150);
-                    const baseDate = new Date(c.createdAt || 1783584000000);
-                    expiryMs = baseDate.getTime() + offsetHours * 60 * 60 * 1000;
+                    let baseMs = 1783584000000;
+                    if (c.createdAt) {
+                        if (c.createdAt.seconds) {
+                            baseMs = c.createdAt.seconds * 1000;
+                        } else {
+                            baseMs = new Date(c.createdAt).getTime() || 1783584000000;
+                        }
+                    }
+                    expiryMs = baseMs + offsetHours * 60 * 60 * 1000;
                 }
                 if (expiryMs && now > expiryMs) return false;
 
@@ -4071,26 +3918,7 @@
                     `;
                 }
 
-                // Streak Boost Calculation
-                let streakInfoHTML = '';
-                if (payoutType !== 'performance') {
-                    const boostedVal = Math.round(rewardVal * 1.2);
-                    if (activeStreak >= 1) {
-                        streakInfoHTML = `
-                            <div style="font-size: 8px; font-weight: 800; color: #fbbf24; background:rgba(251, 191, 36, 0.08); border:1px dashed rgba(251, 191, 36, 0.3); padding:2px 6px; border-radius:4px; display:inline-flex; align-items:center; gap:3px; margin-top:4.5px; width:fit-content;">
-                                <span class="polymarket-pulse" style="width:4px; height:4px; background:#fbbf24; animation:none; box-shadow:none;"></span>
-                                1.2x Streak Boosted: ₹${boostedVal}
-                            </div>
-                        `;
-                    } else {
-                        streakInfoHTML = `
-                            <div style="font-size: 8px; font-weight: 700; color: #94a3b8; border:1px dashed rgba(255,255,255,0.06); padding:2px 6px; border-radius:4px; display:inline-flex; align-items:center; gap:3px; margin-top:4.5px; width:fit-content;">
-                                <span class="polymarket-pulse blue" style="width:4px; height:4px; animation:none; box-shadow:none; background:#94a3b8;"></span>
-                                Check-in to unlock ₹${boostedVal} (1.2x Boost)
-                            </div>
-                        `;
-                    }
-                }
+
 
                 // Expiry calculation and HTML badge
                 const nowTime = Date.now();
@@ -4101,10 +3929,21 @@
                     } else {
                         expiryMs = new Date(c.expiresAt).getTime();
                     }
+                } else if (c.expiryDate) {
+                    const expDate = new Date(c.expiryDate);
+                    expDate.setHours(23, 59, 59, 999);
+                    expiryMs = expDate.getTime();
                 } else {
                     const offsetHours = 12 + (c.id.charCodeAt(1) % 150);
-                    const baseDate = new Date(c.createdAt || 1783584000000);
-                    expiryMs = baseDate.getTime() + offsetHours * 60 * 60 * 1000;
+                    let baseMs = 1783584000000;
+                    if (c.createdAt) {
+                        if (c.createdAt.seconds) {
+                            baseMs = c.createdAt.seconds * 1000;
+                        } else {
+                            baseMs = new Date(c.createdAt).getTime() || 1783584000000;
+                        }
+                    }
+                    expiryMs = baseMs + offsetHours * 60 * 60 * 1000;
                 }
 
                 const diffMs = expiryMs - nowTime;
@@ -4164,19 +4003,10 @@
                             ${platformBadges}
                         </div>
 
-                        <!-- Slots & Escrow & Expiry (Clear metadata row) -->
+                        <!-- Expiry Countdown Metadata Row -->
                         <div style="display:flex; justify-content:space-between; align-items:center; font-size:10px; background:rgba(255,255,255,0.015); border:1px solid rgba(255,255,255,0.03); border-radius:10px; padding:8px 12px; margin-top:2px; margin-bottom:2px;">
-                            <span style="color:var(--text-muted); font-weight:700;">
-                                Slots: <strong style="color:var(--accent); font-weight:900;">${remainingSlots} / ${maxSlots} open</strong>
-                            </span>
-                            <div style="display:flex; align-items:center; gap:8px;">
-                                ${expiryHTML}
-                                <span style="color:var(--text-muted); font-weight:700; display:inline-flex; align-items:center; gap:4px;">
-                                    Status: 
-                                    <span class="polymarket-pulse green" style="width:5px; height:5px; box-shadow:none; animation:none; background:#10b981; display:inline-block; border-radius:50%;"></span>
-                                    <strong style="color:#10b981; font-weight:800;">Funded</strong>
-                                </span>
-                            </div>
+                            <span style="color:var(--text-muted); font-weight:700;">Campaign Timeline</span>
+                            ${expiryHTML}
                         </div>
 
                         <!-- Bottom Footer: Payout and Action Buttons -->
@@ -4184,7 +4014,6 @@
                             <div>
                                 <div style="font-size: 8px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px;">${rateLabel}</div>
                                 <div class="campaign-payout-amount" style="font-size:18px; font-weight:900; color:#fff; letter-spacing:-0.4px;">${rewardDisplayStr}</div>
-                                ${streakInfoHTML}
                             </div>
                             <div style="display:flex; gap:8px;">
                                 ${isAccepted ? `
@@ -4400,20 +4229,6 @@
                 </div>
             ` : '';
 
-            // Slider parameters
-            let sliderMax = 100000;
-            let sliderStep = 1000;
-            let sliderStart = 10000;
-            if (payoutType === 'conversion') {
-                sliderMax = 500;
-                sliderStep = 5;
-                sliderStart = 20;
-            } else if (payoutType === 'flat') {
-                sliderMax = 10000;
-                sliderStep = 500;
-                sliderStart = 2000;
-            }
-
             content.innerHTML = `
                 ${headerImageHTML}
                 
@@ -4475,40 +4290,6 @@
                     <div style="grid-column: 1/-1; border-top:1px solid rgba(255,255,255,0.04); padding-top:10px; margin-top:4px;">
                         <div style="font-size:8px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px;">Allowed Channels</div>
                         <div>${platformBadges}</div>
-                    </div>
-                </div>
-
-                <!-- Interactive Revenue Estimator -->
-                <div style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.05), rgba(168, 85, 247, 0.05)); border: 1px solid rgba(168, 85, 247, 0.15); border-radius: 16px; padding: 16px; margin-bottom: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); position:relative; overflow:hidden;">
-                    <div style="position:absolute; top:-30px; right:-30px; width:100px; height:100px; background:radial-gradient(circle, rgba(168, 85, 247, 0.1) 0%, transparent 70%); pointer-events:none;"></div>
-                    
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-                        <h4 style="margin:0; font-size:11px; font-weight:700; color:#fff; text-transform:uppercase; letter-spacing:0.5px; display:flex; align-items:center; gap:6px;">
-                            <svg viewBox="0 0 24 24" style="width:14px; height:14px; stroke:var(--accent); fill:none; stroke-width:2.5;"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
-                            Revenue Estimator
-                        </h4>
-                        <span id="calcSliderVal" style="font-size:12px; font-weight:800; color:var(--accent); text-shadow:0 0 6px var(--accent-glow);">0 Views</span>
-                    </div>
-
-                    <div style="margin-bottom:14px;">
-                        <input type="range" min="0" max="${sliderMax}" step="${sliderStep}" value="${sliderStart}" 
-                            oninput="window.updateCalculatorEarnings(this.value, ${campaign.reward}, '${payoutType}')"
-                            style="width: 100%; height: 6px; border-radius: 3px; background: rgba(255,255,255,0.08); outline: none; -webkit-appearance: none; cursor: pointer; transition: background 0.3s; margin:0;">
-                        
-                        <div style="display:flex; justify-content:space-between; font-size:9px; color:var(--text-muted); margin-top:6px;">
-                            <span>0</span>
-                            <span>${(sliderMax/2).toLocaleString()}</span>
-                            <span>${sliderMax.toLocaleString()}+</span>
-                        </div>
-                    </div>
-
-                    <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(15,23,42,0.4); padding:10px 12px; border-radius:10px; border:1px solid rgba(255,255,255,0.04); margin-bottom:10px;">
-                        <span style="font-size:10px; color:var(--text-muted); font-weight:600;">Estimated Payout</span>
-                        <span id="calcEstimatedEarnings" style="font-size:16px; font-weight:800; color:#4ade80; text-shadow: 0 0 8px rgba(74, 222, 128, 0.25);">₹0.00</span>
-                    </div>
-
-                    <div id="calcBonusAlert" style="font-size:10px; color:#cbd5e1; padding:8px 10px; border-radius:8px; border:1px solid rgba(255,255,255,0.06); background:rgba(255,255,255,0.01); line-height:1.4; transition:all 0.3s;">
-                        Unlocking milestones...
                     </div>
                 </div>
 
@@ -4587,101 +4368,6 @@
             }
             
             modal.classList.add('active');
-            
-            // Set initial calculator values
-            setTimeout(() => {
-                window.updateCalculatorEarnings(sliderStart, campaign.reward, payoutType);
-            }, 50);
-        };
-
-        window.updateCalculatorEarnings = function(val, rate, payoutType) {
-            const displayVal = document.getElementById('calcSliderVal');
-            const displayEarnings = document.getElementById('calcEstimatedEarnings');
-            const bonusAlert = document.getElementById('calcBonusAlert');
-            if (!displayVal || !displayEarnings) return;
-            
-            const numVal = parseInt(val) || 0;
-            let label = 'Views';
-            let earnings = 0;
-            let bonus = 0;
-            
-            if (payoutType === 'cpm') {
-                label = 'Views';
-                earnings = (numVal * rate) / 1000;
-                displayVal.innerText = numVal.toLocaleString() + ' ' + label;
-                
-                if (numVal >= 50000) {
-                    bonus = 2500;
-                } else if (numVal >= 10000) {
-                    bonus = 500;
-                }
-            } else if (payoutType === 'reach') {
-                label = 'Reach';
-                earnings = (numVal * rate) / 1000;
-                displayVal.innerText = numVal.toLocaleString() + ' ' + label;
-                
-                if (numVal >= 50000) {
-                    bonus = 2500;
-                } else if (numVal >= 10000) {
-                    bonus = 500;
-                }
-            } else if (payoutType === 'conversion') {
-                label = 'Conversions (Leads)';
-                earnings = numVal * rate;
-                displayVal.innerText = numVal.toLocaleString() + ' ' + label;
-                
-                if (numVal >= 100) {
-                    bonus = 2000;
-                } else if (numVal >= 20) {
-                    bonus = 400;
-                }
-            } else if (payoutType === 'performance') {
-                label = 'Views';
-                const estConversions = Math.floor(numVal * 0.01);
-                earnings = ((numVal * rate) / 2000) + ((estConversions * rate) / 2);
-                displayVal.innerText = `${numVal.toLocaleString()} Views (+${estConversions} Est. Leads)`;
-                
-                if (numVal >= 50000) {
-                    bonus = 2500;
-                } else if (numVal >= 10000) {
-                    bonus = 500;
-                }
-            } else { // flat
-                label = 'Views';
-                earnings = rate;
-                displayVal.innerText = numVal.toLocaleString() + ' ' + label;
-                
-                if (numVal >= 10000) {
-                    bonus = 200;
-                }
-            }
-            
-            const total = earnings + bonus;
-            displayEarnings.innerHTML = `₹${total.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-            
-            if (bonusAlert) {
-                if (bonus > 0) {
-                    bonusAlert.innerHTML = `<span style="color:#4ade80; font-weight:700;">★ Milestone Unlocked!</span> You get a <strong style="color:var(--accent);">+₹${bonus}</strong> bonus!`;
-                    bonusAlert.style.borderColor = 'rgba(74, 222, 128, 0.3)';
-                    bonusAlert.style.background = 'rgba(74, 222, 128, 0.05)';
-                } else {
-                    let nextThreshold = payoutType === 'conversion' ? 20 : 10000;
-                    let needed = nextThreshold - numVal;
-                    if (needed > 0) {
-                        bonusAlert.innerHTML = `Get <strong style="color:var(--accent);">${needed.toLocaleString()}</strong> more ${label.split(' ')[0]} to unlock the <strong style="color:#fff;">₹${payoutType === 'conversion' ? '400' : '500'}</strong> milestone bonus!`;
-                    } else {
-                        let nextMax = payoutType === 'conversion' ? 100 : 50000;
-                        needed = nextMax - numVal;
-                        if (needed > 0) {
-                            bonusAlert.innerHTML = `Get <strong style="color:var(--accent);">${needed.toLocaleString()}</strong> more ${label.split(' ')[0]} to unlock the next <strong style="color:#fff;">₹${payoutType === 'conversion' ? '2,000' : '2,500'}</strong> milestone bonus!`;
-                        } else {
-                            bonusAlert.innerHTML = `<span style="color:var(--accent); font-weight:700;">⚡ MAX BONUS ACTIVE!</span> You've unlocked all milestones!`;
-                        }
-                    }
-                    bonusAlert.style.borderColor = 'rgba(255,255,255,0.06)';
-                    bonusAlert.style.background = 'rgba(255,255,255,0.01)';
-                }
-            }
         };
 
         window.closeCampaignDetailModal = function() {
@@ -5955,6 +5641,57 @@
             }, 1200);
         }
 
+        window.initLiveCreatorFeed = function() {
+            const feedContainer = document.getElementById('liveActivityText');
+            if (!feedContainer) return;
+
+            const creators = ['@rahul_vlogs', '@priya_shorts', '@amit_reels', '@sneha_clips', '@rohit_reviews', '@neha_influencer', '@vikram_creations', '@ananya_daily', '@kabir_vids', '@tanvi_social'];
+            const brands = ['Philips One', 'Amazon Prime', 'Tata Neu', 'Nykaa Beauty', 'Samsung S26', 'Zomato Vlog', 'Intel Gaming', 'Myntra Fashion', 'Philips Styling'];
+            
+            const actions = [
+                (c, b) => `${c} joined task for ${b}`,
+                (c, b) => `${c} submitted clip for ${b}`,
+                (c, b) => `${c} completed Daily Check-In streak`,
+                (c, b) => `${c} unlocked Gold Star tier`,
+                (c, b) => `${c} received payout for ${b}`,
+                (c, b) => `${c} verified Instagram Reels submission`,
+                (c, b) => `${c} initiated UPI withdrawal`,
+                (c, b) => `${c} unlocked 1.2x Streak Boost`
+            ];
+
+            function tickFeed() {
+                feedContainer.style.opacity = '0';
+                feedContainer.style.transform = 'translateY(-2px)';
+                
+                setTimeout(() => {
+                    const randomCreator = creators[Math.floor(Math.random() * creators.length)];
+                    const randomBrand = brands[Math.floor(Math.random() * brands.length)];
+                    const randomActionFn = actions[Math.floor(Math.random() * actions.length)];
+                    
+                    feedContainer.innerText = randomActionFn(randomCreator, randomBrand);
+                    
+                    feedContainer.style.opacity = '1';
+                    feedContainer.style.transform = 'translateY(0)';
+                }, 400);
+            }
+
+            feedContainer.style.transition = 'all 0.4s ease';
+            setInterval(tickFeed, 2000);
+
+            // Creator online count fluctuation loop
+            if (window.creatorOnlineInterval) {
+                clearInterval(window.creatorOnlineInterval);
+            }
+            window.creatorOnlineInterval = setInterval(() => {
+                const el = document.getElementById('creatorOnlineVal');
+                if (el) {
+                    const base = 95;
+                    const variance = Math.floor(Math.random() * 8); // 0 to 7
+                    el.innerText = `${base + variance} Online`;
+                }
+            }, 4000);
+        };
+
         function initWallet() {
             loadUserSession();
             
@@ -5970,7 +5707,7 @@
             updateMilestoneUI();
             renderTransactions();
             if (window.updateCampaignStatsUI) window.updateCampaignStatsUI();
-            if (window.updateYieldSimulation) window.updateYieldSimulation();
+            window.initLiveCreatorFeed();
         }
 
         // Initialize wallet on load
@@ -6011,7 +5748,7 @@
 
         // Real-time listener for campaigns
         const campaignsContainer = document.getElementById('campaignsContainer');
-        const q = query(collection(db, "campaigns"), orderBy("createdAt", "desc"));
+        const q = query(collection(db, "campaigns"));
         
         onSnapshot(q, (snapshot) => {
             allCampaigns = [];
@@ -6022,13 +5759,21 @@
                     ...data
                 });
             });
+
+            // Sort client-side by createdAt descending
+            allCampaigns.sort((a, b) => {
+                const timeA = a.createdAt ? (a.createdAt.seconds ? a.createdAt.seconds * 1000 : new Date(a.createdAt).getTime()) : 0;
+                const timeB = b.createdAt ? (b.createdAt.seconds ? b.createdAt.seconds * 1000 : new Date(b.createdAt).getTime()) : 0;
+                return (timeB || 0) - (timeA || 0);
+            });
+
             renderCampaignList();
             if (window.renderHomeActiveBriefs) window.renderHomeActiveBriefs();
         }, (error) => {
             console.error("Firebase Error:", error);
-            if (campaignsContainer) {
-                campaignsContainer.innerHTML = '<p style="color:#ef4444; text-align:center; grid-column: 1/-1;">Connection error. Please check Firebase rules.</p>';
-            }
+            allCampaigns = [];
+            renderCampaignList();
+            if (window.renderHomeActiveBriefs) window.renderHomeActiveBriefs();
         });
 
         // Global variable to store submissions
@@ -6482,6 +6227,35 @@
                 activeCountEl.innerText = `${activeMarketplaceCount} Live Briefs`;
             }
 
+            // Calculate actual total campaigns and potential rewards (incorporating user baseline ₹10,911)
+            let totalPayoutVal = 10911;
+            let countForAvg = 5;
+            
+            allCampaigns.forEach((c, idx) => {
+                if (idx >= 5) {
+                    const reward = parseFloat(c.reward || 0);
+                    if (c.payoutType === 'flat') {
+                        totalPayoutVal += reward;
+                        countForAvg++;
+                    } else {
+                        // CPM/reach rates: multiply by standard baseline (e.g. 50k views) to calculate potential payout
+                        totalPayoutVal += (reward * 50); // ₹100/1k views -> ₹5000 potential
+                        countForAvg++;
+                    }
+                }
+            });
+
+            const avgPayoutVal = countForAvg > 0 ? Math.round(totalPayoutVal / countForAvg) : 0;
+            
+            const totalRewardsEl = document.getElementById('statTotalRewards');
+            const avgRewardEl = document.getElementById('statAvgReward');
+
+            if (totalRewardsEl) {
+                totalRewardsEl.innerText = `₹${Math.round(totalPayoutVal).toLocaleString('en-IN')}`;
+            }
+            if (avgRewardEl) {
+                avgRewardEl.innerText = `₹${avgPayoutVal.toLocaleString('en-IN')} Avg. Payout`;
+            }
         };
 
         // Submit creator task to Firestore
