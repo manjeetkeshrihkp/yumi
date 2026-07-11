@@ -6261,40 +6261,10 @@
                             <!-- Stepper Progress Bar -->
                             ${stepper}
                             
-                            <!-- Add Link or Drag File Option Selection Tabs -->
-                            <div style="display: flex; background: rgba(5, 7, 12, 0.4); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 2px; margin-bottom: 6px; width: 100%;">
-                                <button type="button" class="tab-btn-link" onclick="window.setHomeSubmissionType('${c.id}', 'link')" id="tabLink_${c.id}" style="flex:1; background: rgba(250, 204, 21, 0.08); border: none; border-radius: 6px; color: #fff; font-size: 10px; font-weight: 700; padding: 5px 0; cursor: pointer; transition: 0.2s;">Add Link</button>
-                                <button type="button" class="tab-btn-file" onclick="window.setHomeSubmissionType('${c.id}', 'file')" id="tabFile_${c.id}" style="flex:1; background: transparent; border: none; border-radius: 6px; color: var(--text-muted); font-size: 10px; font-weight: 700; padding: 5px 0; cursor: pointer; transition: 0.2s;">Upload File</button>
-                            </div>
-                            
                             <!-- Tab Content: Add Link -->
-                            <div id="linkBlock_${c.id}" style="display: block;">
-                                <div style="display:flex; flex-direction:column; gap:4px; margin-bottom:8px;">
-                                    <label style="font-size:8px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Platform</label>
-                                    <select id="submissionPlatform_${c.id}" style="background:rgba(15,23,42,0.6); border:1px solid rgba(255,255,255,0.08); border-radius:8px; padding:6px 10px; color:#fff; font-size:11px; outline:none; width:100%;">
-                                        <option value="tiktok">TikTok Video</option>
-                                        <option value="reels">Instagram Reel</option>
-                                        <option value="shorts">YouTube Short</option>
-                                        <option value="other">Other Link</option>
-                                    </select>
-                                </div>
-                                <div style="display:flex; flex-direction:column; gap:4px; margin-bottom:8px;">
-                                    <label style="font-size:8px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Posted Video Link</label>
-                                    <input type="url" id="submissionUrl_${c.id}" placeholder="https://tiktok.com/@yourname/video/..." style="background:rgba(15,23,42,0.6); border:1px solid rgba(255,255,255,0.08); border-radius:8px; padding:6px 10px; color:#fff; font-size:11px; outline:none; width:100%;">
-                                </div>
-                            </div>
-                            
-                            <!-- Tab Content: Upload File -->
-                            <div id="fileBlock_${c.id}" style="display: none;">
-                                <div style="display:flex; flex-direction:column; gap:4px; margin-bottom:8px;">
-                                    <label style="font-size:8px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Upload Video File</label>
-                                    <div onclick="document.getElementById('fileInput_${c.id}').click()" style="border: 1px dashed rgba(250, 204, 21, 0.25); background: rgba(250, 204, 21, 0.02); border-radius: 8px; padding: 12px 10px; text-align: center; cursor: pointer; transition: 0.3s;" id="dropzone_${c.id}">
-                                        <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; stroke: var(--accent); fill: none; stroke-width: 2.5; margin: 0 auto 4px auto;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
-                                        <span style="font-size: 9px; color: #fff; font-weight: 700; display: block;" id="fileName_${c.id}">Choose Video File</span>
-                                        <span style="font-size: 7px; color: var(--text-muted); display: block; margin-top: 1px;">MP4, MOV or WebM up to 50MB</span>
-                                    </div>
-                                    <input type="file" id="fileInput_${c.id}" accept="video/*" style="display: none;" onchange="window.handleHomeFileSelect(this, '${c.id}')">
-                                </div>
+                            <div style="display:flex; flex-direction:column; gap:4px; margin-bottom:8px;">
+                                <label style="font-size:8px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Add Link</label>
+                                <input type="url" id="submissionUrl_${c.id}" placeholder="Paste your video link here..." style="background:rgba(15,23,42,0.6); border:1px solid rgba(255,255,255,0.08); border-radius:8px; padding:8px 12px; color:#fff; font-size:11px; outline:none; width:100%;">
                             </div>
                             
                             <!-- Actions Row -->
@@ -6500,31 +6470,22 @@
                 }
             }
 
-            const linkBlock = document.getElementById(`linkBlock_${campaignId}`);
-            const isLink = linkBlock && linkBlock.style.display !== 'none';
+            const urlInput = document.getElementById(`submissionUrl_${campaignId}`);
+            if (!urlInput || !urlInput.value.trim()) {
+                alert("Please enter a valid clip link!");
+                return;
+            }
+            const submissionUrl = urlInput.value.trim();
             
-            let submissionUrl = '';
+            // Detect platform from URL automatically, defaulting to 'other'
             let platform = 'other';
-            
-            if (isLink) {
-                const urlInput = document.getElementById(`submissionUrl_${campaignId}`);
-                const platformSelect = document.getElementById(`submissionPlatform_${campaignId}`);
-                if (urlInput) submissionUrl = urlInput.value.trim();
-                if (platformSelect) platform = platformSelect.value;
-                
-                if (!submissionUrl) {
-                    alert("Please enter a valid clip link!");
-                    return;
-                }
-            } else {
-                const fileInput = document.getElementById(`fileInput_${campaignId}`);
-                if (!fileInput || !fileInput.files || fileInput.files.length === 0) {
-                    alert("Please select a video file to upload!");
-                    return;
-                }
-                const file = fileInput.files[0];
-                submissionUrl = `https://elitex-storage.local/uploads/${partnerId}/${campaignId}/${encodeURIComponent(file.name)}`;
-                platform = 'file-upload';
+            const lowerUrl = submissionUrl.toLowerCase();
+            if (lowerUrl.includes('instagram.com') || lowerUrl.includes('instagr.am')) {
+                platform = 'reels';
+            } else if (lowerUrl.includes('youtube.com') || lowerUrl.includes('youtu.be')) {
+                platform = 'shorts';
+            } else if (lowerUrl.includes('tiktok.com')) {
+                platform = 'tiktok';
             }
             
             const submitBtn = document.getElementById(`submissionSubmitBtn_${campaignId}`);
