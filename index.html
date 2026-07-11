@@ -2110,40 +2110,149 @@
         </div>
 
         <!-- Dynamic Content Header -->
-        <div id="appHeaderContainer" style="margin-bottom: 24px;">
+        <div id="appHeaderContainer" style="margin-bottom: 24px; display: none;">
             <p id="headerSubtitle" style="color: var(--accent); font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Welcome back</p>
             <h2 id="headerTitle" style="margin-bottom: 0;">Agency Overview</h2>
         </div>
 
         <!-- TAB 1: HOME SECTION -->
         <div id="homeSection" class="content-section active-section">
-            <div class="stats-grid">
-                <div class="stat-card glass-panel">
-                    <div>
-                        <h3 style="margin: 0; font-size: 16px; color: #cbd5e1;">Active Campaigns</h3>
-                        <p style="color: var(--accent); font-size: 13px; margin-top: 4px; font-weight: 500;">+2 from last week</p>
+            
+            <!-- Glassmorphic Greeting Header with Profile card -->
+            <div class="glass-panel" style="padding: 20px; margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; background: linear-gradient(135deg, rgba(30, 41, 59, 0.45), rgba(15, 23, 42, 0.25)); border: 1px solid var(--surface-border); border-radius: 20px; position: relative; overflow: hidden; box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25); animation: fadeIn 0.4s ease;">
+                <div style="position: absolute; top: -50%; right: -20%; width: 150px; height: 150px; background: radial-gradient(circle, rgba(250, 204, 21, 0.1) 0%, transparent 70%); pointer-events: none;"></div>
+                
+                <div style="display: flex; align-items: center; gap: 14px;">
+                    <div style="width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, #fde047 0%, #ca8a04 100%); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(250, 204, 21, 0.3); border: 2px solid rgba(255,255,255,0.1); flex-shrink: 0;">
+                        <svg viewBox="0 0 24 24" style="width: 22px; height: 22px; fill: #07090f; stroke: #07090f; stroke-width: 0.5;"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                     </div>
-                    <div class="stat-value">03</div>
+                    <div>
+                        <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+                            <h3 style="margin: 0; font-size: 16px; color: #fff; font-weight: 800; font-family: 'Outfit', sans-serif;" id="homeGreetingName">Vikram Singh</h3>
+                            <span class="status-badge gold" id="homeGreetingTier" style="font-size: 8px; font-weight: 800; text-transform: uppercase; background: rgba(250, 204, 21, 0.12); color: var(--accent); border: 1px solid rgba(250, 204, 21, 0.25); padding: 2px 6px; border-radius: 6px;">Gold Partner</span>
+                        </div>
+                        <p style="color: var(--text-muted); font-size: 11px; margin-top: 3px; font-weight: 600;" id="homeGreetingId">EX-USR-8432</p>
+                    </div>
                 </div>
-
-                <div class="stat-card glass-panel">
-                    <div>
-                        <h3 style="margin: 0; font-size: 16px; color: #cbd5e1;">Total Leads</h3>
-                        <p style="color: #4ade80; font-size: 13px; margin-top: 4px; font-weight: 500;">+14% conversion rate</p>
+                
+                <div style="text-align: right; flex-shrink: 0;">
+                    <div style="font-size: 8px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Network Status</div>
+                    <div style="display: inline-flex; align-items: center; gap: 5px; margin-top: 4px; font-size: 11px; font-weight: 700; color: #4ade80;">
+                        <span class="meta-status-dot active" style="width: 6px; height: 6px;"></span>
+                        Active Node
                     </div>
-                    <div class="stat-value">142</div>
                 </div>
             </div>
 
-            <!-- My Active Briefs Section -->
+            <!-- Beautiful 3-Card Glassmorphic Stats Grid -->
+            <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 24px; width: 100%;">
+                <!-- Card 1: Available Balance -->
+                <div class="stat-card glass-panel" style="padding: 20px; display: flex; flex-direction: column; justify-content: space-between; align-items: flex-start; gap: 12px; position: relative; overflow: hidden; border-radius: 16px;">
+                    <div style="position: absolute; top: -30%; right: -20%; width: 90px; height: 90px; background: radial-gradient(circle, rgba(250, 204, 21, 0.08) 0%, transparent 70%); pointer-events: none;"></div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                        <span style="font-size: 10px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Wallet Balance</span>
+                        <div style="width: 28px; height: 28px; border-radius: 50%; background: rgba(250, 204, 21, 0.08); border: 1px solid rgba(250, 204, 21, 0.15); display: flex; align-items: center; justify-content: center; color: var(--accent);">
+                            <svg viewBox="0 0 24 24" style="width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2.5;"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="wallet-balance-val" style="font-size: 24px; font-weight: 900; color: #fff; text-shadow: 0 0 15px var(--accent-glow);">₹ 14,250.00</div>
+                        <div style="font-size: 10px; color: var(--text-muted); font-weight: 600; margin-top: 4px;">Total Earnings: <span id="campaignEarningsVal" style="color: var(--accent); font-weight: 800;">₹0.00</span></div>
+                    </div>
+                </div>
+
+                <!-- Card 2: Combined Audience Reach -->
+                <div class="stat-card glass-panel" style="padding: 20px; display: flex; flex-direction: column; justify-content: space-between; align-items: flex-start; gap: 12px; position: relative; overflow: hidden; border-radius: 16px;">
+                    <div style="position: absolute; top: -30%; right: -20%; width: 90px; height: 90px; background: radial-gradient(circle, rgba(56, 189, 248, 0.08) 0%, transparent 70%); pointer-events: none;"></div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                        <span style="font-size: 10px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Views Engagement</span>
+                        <div style="width: 28px; height: 28px; border-radius: 50%; background: rgba(56, 189, 248, 0.08); border: 1px solid rgba(56, 189, 248, 0.15); display: flex; align-items: center; justify-content: center; color: #38bdf8;">
+                            <svg viewBox="0 0 24 24" style="width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2.5;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                        </div>
+                    </div>
+                    <div>
+                        <div id="activeTasksCountVal" style="font-size: 24px; font-weight: 900; color: #fff; text-shadow: 0 0 15px rgba(56, 189, 248, 0.2);">0 Views</div>
+                        <div style="font-size: 10px; color: var(--text-muted); font-weight: 600; margin-top: 4px;">Across all campaigns</div>
+                    </div>
+                </div>
+
+                <!-- Card 3: Brief Submissions Status -->
+                <div class="stat-card glass-panel" style="padding: 20px; display: flex; flex-direction: column; justify-content: space-between; align-items: flex-start; gap: 12px; position: relative; overflow: hidden; border-radius: 16px;">
+                    <div style="position: absolute; top: -30%; right: -20%; width: 90px; height: 90px; background: radial-gradient(circle, rgba(168, 85, 247, 0.08) 0%, transparent 70%); pointer-events: none;"></div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                        <span style="font-size: 10px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Review Queue</span>
+                        <div style="width: 28px; height: 28px; border-radius: 50%; background: rgba(168, 85, 247, 0.08); border: 1px solid rgba(168, 85, 247, 0.15); display: flex; align-items: center; justify-content: center; color: #a855f7;">
+                            <svg viewBox="0 0 24 24" style="width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2.5;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                        </div>
+                    </div>
+                    <div>
+                        <div id="submissionStatusCountVal" style="font-size: 24px; font-weight: 900; color: #fff; text-shadow: 0 0 15px rgba(168, 85, 247, 0.2);">0 Pending</div>
+                        <div style="font-size: 10px; color: var(--text-muted); font-weight: 600; margin-top: 4px;">Awaiting verification</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Weekly Earnings Performance Spline Chart on Home -->
+            <div class="glass-panel" style="padding: 20px; margin-bottom: 24px; border: 1px solid var(--surface-border); border-radius: 20px; box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                    <h3 style="margin: 0; font-size: 14px; color: #fff; font-weight: 800; display:flex; align-items:center; gap:8px;">
+                        <svg viewBox="0 0 24 24" style="width:16px; height:16px; stroke:var(--accent); fill:none; stroke-width:2.5;"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                        Earnings Analytics (Last 7 Days)
+                    </h3>
+                    <span id="homeChartTotalEarnings" style="font-size:11px; font-weight:800; color:var(--accent); background:rgba(250,204,21,0.08); border:1px solid rgba(250,204,21,0.15); padding:2px 8px; border-radius:6px;">Total: ₹5,600</span>
+                </div>
+                <p style="font-size: 11px; color: var(--text-muted); line-height: 1.4; margin-bottom: 16px;">
+                    Daily campaign rewards credited over the last 7 calendar days. Click any point to view details.
+                </p>
+                <div class="chart-container" style="position:relative; width:100%; height:130px; display:flex; justify-content:center; align-items:center;">
+                    <svg viewBox="0 0 300 100" style="width:100%; height:100%; overflow:visible;">
+                        <defs>
+                            <linearGradient id="homeChartStrokeGrad" x1="0" y1="0" x2="1" y2="0">
+                                <stop offset="0%" stop-color="#fbbf24" />
+                                <stop offset="100%" stop-color="#facc15" />
+                            </linearGradient>
+                            <linearGradient id="homeChartFillGrad" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stop-color="rgba(250, 204, 21, 0.12)" />
+                                <stop offset="100%" stop-color="rgba(250, 204, 21, 0)" />
+                            </linearGradient>
+                        </defs>
+                        <line x1="0" y1="20" x2="280" y2="20" stroke="rgba(255,255,255,0.03)" stroke-width="1" stroke-dasharray="2 2" />
+                        <line x1="0" y1="50" x2="280" y2="50" stroke="rgba(255,255,255,0.03)" stroke-width="1" stroke-dasharray="2 2" />
+                        <line x1="0" y1="80" x2="280" y2="80" stroke="rgba(255,255,255,0.03)" stroke-width="1" stroke-dasharray="2 2" />
+                        
+                        <path id="homeChartSplineFill" d="" fill="url(#homeChartFillGrad)" style="transition: d 0.5s ease;" />
+                        <path id="homeChartSplineStroke" d="" fill="none" stroke="url(#homeChartStrokeGrad)" stroke-width="2.5" stroke-linecap="round" style="transition: d 0.5s ease;" />
+                        
+                        <circle id="homeChartDot1" cx="10" cy="90" r="3.5" fill="var(--accent)" stroke="#07090f" stroke-width="1.5" class="chart-dot" style="cursor:pointer;" onclick="showHomeChartTooltip(0, event)" />
+                        <circle id="homeChartDot2" cx="51.6" cy="70" r="3.5" fill="var(--accent)" stroke="#07090f" stroke-width="1.5" class="chart-dot" style="cursor:pointer;" onclick="showHomeChartTooltip(1, event)" />
+                        <circle id="homeChartDot3" cx="93.3" cy="80" r="3.5" fill="var(--accent)" stroke="#07090f" stroke-width="1.5" class="chart-dot" style="cursor:pointer;" onclick="showHomeChartTooltip(2, event)" />
+                        <circle id="homeChartDot4" cx="135" cy="55" r="3.5" fill="var(--accent)" stroke="#07090f" stroke-width="1.5" class="chart-dot" style="cursor:pointer;" onclick="showHomeChartTooltip(3, event)" />
+                        <circle id="homeChartDot5" cx="176.6" cy="30" r="3.5" fill="var(--accent)" stroke="#07090f" stroke-width="1.5" class="chart-dot" style="cursor:pointer;" onclick="showHomeChartTooltip(4, event)" />
+                        <circle id="homeChartDot6" cx="218.3" cy="40" r="3.5" fill="var(--accent)" stroke="#07090f" stroke-width="1.5" class="chart-dot" style="cursor:pointer;" onclick="showHomeChartTooltip(5, event)" />
+                        <circle id="homeChartDot7" cx="260" cy="20" r="3.5" fill="var(--accent)" stroke="#07090f" stroke-width="1.5" class="chart-dot" style="cursor:pointer;" onclick="showHomeChartTooltip(6, event)" />
+                    </svg>
+                    <div id="homeChartTooltip" style="position:absolute; display:none; background:rgba(15,23,42,0.95); border:1px solid rgba(250,204,21,0.4); padding:6px 10px; border-radius:8px; font-size:10px; font-weight:800; color:#fff; pointer-events:none; z-index:10; white-space:nowrap; box-shadow:0 4px 12px rgba(0,0,0,0.6);">₹0</div>
+                </div>
+                <div style="display:flex; justify-content:space-between; padding:0 8px; margin-top:8px; font-size:9px; color:var(--text-muted); font-weight:700;">
+                    <span>Mon</span>
+                    <span>Tue</span>
+                    <span>Wed</span>
+                    <span>Thu</span>
+                    <span>Fri</span>
+                    <span>Sat</span>
+                    <span>Sun</span>
+                </div>
+            </div>
+
+            <!-- Campaign Briefs Section -->
             <div style="margin-top: 25px; margin-bottom: 20px;">
-                <h3 style="margin: 0 0 12px 0; font-size: 16px; color: #cbd5e1; display:flex; align-items:center; gap:8px;">
+                <h3 style="margin: 0 0 16px 0; font-size: 16px; color: #cbd5e1; display:flex; align-items:center; gap:8px;">
                     <span class="meta-status-dot active" style="width: 8px; height: 8px; box-shadow: 0 0 8px #6366f1; background-color:#6366f1; animation: none;"></span>
-                    My Active Briefs
+                    Campaign Briefs Marketplace
                 </h3>
                 <div id="homeAcceptedCampaignsContainer" class="campaign-grid" style="width: 100%;">
                     <p style="color:var(--text-muted); text-align:center; font-size: 12px; padding: 20px; border: 1px dashed rgba(255,255,255,0.06); border-radius:12px; background:rgba(255,255,255,0.01);">
-                        No active briefs. Visit the Campaigns tab to accept/join tasks and start earning.
+                        No campaigns available. Visit the Campaigns tab to accept/join tasks and start earning.
                     </p>
                 </div>
             </div>
@@ -3263,6 +3372,27 @@
         </div>
     </div>
 
+    <!-- JOIN CAMPAIGN DEPOSIT MODAL -->
+    <div class="glass-modal-overlay" id="joinConfirmModal" style="z-index: 10002;">
+        <div class="glass-modal-container" style="max-width: 380px; padding: 24px;">
+            <button class="modal-close-btn" onclick="window.closeJoinConfirmModal()">
+                <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+            
+            <h3 class="modal-title" style="text-align: center; margin-bottom: 12px; font-size: 18px; font-weight: 700; color: #fff;">Freeze Security Deposit</h3>
+            <p style="color: var(--text-muted); font-size: 13px; text-align: center; line-height: 1.5; margin-bottom: 24px;">
+                To join this campaign, a security deposit fee of <strong style="color: var(--accent);">₹10.00</strong> will be temporarily frozen from your available balance.
+                <br><br>
+                This amount will be fully unfrozen and returned to your wallet immediately once your clip submission is reviewed and approved.
+            </p>
+            <div style="display: flex; gap: 12px; width: 100%;">
+                <button class="btn-outline-cancel" onclick="window.closeJoinConfirmModal()" style="flex: 1; height: 42px; margin: 0;">Cancel</button>
+                <button class="btn-premium-ai" id="confirmJoinPayBtn" onclick="window.confirmPayAndJoinClick()" style="flex: 1.5; height: 42px; margin: 0; padding: 0 12px; font-size: 13px; font-weight: 800; box-shadow: 0 4px 12px rgba(250, 204, 21, 0.25);">Pay & Join</button>
+            </div>
+            <div id="joinDebugLog" style="color: #ef4444; font-size: 11px; font-family: monospace; margin-top: 15px; text-align: center; white-space: pre-wrap; line-height: 1.4; display: none; background: rgba(0, 0, 0, 0.3); padding: 10px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.05); max-height: 120px; overflow-y: auto;"></div>
+        </div>
+    </div>
+
     <!-- IDENTITY INITIALIZATION MODAL -->
     <div class="glass-modal-overlay" id="identityModal" style="z-index: 9999;">
         <div class="glass-modal-container" style="max-width: 380px;">
@@ -3365,6 +3495,7 @@
         let lastCheckInDate = '';
         let activeWithdrawalPending = false;
         let payoutTrackingState = 2;
+        let currentJoinCampaignId = null;
 
         function loadUserSession() {
             let session = localStorage.getItem('eliteX_user_session');
@@ -3515,6 +3646,14 @@
             const refCodeInput = document.getElementById('referralCodeInput');
             if (refLinkInput) refLinkInput.value = `https://elitex.agency/join?ref=${partnerId}`;
             if (refCodeInput) refCodeInput.value = partnerId;
+
+            // Populate Home Greeting details
+            const homeGreetingNameEl = document.getElementById('homeGreetingName');
+            const homeGreetingIdEl = document.getElementById('homeGreetingId');
+            const homeGreetingTierEl = document.getElementById('homeGreetingTier');
+            if (homeGreetingNameEl) homeGreetingNameEl.innerText = name || "Partner User";
+            if (homeGreetingIdEl) homeGreetingIdEl.innerText = partnerId;
+            if (homeGreetingTierEl) homeGreetingTierEl.innerText = `${creatorTier || 'Gold'} Partner`;
         }
 
         function generateRandomPartnerId() {
@@ -3559,9 +3698,8 @@
 
             const headerContainer = document.getElementById('appHeaderContainer');
             if (headerContainer) {
-                if (sectionId === 'campaignsSection') {
+                if (sectionId === 'campaignsSection' || sectionId === 'homeSection') {
                     headerContainer.style.display = 'none';
-
                 } else {
                     headerContainer.style.display = 'block';
                 }
@@ -3647,6 +3785,9 @@
         let allCampaigns = [];
         let currentCampaignFilter = 'all';
         let acceptedCampaigns = JSON.parse(localStorage.getItem('eliteX_accepted_campaigns') || '[]');
+        if (!Array.isArray(acceptedCampaigns)) {
+            acceptedCampaigns = [];
+        }
 
         window.updateCampaignStatsUI = function() {
             // Count active accepted tasks
@@ -3672,46 +3813,127 @@
             if (pendingEl) pendingEl.innerText = `${pendingCount} Review`;
         };
 
-        window.acceptCampaign = function(id, title) {
-            if (acceptedCampaigns.includes(id)) return;
-            
-            // Check available balance
-            if (availableBalance < 10) {
-                alert(`Insufficient wallet balance! Joining a campaign requires a security deposit fee of ₹10.00.`);
-                return;
+        window.showJoinConfirmModal = function(id) {
+            currentJoinCampaignId = id;
+            const modal = document.getElementById('joinConfirmModal');
+            if (modal) {
+                modal.classList.add('active');
             }
-            
-            // Deduct ₹10 security fee
-            availableBalance -= 10;
-            acceptedCampaigns.push(id);
-            localStorage.setItem('eliteX_accepted_campaigns', JSON.stringify(acceptedCampaigns));
-            
-            // Create debit transaction
-            const now = new Date();
-            const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            transactions.unshift({
-                id: transactions.length + 1,
-                title: `Brief Entry Fee: ${title}`,
-                amount: 10,
-                date: `Today, ${timeStr}`,
-                type: 'debit',
-                status: 'completed'
-            });
-            
-            // Save user session
-            saveUserSession();
-            
-            // Update UI elements
-            updateWalletUI();
-            renderTransactions();
-            renderCampaignList();
-            if (window.updateCampaignStatsUI) window.updateCampaignStatsUI();
-            if (window.renderHomeActiveBriefs) window.renderHomeActiveBriefs();
-            
-            // Close modal if open
+        };
+
+        function logJoinDebug(msg, isError = false) {
+            const logEl = document.getElementById('joinDebugLog');
+            if (logEl) {
+                logEl.style.display = 'block';
+                if (isError) {
+                    logEl.style.color = '#ef4444';
+                    logEl.innerText = "ERROR: " + msg;
+                } else {
+                    logEl.style.color = '#38bdf8';
+                    logEl.innerText = msg;
+                }
+            }
+            console.log("JoinDebug: " + msg);
+        }
+
+        window.confirmPayAndJoinClick = function() {
+            try {
+                logJoinDebug("confirmPayAndJoinClick triggered. ID: " + currentJoinCampaignId);
+                if (!currentJoinCampaignId) {
+                    logJoinDebug("No campaign ID selected", true);
+                    return;
+                }
+                const id = currentJoinCampaignId;
+                logJoinDebug("Finding campaign in allCampaigns...");
+                const campaign = allCampaigns.find(c => c.id === id);
+                logJoinDebug("Campaign search finished. Found: " + (campaign ? campaign.title : "null"));
+                const title = campaign ? campaign.title : 'Campaign';
+                window.acceptCampaign(id, title);
+            } catch (err) {
+                logJoinDebug("confirmPayAndJoinClick crashed: " + err.message + "\nStack: " + err.stack, true);
+            }
+        };
+
+        window.closeJoinConfirmModal = function() {
+            const modal = document.getElementById('joinConfirmModal');
+            if (modal) modal.classList.remove('active');
+        };
+
+        window.referToHome = function() {
+            const homeMenuItem = document.querySelector('.bottom-menu .menu-item');
+            if (homeMenuItem) {
+                switchTab(homeMenuItem, 'homeSection', 'Agency Overview', 'Welcome back');
+            }
             window.closeCampaignDetailModal();
-            
-            alert(`Campaign "${title}" accepted! A ₹10 security deposit has been debited. View and submit it on your Home Tab.`);
+        };
+
+        window.acceptCampaign = function(id, title) {
+            try {
+                logJoinDebug("acceptCampaign started. ID: " + id + ", Title: " + title);
+                if (!acceptedCampaigns) {
+                    logJoinDebug("acceptedCampaigns array is undefined", true);
+                    return;
+                }
+                if (acceptedCampaigns.includes(id)) {
+                    logJoinDebug("Campaign already joined.", true);
+                    return;
+                }
+                
+                logJoinDebug("Checking balance: " + availableBalance);
+                if (availableBalance < 10) {
+                    logJoinDebug("Insufficient wallet balance: " + availableBalance, true);
+                    alert(`Insufficient wallet balance! Joining a campaign requires a security deposit fee of ₹10.00.`);
+                    window.closeJoinConfirmModal();
+                    return;
+                }
+                
+                logJoinDebug("Deducting ₹10 security fee...");
+                availableBalance -= 10;
+                acceptedCampaigns.push(id);
+                localStorage.setItem('eliteX_accepted_campaigns', JSON.stringify(acceptedCampaigns));
+                logJoinDebug("Deducted & saved to localStorage. Updating transactions...");
+                
+                const now = new Date();
+                const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                transactions.unshift({
+                    id: transactions.length + 1,
+                    title: `Brief Entry Fee: ${title}`,
+                    amount: 10,
+                    date: `Today, ${timeStr}`,
+                    type: 'debit',
+                    status: 'completed'
+                });
+                
+                logJoinDebug("Saving session...");
+                saveUserSession();
+                
+                logJoinDebug("Updating Wallet UI...");
+                updateWalletUI();
+                
+                logJoinDebug("Updating Transactions list...");
+                renderTransactions();
+                
+                logJoinDebug("Updating Campaigns Discovery list...");
+                renderCampaignList();
+                
+                if (window.updateCampaignStatsUI) {
+                    logJoinDebug("Updating Stats UI...");
+                    window.updateCampaignStatsUI();
+                }
+                
+                if (window.renderHomeActiveBriefs) {
+                    logJoinDebug("Updating Home Briefs grid...");
+                    window.renderHomeActiveBriefs();
+                }
+                
+                logJoinDebug("Closing modal...");
+                window.closeJoinConfirmModal();
+                
+                logJoinDebug("Re-opening detail modal in accepted mode...");
+                window.openCampaignDetailModal(id, true);
+            } catch (err) {
+                logJoinDebug("acceptCampaign crashed: " + err.message + "\nStack: " + err.stack, true);
+            }
         };
 
         window.filterCampaigns = function(element) {
@@ -4071,7 +4293,7 @@
             }, 1000);
         }
 
-        window.openCampaignDetailModal = function(id) {
+        window.openCampaignDetailModal = function(id, showSuccessBanner = false) {
             const campaign = allCampaigns.find(c => c.id === id);
             if (!campaign) return;
             
@@ -4107,7 +4329,6 @@
             else if (payoutType === 'performance') rewardDisplay = `Dynamic Payout`;
             else rewardDisplay = `₹${parseFloat(campaign.reward || 0).toFixed(0)} Flat`;
 
-            // Parse YouTube URL to embed iframe
             function getYouTubeEmbedHTML(url) {
                 if (!url) return '';
                 let videoId = '';
@@ -4136,7 +4357,6 @@
                 </div>
             `;
 
-            // Platform badges
             const platforms = campaign.allowedPlatforms || ['reels', 'shorts', 'tiktok'];
             const platformBadges = platforms.map(p => {
                 let color = '#6366f1';
@@ -4153,7 +4373,6 @@
                 return `<span style="font-size:9px; font-weight:700; text-transform:uppercase; color:${color}; background:${color}12; border:1px solid ${color}25; padding:3px 7px; border-radius:6px; margin-right:4px; display:inline-block; margin-top:2px;">${displayName}</span>`;
             }).join('');
 
-            // Boost Badges
             let boostBadgesHTML = '';
             if (payoutType === 'cpm' || payoutType === 'reach') {
                 boostBadgesHTML = `
@@ -4229,7 +4448,10 @@
                 </div>
             ` : '';
 
+            let successBannerHTML = '';
+
             content.innerHTML = `
+                ${successBannerHTML}
                 ${headerImageHTML}
                 
                 <h3 style="color:#fff; margin:0 0 6px 0; font-size:18px;">${campaign.title}</h3>
@@ -4243,7 +4465,6 @@
                     ${boostBadgesHTML}
                 </div>
 
-                <!-- Silicon Valley Specs Block -->
                 <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:14px; margin-bottom:18px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.04); border-radius:16px; padding:14px;">
                     <div>
                         <div style="font-size:8px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Creator Tier Limit</div>
@@ -4322,7 +4543,7 @@
             if (!isAccepted) {
                 content.innerHTML += `
                     <div style="margin-top: 10px; display:flex; flex-direction:column; gap:10px;">
-                        <button class="btn-premium-ai" onclick="window.acceptCampaign('${campaign.id}', '${campaign.title.replace(/'/g, "\\'")}')"
+                        <button class="btn-premium-ai" onclick="window.showJoinConfirmModal('${campaign.id}')"
                             style="width: 100%; padding: 12px; font-size: 13px; box-shadow: 0 4px 12px rgba(250, 204, 21, 0.25); height: 40px; font-weight:800;">
                             Join Campaign (Deposit ₹10)
                         </button>
@@ -4332,6 +4553,29 @@
                         </button>
                         <div style="font-size:10px; color:var(--text-muted); text-align:center;">
                             * A ₹10 deposit is required to join. Fully refunded once clip is approved.
+                        </div>
+                    </div>
+                `;
+            } else if (showSuccessBanner) {
+                content.innerHTML += `
+                    <div style="margin-top: 15px; display:flex; flex-direction:column; gap:12px; text-align:center; animation: fadeIn 0.4s ease;">
+                        <div style="background: rgba(34, 197, 94, 0.08); border: 1px solid rgba(34, 197, 94, 0.25); color: #4ade80; border-radius: 12px; padding: 16px; font-size: 11px; line-height: 1.5; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                            <div style="width: 32px; height: 32px; border-radius: 50%; background: rgba(34, 197, 94, 0.15); display: flex; align-items: center; justify-content: center;">
+                                <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 3;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            </div>
+                            <span style="font-weight: 800; text-transform: uppercase; font-size: 10px; letter-spacing: 0.5px;">Successfully Joined Campaign!</span>
+                            <div>₹10.00 security fee has been frozen. You can submit your video submission link later under your Home Tab.</div>
+                        </div>
+                        <div style="display:flex; gap:10px; margin-top:8px;">
+                            <button type="button" class="btn-premium-ai" onclick="window.referToHome()"
+                                style="flex:1.2; height:40px; margin:0; font-size:11px; font-weight:800; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 4px 12px rgba(250, 204, 21, 0.25);">
+                                <svg viewBox="0 0 24 24" style="width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2.5;"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                                Go to Home
+                            </button>
+                            <button type="button" class="btn-outline-close" onclick="window.closeCampaignDetailModal()"
+                                style="flex:0.8; height:40px; margin:0; font-size:11px; font-weight:700;">
+                                Close
+                            </button>
                         </div>
                     </div>
                 `;
@@ -4354,12 +4598,13 @@
                                 style="background:rgba(15,23,42,0.6); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:10px 14px; color:#fff; font-size:12px; outline:none; width:100%;">
                         </div>
                         <div style="display:flex; gap:10px; margin-top:10px;">
-                            <button type="button" class="btn-outline-close" onclick="window.closeCampaignDetailModal()"
-                                style="flex:1; height:40px; margin:0;">
-                                Close
+                            <button type="button" class="btn-outline-close" onclick="window.referToHome()"
+                                style="flex:1.2; height:40px; margin:0; font-size:11px; padding: 0 4px; display: flex; align-items: center; justify-content: center; gap: 4px; border-color: var(--accent); color: var(--accent); background: none; border: 1px solid var(--accent); border-radius: 12px; cursor: pointer; transition: 0.3s;">
+                                <svg viewBox="0 0 24 24" style="width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2.5;"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                                Refer to Home
                             </button>
                             <button type="submit" id="submissionSubmitBtn" class="btn-premium-ai"
-                                style="flex:2; padding:12px; font-size:13px; height:40px; margin:0; box-shadow: 0 4px 12px rgba(250, 204, 21, 0.25);">
+                                style="flex:1.8; padding:12px; font-size:12px; height:40px; margin:0; box-shadow: 0 4px 12px rgba(250, 204, 21, 0.25);">
                                 Submit Clip URL
                             </button>
                         </div>
@@ -5047,6 +5292,24 @@
                 }
             }
 
+            const homeGreetingTierEl = document.getElementById('homeGreetingTier');
+            if (homeGreetingTierEl) {
+                homeGreetingTierEl.innerText = `${creatorTier} Partner`;
+                if (creatorTier.toLowerCase() === 'bronze') {
+                    homeGreetingTierEl.style.color = '#cd7f32';
+                    homeGreetingTierEl.style.borderColor = 'rgba(205, 127, 50, 0.4)';
+                    homeGreetingTierEl.style.background = 'rgba(205, 127, 50, 0.12)';
+                } else if (creatorTier.toLowerCase() === 'gold') {
+                    homeGreetingTierEl.style.color = 'var(--accent)';
+                    homeGreetingTierEl.style.borderColor = 'rgba(250, 204, 21, 0.4)';
+                    homeGreetingTierEl.style.background = 'rgba(250, 204, 21, 0.12)';
+                } else if (creatorTier.toLowerCase() === 'diamond') {
+                    homeGreetingTierEl.style.color = '#38bdf8';
+                    homeGreetingTierEl.style.borderColor = 'rgba(56, 189, 248, 0.4)';
+                    homeGreetingTierEl.style.background = 'rgba(56, 189, 248, 0.12)';
+                }
+            }
+
             if (perksText) {
                 perksText.innerText = `${creatorTier} Star Creator`;
                 if (creatorTier.toLowerCase() === 'bronze') perksText.style.color = '#cd7f32';
@@ -5182,10 +5445,50 @@
             const total = weeklyEarnings.reduce((a, b) => a + b, 0);
             const totalLabel = document.getElementById('chartTotalEarnings');
             if (totalLabel) totalLabel.innerText = `Total: ₹${total.toLocaleString('en-IN')}`;
+
+            // Update Home Performance Spline Chart
+            const homeStrokePathEl = document.getElementById('homeChartSplineStroke');
+            if (homeStrokePathEl) homeStrokePathEl.setAttribute('d', pathD);
+            
+            const homeFillPathEl = document.getElementById('homeChartSplineFill');
+            if (homeFillPathEl) homeFillPathEl.setAttribute('d', fillPathD);
+            
+            for (let i = 0; i < xCoords.length; i++) {
+                const dot = document.getElementById(`homeChartDot${i+1}`);
+                if (dot) {
+                    dot.setAttribute('cx', xCoords[i]);
+                    dot.setAttribute('cy', yCoords[i]);
+                }
+            }
+            
+            const homeTotalLabel = document.getElementById('homeChartTotalEarnings');
+            if (homeTotalLabel) homeTotalLabel.innerText = `Total: ₹${total.toLocaleString('en-IN')}`;
         }
         
         window.showChartTooltip = function(index, event) {
             const tooltip = document.getElementById('chartTooltip');
+            if (!tooltip) return;
+            
+            const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+            const val = weeklyEarnings[index];
+            tooltip.innerHTML = `<span style="color:var(--accent); font-weight:800;">${days[index]}</span><br>₹${val}`;
+            
+            tooltip.style.display = 'block';
+            
+            const dot = event.currentTarget;
+            const cx = parseFloat(dot.getAttribute('cx'));
+            const cy = parseFloat(dot.getAttribute('cy'));
+            
+            tooltip.style.left = `${cx - 40}px`;
+            tooltip.style.top = `${cy - 40}px`;
+            
+            setTimeout(() => {
+                tooltip.style.display = 'none';
+            }, 3000);
+        };
+
+        window.showHomeChartTooltip = function(index, event) {
+            const tooltip = document.getElementById('homeChartTooltip');
             if (!tooltip) return;
             
             const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
@@ -5783,15 +6086,132 @@
             const container = document.getElementById('homeAcceptedCampaignsContainer');
             if (!container) return;
             
+            // Only show accepted (joined) campaigns on Home tab campaigns feed
             const accepted = allCampaigns.filter(c => acceptedCampaigns.includes(c.id));
             
             if (accepted.length === 0) {
                 container.innerHTML = `
                     <p style="color:var(--text-muted); text-align:center; font-size: 12px; padding: 20px; border: 1px dashed rgba(255,255,255,0.06); border-radius:12px; background:rgba(255,255,255,0.01); grid-column: 1/-1;">
-                        No active briefs. Visit the Campaigns tab to accept/join tasks and start earning.
+                        No active campaigns joined yet. Visit the Campaigns tab to accept/join tasks and start earning.
                     </p>
                 `;
                 return;
+            }
+            
+            // Stepper HTML helper generator
+            function getStepperHTML(status) {
+                let step1Bg = 'var(--success)';
+                let step1Border = 'var(--success)';
+                let step1Color = '#000';
+                let step1Icon = '✓';
+                let step1Glow = '';
+                
+                let step2Bg = '#07090f';
+                let step2Border = 'rgba(255,255,255,0.1)';
+                let step2Color = 'var(--text-muted)';
+                let step2Icon = '2';
+                let step2Glow = '';
+                
+                let step3Bg = '#07090f';
+                let step3Border = 'rgba(255,255,255,0.1)';
+                let step3Color = 'var(--text-muted)';
+                let step3Icon = '3';
+                let step3Glow = '';
+                let step3Label = 'Verified';
+                
+                let line1Color = 'rgba(255,255,255,0.06)';
+                let line2Color = 'rgba(255,255,255,0.06)';
+                
+                if (status === 'initial') {
+                    // Upload / Add is active
+                    step1Bg = 'var(--accent)';
+                    step1Border = 'var(--accent)';
+                    step1Color = '#000';
+                    step1Icon = '1';
+                    step1Glow = 'box-shadow: 0 0 8px var(--accent-glow);';
+                } else if (status === 'pending') {
+                    line1Color = 'var(--success)';
+                    step2Bg = '#eab308';
+                    step2Border = '#eab308';
+                    step2Color = '#000';
+                    step2Icon = '●';
+                    step2Glow = 'box-shadow: 0 0 10px rgba(234,179,8,0.4);';
+                } else if (status === 'tracking') {
+                    line1Color = 'var(--success)';
+                    line2Color = '#38bdf8';
+                    
+                    step2Bg = 'var(--success)';
+                    step2Border = 'var(--success)';
+                    step2Color = '#000';
+                    step2Icon = '✓';
+                    
+                    step3Bg = '#38bdf8';
+                    step3Border = '#38bdf8';
+                    step3Color = '#000';
+                    step3Icon = '●';
+                    step3Glow = 'box-shadow: 0 0 10px rgba(56,189,248,0.4);';
+                    step3Label = 'Tracking';
+                } else if (status === 'approved') {
+                    line1Color = 'var(--success)';
+                    line2Color = 'var(--success)';
+                    
+                    step2Bg = 'var(--success)';
+                    step2Border = 'var(--success)';
+                    step2Color = '#000';
+                    step2Icon = '✓';
+                    
+                    step3Bg = 'var(--success)';
+                    step3Border = 'var(--success)';
+                    step3Color = '#000';
+                    step3Icon = '✓';
+                    step3Label = 'Verified';
+                } else if (status === 'rejected') {
+                    line1Color = 'var(--success)';
+                    line2Color = '#ef4444';
+                    
+                    step2Bg = 'var(--success)';
+                    step2Border = 'var(--success)';
+                    step2Color = '#000';
+                    step2Icon = '✓';
+                    
+                    step3Bg = '#ef4444';
+                    step3Border = '#ef4444';
+                    step3Color = '#000';
+                    step3Icon = '✗';
+                    step3Label = 'Rejected';
+                }
+                
+                return `
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin: 6px 0 14px 0; position: relative; width: 100%;">
+                        <!-- Background Connectors -->
+                        <div style="position: absolute; top: 12px; left: 15%; width: 35%; height: 2px; background: ${line1Color}; z-index: 1;"></div>
+                        <div style="position: absolute; top: 12px; left: 50%; width: 35%; height: 2px; background: ${line2Color}; z-index: 1;"></div>
+                        
+                        <!-- Step 1: Upload / Add -->
+                        <div style="display: flex; flex-direction: column; align-items: center; z-index: 3; flex: 1;">
+                            <div style="width: 24px; height: 24px; border-radius: 50%; background: ${step1Bg}; border: 2px solid ${step1Border}; color: ${step1Color}; font-size: 10px; font-weight: 900; display: flex; align-items: center; justify-content: center; ${status === 'initial' ? step1Glow : ''}">
+                                ${step1Icon}
+                            </div>
+                            <span style="font-size: 8px; font-weight: 800; color: #fff; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.3px;">Upload / Link</span>
+                        </div>
+                        
+                        <!-- Step 2: In Review -->
+                        <div style="display: flex; flex-direction: column; align-items: center; z-index: 3; flex: 1;">
+                            <div style="width: 24px; height: 24px; border-radius: 50%; background: ${step2Bg}; border: 2px solid ${step2Border}; color: ${step2Color}; font-size: 10px; font-weight: 900; display: flex; align-items: center; justify-content: center; ${step2Glow}">
+                                ${step2Icon}
+                            </div>
+                            <span style="font-size: 8px; font-weight: 800; color: ${status === 'pending' ? '#fff' : 'var(--text-muted)'}; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.3px;">In Review</span>
+                        </div>
+                        
+                        <!-- Step 3: Verified -->
+                        <div style="display: flex; flex-direction: column; align-items: center; z-index: 3; flex: 1;">
+                            <div style="width: 24px; height: 24px; border-radius: 50%; background: ${step3Bg}; border: 2px solid ${step3Border}; color: ${step3Color}; font-size: 10px; font-weight: 900; display: flex; align-items: center; justify-content: center; ${step3Glow}">
+                                ${step3Icon}
+                            </div>
+                            <span style="font-size: 8px; font-weight: 800; color: ${(status === 'approved' || status === 'tracking' || status === 'rejected') ? '#fff' : 'var(--text-muted)'}; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.3px;">${step3Label}</span>
+                        </div>
+                    </div>
+                `;
             }
             
             container.innerHTML = '';
@@ -5820,20 +6240,77 @@
                 }
                 
                 let submissionHTML = '';
-                if (!sub) {
+                const isJoined = acceptedCampaigns.includes(c.id);
+                if (!isJoined) {
                     submissionHTML = `
                         <div style="display:flex; flex-direction:column; gap:10px; width:100%; border-top: 1px solid rgba(255,255,255,0.05); padding-top:12px; margin-top:4px;">
                             <div style="display:flex; justify-content:space-between; align-items:center;">
                                 <span style="font-size:10px; color:var(--text-muted); font-weight:700; text-transform:uppercase;">Status</span>
-                                <span style="font-size:10px; color:#cbd5e1; font-weight:700;">Pending Submission</span>
+                                <span style="font-size:10px; color:var(--accent); font-weight:700;">Available</span>
                             </div>
                             <button class="btn-premium-ai" onclick="window.openCampaignDetailModal('${c.id}')" style="width:100%; padding: 8px; font-size:11px;">
-                                <svg viewBox="0 0 24 24" style="width:12px; height:12px; stroke:currentColor; fill:none; stroke-width:2.5; vertical-align:middle; margin-right:4px;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
-                                View Brief & Submit
+                                <svg viewBox="0 0 24 24" style="width:12px; height:12px; stroke:currentColor; fill:none; stroke-width:2.5; vertical-align:middle; margin-right:4px;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 8 12 16"></polyline><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                View Brief & Join
                             </button>
                         </div>
                     `;
+                } else if (!sub) {
+                    const stepper = getStepperHTML('initial');
+                    submissionHTML = `
+                        <div style="display:flex; flex-direction:column; gap:8px; width:100%; border-top: 1px solid rgba(255,255,255,0.05); padding-top:12px; margin-top:4px;">
+                            <!-- Stepper Progress Bar -->
+                            ${stepper}
+                            
+                            <!-- Add Link or Drag File Option Selection Tabs -->
+                            <div style="display: flex; background: rgba(5, 7, 12, 0.4); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 2px; margin-bottom: 6px; width: 100%;">
+                                <button type="button" class="tab-btn-link" onclick="window.setHomeSubmissionType('${c.id}', 'link')" id="tabLink_${c.id}" style="flex:1; background: rgba(250, 204, 21, 0.08); border: none; border-radius: 6px; color: #fff; font-size: 10px; font-weight: 700; padding: 5px 0; cursor: pointer; transition: 0.2s;">Add Link</button>
+                                <button type="button" class="tab-btn-file" onclick="window.setHomeSubmissionType('${c.id}', 'file')" id="tabFile_${c.id}" style="flex:1; background: transparent; border: none; border-radius: 6px; color: var(--text-muted); font-size: 10px; font-weight: 700; padding: 5px 0; cursor: pointer; transition: 0.2s;">Upload File</button>
+                            </div>
+                            
+                            <!-- Tab Content: Add Link -->
+                            <div id="linkBlock_${c.id}" style="display: block;">
+                                <div style="display:flex; flex-direction:column; gap:4px; margin-bottom:8px;">
+                                    <label style="font-size:8px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Platform</label>
+                                    <select id="submissionPlatform_${c.id}" style="background:rgba(15,23,42,0.6); border:1px solid rgba(255,255,255,0.08); border-radius:8px; padding:6px 10px; color:#fff; font-size:11px; outline:none; width:100%;">
+                                        <option value="tiktok">TikTok Video</option>
+                                        <option value="reels">Instagram Reel</option>
+                                        <option value="shorts">YouTube Short</option>
+                                        <option value="other">Other Link</option>
+                                    </select>
+                                </div>
+                                <div style="display:flex; flex-direction:column; gap:4px; margin-bottom:8px;">
+                                    <label style="font-size:8px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Posted Video Link</label>
+                                    <input type="url" id="submissionUrl_${c.id}" placeholder="https://tiktok.com/@yourname/video/..." style="background:rgba(15,23,42,0.6); border:1px solid rgba(255,255,255,0.08); border-radius:8px; padding:6px 10px; color:#fff; font-size:11px; outline:none; width:100%;">
+                                </div>
+                            </div>
+                            
+                            <!-- Tab Content: Upload File -->
+                            <div id="fileBlock_${c.id}" style="display: none;">
+                                <div style="display:flex; flex-direction:column; gap:4px; margin-bottom:8px;">
+                                    <label style="font-size:8px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Upload Video File</label>
+                                    <div onclick="document.getElementById('fileInput_${c.id}').click()" style="border: 1px dashed rgba(250, 204, 21, 0.25); background: rgba(250, 204, 21, 0.02); border-radius: 8px; padding: 12px 10px; text-align: center; cursor: pointer; transition: 0.3s;" id="dropzone_${c.id}">
+                                        <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; stroke: var(--accent); fill: none; stroke-width: 2.5; margin: 0 auto 4px auto;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                                        <span style="font-size: 9px; color: #fff; font-weight: 700; display: block;" id="fileName_${c.id}">Choose Video File</span>
+                                        <span style="font-size: 7px; color: var(--text-muted); display: block; margin-top: 1px;">MP4, MOV or WebM up to 50MB</span>
+                                    </div>
+                                    <input type="file" id="fileInput_${c.id}" accept="video/*" style="display: none;" onchange="window.handleHomeFileSelect(this, '${c.id}')">
+                                </div>
+                            </div>
+                            
+                            <!-- Actions Row -->
+                            <div style="display: flex; gap: 8px; margin-top: 6px; width:100%;">
+                                <button type="button" class="btn-outline-close" onclick="window.openCampaignDetailModal('${c.id}')" style="flex:1; height:34px; font-size:10px; padding:0; font-weight:700; margin:0;">
+                                    View Brief
+                                </button>
+                                <button type="button" class="btn-premium-ai" id="submissionSubmitBtn_${c.id}" onclick="window.handleHomeCampaignSubmit('${c.id}')" style="flex:2; height:34px; font-size:10px; padding:0; box-shadow: 0 4px 12px rgba(250, 204, 21, 0.25); margin:0;">
+                                    Submit Asset
+                                </button>
+                            </div>
+                        </div>
+                    `;
                 } else {
+                    const stepper = getStepperHTML(sub.status);
+                    
                     let statusColor = '#eab308'; 
                     let statusLabel = 'In Review';
                     if (sub.status === 'approved') { statusColor = '#22c55e'; statusLabel = 'Approved'; }
@@ -5887,7 +6364,7 @@
                     if (percentage >= 100) milestoneText = `★ MAX MILESTONE UNLOCKED!`;
                     
                     let progressBarHTML = `
-                        <div>
+                        <div style="margin-top: 6px;">
                             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
                                 <span style="font-size:9px; color:var(--text-muted); font-weight:700;">Progress to Milestone</span>
                                 <span style="font-size:9px; color:var(--accent); font-weight:800;">${percentage}%</span>
@@ -5901,11 +6378,6 @@
                     
                     let analyticsPanelHTML = '';
                     if (sub.status === 'tracking' || sub.status === 'approved') {
-                        let growthRate = '+14.2%';
-                        if (views > 10000) growthRate = '+42.5%';
-                        else if (views > 5000) growthRate = '+28.9%';
-                        else if (views === 0) growthRate = '0%';
-                        
                         analyticsPanelHTML = `
                             <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:8px; width:100%; background:rgba(15, 23, 42, 0.4); border: 1px solid rgba(255,255,255,0.05); border-radius:12px; padding:10px; margin-top:10px;">
                                 <div style="display:flex; flex-direction:column; gap:2px; align-items:center;">
@@ -5922,10 +6394,21 @@
                                 </div>
                             </div>
                         `;
+                    } else {
+                        let statusText = 'Our verification team is reviewing your submitted asset. Once verified, details will display here.';
+                        if (sub.status === 'rejected') {
+                            statusText = 'Submission rejected. Please review our clipping guidelines and submit a new verification asset.';
+                        }
+                        analyticsPanelHTML = `
+                            <div style="width: 100%; background: rgba(255, 255, 255, 0.01); border: 1px solid rgba(255,255,255,0.04); border-radius: 12px; padding: 10px; margin-top: 8px; font-size: 10px; line-height: 1.45; color: ${sub.status === 'rejected' ? '#f87171' : 'var(--text-muted)'}; text-align: center;">
+                                ${statusText}
+                            </div>
+                        `;
                     }
                     
                     submissionHTML = `
                         <div style="display:flex; flex-direction:column; gap:6px; width:100%; border-top: 1px solid rgba(255,255,255,0.05); padding-top:12px; margin-top:4px;">
+                            ${stepper}
                             ${progressBarHTML}
                             ${analyticsPanelHTML}
                             <button class="btn-outline-close" onclick="window.openCampaignDetailModal('${c.id}')" style="width:100%; height:32px; font-size:11px; margin-top:6px; padding:0; font-weight:700;">
@@ -5954,6 +6437,128 @@
                 `;
                 container.innerHTML += card;
             });
+        };
+
+        // --- Added tab handlers and upload controllers for Home Card submissions ---
+        window.setHomeSubmissionType = function(id, type) {
+            const btnLink = document.getElementById(`tabLink_${id}`);
+            const btnFile = document.getElementById(`tabFile_${id}`);
+            const linkBlock = document.getElementById(`linkBlock_${id}`);
+            const fileBlock = document.getElementById(`fileBlock_${id}`);
+            if (!btnLink || !btnFile || !linkBlock || !fileBlock) return;
+            
+            if (type === 'link') {
+                btnLink.style.background = 'rgba(250, 204, 21, 0.08)';
+                btnLink.style.color = '#fff';
+                btnFile.style.background = 'transparent';
+                btnFile.style.color = 'var(--text-muted)';
+                linkBlock.style.display = 'block';
+                fileBlock.style.display = 'none';
+            } else {
+                btnLink.style.background = 'transparent';
+                btnLink.style.color = 'var(--text-muted)';
+                btnFile.style.background = 'rgba(250, 204, 21, 0.08)';
+                btnFile.style.color = '#fff';
+                linkBlock.style.display = 'none';
+                fileBlock.style.display = 'block';
+            }
+        };
+
+        window.handleHomeFileSelect = function(input, id) {
+            const label = document.getElementById(`fileName_${id}`);
+            const dropzone = document.getElementById(`dropzone_${id}`);
+            if (!input.files || input.files.length === 0) return;
+            
+            const file = input.files[0];
+            if (label) label.innerText = file.name;
+            if (dropzone) {
+                dropzone.style.borderColor = '#4ade80';
+                dropzone.style.background = 'rgba(74, 222, 128, 0.02)';
+            }
+        };
+
+        window.handleHomeCampaignSubmit = async function(campaignId) {
+            const campaign = allCampaigns.find(c => c.id === campaignId);
+            if (!campaign) {
+                alert("Campaign not found!");
+                return;
+            }
+            const campaignTitle = campaign.title;
+            const reward = parseFloat(campaign.reward || 0);
+            const payoutType = campaign.payoutType || 'flat';
+            let productImage = campaign.productImage || '';
+            if (!productImage) {
+                let tagLower = (campaign.tag || '').toLowerCase();
+                if (tagLower === 'reels') {
+                    productImage = 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&w=400&q=80';
+                } else if (tagLower === 'youtube') {
+                    productImage = 'https://images.unsplash.com/photo-161162616305-c69b3fa7fbe0?auto=format&fit=crop&w=400&q=80';
+                } else if (tagLower === 'post') {
+                    productImage = 'https://images.unsplash.com/photo-1611590027211-b954fd027b51?auto=format&fit=crop&w=400&q=80';
+                } else {
+                    productImage = 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=400&q=80';
+                }
+            }
+
+            const linkBlock = document.getElementById(`linkBlock_${campaignId}`);
+            const isLink = linkBlock && linkBlock.style.display !== 'none';
+            
+            let submissionUrl = '';
+            let platform = 'other';
+            
+            if (isLink) {
+                const urlInput = document.getElementById(`submissionUrl_${campaignId}`);
+                const platformSelect = document.getElementById(`submissionPlatform_${campaignId}`);
+                if (urlInput) submissionUrl = urlInput.value.trim();
+                if (platformSelect) platform = platformSelect.value;
+                
+                if (!submissionUrl) {
+                    alert("Please enter a valid clip link!");
+                    return;
+                }
+            } else {
+                const fileInput = document.getElementById(`fileInput_${campaignId}`);
+                if (!fileInput || !fileInput.files || fileInput.files.length === 0) {
+                    alert("Please select a video file to upload!");
+                    return;
+                }
+                const file = fileInput.files[0];
+                submissionUrl = `https://elitex-storage.local/uploads/${partnerId}/${campaignId}/${encodeURIComponent(file.name)}`;
+                platform = 'file-upload';
+            }
+            
+            const submitBtn = document.getElementById(`submissionSubmitBtn_${campaignId}`);
+            if (!submitBtn) return;
+            const originalText = submitBtn.innerText;
+            submitBtn.innerText = "Submitting asset...";
+            submitBtn.disabled = true;
+            
+            try {
+                // Save to submissions collection in Firestore
+                await addDoc(collection(db, "submissions"), {
+                    campaignId: campaignId,
+                    campaignTitle: campaignTitle,
+                    reward: reward,
+                    payoutType: payoutType,
+                    productImage: productImage,
+                    userName: userName || "Anonymous Partner",
+                    partnerId: partnerId || "EX-USR-GUEST",
+                    submissionUrl: submissionUrl,
+                    platform: platform,
+                    views: 0,
+                    status: 'pending',
+                    createdAt: serverTimestamp()
+                });
+                
+                alert("Success! Verification asset submitted successfully. The review progress timeline has been updated on your card.");
+                
+            } catch (error) {
+                console.error("Home Submission Error: ", error);
+                alert("Failed to submit verification. Please try again.");
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerText = originalText;
+            }
         };
 
         let activeSubmissionsListener = null;
