@@ -2249,6 +2249,62 @@
             transform: skewX(-25deg);
             animation: shimmer-progress-light 2.5s infinite ease-in-out;
         }
+        @keyframes premiumFlameBreath {
+            0% {
+                transform: scale(0.94);
+                box-shadow: 0 0 8px rgba(249, 115, 22, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+                border-color: rgba(249, 115, 22, 0.7);
+            }
+            50% {
+                transform: scale(1.06);
+                box-shadow: 0 0 18px rgba(249, 115, 22, 0.85), inset 0 1px 2.5px rgba(255, 255, 255, 0.35);
+                border-color: rgba(253, 186, 116, 0.95);
+            }
+            100% {
+                transform: scale(0.94);
+                box-shadow: 0 0 8px rgba(249, 115, 22, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+                border-color: rgba(249, 115, 22, 0.7);
+            }
+        }
+        @keyframes premiumGlowPulse {
+            0% {
+                box-shadow: 0 0 10px rgba(249, 115, 22, 0.45), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+                filter: drop-shadow(0 0 2px rgba(249, 115, 22, 0.2));
+            }
+            100% {
+                box-shadow: 0 0 18px rgba(249, 115, 22, 0.7), inset 0 1px 2px rgba(255, 255, 255, 0.3);
+                filter: drop-shadow(0 0 6px rgba(249, 115, 22, 0.45));
+            }
+        }
+        .progress-bar-shimmer-fire {
+            position: relative;
+            background: linear-gradient(90deg, #d97706, #ea580c, #f59e0b, #ea580c, #d97706);
+            background-size: 200% 100%;
+            animation: burnFlow 6s linear infinite, premiumGlowPulse 2s ease-in-out infinite alternate;
+            overflow: visible !important;
+        }
+        .premium-flame-badge {
+            position: absolute;
+            right: -13px;
+            top: -7px;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            border: 1.5px solid rgba(249, 115, 22, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            pointer-events: none;
+            animation: premiumFlameBreath 2s ease-in-out infinite;
+        }
+        @keyframes burnFlow {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+        }
 
         .milestone-progress-bar-fill.progress-bar-shimmer {
             background-image: linear-gradient(90deg, 
@@ -2538,6 +2594,46 @@
         .click-target:active {
             transform: scale(0.85);
         }
+        .stats-row-container::-webkit-scrollbar {
+            display: none !important;
+        }
+        @media (max-width: 480px) {
+            .stats-row-container {
+                gap: 6px !important;
+                overflow: hidden !important;
+            }
+            .stats-row-container .stat-box-card {
+                flex: 1 1 33.33% !important;
+                min-width: 0 !important;
+                padding: 10px 4px !important;
+                flex-direction: column !important;
+                justify-content: center !important;
+                align-items: center !important;
+                text-align: center !important;
+                gap: 2px !important;
+            }
+            .stats-row-container .stat-icon-wrapper {
+                display: none !important;
+            }
+            .stats-row-container .stat-text-wrapper {
+                width: 100% !important;
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+            }
+            .stats-row-container .stat-label-title {
+                font-size: 7px !important;
+                letter-spacing: 0px !important;
+            }
+            .stats-row-container .stat-value-text {
+                font-size: 11px !important;
+                margin: 2px 0 !important;
+            }
+            .stats-row-container .stat-desc-text {
+                font-size: 6px !important;
+                opacity: 0.85 !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -2609,98 +2705,8 @@
                 </div>
             </div>
 
-            <!-- Beautiful One-Line Box-Style Stats Row -->
-            <div style="display: flex; flex-direction: row; justify-content: space-between; align-items: stretch; gap: 8px; margin-bottom: 24px; width: 100%; flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none;">
-                
-                <!-- Card 1: Available Balance -->
-                <div class="glass-panel" style="flex: 1; min-width: 100px; padding: 10px 12px; display: flex; align-items: center; gap: 8px; border-radius: 12px; margin: 0; box-shadow: 0 4px 12px rgba(0,0,0,0.15); flex-shrink: 0;">
-                    <div style="width: 28px; height: 28px; border-radius: 50%; background: rgba(250, 204, 21, 0.08); border: 1px solid rgba(250, 204, 21, 0.15); display: flex; align-items: center; justify-content: center; color: var(--accent); flex-shrink: 0;">
-                        <svg viewBox="0 0 24 24" style="width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2.5;"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
-                    </div>
-                    <div>
-                        <span style="font-size: 8px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 1px;">Wallet Balance</span>
-                        <div class="wallet-balance-val" style="font-size: 13px; font-weight: 900; color: #fff; text-shadow: 0 0 15px var(--accent-glow);">₹ 1,024.00</div>
-                        <div style="font-size: 8px; color: var(--text-muted); font-weight: 600; margin-top: 1px;">Total Earnings: <span id="campaignEarningsVal" style="color: var(--accent); font-weight: 800;">₹99.00</span></div>
-                    </div>
-                </div>
 
-                <!-- Card 2: Views Engagement -->
-                <div class="glass-panel" style="flex: 1; min-width: 100px; padding: 10px 12px; display: flex; align-items: center; gap: 8px; border-radius: 12px; margin: 0; box-shadow: 0 4px 12px rgba(0,0,0,0.15); flex-shrink: 0;">
-                    <div style="width: 28px; height: 28px; border-radius: 50%; background: rgba(56, 189, 248, 0.08); border: 1px solid rgba(56, 189, 248, 0.15); display: flex; align-items: center; justify-content: center; color: #38bdf8; flex-shrink: 0;">
-                        <svg viewBox="0 0 24 24" style="width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2.5;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-                    </div>
-                    <div>
-                        <span style="font-size: 8px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 1px;">Views Engagement</span>
-                        <div id="activeTasksCountVal" style="font-size: 13px; font-weight: 900; color: #fff; text-shadow: 0 0 15px rgba(56, 189, 248, 0.2);">0 Views</div>
-                        <div style="font-size: 8px; color: var(--text-muted); font-weight: 600; margin-top: 1px;">Across all campaigns</div>
-                    </div>
-                </div>
 
-                <!-- Card 3: Review Queue -->
-                <div class="glass-panel" style="flex: 1; min-width: 100px; padding: 10px 12px; display: flex; align-items: center; gap: 8px; border-radius: 12px; margin: 0; box-shadow: 0 4px 12px rgba(0,0,0,0.15); flex-shrink: 0;">
-                    <div style="width: 28px; height: 28px; border-radius: 50%; background: rgba(168, 85, 247, 0.08); border: 1px solid rgba(168, 85, 247, 0.15); display: flex; align-items: center; justify-content: center; color: #a855f7; flex-shrink: 0;">
-                        <svg viewBox="0 0 24 24" style="width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2.5;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                    </div>
-                    <div>
-                        <span style="font-size: 8px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 1px;">Review Queue</span>
-                        <div id="submissionStatusCountVal" style="font-size: 13px; font-weight: 900; color: #fff; text-shadow: 0 0 15px rgba(168, 85, 247, 0.2);">5 Pending</div>
-                        <div style="font-size: 8px; color: var(--text-muted); font-weight: 600; margin-top: 1px;">Awaiting verification</div>
-                    </div>
-                </div>
-                
-            </div>
-
-            <!-- Weekly Earnings Performance Spline Chart on Home -->
-            <div class="glass-panel" style="padding: 20px; margin-bottom: 24px; border: 1px solid var(--surface-border); border-radius: 20px; box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                    <h3 style="margin: 0; font-size: 14px; color: #fff; font-weight: 800; display:flex; align-items:center; gap:8px;">
-                        <svg viewBox="0 0 24 24" style="width:16px; height:16px; stroke:var(--accent); fill:none; stroke-width:2.5;"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
-                        Earnings Analytics (Last 7 Days)
-                    </h3>
-                    <span id="homeChartTotalEarnings" style="font-size:11px; font-weight:800; color:var(--accent); background:rgba(250,204,21,0.08); border:1px solid rgba(250,204,21,0.15); padding:2px 8px; border-radius:6px;">Total: ₹5,600</span>
-                </div>
-                <p style="font-size: 11px; color: var(--text-muted); line-height: 1.4; margin-bottom: 16px;">
-                    Daily campaign rewards credited over the last 7 calendar days. Click any point to view details.
-                </p>
-                <div class="chart-container" style="position:relative; width:100%; height:130px; display:flex; justify-content:center; align-items:center;">
-                    <svg viewBox="0 0 300 100" style="width:100%; height:100%; overflow:visible;">
-                        <defs>
-                            <linearGradient id="homeChartStrokeGrad" x1="0" y1="0" x2="1" y2="0">
-                                <stop offset="0%" stop-color="#fbbf24" />
-                                <stop offset="100%" stop-color="#facc15" />
-                            </linearGradient>
-                            <linearGradient id="homeChartFillGrad" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="0%" stop-color="rgba(250, 204, 21, 0.12)" />
-                                <stop offset="100%" stop-color="rgba(250, 204, 21, 0)" />
-                            </linearGradient>
-                        </defs>
-                        <line x1="0" y1="20" x2="280" y2="20" stroke="rgba(255,255,255,0.03)" stroke-width="1" stroke-dasharray="2 2" />
-                        <line x1="0" y1="50" x2="280" y2="50" stroke="rgba(255,255,255,0.03)" stroke-width="1" stroke-dasharray="2 2" />
-                        <line x1="0" y1="80" x2="280" y2="80" stroke="rgba(255,255,255,0.03)" stroke-width="1" stroke-dasharray="2 2" />
-                        
-                        <path id="homeChartSplineFill" d="" fill="url(#homeChartFillGrad)" style="transition: d 0.5s ease;" />
-                        <path id="homeChartSplineStroke" d="" fill="none" stroke="url(#homeChartStrokeGrad)" stroke-width="2.5" stroke-linecap="round" style="transition: d 0.5s ease;" />
-                        
-                        <circle id="homeChartDot1" cx="10" cy="90" r="3.5" fill="var(--accent)" stroke="#07090f" stroke-width="1.5" class="chart-dot" style="cursor:pointer;" onclick="showHomeChartTooltip(0, event)" />
-                        <circle id="homeChartDot2" cx="51.6" cy="70" r="3.5" fill="var(--accent)" stroke="#07090f" stroke-width="1.5" class="chart-dot" style="cursor:pointer;" onclick="showHomeChartTooltip(1, event)" />
-                        <circle id="homeChartDot3" cx="93.3" cy="80" r="3.5" fill="var(--accent)" stroke="#07090f" stroke-width="1.5" class="chart-dot" style="cursor:pointer;" onclick="showHomeChartTooltip(2, event)" />
-                        <circle id="homeChartDot4" cx="135" cy="55" r="3.5" fill="var(--accent)" stroke="#07090f" stroke-width="1.5" class="chart-dot" style="cursor:pointer;" onclick="showHomeChartTooltip(3, event)" />
-                        <circle id="homeChartDot5" cx="176.6" cy="30" r="3.5" fill="var(--accent)" stroke="#07090f" stroke-width="1.5" class="chart-dot" style="cursor:pointer;" onclick="showHomeChartTooltip(4, event)" />
-                        <circle id="homeChartDot6" cx="218.3" cy="40" r="3.5" fill="var(--accent)" stroke="#07090f" stroke-width="1.5" class="chart-dot" style="cursor:pointer;" onclick="showHomeChartTooltip(5, event)" />
-                        <circle id="homeChartDot7" cx="260" cy="20" r="3.5" fill="var(--accent)" stroke="#07090f" stroke-width="1.5" class="chart-dot" style="cursor:pointer;" onclick="showHomeChartTooltip(6, event)" />
-                    </svg>
-                    <div id="homeChartTooltip" style="position:absolute; display:none; background:rgba(15,23,42,0.95); border:1px solid rgba(250,204,21,0.4); padding:6px 10px; border-radius:8px; font-size:10px; font-weight:800; color:#fff; pointer-events:none; z-index:10; white-space:nowrap; box-shadow:0 4px 12px rgba(0,0,0,0.6);">₹0</div>
-                </div>
-                <div style="display:flex; justify-content:space-between; padding:0 8px; margin-top:8px; font-size:9px; color:var(--text-muted); font-weight:700;">
-                    <span>Mon</span>
-                    <span>Tue</span>
-                    <span>Wed</span>
-                    <span>Thu</span>
-                    <span>Fri</span>
-                    <span>Sat</span>
-                    <span>Sun</span>
-                </div>
-            </div>
 
             <!-- Campaign Briefs Section -->
             <div style="margin-top: 25px; margin-bottom: 20px;">
@@ -4097,7 +4103,7 @@
         let currentAddPaymentMethod = 'upi';
 
         const defaultTransactions = [
-            { id: 1, title: 'UGC Campaign Promo', amount: 99, date: 'Today, 11:42 AM', type: 'credit', status: 'completed' }
+            { id: 1, title: 'Portal Wallet Initialization', amount: 1024, date: 'Today, 11:42 AM', type: 'credit', status: 'completed' }
         ];
         let transactions = [...defaultTransactions];
         let creditedSubmissions = [];
@@ -4120,12 +4126,12 @@
         let currentJoinCampaignId = null;
 
         function loadUserSession() {
-            // LocalStorage state migration to load new v2 defaults
-            if (!localStorage.getItem('eliteX_migration_v2')) {
+            // LocalStorage state migration to load new v3 defaults
+            if (!localStorage.getItem('eliteX_migration_v3')) {
                 localStorage.removeItem('eliteX_user_session');
                 localStorage.removeItem('eliteX_bank_profile');
                 localStorage.removeItem('eliteX_pending_count');
-                localStorage.setItem('eliteX_migration_v2', 'true');
+                localStorage.setItem('eliteX_migration_v3', 'true');
             }
             
             let session = localStorage.getItem('eliteX_user_session');
@@ -4449,7 +4455,7 @@
             if (earningsEl) earningsEl.innerText = `₹${totalEarnings.toFixed(0)}`;
 
             // Count pending submissions
-            const pendingCount = localStorage.getItem('eliteX_pending_count') || '5';
+            const pendingCount = localStorage.getItem('eliteX_pending_count') || '0';
             const pendingEl = document.getElementById('submissionStatusCountVal');
             if (pendingEl) pendingEl.innerText = `${pendingCount} Pending`;
         };
@@ -4508,14 +4514,17 @@
             window.closeCampaignDetailModal();
         };
 
-        window.acceptCampaign = function(id, title) {
+        window.acceptCampaign = async function(id, title) {
             try {
                 logJoinDebug("acceptCampaign started. ID: " + id + ", Title: " + title);
                 if (!acceptedCampaigns) {
                     logJoinDebug("acceptedCampaigns array is undefined", true);
                     return;
                 }
-                if (acceptedCampaigns.includes(id)) {
+                
+                const oldRejected = window.userSubmissions ? window.userSubmissions.find(s => s.campaignId === id && s.status === 'rejected') : null;
+                
+                if (acceptedCampaigns.includes(id) && !oldRejected) {
                     logJoinDebug("Campaign already joined.", true);
                     return;
                 }
@@ -4528,9 +4537,16 @@
                     return;
                 }
                 
+                if (oldRejected) {
+                    logJoinDebug("Clearing previous rejected submission...");
+                    await deleteDoc(doc(db, "submissions", oldRejected.id));
+                }
+                
                 logJoinDebug("Deducting ₹10 security fee...");
                 availableBalance -= 10;
-                acceptedCampaigns.push(id);
+                if (!acceptedCampaigns.includes(id)) {
+                    acceptedCampaigns.push(id);
+                }
                 localStorage.setItem('eliteX_accepted_campaigns', JSON.stringify(acceptedCampaigns));
                 logJoinDebug("Deducted & saved to localStorage. Updating transactions...");
                 
@@ -4602,8 +4618,13 @@
             const searchVal = (document.getElementById('campaignSearchInput')?.value || '').toLowerCase().trim();
             
             const filtered = allCampaigns.filter(c => {
-                // Hide already joined campaigns from the marketplace discovery feed
-                if (acceptedCampaigns.includes(c.id)) return false;
+                // Hide already joined campaigns from the marketplace discovery feed, unless they have a rejected submission
+                if (acceptedCampaigns.includes(c.id)) {
+                    const sub = window.userSubmissions ? window.userSubmissions.find(s => s.campaignId === c.id) : null;
+                    if (!sub || sub.status !== 'rejected') {
+                        return false;
+                    }
+                }
                 
                 // Hide campaigns with 0 remaining spots (slots occupied limit)
                 const maxSlots = c.maxSlots || 50;
@@ -4684,7 +4705,8 @@
                     }
                 }
                 
-                const isAccepted = acceptedCampaigns.includes(c.id);
+                const sub = window.userSubmissions ? window.userSubmissions.find(s => s.campaignId === c.id) : null;
+                const isAccepted = acceptedCampaigns.includes(c.id) && (!sub || sub.status !== 'rejected');
                 const payoutType = c.payoutType || 'flat';
                 
                 let rateLabel = 'Est. Payout';
@@ -5179,7 +5201,8 @@
                 ${termsHTML}
             `;
             
-            const isAccepted = acceptedCampaigns.includes(campaign.id);
+            const sub = window.userSubmissions ? window.userSubmissions.find(s => s.campaignId === campaign.id) : null;
+            const isAccepted = acceptedCampaigns.includes(campaign.id) && (!sub || sub.status !== 'rejected');
             
             if (!isAccepted) {
                 content.innerHTML += `
@@ -5222,34 +5245,26 @@
                 `;
             } else {
                 content.innerHTML += `
-                    <form id="campaignSubmissionForm" onsubmit="window.handleCampaignSubmit(event, '${campaign.id}', '${campaign.title.replace(/'/g, "\\'")}', ${campaign.reward}, '${payoutType}', '${productImg.replace(/'/g, "\\'")}')">
-                        <div style="display:flex; flex-direction:column; gap:6px; margin-bottom:12px;">
-                            <label style="font-size:10px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Social Platform</label>
-                            <select id="submissionPlatform" required
-                                style="background:rgba(15,23,42,0.6); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:10px 14px; color:#fff; font-size:12px; outline:none; width:100%;">
-                                <option value="tiktok">TikTok Video</option>
-                                <option value="reels">Instagram Reel</option>
-                                <option value="shorts">YouTube Short</option>
-                                <option value="other">Other Link</option>
-                            </select>
+                    <div style="margin-top: 15px; display:flex; flex-direction:column; gap:12px; text-align:center; animation: fadeIn 0.4s ease;">
+                        <div style="background: rgba(99, 102, 241, 0.08); border: 1px solid rgba(99, 102, 241, 0.25); color: #818cf8; border-radius: 12px; padding: 16px; font-size: 11px; line-height: 1.5; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                            <div style="width: 32px; height: 32px; border-radius: 50%; background: rgba(99, 102, 241, 0.15); display: flex; align-items: center; justify-content: center; color: #818cf8;">
+                                <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 3;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                            </div>
+                            <span style="font-weight: 800; text-transform: uppercase; font-size: 10px; letter-spacing: 0.5px;">Already Joined!</span>
+                            <div>You have joined this campaign. Please submit your video clip link and track milestone progress on your Home tab Workspace.</div>
                         </div>
-                        <div style="display:flex; flex-direction:column; gap:6px; margin-bottom:16px;">
-                            <label style="font-size:10px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Submit Posted Clip Link</label>
-                            <input type="url" id="submissionUrl" placeholder="e.g. https://tiktok.com/@yourusername/video/..." required
-                                style="background:rgba(15,23,42,0.6); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:10px 14px; color:#fff; font-size:12px; outline:none; width:100%;">
-                        </div>
-                        <div style="display:flex; gap:10px; margin-top:10px;">
-                            <button type="button" class="btn-outline-close" onclick="window.referToHome()"
-                                style="flex:1.2; height:40px; margin:0; font-size:11px; padding: 0 4px; display: flex; align-items: center; justify-content: center; gap: 4px; border-color: var(--accent); color: var(--accent); background: none; border: 1px solid var(--accent); border-radius: 12px; cursor: pointer; transition: 0.3s;">
+                        <div style="display:flex; gap:10px; margin-top:8px;">
+                            <button type="button" class="btn-premium-ai" onclick="window.referToHome()"
+                                style="flex:1.2; height:40px; margin:0; font-size:11px; font-weight:800; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 4px 12px rgba(250, 204, 21, 0.25);">
                                 <svg viewBox="0 0 24 24" style="width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2.5;"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-                                Refer to Home
+                                Go to Home
                             </button>
-                            <button type="submit" id="submissionSubmitBtn" class="btn-premium-ai"
-                                style="flex:1.8; padding:12px; font-size:12px; height:40px; margin:0; box-shadow: 0 4px 12px rgba(250, 204, 21, 0.25);">
-                                Submit Clip URL
+                            <button type="button" class="btn-outline-close" onclick="window.closeCampaignDetailModal()"
+                                style="flex:0.8; height:40px; margin:0; font-size:11px; font-weight:700;">
+                                Close
                             </button>
                         </div>
-                    </form>
+                    </div>
                 `;
             }
             
@@ -7471,6 +7486,11 @@
                     `;
                 } else if (!sub) {
                     const stepper = getStepperHTML('initial');
+                    const payoutType = c.payoutType || 'flat';
+                    let initialMetricName = 'Views';
+                    if (payoutType === 'reach') initialMetricName = 'Reach';
+                    else if (payoutType === 'conversion') initialMetricName = 'Leads';
+
                     submissionHTML = `
                         <div style="display:flex; flex-direction:column; gap:8px; width:100%; border-top: 1px solid rgba(255,255,255,0.05); padding-top:12px; margin-top:4px;">
                             <!-- Stepper Progress Bar -->
@@ -7480,6 +7500,25 @@
                             <div style="display:flex; flex-direction:column; gap:4px; margin-bottom:8px;">
                                 <label style="font-size:8px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Add Link</label>
                                 <input type="url" id="submissionUrl_${c.id}" placeholder="Paste your video link here..." style="background:rgba(15,23,42,0.6); border:1px solid rgba(255,255,255,0.08); border-radius:8px; padding:8px 12px; color:#fff; font-size:11px; outline:none; width:100%;">
+                            </div>
+
+                            <!-- Earning Progress Bar (Initial: 0%) -->
+                            <div style="margin-top: 10px; background: rgba(15,23,42,0.15); border-radius: 12px; padding: 10px 0;">
+                                <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:6px; padding: 0 10px;">
+                                    <span style="font-size:9px; color:var(--text-muted); font-weight:700; text-transform:uppercase; letter-spacing:0.5px;">Earning Progress</span>
+                                    <div style="text-align:right; font-size:10px; font-weight:700; color:var(--text-muted);">
+                                        <span style="color:#fff;">${initialMetricName}: 0</span>
+                                        <span style="margin: 0 4px; color:rgba(255,255,255,0.15);">|</span>
+                                        <span style="color:var(--accent); font-weight:800;">Bonus: ₹0</span>
+                                    </div>
+                                </div>
+                                <div class="progress-bar-premium-bg" style="width: calc(100% - 20px); margin: 0 10px; height:12px; background:rgba(5, 7, 12, 0.6); border:1px solid rgba(255,255,255,0.06); border-radius:12px; overflow:visible; position:relative; box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" role="progressbar">
+                                    <div class="progress-bar-premium-fill progress-bar-shimmer-yellow" style="width:0%; height:100%; border-radius:12px; transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1); position:relative; overflow:visible !important;"></div>
+                                </div>
+                                <div style="display:flex; justify-content:space-between; align-items:center; margin-top:6px; padding: 0 10px;">
+                                    <span style="font-size:9px; color:var(--text-muted); font-weight:600;">Awaiting link submission</span>
+                                    <span style="font-size:10px; color:var(--accent); background:rgba(250,204,21,0.06); border:1px solid rgba(250,204,21,0.12); padding:1px 6px; border-radius:6px; font-weight:800;">0%</span>
+                                </div>
                             </div>
                             
                             <!-- Actions Row -->
@@ -7512,16 +7551,14 @@
                     
                     if (payoutType === 'cpm') {
                         earnings = (views * rewardRate) / 1000;
-                        if (sub.status === 'approved') {
-                            if (views >= 50000) earnings += 2500;
-                            else if (views >= 10000) earnings += 500;
-                        }
+                        const tenKBonus = Math.floor(views / 10000) * 10;
+                        const hundredKBonus = Math.floor(views / 100000) * 50;
+                        earnings += (tenKBonus + hundredKBonus);
                     } else if (payoutType === 'reach') {
                         earnings = (reach * rewardRate) / 1000;
-                        if (sub.status === 'approved') {
-                            if (reach >= 50000) earnings += 2500;
-                            else if (reach >= 10000) earnings += 500;
-                        }
+                        const tenKBonus = Math.floor(reach / 10000) * 10;
+                        const hundredKBonus = Math.floor(reach / 100000) * 50;
+                        earnings += (tenKBonus + hundredKBonus);
                     } else if (payoutType === 'conversion') {
                         earnings = conversions * rewardRate;
                         if (sub.status === 'approved') {
@@ -7530,23 +7567,44 @@
                         }
                     } else if (payoutType === 'performance') {
                         earnings = ((views * rewardRate) / 2000) + ((conversions * rewardRate) / 2);
-                        if (sub.status === 'approved') {
-                            if (views >= 50000) earnings += 2500;
-                            else if (views >= 10000) earnings += 500;
-                        }
+                        const tenKBonus = Math.floor(views / 10000) * 10;
+                        const hundredKBonus = Math.floor(views / 100000) * 50;
+                        earnings += (tenKBonus + hundredKBonus);
                     } else {
-                        earnings = sub.status === 'approved' ? rewardRate : 0;
-                        if (sub.status === 'approved' && views >= 10000) {
-                            earnings += 200;
-                        }
+                        earnings = (sub.status === 'approved' || sub.status === 'tracking') ? rewardRate : 0;
+                        const tenKBonus = Math.floor(views / 10000) * 10;
+                        const hundredKBonus = Math.floor(views / 100000) * 50;
+                        earnings += (tenKBonus + hundredKBonus);
                     }
                     
-                    let targetGoal = payoutType === 'conversion' ? 100 : 50000;
-                    let currentProgressMetric = payoutType === 'conversion' ? conversions : (payoutType === 'reach' ? reach : views);
-                    let percentage = Math.min(Math.round((currentProgressMetric / targetGoal) * 100), 100);
+                    // For pending/rejected, show 0 earnings progress
+                    let displayEarnings = (sub.status === 'approved' || sub.status === 'tracking') ? earnings : 0;
                     
-                    let milestoneText = `Get ${targetGoal.toLocaleString()} ${payoutType === 'conversion' ? 'leads' : 'views'} for bonus!`;
-                    if (percentage >= 100) milestoneText = `★ MAX MILESTONE UNLOCKED!`;
+                    // Progress bar percentage scales from 0 to 100% relative to a milestone goal of 100,000 views/reach or 100 leads
+                    let targetGoal = payoutType === 'conversion' ? 100 : 100000;
+                    let metricValue = payoutType === 'reach' ? reach : (payoutType === 'conversion' ? conversions : views);
+                    
+                    let percentage = 0;
+                    let milestoneText = 'Awaiting link submission';
+                    
+                    if (sub.status === 'pending') {
+                        percentage = 0;
+                        milestoneText = 'Awaiting brand verification review';
+                    } else if (sub.status === 'rejected') {
+                        percentage = 0;
+                        milestoneText = 'Submission rejected. View guidelines.';
+                    } else {
+                        percentage = Math.min(Math.round((metricValue / targetGoal) * 100), 100);
+                        if (isNaN(percentage)) percentage = 0;
+                        
+                        if (percentage >= 100) {
+                            milestoneText = '★ MAX PERFORMANCE MILESTONE REACHED!';
+                        } else if (sub.status === 'approved') {
+                            milestoneText = 'Reward successfully credited to your wallet';
+                        } else {
+                            milestoneText = `Get ${targetGoal.toLocaleString()} ${payoutType === 'conversion' ? 'leads' : (payoutType === 'reach' ? 'reach' : 'views')} to unlock max bonus!`;
+                        }
+                    }
                     
                     let progressClass = 'progress-bar-shimmer-yellow';
                     let progressAccentColor = 'var(--accent)';
@@ -7557,26 +7615,68 @@
                         progressClass = 'progress-bar-shimmer-red';
                         progressAccentColor = 'var(--danger)';
                     } else if (sub.status === 'tracking') {
-                        progressClass = 'progress-bar-shimmer-blue';
-                        progressAccentColor = '#38bdf8';
+                        progressClass = 'progress-bar-shimmer-fire';
+                        progressAccentColor = '#f97316';
+                    }
+
+                    let metricName = 'Views';
+                    let bonus = 0;
+                    
+                    if (payoutType === 'reach') {
+                        metricName = 'Reach';
+                        bonus = (Math.floor(reach / 10000) * 10) + (Math.floor(reach / 100000) * 50);
+                    } else if (payoutType === 'conversion') {
+                        metricName = 'Leads';
+                        if (conversions >= 100) bonus = 2000;
+                        else if (conversions >= 20) bonus = 400;
+                    } else if (payoutType === 'performance') {
+                        metricName = 'Views';
+                        bonus = (Math.floor(views / 10000) * 10) + (Math.floor(views / 100000) * 50);
+                    } else {
+                        metricName = 'Views';
+                        bonus = (Math.floor(views / 10000) * 10) + (Math.floor(views / 100000) * 50);
                     }
 
                     let progressStatsHTML = `
-                        <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:6px;">
-                            <span style="font-size:9px; color:var(--text-muted); font-weight:700; text-transform:uppercase; letter-spacing:0.5px;">Milestone Progress</span>
-                            <div style="text-align:right;">
-                                <span style="font-size:10px; color:#fff; font-weight:800;">${currentProgressMetric.toLocaleString()}</span>
-                                <span style="font-size:8px; color:var(--text-muted); font-weight:600;">/ ${targetGoal.toLocaleString()}</span>
+                        <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:6px; padding: 0 10px;">
+                            <span style="font-size:9px; color:var(--text-muted); font-weight:700; text-transform:uppercase; letter-spacing:0.5px;">Earning Progress</span>
+                            <div style="text-align:right; font-size:10px; font-weight:700; color:var(--text-muted);">
+                                <span style="color:#fff;">${metricName}: ${metricValue.toLocaleString()}</span>
+                                <span style="margin: 0 4px; color:rgba(255,255,255,0.15);">|</span>
+                                <span style="color:var(--accent); font-weight:800; text-shadow:0 0 8px var(--accent-glow);">Bonus: ₹${bonus.toLocaleString('en-IN', {minimumFractionDigits: 0, maximumFractionDigits: 0})}</span>
                             </div>
                         </div>
                     `;
                     let progressBarHTML = `
                         <div style="margin-top: 10px; background: rgba(15,23,42,0.15); border-radius: 12px; padding: 10px 0;">
                             ${progressStatsHTML}
-                            <div class="progress-bar-premium-bg" style="width:100%; height:12px; background:rgba(5, 7, 12, 0.6); border:1px solid rgba(255,255,255,0.06); border-radius:12px; overflow:hidden; position:relative; box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);" aria-valuenow="${percentage}" aria-valuemin="0" aria-valuemax="100" role="progressbar">
-                                <div class="progress-bar-premium-fill ${progressClass}" style="width:${percentage}%; height:100%; border-radius:12px; transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);"></div>
+                            <div class="progress-bar-premium-bg" style="width: calc(100% - 20px); margin: 0 10px; height:12px; background:rgba(5, 7, 12, 0.6); border:1px solid rgba(255,255,255,0.06); border-radius:12px; overflow:visible; position:relative; box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);" aria-valuenow="${percentage}" aria-valuemin="0" aria-valuemax="100" role="progressbar">
+                                <div class="progress-bar-premium-fill ${progressClass}" style="width:${percentage}%; height:100%; border-radius:12px; transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1); position:relative; overflow:visible !important;">
+                                    ${percentage > 0 ? `
+                                    <div class="premium-flame-badge">
+                                        <svg viewBox="0 0 24 24" style="width:15px; height:15px;" fill="none">
+                                            <defs>
+                                                <linearGradient id="premiumFlameOuter" x1="0" y1="1" x2="0" y2="0">
+                                                    <stop offset="0%" stop-color="#dc2626" />
+                                                    <stop offset="70%" stop-color="#ea580c" />
+                                                    <stop offset="100%" stop-color="#f59e0b" />
+                                                </linearGradient>
+                                                <linearGradient id="premiumFlameInner" x1="0" y1="1" x2="0" y2="0">
+                                                    <stop offset="0%" stop-color="#f97316" />
+                                                    <stop offset="60%" stop-color="#facc15" />
+                                                    <stop offset="100%" stop-color="#ffffff" />
+                                                </linearGradient>
+                                            </defs>
+                                            <!-- Outer Flame -->
+                                            <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z" fill="url(#premiumFlameOuter)" />
+                                            <!-- Inner Flame Core -->
+                                            <path d="M10.2 14.8a1.5 1.5 0 0 0 1.5-1.5c0-.83-.3-1.2-.6-1.8-.643-1.286-.134-2.432 1.2-3.6.3 1.5 1.2 2.94 2.4 3.9 1.2.96 1.8 2.1 1.8 3.3a4.2 4.2 0 1 1-8.4 0c0-.692.26-1.376.6-1.8a1.5 1.5 0 0 0 1.5 1.5z" fill="url(#premiumFlameInner)" opacity="0.95" />
+                                        </svg>
+                                    </div>
+                                    ` : ''}
+                                </div>
                             </div>
-                            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:6px;">
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:6px; padding: 0 10px;">
                                 <span style="font-size:9px; color:var(--text-muted); font-weight:600;">${milestoneText}</span>
                                 <span style="font-size:10px; color:${progressAccentColor}; background:${progressAccentColor === 'var(--accent)' ? 'rgba(250,204,21,0.06)' : (progressAccentColor === 'var(--success)' ? 'rgba(74,222,128,0.06)' : (progressAccentColor === 'var(--danger)' ? 'rgba(239,68,68,0.06)' : 'rgba(56,189,248,0.06)'))}; border:1px solid ${progressAccentColor === 'var(--accent)' ? 'rgba(250,204,21,0.12)' : (progressAccentColor === 'var(--success)' ? 'rgba(74,222,128,0.12)' : (progressAccentColor === 'var(--danger)' ? 'rgba(239,68,68,0.12)' : 'rgba(56,189,248,0.12)'))}; padding:1px 6px; border-radius:6px; font-weight:800;">${percentage}%</span>
                             </div>
@@ -7630,80 +7730,33 @@
                                     <span style="color:#fff; font-weight:600; text-transform:capitalize;">${sub ? sub.platform : 'link'}</span>
                                 </div>
                                 <div style="display:flex; justify-content:space-between; margin-top:4px;">
-                                    <span style="color:var(--text-muted);">Submitted On:</span>
-                                    <span style="color:#fff; font-weight:600;">${sub && sub.createdAt ? new Date(sub.createdAt.seconds * 1000).toLocaleDateString() : 'Today'}</span>
+                                    <span style="color:var(--text-muted);">IP Address:</span>
+                                    <span style="color:#fff; font-weight:600;">${sub && sub.ipAddress ? sub.ipAddress : '103.241.12.184'}</span>
                                 </div>
-                            </div>
-                        </div>
-                        
-                        <div onclick="window.toggleChecklist('${c.id}')" style="display:flex; justify-content:space-between; align-items:center; cursor:pointer; padding:6px 8px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.04); border-radius:8px; margin-top:6px; user-select:none;">
-                            <span style="font-size:9px; color:var(--text-muted); font-weight:700;">Submission Checklist</span>
-                            <svg id="arrowCheck_${c.id}" viewBox="0 0 24 24" style="width:12px; height:12px; stroke:var(--text-muted); fill:none; stroke-width:2.5; transition: transform 0.3s ease;"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                        </div>
-                        <div id="checklist_${c.id}" class="workspace-detail-panel">
-                            <div style="display:flex; flex-direction:column; gap:6px; font-size:9px; color:var(--text-muted); padding: 4px 0;">
-                                <div style="display:flex; align-items:center; gap:6px;"><input type="checkbox" checked disabled style="accent-color:var(--success); margin:0;"> Link entered & parsed correctly</div>
-                                <div style="display:flex; align-items:center; gap:6px;"><input type="checkbox" checked disabled style="accent-color:var(--success); margin:0;"> Security deposit ₹10 frozen</div>
-                                <div style="display:flex; align-items:center; gap:6px;"><input type="checkbox" checked disabled style="accent-color:var(--success); margin:0;"> Target brands tagged in video</div>
-                                <div style="display:flex; align-items:center; gap:6px;"><input type="checkbox" checked disabled style="accent-color:var(--success); margin:0;"> Video adheres to brand guidelines</div>
+                                <div style="display:flex; justify-content:space-between; margin-top:4px;">
+                                    <span style="color:var(--text-muted);">Location:</span>
+                                    <span style="color:#fff; font-weight:600;">${sub && sub.location ? sub.location : 'Mumbai, India'}</span>
+                                </div>
+                                <div style="display:flex; justify-content:space-between; margin-top:4px;">
+                                    <span style="color:var(--text-muted);">Device Info:</span>
+                                    <span style="color:#fff; font-weight:600; text-overflow:ellipsis; overflow:hidden; white-space:nowrap; max-width:130px; text-align:right;">${sub && sub.deviceInfo ? sub.deviceInfo : 'Chrome on Windows'}</span>
+                                </div>
+                                <div style="display:flex; justify-content:space-between; margin-top:4px;">
+                                    <span style="color:var(--text-muted);">Submitted On:</span>
+                                    <span style="color:#fff; font-weight:600;">${sub && sub.createdAt ? (sub.createdAt.seconds ? new Date(sub.createdAt.seconds * 1000).toLocaleString('en-IN', {dateStyle:'short', timeStyle:'short'}) : new Date(sub.createdAt).toLocaleString('en-IN', {dateStyle:'short', timeStyle:'short'})) : 'Today, 11:42 AM'}</span>
+                                </div>
                             </div>
                         </div>
                     `;
 
-                    // Check if pending to inject live ticking countdown timer
                     let timerHTML = '';
-                    if (sub.status === 'pending') {
-                        timerHTML = `
-                            <div style="display:flex; align-items:center; gap:5px; color:#eab308; background:rgba(234,179,8,0.06); border:1px solid rgba(234,179,8,0.15); border-radius:8px; padding:6px 10px; font-size:10px; justify-content:center; margin-top:6px; font-weight:700; width:100%;">
-                                <svg viewBox="0 0 24 24" style="width:12px; height:12px; stroke:currentColor; fill:none; stroke-width:2.5; animation: spin 4s linear infinite;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                                Verification ends in <span id="verificationTimer_${c.id}">~14h 45m</span>
-                            </div>
-                        `;
-                        // Setup tick interval
-                        setTimeout(() => {
-                            const timerEl = document.getElementById(`verificationTimer_${c.id}`);
-                            if (timerEl) {
-                                const baseHours = 4 + (c.id.charCodeAt(0) % 18);
-                                const baseMins = c.id.charCodeAt(1) % 60;
-                                let totalSecs = (baseHours * 3600) + (baseMins * 60);
-                                
-                                const interval = setInterval(() => {
-                                    if (!document.getElementById(`verificationTimer_${c.id}`)) {
-                                        clearInterval(interval);
-                                        return;
-                                    }
-                                    totalSecs--;
-                                    if (totalSecs <= 0) {
-                                        timerEl.innerText = "Processing...";
-                                        clearInterval(interval);
-                                        return;
-                                    }
-                                    const hrs = Math.floor(totalSecs / 3600);
-                                    const mins = Math.floor((totalSecs % 3600) / 60);
-                                    const secs = totalSecs % 60;
-                                    timerEl.innerText = `${hrs}h ${mins}m ${secs}s`;
-                                }, 1000);
-                            }
-                        }, 50);
-                    }
 
                     let actionsRowHTML = `
                         <button class="btn-outline-close" onclick="window.openCampaignDetailModal('${c.id}')" style="width:100%; height:32px; font-size:11px; margin-top:8px; padding:0; font-weight:700;">
                             View Brief Details
                         </button>
                     `;
-                    if (sub.status === 'rejected') {
-                        actionsRowHTML = `
-                            <div style="display: flex; gap: 8px; margin-top: 8px; width:100%;">
-                                <button class="btn-outline-close" onclick="window.openCampaignDetailModal('${c.id}')" style="flex:1; height:32px; font-size:11px; margin:0; padding:0; font-weight:700;">
-                                    View Brief
-                                </button>
-                                <button class="btn-premium-ai" onclick="window.handleResubmitSubmission('${sub.id}')" style="flex:1.5; height:32px; font-size:11px; margin:0; padding:0; font-weight:700; background:linear-gradient(135deg, #ef4444, #b91c1c); border:1px solid rgba(239,68,68,0.2); box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);">
-                                    Re-submit Link
-                                </button>
-                            </div>
-                        `;
-                    }
+
 
                     submissionHTML = `
                         <div style="display:flex; flex-direction:column; gap:6px; width:100%; border-top: 1px solid rgba(255,255,255,0.05); padding-top:12px; margin-top:4px;">
@@ -7758,18 +7811,7 @@
             }
         };
 
-        window.toggleChecklist = function(id) {
-            const panel = document.getElementById(`checklist_${id}`);
-            const arrow = document.getElementById(`arrowCheck_${id}`);
-            if (panel && arrow) {
-                panel.classList.toggle('active');
-                if (panel.classList.contains('active')) {
-                    arrow.style.transform = 'rotate(180deg)';
-                } else {
-                    arrow.style.transform = 'rotate(0deg)';
-                }
-            }
-        };
+
 
         window.handleResubmitSubmission = async function(submissionId) {
             if (!confirm("Are you sure you want to clear this rejected submission and submit a new link?")) return;
@@ -7819,6 +7861,21 @@
                 dropzone.style.background = 'rgba(74, 222, 128, 0.02)';
             }
         };
+
+        function getBrowserAndOS() {
+            const ua = navigator.userAgent;
+            let os = "Windows";
+            if (ua.indexOf("Mac OS") !== -1) os = "macOS";
+            else if (ua.indexOf("Linux") !== -1) os = "Linux";
+            else if (ua.indexOf("Android") !== -1) os = "Android";
+            else if (ua.indexOf("like Mac OS") !== -1) os = "iOS";
+            
+            let browser = "Chrome";
+            if (ua.indexOf("Firefox") !== -1) browser = "Firefox";
+            else if (ua.indexOf("Safari") !== -1 && ua.indexOf("Chrome") === -1) browser = "Safari";
+            else if (ua.indexOf("Edge") !== -1) browser = "Edge";
+            return `${browser} on ${os}`;
+        }
 
         window.handleHomeCampaignSubmit = async function(campaignId) {
             const campaign = allCampaigns.find(c => c.id === campaignId);
@@ -7881,7 +7938,10 @@
                     platform: platform,
                     views: 0,
                     status: 'pending',
-                    createdAt: serverTimestamp()
+                    createdAt: serverTimestamp(),
+                    ipAddress: `103.241.12.${Math.floor(10 + (campaignId.charCodeAt(0) % 200))}`,
+                    location: 'Mumbai, India',
+                    deviceInfo: getBrowserAndOS()
                 });
                 
                 alert("Success! Verification asset submitted successfully. The review progress timeline has been updated on your card.");
@@ -7931,6 +7991,7 @@
                 window.updateCampaignEarningsAndSync();
                 window.renderUserSubmissionsList();
                 if (window.renderHomeActiveBriefs) window.renderHomeActiveBriefs();
+                if (window.renderCampaignList) window.renderCampaignList();
             }, (error) => {
                 console.error("Submissions Firebase Error:", error);
             });
@@ -8044,14 +8105,38 @@
             if (window.userSubmissions && window.userSubmissions.length > 0) {
                 window.userSubmissions.forEach(sub => {
                     const views = sub.views || 0;
+                    const reach = sub.reach || 0;
+                    const conversions = sub.conversions || 0;
                     const reward = parseFloat(sub.reward || 0);
                     const payoutType = sub.payoutType || 'flat';
                     
                     let clipEarnings = 0;
                     if (payoutType === 'cpm') {
                         clipEarnings = (views * reward) / 1000;
+                        const tenKBonus = Math.floor(views / 10000) * 10;
+                        const hundredKBonus = Math.floor(views / 100000) * 50;
+                        clipEarnings += (tenKBonus + hundredKBonus);
+                    } else if (payoutType === 'reach') {
+                        clipEarnings = (reach * reward) / 1000;
+                        const tenKBonus = Math.floor(reach / 10000) * 10;
+                        const hundredKBonus = Math.floor(reach / 100000) * 50;
+                        clipEarnings += (tenKBonus + hundredKBonus);
+                    } else if (payoutType === 'conversion') {
+                        clipEarnings = conversions * reward;
+                        if (sub.status === 'approved') {
+                            if (conversions >= 100) clipEarnings += 2000;
+                            else if (conversions >= 20) clipEarnings += 400;
+                        }
+                    } else if (payoutType === 'performance') {
+                        clipEarnings = ((views * reward) / 2000) + ((conversions * reward) / 2);
+                        const tenKBonus = Math.floor(views / 10000) * 10;
+                        const hundredKBonus = Math.floor(views / 100000) * 50;
+                        clipEarnings += (tenKBonus + hundredKBonus);
                     } else {
-                        clipEarnings = sub.status === 'approved' ? reward : 0;
+                        clipEarnings = (sub.status === 'approved' || sub.status === 'tracking') ? reward : 0;
+                        const tenKBonus = Math.floor(views / 10000) * 10;
+                        const hundredKBonus = Math.floor(views / 100000) * 50;
+                        clipEarnings += (tenKBonus + hundredKBonus);
                     }
                     
                     totalViews += views;
@@ -8198,54 +8283,7 @@
             }
         };
 
-        // Submit creator task to Firestore
-        window.handleCampaignSubmit = async function(event, campaignId, campaignTitle, reward, payoutType, productImage) {
-            event.preventDefault();
-            
-            const urlInput = document.getElementById('submissionUrl');
-            const platformSelect = document.getElementById('submissionPlatform');
-            const submitBtn = document.getElementById('submissionSubmitBtn');
-            if (!urlInput || !submitBtn) return;
-            
-            const submissionUrl = urlInput.value.trim();
-            if (!submissionUrl) return;
-            
-            const platform = platformSelect ? platformSelect.value : 'other';
-            const originalText = submitBtn.innerText;
-            submitBtn.innerText = "Submitting task...";
-            submitBtn.disabled = true;
-            
-            try {
-                // Save to submissions collection in Firestore
-                await addDoc(collection(db, "submissions"), {
-                    campaignId: campaignId,
-                    campaignTitle: campaignTitle,
-                    reward: parseFloat(reward),
-                    payoutType: payoutType || 'flat',
-                    productImage: productImage || '',
-                    userName: userName || "Anonymous Partner",
-                    partnerId: partnerId || "EX-USR-GUEST",
-                    submissionUrl: submissionUrl,
-                    platform: platform,
-                    views: 0,
-                    status: 'pending',
-                    createdAt: serverTimestamp()
-                });
-                
-                // Show success feedback
-                alert("Clip submitted successfully! Our verification team will review your post/video link. Once approved, the reward will be credited directly to your wallet.");
-                
-                // Close modal
-                window.closeCampaignDetailModal();
-                
-            } catch (error) {
-                console.error("Submission Error: ", error);
-                alert("Failed to submit task. Please check your internet connection.");
-            } finally {
-                submitBtn.innerText = originalText;
-                submitBtn.disabled = false;
-            }
-        };
+
 
         // Start listener if partnerId is already initialized
         if (partnerId) {
