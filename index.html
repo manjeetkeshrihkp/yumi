@@ -2710,14 +2710,29 @@
 
             <!-- Campaign Briefs Section -->
             <div style="margin-top: 25px; margin-bottom: 20px;">
-                <h3 style="margin: 0 0 16px 0; font-size: 16px; color: #cbd5e1; display:flex; align-items:center; gap:8px;">
-                    <span class="meta-status-dot active" style="width: 8px; height: 8px; box-shadow: 0 0 8px #6366f1; background-color:#6366f1; animation: none;"></span>
-                    Campaign Briefs Marketplace
+                <!-- My Active Briefs Sub-Section -->
+                <h3 style="margin: 0 0 14px 0; font-size: 14px; color: #cbd5e1; display:flex; align-items:center; justify-content:space-between;">
+                    <span style="display:flex; align-items:center; gap:8px;">
+                        <span class="meta-status-dot active" style="width: 8px; height: 8px; box-shadow: 0 0 8px #ca8a04; background-color:#ca8a04; animation: none;"></span>
+                        My Active Briefs
+                    </span>
+                    <span id="homeActiveBriefsCount" style="font-size:9px; color:var(--accent); font-weight:800; background:rgba(250,204,21,0.08); padding:2px 8px; border-radius:6px; border:1px solid rgba(250,204,21,0.15); text-transform:uppercase; letter-spacing:0.5px;">0 Active</span>
                 </h3>
-                <div id="homeAcceptedCampaignsContainer" class="campaign-grid" style="width: 100%;">
-                    <p style="color:var(--text-muted); text-align:center; font-size: 12px; padding: 20px; border: 1px dashed rgba(255,255,255,0.06); border-radius:12px; background:rgba(255,255,255,0.01);">
-                        No campaigns available. Visit the Campaigns tab to accept/join tasks and start earning.
-                    </p>
+                <div id="homeAcceptedCampaignsContainer" class="campaign-grid" style="width: 100%; margin-bottom: 24px;">
+                    <div style="text-align:center; font-size: 12px; padding: 20px; border: 1px dashed rgba(255,255,255,0.06); border-radius:12px; background:rgba(255,255,255,0.01); color:var(--text-muted); grid-column: 1/-1;">
+                        No active campaigns joined yet. Browse the marketplace below to join and start earning.
+                    </div>
+                </div>
+
+                <!-- Explore Briefs Marketplace Sub-Section -->
+                <h3 style="margin: 25px 0 14px 0; font-size: 14px; color: #cbd5e1; display:flex; align-items:center; gap:8px;">
+                    <span class="meta-status-dot active" style="width: 8px; height: 8px; box-shadow: 0 0 8px #6366f1; background-color:#6366f1; animation: none;"></span>
+                    Explore Briefs Marketplace
+                </h3>
+                <div id="homeExploreCampaignsContainer" class="campaign-grid" style="width: 100%;">
+                    <div style="text-align:center; font-size: 12px; padding: 20px; border: 1px dashed rgba(255,255,255,0.06); border-radius:12px; background:rgba(255,255,255,0.01); color:var(--text-muted); grid-column: 1/-1;">
+                        Loading recommended briefs...
+                    </div>
                 </div>
             </div>
         </div>
@@ -4046,6 +4061,122 @@
     <script>
         /* --- DYNAMIC POLYMARKET YIELD & FEED SIMULATION LOGIC --- */
 
+        /* --- GAMIFIED BONUS MILESTONES SYSTEM --- */
+        const MILESTONE_LEVELS = [
+            { target: 10000, bonus: 10, label: '10K' },
+            { target: 20000, bonus: 25, label: '20K' },
+            { target: 50000, bonus: 75, label: '50K' },
+            { target: 100000, bonus: 150, label: '100K' },
+            { target: 200000, bonus: 350, label: '200K' },
+            { target: 500000, bonus: 1000, label: '500K' },
+            { target: 1000000, bonus: 2500, label: '1M' },
+            { target: 2000000, bonus: 6000, label: '2M' },
+            { target: 5000000, bonus: 15000, label: '5M' },
+            { target: 10000000, bonus: 35000, label: '10M' }
+        ];
+
+        const CONVERSION_LEVELS = [
+            { target: 5, bonus: 50, label: '5 Leads' },
+            { target: 10, bonus: 120, label: '10 Leads' },
+            { target: 20, bonus: 300, label: '20 Leads' },
+            { target: 50, bonus: 800, label: '50 Leads' },
+            { target: 100, bonus: 2000, label: '100 Leads' },
+            { target: 200, bonus: 4500, label: '200 Leads' },
+            { target: 500, bonus: 12000, label: '500 Leads' }
+        ];
+
+        window.getViewsLabel = function(num) {
+            if (num >= 1000000) return (num / 1000000) + 'M';
+            if (num >= 1000) return (num / 1000) + 'K';
+            return num.toString();
+        };
+
+        window.getMilestoneBonus = function(val, isConversion, customBonuses = null) {
+            let levels = isConversion ? CONVERSION_LEVELS : MILESTONE_LEVELS;
+            if (!isConversion && customBonuses) {
+                if (Array.isArray(customBonuses) && customBonuses.length > 0) {
+                    levels = customBonuses.map(lvl => {
+                        return {
+                            target: lvl.target,
+                            bonus: lvl.bonus,
+                            label: window.getViewsLabel(lvl.target)
+                        };
+                    });
+                } else if (typeof customBonuses === 'object' && !Array.isArray(customBonuses)) {
+                    levels = MILESTONE_LEVELS.map(lvl => {
+                        const customVal = customBonuses[lvl.target];
+                        return {
+                            target: lvl.target,
+                            bonus: (customVal !== undefined && customVal !== '') ? parseFloat(customVal) : lvl.bonus,
+                            label: lvl.label
+                        };
+                    });
+                }
+            }
+            let activeBonus = 0;
+            for (const lvl of levels) {
+                if (val >= lvl.target) {
+                    activeBonus = lvl.bonus;
+                }
+            }
+            return activeBonus;
+        };
+
+        window.getMilestoneProgress = function(val, isConversion, customBonuses = null) {
+            let levels = isConversion ? CONVERSION_LEVELS : MILESTONE_LEVELS;
+            if (!isConversion && customBonuses) {
+                if (Array.isArray(customBonuses) && customBonuses.length > 0) {
+                    levels = customBonuses.map(lvl => {
+                        return {
+                            target: lvl.target,
+                            bonus: lvl.bonus,
+                            label: window.getViewsLabel(lvl.target)
+                        };
+                    });
+                } else if (typeof customBonuses === 'object' && !Array.isArray(customBonuses)) {
+                    levels = MILESTONE_LEVELS.map(lvl => {
+                        const customVal = customBonuses[lvl.target];
+                        return {
+                            target: lvl.target,
+                            bonus: (customVal !== undefined && customVal !== '') ? parseFloat(customVal) : lvl.bonus,
+                            label: lvl.label
+                        };
+                    });
+                }
+            }
+            let nextLvl = null;
+            for (const lvl of levels) {
+                if (val < lvl.target) {
+                    nextLvl = lvl;
+                    break;
+                }
+            }
+            if (!nextLvl) {
+                const maxLvl = levels[levels.length - 1];
+                return {
+                    percentage: 100,
+                    target: maxLvl.target,
+                    label: maxLvl.label,
+                    nextBonus: maxLvl.bonus,
+                    currentBase: maxLvl.target,
+                    isMax: true
+                };
+            }
+            const idx = levels.indexOf(nextLvl);
+            const base = idx > 0 ? levels[idx - 1].target : 0;
+            let percentage = Math.round(((val - base) / (nextLvl.target - base)) * 100);
+            percentage = Math.max(0, Math.min(percentage, 100));
+            if (isNaN(percentage)) percentage = 0;
+            return {
+                percentage: percentage,
+                target: nextLvl.target,
+                label: nextLvl.label,
+                nextBonus: nextLvl.bonus,
+                currentBase: base,
+                isMax: false
+            };
+        };
+
 
 
 
@@ -4429,7 +4560,7 @@
         }
 
         // --- Campaigns Filter and Rendering Helper Functions ---
-        let allCampaigns = [];
+        let allCampaigns = JSON.parse(localStorage.getItem('eliteX_all_campaigns') || '[]');
         let currentCampaignFilter = 'all';
         let acceptedCampaigns = JSON.parse(localStorage.getItem('eliteX_accepted_campaigns') || '[]');
         if (!Array.isArray(acceptedCampaigns)) {
@@ -4643,7 +4774,9 @@
                     }
                 } else if (c.expiryDate) {
                     const expDate = new Date(c.expiryDate);
-                    expDate.setHours(23, 59, 59, 999);
+                    if (c.expiryDate.length <= 10) {
+                        expDate.setHours(23, 59, 59, 999);
+                    }
                     expiryMs = expDate.getTime();
                 } else {
                     const offsetHours = 12 + (c.id.charCodeAt(1) % 150);
@@ -4816,7 +4949,9 @@
                     }
                 } else if (c.expiryDate) {
                     const expDate = new Date(c.expiryDate);
-                    expDate.setHours(23, 59, 59, 999);
+                    if (c.expiryDate.length <= 10) {
+                        expDate.setHours(23, 59, 59, 999);
+                    }
                     expiryMs = expDate.getTime();
                 } else {
                     const offsetHours = 12 + (c.id.charCodeAt(1) % 150);
@@ -4837,24 +4972,25 @@
 
                 let expiryHTML = '';
                 if (diffMs > 0) {
-                    if (diffHours < 24) {
-                        expiryHTML = `
-                            <span style="font-size:8px; font-weight:800; color:#f87171; background:rgba(248, 113, 113, 0.06); border:1px solid rgba(248, 113, 113, 0.2); padding:2px 6px; border-radius:5px; display:inline-flex; align-items:center; gap:4px;">
-                                <span class="polymarket-pulse orange" style="background:#f87171; box-shadow:0 0 0 0 rgba(248,113,113,0.7); animation: polymarket-pulse-orange-kf 1.6s infinite cubic-bezier(0.66, 0, 0, 1);"></span>
-                                <span class="campaign-countdown-timer" data-expire-ms="${expiryMs}">--h --m --s left</span>
-                            </span>
-                        `;
-                    } else {
-                        const expDate = new Date(expiryMs);
-                        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-                        const formattedDate = `${months[expDate.getMonth()]} ${expDate.getDate()}`;
-                        expiryHTML = `
-                            <span style="font-size:8px; font-weight:800; color:var(--text-muted); background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); padding:2px 6px; border-radius:5px; display:inline-flex; align-items:center; gap:3px;">
-                                <svg viewBox="0 0 24 24" style="width:9px; height:9px; stroke:currentColor; fill:none; stroke-width:3;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                                Ends ${formattedDate} (${diffDays}d left)
-                            </span>
-                        `;
-                    }
+                    const colorVal = diffHours < 24 ? '#f87171' : 'var(--accent)';
+                    const bgVal = diffHours < 24 ? 'rgba(248, 113, 113, 0.06)' : 'rgba(250, 204, 21, 0.06)';
+                    const borderVal = diffHours < 24 ? 'rgba(248, 113, 113, 0.2)' : 'rgba(250, 204, 21, 0.2)';
+                    const pulseClass = diffHours < 24 ? 'orange' : '';
+                    const pulseColor = diffHours < 24 ? '#f87171' : 'var(--accent)';
+                    const pulseShadow = diffHours < 24 ? 'rgba(248,113,113,0.7)' : 'var(--accent-glow)';
+                    
+                    expiryHTML = `
+                        <span style="font-size:8px; font-weight:800; color:${colorVal}; background:${bgVal}; border:1px solid ${borderVal}; padding:2px 6px; border-radius:5px; display:inline-flex; align-items:center; gap:4px;">
+                            <span class="polymarket-pulse ${pulseClass}" style="background:${pulseColor}; box-shadow:0 0 0 0 ${pulseShadow}; animation: polymarket-pulse-orange-kf 1.6s infinite cubic-bezier(0.66, 0, 0, 1);"></span>
+                            <span class="campaign-countdown-timer" data-expire-ms="${expiryMs}" data-expired="false" data-campaign-id="${c.id}">--d --h --m --s left</span>
+                        </span>
+                    `;
+                } else {
+                    expiryHTML = `
+                        <span style="font-size:8px; font-weight:800; color:#ef4444; background:rgba(239, 68, 68, 0.06); border:1px solid rgba(239, 68, 68, 0.2); padding:2px 6px; border-radius:5px;">
+                            Expired
+                        </span>
+                    `;
                 }
                 
                 // Spacious Campaign Workspace Card for Mobile
@@ -4898,7 +5034,10 @@
                         <div class="campaign-footer-row" style="margin-top: auto; border-top: 1px solid rgba(255,255,255,0.04); padding-top: 12px; align-items:center;">
                             <div>
                                 <div style="font-size: 8px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px;">${rateLabel}</div>
-                                <div class="campaign-payout-amount" style="font-size:18px; font-weight:900; color:#fff; letter-spacing:-0.4px;">${rewardDisplayStr}</div>
+                                <div class="campaign-payout-amount" style="font-size:18px; font-weight:900; color:#fff; letter-spacing:-0.4px; display:flex; flex-direction:column; gap:2px;">
+                                    <span>${rewardDisplayStr}</span>
+                                    ${c.conversionRate && c.conversionRate > 0 ? `<span style="font-size:10px; color:#38bdf8; font-weight:800; letter-spacing:0.2px;">+₹${c.conversionRate}/lead extra</span>` : ''}
+                                </div>
                             </div>
                             <div style="display:flex; gap:8px;">
                                 ${isAccepted ? `
@@ -4906,7 +5045,7 @@
                                         Joined
                                     </button>
                                 ` : `
-                                    <button class="pm-btn yes" onclick="window.openCampaignDetailModal('${c.id}')" style="background:var(--accent); color:#07090f; border-color:var(--accent); font-size:9.5px; height:32px; padding:0 12px; border-radius:8px;">
+                                    <button class="pm-btn yes" id="joinBtn_${c.id}" onclick="window.openCampaignDetailModal('${c.id}')" style="background:var(--accent); color:#07090f; border-color:var(--accent); font-size:9.5px; height:32px; padding:0 12px; border-radius:8px;">
                                         Join Task
                                     </button>
                                 `}
@@ -4928,11 +5067,7 @@
             }
             window.campaignCountdownInterval = setInterval(() => {
                 const timers = document.querySelectorAll('.campaign-countdown-timer');
-                if (timers.length === 0) {
-                    clearInterval(window.campaignCountdownInterval);
-                    window.campaignCountdownInterval = null;
-                    return;
-                }
+                if (timers.length === 0) return;
                 timers.forEach(el => {
                     const expireMs = parseInt(el.getAttribute('data-expire-ms'));
                     if (!expireMs) return;
@@ -4941,17 +5076,77 @@
                     if (diff <= 0) {
                         el.innerText = 'Expired';
                         el.style.color = '#ef4444';
-                        setTimeout(() => {
-                            if (typeof window.renderCampaignList === 'function') {
-                                window.renderCampaignList();
+                        if (el.getAttribute('data-expired') === 'true') {
+                            return;
+                        }
+                        el.setAttribute('data-expired', 'true');
+                        
+                        const campaignId = el.getAttribute('data-campaign-id');
+                        if (campaignId) {
+                            // 1. Disable the submission url input
+                            const urlInput = document.getElementById(`submissionUrl_${campaignId}`);
+                            if (urlInput) {
+                                urlInput.disabled = true;
+                                urlInput.placeholder = "Submission closed (expired)";
+                                urlInput.style.background = "rgba(239, 68, 68, 0.03)";
+                                urlInput.style.borderColor = "rgba(239, 68, 68, 0.15)";
+                                urlInput.style.color = "#f87171";
                             }
-                        }, 1500);
+                            
+                            // 2. Disable and rename the submit button
+                            const submitBtn = document.getElementById(`submissionSubmitBtn_${campaignId}`);
+                            if (submitBtn) {
+                                submitBtn.disabled = true;
+                                submitBtn.innerText = "Campaign Expired";
+                                submitBtn.style.setProperty('background', 'rgba(239, 68, 68, 0.08)', 'important');
+                                submitBtn.style.setProperty('border-color', 'rgba(239, 68, 68, 0.2)', 'important');
+                                submitBtn.style.setProperty('color', '#f87171', 'important');
+                                submitBtn.style.boxShadow = "none";
+                                submitBtn.style.cursor = "not-allowed";
+                            }
+                            
+                            // 3. Update status label
+                            const statusLabel = document.getElementById(`submissionStatusLabel_${campaignId}`);
+                            if (statusLabel) {
+                                statusLabel.innerHTML = '<span style="color:#f87171; font-weight:700;">Expired (₹10 Deposit Forfeited)</span>';
+                            }
+
+                            // 4. Disable marketplace Join button
+                            const joinBtn = document.getElementById(`joinBtn_${campaignId}`);
+                            if (joinBtn) {
+                                joinBtn.disabled = true;
+                                joinBtn.innerText = "Closed";
+                                joinBtn.style.background = "rgba(255,255,255,0.03)";
+                                joinBtn.style.borderColor = "rgba(255,255,255,0.05)";
+                                joinBtn.style.color = "var(--text-muted)";
+                                joinBtn.style.cursor = "not-allowed";
+                            }
+
+                            // 5. Disable modal Join button
+                            const modalJoinBtn = document.getElementById(`modalJoinBtn_${campaignId}`);
+                            if (modalJoinBtn) {
+                                modalJoinBtn.disabled = true;
+                                modalJoinBtn.innerText = "Campaign Expired";
+                                modalJoinBtn.style.background = "rgba(239, 68, 68, 0.08)";
+                                modalJoinBtn.style.borderColor = "rgba(239, 68, 68, 0.2)";
+                                modalJoinBtn.style.color = "#f87171";
+                                modalJoinBtn.style.cursor = "not-allowed";
+                            }
+                        }
                         return;
                     }
-                    const h = Math.floor(diff / (1000 * 60 * 60));
+                    const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+                    const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                     const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
                     const s = Math.floor((diff % (1000 * 60)) / 1000);
-                    el.innerText = `${h}h ${m}m ${s}s left`;
+                    
+                    let timerText = '';
+                    if (d > 0) {
+                        timerText = `${d}d ${h}h ${m}m ${s}s left`;
+                    } else {
+                        timerText = `${h}h ${m}m ${s}s left`;
+                    }
+                    el.innerText = timerText;
                 });
             }, 1000);
         }
@@ -4983,6 +5178,31 @@
             else if (tagLower === 'youtube') actionBadge = 'YouTube Video';
             else if (tagLower === 'post') actionBadge = 'Social Post';
             else if (tagLower === 'other') actionBadge = 'Special Task';
+            let expiryMs = null;
+            if (campaign.expiresAt) {
+                if (campaign.expiresAt.seconds) {
+                    expiryMs = campaign.expiresAt.seconds * 1000;
+                } else {
+                    expiryMs = new Date(campaign.expiresAt).getTime();
+                }
+            } else if (campaign.expiryDate) {
+                const expDate = new Date(campaign.expiryDate);
+                if (campaign.expiryDate.length <= 10) {
+                    expDate.setHours(23, 59, 59, 999);
+                }
+                expiryMs = expDate.getTime();
+            } else {
+                const offsetHours = 12 + (campaign.id.charCodeAt(1) % 150);
+                let baseMs = 1783584000000;
+                if (campaign.createdAt) {
+                    if (campaign.createdAt.seconds) {
+                        baseMs = campaign.createdAt.seconds * 1000;
+                    } else {
+                        baseMs = new Date(campaign.createdAt).getTime() || 1783584000000;
+                    }
+                }
+                expiryMs = baseMs + offsetHours * 60 * 60 * 1000;
+            }
 
             const payoutType = campaign.payoutType || 'flat';
             let rewardDisplay = '';
@@ -5121,7 +5341,10 @@
                 
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
                     <span style="font-size:11px; font-weight:700; text-transform:uppercase; color:var(--accent); background:rgba(250,204,21,0.08); padding:4px 8px; border-radius:6px;">${actionBadge}</span>
-                    <span style="font-size:16px; font-weight:800; color:var(--accent); text-shadow:0 0 8px var(--accent-glow);">${rewardDisplay}</span>
+                    <div style="text-align:right; display:flex; flex-direction:column; gap:2px;">
+                        <span style="font-size:16px; font-weight:800; color:var(--accent); text-shadow:0 0 8px var(--accent-glow);">${rewardDisplay}</span>
+                        ${campaign.conversionRate && campaign.conversionRate > 0 ? `<span style="font-size:11px; color:#38bdf8; font-weight:800; text-shadow:0 0 6px rgba(56, 189, 248, 0.15);">+₹${campaign.conversionRate}/lead extra</span>` : ''}
+                    </div>
                 </div>
 
                 <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px;">
@@ -5151,10 +5374,10 @@
                         </div>
                     </div>
                     <div>
-                        <div style="font-size:8px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Brief Expiry Date</div>
-                        <div style="font-size:11px; font-weight:800; color:#f87171; margin-top:2px; display:flex; align-items:center; gap:4px;">
-                            <svg viewBox="0 0 24 24" style="width:12px; height:12px; stroke:#f87171; fill:none; stroke-width:2.5;"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-                            ${campaign.expiryDate || 'Active'}
+                        <div style="font-size:8px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Time Remaining</div>
+                        <div style="font-size:11px; font-weight:800; color:var(--accent); margin-top:2px; display:flex; align-items:center; gap:4px;">
+                            <svg viewBox="0 0 24 24" style="width:12px; height:12px; stroke:var(--accent); fill:none; stroke-width:2.5;"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                            <span class="campaign-countdown-timer" data-expire-ms="${expiryMs}" data-expired="false" data-campaign-id="${campaign.id}">--d --h --m --s left</span>
                         </div>
                     </div>
                     <div>
@@ -5207,7 +5430,7 @@
             if (!isAccepted) {
                 content.innerHTML += `
                     <div style="margin-top: 10px; display:flex; flex-direction:column; gap:10px;">
-                        <button class="btn-premium-ai" onclick="window.showJoinConfirmModal('${campaign.id}')"
+                        <button class="btn-premium-ai" id="modalJoinBtn_${campaign.id}" onclick="window.showJoinConfirmModal('${campaign.id}')"
                             style="width: 100%; padding: 12px; font-size: 13px; box-shadow: 0 4px 12px rgba(250, 204, 21, 0.25); height: 40px; font-weight:800;">
                             Join Campaign (Deposit ₹10)
                         </button>
@@ -7236,35 +7459,42 @@
                 return (timeB || 0) - (timeA || 0);
             });
 
+            // Cache campaigns
+            localStorage.setItem('eliteX_all_campaigns', JSON.stringify(allCampaigns));
+
             renderCampaignList();
             if (window.renderHomeActiveBriefs) window.renderHomeActiveBriefs();
         }, (error) => {
             console.error("Firebase Error:", error);
-            allCampaigns = [];
+            if (!allCampaigns || allCampaigns.length === 0) {
+                allCampaigns = JSON.parse(localStorage.getItem('eliteX_all_campaigns') || '[]');
+            }
             renderCampaignList();
             if (window.renderHomeActiveBriefs) window.renderHomeActiveBriefs();
         });
 
         // Global variable to store submissions
-        window.userSubmissions = [];
-
+        window.userSubmissions = JSON.parse(localStorage.getItem('eliteX_user_submissions') || '[]');
         window.renderHomeActiveBriefs = function() {
             const container = document.getElementById('homeAcceptedCampaignsContainer');
             if (!container) return;
             
-            // Only show accepted (joined) campaigns on Home tab campaigns feed
+            // Update active count badge on Home section
+            const countEl = document.getElementById('homeActiveBriefsCount');
             const accepted = allCampaigns.filter(c => acceptedCampaigns.includes(c.id));
+            if (countEl) {
+                countEl.innerText = `${accepted.length} Active`;
+            }
+            
             container.innerHTML = '';
             
             if (accepted.length === 0) {
                 container.innerHTML = `
-                    <p style="color:var(--text-muted); text-align:center; font-size: 12px; padding: 20px; border: 1px dashed rgba(255,255,255,0.06); border-radius:12px; background:rgba(255,255,255,0.01); grid-column: 1/-1;">
-                        No active campaigns joined yet. Visit the Campaigns tab to accept/join tasks and start earning.
-                    </p>
+                    <div style="text-align:center; font-size: 12px; padding: 20px; border: 1px dashed rgba(255,255,255,0.06); border-radius:12px; background:rgba(255,255,255,0.01); color:var(--text-muted); grid-column: 1/-1;">
+                        No active campaigns joined yet. Browse the marketplace below to join and start earning.
+                    </div>
                 `;
-                return;
-            }
-            
+            } else {
             // Stepper HTML helper generator
             function getStepperHTML(status) {
                 // Step 1: Join
@@ -7431,6 +7661,35 @@
             accepted.forEach((c, index) => {
                 const sub = window.userSubmissions.find(s => s.campaignId === c.id);
                 
+                let expiryMs = null;
+                if (c.expiresAt) {
+                    if (c.expiresAt.seconds) {
+                        expiryMs = c.expiresAt.seconds * 1000;
+                    } else {
+                        expiryMs = new Date(c.expiresAt).getTime();
+                    }
+                } else if (c.expiryDate) {
+                    const expDate = new Date(c.expiryDate);
+                    expDate.setHours(23, 59, 59, 999);
+                    if (c.expiryDate.length > 10) {
+                        expiryMs = new Date(c.expiryDate).getTime();
+                    } else {
+                        expiryMs = expDate.getTime();
+                    }
+                } else {
+                    const offsetHours = 12 + (c.id.charCodeAt(1) % 150);
+                    let baseMs = 1783584000000;
+                    if (c.createdAt) {
+                        if (c.createdAt.seconds) {
+                            baseMs = c.createdAt.seconds * 1000;
+                        } else {
+                            baseMs = new Date(c.createdAt).getTime() || 1783584000000;
+                        }
+                    }
+                    expiryMs = baseMs + offsetHours * 60 * 60 * 1000;
+                }
+                const isExpired = expiryMs && Date.now() > expiryMs;
+                
                 let cardStyleOverride = '';
                 let verifiedBadgeHTML = '';
                 if (sub) {
@@ -7498,8 +7757,11 @@
                             
                             <!-- Tab Content: Add Link -->
                             <div style="display:flex; flex-direction:column; gap:4px; margin-bottom:8px;">
-                                <label style="font-size:8px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Add Link</label>
-                                <input type="url" id="submissionUrl_${c.id}" placeholder="Paste your video link here..." style="background:rgba(15,23,42,0.6); border:1px solid rgba(255,255,255,0.08); border-radius:8px; padding:8px 12px; color:#fff; font-size:11px; outline:none; width:100%;">
+                                <div style="display:flex; justify-content:space-between; align-items:center;">
+                                    <label style="font-size:8px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Add Link</label>
+                                    <span style="font-size:8.5px; font-weight:800; color:${isExpired ? '#ef4444' : 'var(--accent)'};" class="campaign-countdown-timer" data-expire-ms="${expiryMs}" data-expired="${isExpired ? 'true' : 'false'}" data-campaign-id="${c.id}">${isExpired ? 'Expired' : '--d --h --m --s left'}</span>
+                                </div>
+                                <input type="url" id="submissionUrl_${c.id}" ${isExpired ? 'disabled placeholder="Submission closed (expired)" style="background:rgba(239,68,68,0.03); border:1px solid rgba(239,68,68,0.15); color:#f87171; border-radius:8px; padding:8px 12px; font-size:11px; outline:none; width:100%;"' : 'placeholder="Paste your video link here..." style="background:rgba(15,23,42,0.6); border:1px solid rgba(255,255,255,0.08); border-radius:8px; padding:8px 12px; color:#fff; font-size:11px; outline:none; width:100%;"'} >
                             </div>
 
                             <!-- Earning Progress Bar (Initial: 0%) -->
@@ -7516,8 +7778,8 @@
                                     <div class="progress-bar-premium-fill progress-bar-shimmer-yellow" style="width:0%; height:100%; border-radius:12px; transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1); position:relative; overflow:visible !important;"></div>
                                 </div>
                                 <div style="display:flex; justify-content:space-between; align-items:center; margin-top:6px; padding: 0 10px;">
-                                    <span style="font-size:9px; color:var(--text-muted); font-weight:600;">Awaiting link submission</span>
-                                    <span style="font-size:10px; color:var(--accent); background:rgba(250,204,21,0.06); border:1px solid rgba(250,204,21,0.12); padding:1px 6px; border-radius:6px; font-weight:800;">0%</span>
+                                    <span id="submissionStatusLabel_${c.id}" style="font-size:9px; color:var(--text-muted); font-weight:600;">${isExpired ? '<span style="color:#f87171; font-weight:700;">Expired (₹10 Deposit Forfeited)</span>' : 'Awaiting link submission'}</span>
+                                    <span style="font-size:10px; color:${isExpired ? '#f87171' : 'var(--accent)'}; background:${isExpired ? 'rgba(239,68,68,0.06)' : 'rgba(250,204,21,0.06)'}; border:1px solid ${isExpired ? 'rgba(239,68,68,0.15)' : 'rgba(250,204,21,0.12)'}; padding:1px 6px; border-radius:6px; font-weight:800;">0%</span>
                                 </div>
                             </div>
                             
@@ -7526,9 +7788,15 @@
                                 <button type="button" class="btn-outline-close" onclick="window.openCampaignDetailModal('${c.id}')" style="flex:1; height:34px; font-size:10px; padding:0; font-weight:700; margin:0;">
                                     View Brief
                                 </button>
+                                ${isExpired ? `
+                                <button type="button" class="btn-premium-ai" disabled style="flex:2; height:34px; font-size:10px; padding:0; background:rgba(239, 68, 68, 0.08) !important; border:1px solid rgba(239, 68, 68, 0.2) !important; color:#f87171 !important; box-shadow:none; cursor:not-allowed; margin:0;">
+                                    Campaign Expired
+                                </button>
+                                ` : `
                                 <button type="button" class="btn-premium-ai" id="submissionSubmitBtn_${c.id}" onclick="window.handleHomeCampaignSubmit('${c.id}')" style="flex:2; height:34px; font-size:10px; padding:0; box-shadow: 0 4px 12px rgba(250, 204, 21, 0.25); margin:0;">
                                     Submit Asset
                                 </button>
+                                `}
                             </div>
                         </div>
                     `;
@@ -7549,43 +7817,35 @@
                     const payoutType = c.payoutType || 'flat';
                     const rewardRate = parseFloat(c.reward || 0);
                     
+                    const isConversion = payoutType === 'conversion';
+                    const metricValue = isConversion ? conversions : (payoutType === 'reach' ? reach : views);
+                    const customBonuses = c.customBonuses || null;
+                    
                     if (payoutType === 'cpm') {
-                        earnings = (views * rewardRate) / 1000;
-                        const tenKBonus = Math.floor(views / 10000) * 10;
-                        const hundredKBonus = Math.floor(views / 100000) * 50;
-                        earnings += (tenKBonus + hundredKBonus);
+                        earnings = rewardRate + (views * rewardRate) / 1000;
+                        earnings += getMilestoneBonus(views, false, customBonuses);
                     } else if (payoutType === 'reach') {
-                        earnings = (reach * rewardRate) / 1000;
-                        const tenKBonus = Math.floor(reach / 10000) * 10;
-                        const hundredKBonus = Math.floor(reach / 100000) * 50;
-                        earnings += (tenKBonus + hundredKBonus);
+                        earnings = rewardRate + (reach * rewardRate) / 1000;
+                        earnings += getMilestoneBonus(views, false, customBonuses);
                     } else if (payoutType === 'conversion') {
-                        earnings = conversions * rewardRate;
-                        if (sub.status === 'approved') {
-                            if (conversions >= 100) earnings += 2000;
-                            else if (conversions >= 20) earnings += 400;
-                        }
+                        earnings = rewardRate + (conversions * rewardRate);
+                        earnings += getMilestoneBonus(conversions, true, customBonuses);
                     } else if (payoutType === 'performance') {
-                        earnings = ((views * rewardRate) / 2000) + ((conversions * rewardRate) / 2);
-                        const tenKBonus = Math.floor(views / 10000) * 10;
-                        const hundredKBonus = Math.floor(views / 100000) * 50;
-                        earnings += (tenKBonus + hundredKBonus);
+                        earnings = rewardRate + ((views * rewardRate) / 2000) + ((conversions * rewardRate) / 2);
+                        earnings += getMilestoneBonus(views, false, customBonuses);
                     } else {
                         earnings = (sub.status === 'approved' || sub.status === 'tracking') ? rewardRate : 0;
-                        const tenKBonus = Math.floor(views / 10000) * 10;
-                        const hundredKBonus = Math.floor(views / 100000) * 50;
-                        earnings += (tenKBonus + hundredKBonus);
+                        earnings += conversions * (c.conversionRate || 0);
+                        earnings += getMilestoneBonus(views, false, customBonuses);
                     }
                     
                     // For pending/rejected, show 0 earnings progress
                     let displayEarnings = (sub.status === 'approved' || sub.status === 'tracking') ? earnings : 0;
                     
-                    // Progress bar percentage scales from 0 to 100% relative to a milestone goal of 100,000 views/reach or 100 leads
-                    let targetGoal = payoutType === 'conversion' ? 100 : 100000;
-                    let metricValue = payoutType === 'reach' ? reach : (payoutType === 'conversion' ? conversions : views);
-                    
                     let percentage = 0;
                     let milestoneText = 'Awaiting link submission';
+                    
+                    const progressInfo = getMilestoneProgress(isConversion ? conversions : views, isConversion, customBonuses);
                     
                     if (sub.status === 'pending') {
                         percentage = 0;
@@ -7594,15 +7854,14 @@
                         percentage = 0;
                         milestoneText = 'Submission rejected. View guidelines.';
                     } else {
-                        percentage = Math.min(Math.round((metricValue / targetGoal) * 100), 100);
-                        if (isNaN(percentage)) percentage = 0;
-                        
-                        if (percentage >= 100) {
-                            milestoneText = '★ MAX PERFORMANCE MILESTONE REACHED!';
+                        percentage = progressInfo.percentage;
+                        if (progressInfo.isMax) {
+                            milestoneText = '★ MAX PERFORMANCE LEVEL REACHED!';
                         } else if (sub.status === 'approved') {
                             milestoneText = 'Reward successfully credited to your wallet';
                         } else {
-                            milestoneText = `Get ${targetGoal.toLocaleString()} ${payoutType === 'conversion' ? 'leads' : (payoutType === 'reach' ? 'reach' : 'views')} to unlock max bonus!`;
+                            const needed = progressInfo.target - (isConversion ? conversions : views);
+                            milestoneText = `Reach Level ${progressInfo.label} (Get ${needed.toLocaleString()} more ${isConversion ? 'leads' : 'views'} to unlock +₹${progressInfo.nextBonus} bonus!)`;
                         }
                     }
                     
@@ -7619,22 +7878,16 @@
                         progressAccentColor = '#f97316';
                     }
 
-                    let metricName = 'Views';
-                    let bonus = 0;
+                    let metricName = isConversion ? 'Leads' : (payoutType === 'reach' ? 'Reach' : 'Views');
+                    let bonus = getMilestoneBonus(isConversion ? conversions : views, isConversion, customBonuses);
                     
-                    if (payoutType === 'reach') {
-                        metricName = 'Reach';
-                        bonus = (Math.floor(reach / 10000) * 10) + (Math.floor(reach / 100000) * 50);
-                    } else if (payoutType === 'conversion') {
-                        metricName = 'Leads';
-                        if (conversions >= 100) bonus = 2000;
-                        else if (conversions >= 20) bonus = 400;
-                    } else if (payoutType === 'performance') {
-                        metricName = 'Views';
-                        bonus = (Math.floor(views / 10000) * 10) + (Math.floor(views / 100000) * 50);
-                    } else {
-                        metricName = 'Views';
-                        bonus = (Math.floor(views / 10000) * 10) + (Math.floor(views / 100000) * 50);
+                    let extraStats = '';
+                    if (c.conversionRate && c.conversionRate > 0) {
+                        const extraPay = conversions * c.conversionRate;
+                        extraStats = `
+                            <span style="margin: 0 4px; color:rgba(255,255,255,0.15);">|</span>
+                            <span style="color:#38bdf8; font-weight:800;">Leads: ${conversions} (+₹${extraPay.toLocaleString('en-IN')})</span>
+                        `;
                     }
 
                     let progressStatsHTML = `
@@ -7642,6 +7895,7 @@
                             <span style="font-size:9px; color:var(--text-muted); font-weight:700; text-transform:uppercase; letter-spacing:0.5px;">Earning Progress</span>
                             <div style="text-align:right; font-size:10px; font-weight:700; color:var(--text-muted);">
                                 <span style="color:#fff;">${metricName}: ${metricValue.toLocaleString()}</span>
+                                ${extraStats}
                                 <span style="margin: 0 4px; color:rgba(255,255,255,0.15);">|</span>
                                 <span style="color:var(--accent); font-weight:800; text-shadow:0 0 8px var(--accent-glow);">Bonus: ₹${bonus.toLocaleString('en-IN', {minimumFractionDigits: 0, maximumFractionDigits: 0})}</span>
                             </div>
@@ -7685,8 +7939,16 @@
                     
                     let analyticsPanelHTML = '';
                     if (sub.status === 'tracking' || sub.status === 'approved') {
+                        const hasConv = c.conversionRate && c.conversionRate > 0;
+                        const columns = hasConv ? 4 : 3;
                         analyticsPanelHTML = `
-                            <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:8px; width:100%; background:rgba(15, 23, 42, 0.4); border: 1px solid rgba(255,255,255,0.05); border-radius:12px; padding:10px; margin-top:10px;">
+                            <div style="display:grid; grid-template-columns: repeat(${columns}, 1fr); gap:8px; width:100%; background:rgba(15, 23, 42, 0.4); border: 1px solid rgba(255,255,255,0.05); border-radius:12px; padding:10px; margin-top:10px;">
+                                ${hasConv ? `
+                                <div style="display:flex; flex-direction:column; gap:2px; align-items:center;">
+                                    <span style="font-size:8px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Conversions</span>
+                                    <span style="font-size:11px; color:#38bdf8; font-weight:800;">${conversions.toLocaleString('en-US')}</span>
+                                </div>
+                                ` : ''}
                                 <div style="display:flex; flex-direction:column; gap:2px; align-items:center;">
                                     <span style="font-size:8px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Views</span>
                                     <span style="font-size:11px; color:#fff; font-weight:800;">${views.toLocaleString('en-US')}</span>
@@ -7792,9 +8054,226 @@
                 `;
                 container.innerHTML += card;
             });
-            if (accepted.length > 0) {
-                // Prepend container clear at start of rendering instead of inside
-                const originalContent = container.innerHTML;
+            } // Close accepted.length > 0 else block
+
+            // Render Explore Briefs Marketplace on the Home tab
+            const exploreContainer = document.getElementById('homeExploreCampaignsContainer');
+            if (exploreContainer) {
+                exploreContainer.innerHTML = '';
+                const available = allCampaigns.filter(c => !acceptedCampaigns.includes(c.id));
+                
+                if (available.length === 0) {
+                    exploreContainer.innerHTML = `
+                        <div style="text-align:center; font-size: 12px; padding: 24px; border: 1px dashed rgba(255,255,255,0.06); border-radius:12px; background:rgba(255,255,255,0.01); color:var(--text-muted); grid-column: 1/-1;">
+                            No new campaigns available in the marketplace right now. Check back later!
+                        </div>
+                    `;
+                } else {
+                    // Show top 4 available campaigns
+                    const subset = available.slice(0, 4);
+                    subset.forEach((c, index) => {
+                        let badgeClass = 'badge-reels';
+                        let tagLabel = 'Reel';
+                        const tagLower = (c.tag || '').toLowerCase();
+                        if (tagLower === 'reels') { badgeClass = 'badge-reels'; tagLabel = 'Reel'; }
+                        else if (tagLower === 'youtube') { badgeClass = 'badge-youtube'; tagLabel = 'YT Video'; }
+                        else if (tagLower === 'post') { badgeClass = 'badge-post'; tagLabel = 'Post'; }
+                        else if (tagLower === 'other') { badgeClass = 'badge-task'; tagLabel = 'Task'; }
+
+                        let productImg = c.productImage;
+                        if (!productImg) {
+                            if (tagLower === 'reels') {
+                                productImg = 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&w=400&q=80';
+                            } else if (tagLower === 'youtube') {
+                                productImg = 'https://images.unsplash.com/photo-161162616305-c69b3fa7fbe0?auto=format&fit=crop&w=400&q=80';
+                            } else if (tagLower === 'post') {
+                                productImg = 'https://images.unsplash.com/photo-1611590027211-b954fd027b51?auto=format&fit=crop&w=400&q=80';
+                            } else {
+                                productImg = 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=400&q=80';
+                            }
+                        }
+
+                        const payoutType = c.payoutType || 'flat';
+                        let rateLabel = 'Est. Payout';
+                        if (payoutType === 'cpm') rateLabel = 'CPM Rate';
+                        else if (payoutType === 'reach') rateLabel = 'Reach Rate';
+                        else if (payoutType === 'conversion') rateLabel = 'Lead Rate';
+                        else if (payoutType === 'performance') rateLabel = 'Performance Rate';
+                        
+                        let rateSuffix = '';
+                        if (payoutType === 'cpm') rateSuffix = '<span style="font-size:10px; font-weight:500; color:var(--text-muted);">/1k views</span>';
+                        else if (payoutType === 'reach') rateSuffix = '<span style="font-size:10px; font-weight:500; color:var(--text-muted);">/1k reach</span>';
+                        else if (payoutType === 'conversion') rateSuffix = '<span style="font-size:10px; font-weight:500; color:var(--text-muted);">/lead</span>';
+                        else if (payoutType === 'performance') rateSuffix = '<span style="font-size:8px; font-weight:500; color:var(--text-muted);"> (Hybrid)</span>';
+
+                        const rewardVal = parseFloat(c.reward || 0).toFixed(0);
+                        let rewardDisplayStr = `₹${rewardVal}${rateSuffix}`;
+                        if (payoutType === 'performance') {
+                            rewardDisplayStr = `Dynamic Rate`;
+                        }
+
+                        let trendBadgeHTML = '';
+                        const rateVal = parseFloat(c.reward || 0);
+                        if (rateVal >= 1000 || (payoutType !== 'flat' && rateVal >= 150)) {
+                            trendBadgeHTML = `
+                                <span style="font-size:8px; font-weight:800; color:#fbbf24; background:rgba(251, 191, 36, 0.06); border:1px solid rgba(251, 191, 36, 0.2); padding:2px 6px; border-radius:5px; display:inline-flex; align-items:center; gap:4px;">
+                                    <span class="polymarket-pulse"></span>
+                                    HIGH PAY
+                                </span>
+                            `;
+                        } else if (tagLower === 'reels') {
+                            trendBadgeHTML = `
+                                <span style="font-size:8px; font-weight:800; color:#f97316; background:rgba(249, 115, 22, 0.06); border:1px solid rgba(249, 115, 22, 0.2); padding:2px 6px; border-radius:5px; display:inline-flex; align-items:center; gap:4px;">
+                                    <span class="polymarket-pulse orange"></span>
+                                    TRENDING
+                                </span>
+                            `;
+                        } else {
+                            trendBadgeHTML = `
+                                <span style="font-size:8px; font-weight:800; color:#3b82f6; background:rgba(59, 130, 246, 0.06); border:1px solid rgba(59, 130, 246, 0.2); padding:2px 6px; border-radius:5px; display:inline-flex; align-items:center; gap:4px;">
+                                    <span class="polymarket-pulse blue"></span>
+                                    NEW BRIEF
+                                </span>
+                            `;
+                        }
+
+                        const maxSlots = c.maxSlots || 50;
+                        const filledSlots = Math.round(maxSlots * (0.4 + (c.id.charCodeAt(0) % 5) * 0.1));
+                        const remainingSlots = Math.max(0, maxSlots - filledSlots);
+
+                        let fomoBadgeHTML = '';
+                        if (remainingSlots <= 15) {
+                            fomoBadgeHTML = `
+                                <span style="font-size:8px; font-weight:800; color:#ef4444; background:rgba(239, 68, 68, 0.06); border:1px solid rgba(239, 68, 68, 0.2); padding:2px 6px; border-radius:5px; display:inline-flex; align-items:center; gap:4.5px;">
+                                    <span class="polymarket-pulse orange" style="background:#ef4444; box-shadow:0 0 0 0 rgba(239,68,68,0.7); animation: polymarket-pulse-orange-kf 1.6s infinite cubic-bezier(0.66, 0, 0, 1);"></span>
+                                    LIMITED SPOTS
+                                </span>
+                            `;
+                        }
+
+                        const nowTime = Date.now();
+                        let expiryMs = null;
+                        if (c.expiresAt) {
+                            if (c.expiresAt.seconds) {
+                                expiryMs = c.expiresAt.seconds * 1000;
+                            } else {
+                                expiryMs = new Date(c.expiresAt).getTime();
+                            }
+                        } else if (c.expiryDate) {
+                            const expDate = new Date(c.expiryDate);
+                            if (c.expiryDate.length <= 10) {
+                                expDate.setHours(23, 59, 59, 999);
+                            }
+                            expiryMs = expDate.getTime();
+                        } else {
+                            const offsetHours = 12 + (c.id.charCodeAt(1) % 150);
+                            let baseMs = 1783584000000;
+                            if (c.createdAt) {
+                                if (c.createdAt.seconds) {
+                                    baseMs = c.createdAt.seconds * 1000;
+                                } else {
+                                    baseMs = new Date(c.createdAt).getTime() || 1783584000000;
+                                }
+                            }
+                            expiryMs = baseMs + offsetHours * 60 * 60 * 1000;
+                        }
+
+                        const diffMs = expiryMs - nowTime;
+                        const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+
+                        let expiryHTML = '';
+                        if (diffMs > 0) {
+                            const colorVal = diffHours < 24 ? '#f87171' : 'var(--accent)';
+                            const bgVal = diffHours < 24 ? 'rgba(248, 113, 113, 0.06)' : 'rgba(250, 204, 21, 0.06)';
+                            const borderVal = diffHours < 24 ? 'rgba(248, 113, 113, 0.2)' : 'rgba(250, 204, 21, 0.2)';
+                            const pulseClass = diffHours < 24 ? 'orange' : '';
+                            const pulseColor = diffHours < 24 ? '#f87171' : 'var(--accent)';
+                            const pulseShadow = diffHours < 24 ? 'rgba(248,113,113,0.7)' : 'var(--accent-glow)';
+                            
+                            expiryHTML = `
+                                <span style="font-size:8px; font-weight:800; color:${colorVal}; background:${bgVal}; border:1px solid ${borderVal}; padding:2px 6px; border-radius:5px; display:inline-flex; align-items:center; gap:4px;">
+                                    <span class="polymarket-pulse ${pulseClass}" style="background:${pulseColor}; box-shadow:0 0 0 0 ${pulseShadow}; animation: polymarket-pulse-orange-kf 1.6s infinite cubic-bezier(0.66, 0, 0, 1);"></span>
+                                    <span class="campaign-countdown-timer" data-expire-ms="${expiryMs}" data-expired="false" data-campaign-id="${c.id}">--d --h --m --s left</span>
+                                </span>
+                            `;
+                        } else {
+                            expiryHTML = `
+                                <span style="font-size:8px; font-weight:800; color:#ef4444; background:rgba(239, 68, 68, 0.06); border:1px solid rgba(239, 68, 68, 0.2); padding:2px 6px; border-radius:5px;">
+                                    Expired
+                                </span>
+                            `;
+                        }
+
+                        const platforms = c.allowedPlatforms || [tagLower];
+                        const platformBadges = platforms.map(p => {
+                            let color = '#6366f1';
+                            let displayName = p;
+                            if (p === 'tiktok') { color = '#22d3ee'; displayName = 'TikTok'; }
+                            else if (p === 'reels') { color = '#ec4899'; displayName = 'Instagram Reel'; }
+                            else if (p === 'shorts') { color = '#ef4444'; displayName = 'YouTube Video'; }
+                            else if (p === 'twitter') { color = '#38bdf8'; displayName = 'Twitter / X'; }
+                            else if (p === 'linkedin') { color = '#0284c7'; displayName = 'LinkedIn'; }
+                            else if (p === 'google maps') { color = '#22c55e'; displayName = 'Google Map Review'; }
+                            else if (p === 'app review') { color = '#a855f7'; displayName = 'App Store Review'; }
+                            else if (p === 'repost') { color = '#fb923c'; displayName = 'Repost / Share'; }
+                            else if (p === 'custom task') { color = '#14b8a6'; displayName = 'Custom Task'; }
+                            return `<span style="font-size:8px; font-weight:700; text-transform:uppercase; color:${color}; background:${color}12; border:1px solid ${color}25; padding:2px 5px; border-radius:4px; margin-right:4px; display:inline-block; margin-top:2px;">${displayName}</span>`;
+                        }).join('');
+
+                        const card = `
+                            <div class="glass-panel campaign-workspace-card" style="margin-bottom:0; animation-delay: ${index * 60}ms;">
+                                <div class="brand-header-row">
+                                    <div style="display:flex; align-items:center; gap:10px; overflow:hidden; flex:1;">
+                                        <div class="brand-logo-frame">
+                                            <img class="brand-logo-img" src="${productImg}" alt="${c.productName || 'Client'}">
+                                        </div>
+                                        <div style="overflow:hidden;">
+                                            <div style="font-size: 14.5px; font-weight: 850; color: #fff; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; margin-bottom: 2px; letter-spacing:-0.2px;">${c.title}</div>
+                                            <div style="font-size: 10px; color: var(--accent); font-weight: 700; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">@${c.productName || 'client'}</div>
+                                        </div>
+                                    </div>
+                                    <div style="display:flex; gap:6px; align-items:center; flex-shrink:0;">
+                                        ${trendBadgeHTML}
+                                        ${fomoBadgeHTML}
+                                        <span class="task-type-badge ${badgeClass}" style="position:static; box-shadow:none; padding:3px 8px; font-size:8px; border-radius: 6px; flex-shrink:0;">${tagLabel}</span>
+                                    </div>
+                                </div>
+                                
+                                <div style="font-size: 11.5px; color: rgba(255,255,255,0.7); line-height: 1.45; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-top:2px;">
+                                    ${c.desc || ''}
+                                </div>
+
+                                <div style="display:flex; flex-wrap:wrap; gap:4px; margin-top:2px;">
+                                    ${platformBadges}
+                                </div>
+
+                                <div style="display:flex; justify-content:space-between; align-items:center; font-size:10px; background:rgba(255,255,255,0.015); border:1px solid rgba(255,255,255,0.03); border-radius:10px; padding:8px 12px; margin-top:2px; margin-bottom:2px;">
+                                    <span style="color:var(--text-muted); font-weight:700;">Campaign Timeline</span>
+                                    ${expiryHTML}
+                                </div>
+
+                                <div class="campaign-footer-row" style="margin-top: auto; border-top: 1px solid rgba(255,255,255,0.04); padding-top: 12px; align-items:center;">
+                                    <div>
+                                        <div style="font-size: 8px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px;">${rateLabel}</div>
+                                        <div class="campaign-payout-amount" style="font-size:18px; font-weight:900; color:#fff; letter-spacing:-0.4px; display:flex; flex-direction:column; gap:2px;">
+                                            <span>${rewardDisplayStr}</span>
+                                            ${c.conversionRate && c.conversionRate > 0 ? `<span style="font-size:10px; color:#38bdf8; font-weight:800; letter-spacing:0.2px;">+₹${c.conversionRate}/lead extra</span>` : ''}
+                                        </div>
+                                    </div>
+                                    <div style="display:flex; gap:8px;">
+                                        <button class="pm-btn yes" id="joinBtn_home_${c.id}" onclick="window.openCampaignDetailModal('${c.id}')" style="background:var(--accent); color:#07090f; border-color:var(--accent); font-size:9.5px; height:32px; padding:0 12px; border-radius:8px;">
+                                            Join Task
+                                        </button>
+                                        <button class="pm-btn no" onclick="window.openCampaignDetailModal('${c.id}')" style="font-size:9.5px; height:32px; padding:0 12px; border-radius:8px;">
+                                            Brief
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        exploreContainer.innerHTML += card;
+                    });
+                }
             }
         };
 
@@ -7883,6 +8362,40 @@
                 alert("Campaign not found!");
                 return;
             }
+            
+            // Check expiry
+            let expiryMs = null;
+            if (campaign.expiresAt) {
+                if (campaign.expiresAt.seconds) {
+                    expiryMs = campaign.expiresAt.seconds * 1000;
+                } else {
+                    expiryMs = new Date(campaign.expiresAt).getTime();
+                }
+            } else if (campaign.expiryDate) {
+                const expDate = new Date(campaign.expiryDate);
+                expDate.setHours(23, 59, 59, 999);
+                if (campaign.expiryDate.length > 10) {
+                    expiryMs = new Date(campaign.expiryDate).getTime();
+                } else {
+                    expiryMs = expDate.getTime();
+                }
+            } else {
+                const offsetHours = 12 + (campaign.id.charCodeAt(1) % 150);
+                let baseMs = 1783584000000;
+                if (campaign.createdAt) {
+                    if (campaign.createdAt.seconds) {
+                        baseMs = campaign.createdAt.seconds * 1000;
+                    } else {
+                        baseMs = new Date(campaign.createdAt).getTime() || 1783584000000;
+                    }
+                }
+                expiryMs = baseMs + offsetHours * 60 * 60 * 1000;
+            }
+            if (expiryMs && Date.now() > expiryMs) {
+                alert("This campaign has expired! You cannot submit your asset.");
+                return;
+            }
+
             const campaignTitle = campaign.title;
             const reward = parseFloat(campaign.reward || 0);
             const payoutType = campaign.payoutType || 'flat';
@@ -7987,6 +8500,9 @@
                     const timeB = b.createdAt ? (b.createdAt.seconds || 0) : 0;
                     return timeB - timeA;
                 });
+
+                // Cache user submissions
+                localStorage.setItem('eliteX_user_submissions', JSON.stringify(window.userSubmissions));
                 
                 window.updateCampaignEarningsAndSync();
                 window.renderUserSubmissionsList();
@@ -7994,6 +8510,13 @@
                 if (window.renderCampaignList) window.renderCampaignList();
             }, (error) => {
                 console.error("Submissions Firebase Error:", error);
+                if (!window.userSubmissions || window.userSubmissions.length === 0) {
+                    window.userSubmissions = JSON.parse(localStorage.getItem('eliteX_user_submissions') || '[]');
+                }
+                window.updateCampaignEarningsAndSync();
+                window.renderUserSubmissionsList();
+                if (window.renderHomeActiveBriefs) window.renderHomeActiveBriefs();
+                if (window.renderCampaignList) window.renderCampaignList();
             });
         };
 
@@ -8018,12 +8541,29 @@
                 const payoutType = sub.payoutType || 'flat';
                 const platform = sub.platform || 'other';
                 
+                const campaign = window.allCampaigns ? window.allCampaigns.find(c => c.id === sub.campaignId) : (typeof allCampaigns !== 'undefined' ? allCampaigns.find(c => c.id === sub.campaignId) : null);
+                const customBonuses = campaign ? campaign.customBonuses : null;
+                const conversions = sub.conversions || 0;
+                const reach = sub.reach || 0;
+
                 // Calculate clip earnings
                 let earnings = 0;
                 if (payoutType === 'cpm') {
-                    earnings = (views * reward) / 1000;
+                    earnings = reward + (views * reward) / 1000;
+                    earnings += getMilestoneBonus(views, false, customBonuses);
+                } else if (payoutType === 'reach') {
+                    earnings = reward + (reach * reward) / 1000;
+                    earnings += getMilestoneBonus(views, false, customBonuses);
+                } else if (payoutType === 'conversion') {
+                    earnings = reward + (conversions * reward);
+                    earnings += getMilestoneBonus(conversions, true, customBonuses);
+                } else if (payoutType === 'performance') {
+                    earnings = reward + ((views * reward) / 2000) + ((conversions * reward) / 2);
+                    earnings += getMilestoneBonus(views, false, customBonuses);
                 } else {
-                    earnings = sub.status === 'approved' ? reward : 0;
+                    earnings = (sub.status === 'approved' || sub.status === 'tracking') ? reward : 0;
+                    earnings += conversions * (campaign ? (campaign.conversionRate || 0) : 0);
+                    earnings += getMilestoneBonus(views, false, customBonuses);
                 }
                 
                 // Select status badge classes and text
@@ -8110,33 +8650,26 @@
                     const reward = parseFloat(sub.reward || 0);
                     const payoutType = sub.payoutType || 'flat';
                     
+                    const campaign = window.allCampaigns ? window.allCampaigns.find(c => c.id === sub.campaignId) : (typeof allCampaigns !== 'undefined' ? allCampaigns.find(c => c.id === sub.campaignId) : null);
+                    const customBonuses = campaign ? campaign.customBonuses : null;
+                    
                     let clipEarnings = 0;
                     if (payoutType === 'cpm') {
-                        clipEarnings = (views * reward) / 1000;
-                        const tenKBonus = Math.floor(views / 10000) * 10;
-                        const hundredKBonus = Math.floor(views / 100000) * 50;
-                        clipEarnings += (tenKBonus + hundredKBonus);
+                        clipEarnings = reward + (views * reward) / 1000;
+                        clipEarnings += getMilestoneBonus(views, false, customBonuses);
                     } else if (payoutType === 'reach') {
-                        clipEarnings = (reach * reward) / 1000;
-                        const tenKBonus = Math.floor(reach / 10000) * 10;
-                        const hundredKBonus = Math.floor(reach / 100000) * 50;
-                        clipEarnings += (tenKBonus + hundredKBonus);
+                        clipEarnings = reward + (reach * reward) / 1000;
+                        clipEarnings += getMilestoneBonus(views, false, customBonuses);
                     } else if (payoutType === 'conversion') {
-                        clipEarnings = conversions * reward;
-                        if (sub.status === 'approved') {
-                            if (conversions >= 100) clipEarnings += 2000;
-                            else if (conversions >= 20) clipEarnings += 400;
-                        }
+                        clipEarnings = reward + (conversions * reward);
+                        clipEarnings += getMilestoneBonus(conversions, true, customBonuses);
                     } else if (payoutType === 'performance') {
-                        clipEarnings = ((views * reward) / 2000) + ((conversions * reward) / 2);
-                        const tenKBonus = Math.floor(views / 10000) * 10;
-                        const hundredKBonus = Math.floor(views / 100000) * 50;
-                        clipEarnings += (tenKBonus + hundredKBonus);
+                        clipEarnings = reward + ((views * reward) / 2000) + ((conversions * reward) / 2);
+                        clipEarnings += getMilestoneBonus(views, false, customBonuses);
                     } else {
                         clipEarnings = (sub.status === 'approved' || sub.status === 'tracking') ? reward : 0;
-                        const tenKBonus = Math.floor(views / 10000) * 10;
-                        const hundredKBonus = Math.floor(views / 100000) * 50;
-                        clipEarnings += (tenKBonus + hundredKBonus);
+                        clipEarnings += conversions * (campaign ? (campaign.conversionRate || 0) : 0);
+                        clipEarnings += getMilestoneBonus(views, false, customBonuses);
                     }
                     
                     totalViews += views;
@@ -8144,7 +8677,7 @@
                     if (sub.status === 'pending') {
                         pendingCount++;
                         if (payoutType === 'flat') {
-                            currentPendingClipEarnings += reward;
+                            currentPendingClipEarnings += reward + conversions * (campaign ? (campaign.conversionRate || 0) : 0);
                         }
                     } else if (sub.status === 'tracking') {
                         currentPendingClipEarnings += clipEarnings;
@@ -8288,6 +8821,8 @@
         // Start listener if partnerId is already initialized
         if (partnerId) {
             window.startSubmissionsListener();
+            // Render cached data immediately
+            if (window.renderCampaignList) window.renderCampaignList();
             if (window.renderHomeActiveBriefs) window.renderHomeActiveBriefs();
         }
     </script>
