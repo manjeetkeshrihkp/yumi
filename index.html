@@ -14,6 +14,16 @@
             --accent-glow: rgba(250, 204, 21, 0.4);
             --text-main: #f8fafc;
             --text-muted: #64748b; 
+            
+            /* Semantic Colors */
+            --success: #22c55e;
+            --success-glow: rgba(34, 197, 94, 0.4);
+            --danger: #ef4444;
+            --danger-glow: rgba(239, 68, 68, 0.4);
+            --warning: #eab308;
+            --warning-glow: rgba(234, 179, 8, 0.4);
+            --info: #38bdf8;
+            --info-glow: rgba(56, 189, 248, 0.4);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
@@ -1517,18 +1527,22 @@
             border: 1px solid rgba(250, 204, 21, 0.15);
         }
         .milestone-progress-bar-bg {
-            height: 8px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
+            width: 100%;
+            height: 12px;
+            background: rgba(5, 7, 12, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
             overflow: hidden;
-            margin-bottom: 10px;
+            position: relative;
+            margin-bottom: 12px;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
         }
         .milestone-progress-bar-fill {
             height: 100%;
             background: linear-gradient(90deg, #ca8a04, var(--accent));
-            border-radius: 10px;
+            border-radius: 12px;
             width: 0%;
-            transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: 0 0 10px var(--accent-glow);
         }
         .milestone-footer-row {
@@ -2073,6 +2087,457 @@
         }
         .pm-ticker-price.up { color: #10b981; }
         .pm-ticker-price.down { color: #f87171; }
+        /* Premium Stepper & Progress Animations */
+        @keyframes pulse-accent {
+            0%, 100% { box-shadow: 0 0 8px rgba(250, 204, 21, 0.4); }
+            50% { box-shadow: 0 0 16px rgba(250, 204, 21, 0.7); }
+        }
+        @keyframes pulse-success {
+            0%, 100% { box-shadow: 0 0 8px rgba(74, 222, 128, 0.4); }
+            50% { box-shadow: 0 0 16px rgba(74, 222, 128, 0.7); }
+        }
+        @keyframes pulse-blue {
+            0%, 100% { box-shadow: 0 0 8px rgba(56, 189, 248, 0.4); }
+            50% { box-shadow: 0 0 16px rgba(56, 189, 248, 0.7); }
+        }
+        @keyframes pulse-error {
+            0%, 100% { box-shadow: 0 0 8px rgba(239, 68, 68, 0.4); }
+            50% { box-shadow: 0 0 16px rgba(239, 68, 68, 0.7); }
+        }
+        @keyframes pulse-yellow {
+            0%, 100% { box-shadow: 0 0 8px rgba(234, 179, 8, 0.4); }
+            50% { box-shadow: 0 0 16px rgba(234, 179, 8, 0.7); }
+        }
+        @keyframes shimmer-progress {
+            0% { background-position: -200px 0; }
+            100% { background-position: 200px 0; }
+        }
+
+        .stepper-glow-accent { animation: pulse-accent 2s infinite ease-in-out; }
+        .stepper-glow-success { animation: pulse-success 2s infinite ease-in-out; }
+        .stepper-glow-blue { animation: pulse-blue 2s infinite ease-in-out; }
+        .stepper-glow-error { animation: pulse-error 2s infinite ease-in-out; }
+        .stepper-glow-yellow { animation: pulse-yellow 2s infinite ease-in-out; }
+
+        .progress-bar-shimmer {
+            position: relative;
+            background-size: 200px 100%;
+            background-image: linear-gradient(90deg, 
+                var(--accent) 0%, 
+                #fde047 25%, 
+                var(--accent) 50%, 
+                #fde047 75%, 
+                var(--accent) 100%
+            );
+            animation: shimmer-progress 2.5s infinite linear;
+            overflow: hidden;
+            box-shadow: 0 0 12px var(--accent-glow);
+        }
+        .progress-bar-shimmer::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -150%;
+            width: 40%;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
+            transform: skewX(-25deg);
+            animation: shimmer-progress-light 2.5s infinite ease-in-out;
+        }
+        @keyframes shimmer-progress-light {
+            0% { left: -150%; }
+            50% { left: 150%; }
+            100% { left: 150%; }
+        }
+
+        /* State-Specific Progress Bar Shimmer Animations */
+        .progress-bar-shimmer-yellow {
+            position: relative;
+            background-size: 200px 100%;
+            background-image: linear-gradient(90deg, 
+                #eab308 0%, 
+                #fde047 25%, 
+                #eab308 50%, 
+                #fde047 75%, 
+                #eab308 100%
+            );
+            animation: shimmer-progress 2.5s infinite linear;
+            overflow: hidden;
+            box-shadow: 0 0 12px rgba(234, 179, 8, 0.25);
+        }
+        .progress-bar-shimmer-yellow::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -150%;
+            width: 40%;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
+            transform: skewX(-25deg);
+            animation: shimmer-progress-light 2.5s infinite ease-in-out;
+        }
+
+        .progress-bar-shimmer-green {
+            position: relative;
+            background-size: 200px 100%;
+            background-image: linear-gradient(90deg, 
+                #16a34a 0%, 
+                #4ade80 25%, 
+                #16a34a 50%, 
+                #4ade80 75%, 
+                #16a34a 100%
+            );
+            animation: shimmer-progress 2.5s infinite linear;
+            overflow: hidden;
+            box-shadow: 0 0 12px rgba(34, 197, 94, 0.35);
+        }
+        .progress-bar-shimmer-green::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -150%;
+            width: 40%;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
+            transform: skewX(-25deg);
+            animation: shimmer-progress-light 2.5s infinite ease-in-out;
+        }
+
+        .progress-bar-shimmer-blue {
+            position: relative;
+            background-size: 200px 100%;
+            background-image: linear-gradient(90deg, 
+                #0284c7 0%, 
+                #38bdf8 25%, 
+                #0284c7 50%, 
+                #38bdf8 75%, 
+                #0284c7 100%
+            );
+            animation: shimmer-progress 2.5s infinite linear;
+            overflow: hidden;
+            box-shadow: 0 0 12px rgba(56, 189, 248, 0.35);
+        }
+        .progress-bar-shimmer-blue::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -150%;
+            width: 40%;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
+            transform: skewX(-25deg);
+            animation: shimmer-progress-light 2.5s infinite ease-in-out;
+        }
+
+        .progress-bar-shimmer-red {
+            position: relative;
+            background-size: 200px 100%;
+            background-image: linear-gradient(90deg, 
+                #dc2626 0%, 
+                #f87171 25%, 
+                #dc2626 50%, 
+                #f87171 75%, 
+                #dc2626 100%
+            );
+            animation: shimmer-progress 2.5s infinite linear;
+            overflow: hidden;
+            box-shadow: 0 0 12px rgba(239, 68, 68, 0.35);
+        }
+        .progress-bar-shimmer-red::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -150%;
+            width: 40%;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
+            transform: skewX(-25deg);
+            animation: shimmer-progress-light 2.5s infinite ease-in-out;
+        }
+
+        .milestone-progress-bar-fill.progress-bar-shimmer {
+            background-image: linear-gradient(90deg, 
+                var(--accent) 0%, 
+                #fde047 25%, 
+                var(--accent) 50%, 
+                #fde047 75%, 
+                var(--accent) 100%
+            );
+            background-size: 200px 100%;
+            animation: shimmer-progress 2.5s infinite linear;
+        }
+
+        /* Liquid Flow Line Animations */
+        @keyframes liquid-flow {
+            0% { background-position: 0% 0; }
+            100% { background-position: -200% 0; }
+        }
+        .step-line-active-green {
+            background: linear-gradient(90deg, #22c55e 0%, #4ade80 50%, #22c55e 100%) !important;
+            background-size: 200% 100% !important;
+            animation: liquid-flow 1.5s infinite linear !important;
+            box-shadow: 0 0 4px rgba(34, 197, 94, 0.4);
+        }
+        .step-line-active-blue {
+            background: linear-gradient(90deg, #0284c7 0%, #38bdf8 50%, #0284c7 100%) !important;
+            background-size: 200% 100% !important;
+            animation: liquid-flow 1.5s infinite linear !important;
+            box-shadow: 0 0 4px rgba(56, 189, 248, 0.4);
+        }
+
+        /* Detail Collapse Panel */
+        .workspace-detail-panel {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, padding 0.3s ease-out;
+            background: rgba(15, 23, 42, 0.25);
+            border-radius: 8px;
+            padding: 0 10px;
+        }
+        .workspace-detail-panel.active {
+            max-height: 250px;
+            transition: max-height 0.3s ease-in, padding 0.3s ease-in;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            margin-top: 6px;
+            padding: 8px 10px;
+        }
+
+        /* --- NEW ANIMATIONS AND PREMIUM POLISH EFFECTS --- */
+        .content-section {
+            display: none;
+        }
+        
+        .content-section.active-section {
+            display: block;
+            animation: tabEntrance 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+        
+        @keyframes tabEntrance {
+            from {
+                opacity: 0;
+                transform: translateY(16px) scale(0.985);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* Spotlight Mouse-Follow Effect on Cards */
+        .glass-panel, .milestone-card {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-panel::after, .milestone-card::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(350px circle at var(--mouse-x, 0px) var(--mouse-y, 0px), rgba(250, 204, 21, 0.08), transparent 80%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .glass-panel:hover::after, .milestone-card:hover::after {
+            opacity: 1;
+        }
+
+        /* 3D tilt adjustments */
+        .credit-card-3d {
+            will-change: transform;
+        }
+        .card-face {
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+        }
+
+        /* Confetti Elements */
+        .confetti-particle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            pointer-events: none;
+            z-index: 9999;
+            border-radius: 50%;
+            animation: confettiFly 1.2s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+        }
+
+        @keyframes confettiFly {
+            0% {
+                transform: translate(0, 0) scale(1) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--tx), var(--ty)) scale(0) rotate(var(--rot));
+                opacity: 0;
+            }
+        }
+
+        /* Earn Tab Styling Updates */
+        .earn-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 6px;
+            margin-bottom: 20px;
+        }
+
+        .earn-day-card {
+            background: rgba(30, 41, 59, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 12px;
+            padding: 10px 4px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            user-select: none;
+        }
+
+        .earn-day-card:hover {
+            transform: translateY(-2px);
+            background: rgba(30, 41, 59, 0.45);
+            border-color: rgba(250, 204, 21, 0.15);
+        }
+
+        .earn-day-card.claimed {
+            background: rgba(34, 197, 94, 0.08);
+            border-color: rgba(34, 197, 94, 0.2);
+            color: #4ade80;
+            cursor: default;
+        }
+        .earn-day-card.claimed:hover {
+            transform: none;
+            background: rgba(34, 197, 94, 0.08);
+            border-color: rgba(34, 197, 94, 0.2);
+        }
+
+        .earn-day-card.current {
+            border-color: var(--accent);
+            box-shadow: 0 0 10px rgba(250, 204, 21, 0.2);
+            background: rgba(250, 204, 21, 0.04);
+        }
+
+        .earn-day-num {
+            font-size: 8px;
+            color: var(--text-muted);
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .earn-day-card.claimed .earn-day-num {
+            color: #4ade80;
+        }
+
+        .earn-day-val {
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .earn-day-icon {
+            font-size: 10px;
+            margin-top: 2px;
+        }
+
+        .quest-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(30, 41, 59, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .quest-card:hover {
+            transform: translateY(-2px);
+            background: rgba(30, 41, 59, 0.4);
+            border-color: rgba(250, 204, 21, 0.15);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        .quest-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(250, 204, 21, 0.08);
+            color: var(--accent);
+            border: 1px solid rgba(250, 204, 21, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        /* Circular progress bar for video quest */
+        .circle-loader {
+            position: relative;
+            width: 60px;
+            height: 60px;
+        }
+
+        .circle-loader svg {
+            transform: rotate(-90deg);
+        }
+
+        .circle-bg {
+            fill: none;
+            stroke: rgba(255, 255, 255, 0.05);
+            stroke-width: 4;
+        }
+
+        .circle-fill {
+            fill: none;
+            stroke: var(--accent);
+            stroke-width: 4;
+            stroke-dasharray: 100;
+            stroke-dashoffset: 100;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 0.1s linear;
+        }
+
+        /* Star Rating styles */
+        .star-rating {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin: 15px 0;
+        }
+
+        .star-item {
+            font-size: 28px;
+            color: rgba(255, 255, 255, 0.15);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .star-item.active, .star-item:hover {
+            color: var(--accent);
+            transform: scale(1.2);
+            text-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        /* Interactive Click Challenge target */
+        .click-target {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #fde047, #ca8a04);
+            border: 2px solid #fff;
+            position: absolute;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            color: #000;
+            font-size: 12px;
+            box-shadow: 0 0 15px var(--accent-glow);
+            transition: transform 0.1s ease;
+            user-select: none;
+        }
+        .click-target:active {
+            transform: scale(0.85);
+        }
     </style>
 </head>
 <body>
@@ -2144,52 +2609,45 @@
                 </div>
             </div>
 
-            <!-- Beautiful 3-Card Glassmorphic Stats Grid -->
-            <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 24px; width: 100%;">
+            <!-- Beautiful One-Line Box-Style Stats Row -->
+            <div style="display: flex; flex-direction: row; justify-content: space-between; align-items: stretch; gap: 8px; margin-bottom: 24px; width: 100%; flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none;">
+                
                 <!-- Card 1: Available Balance -->
-                <div class="stat-card glass-panel" style="padding: 20px; display: flex; flex-direction: column; justify-content: space-between; align-items: flex-start; gap: 12px; position: relative; overflow: hidden; border-radius: 16px;">
-                    <div style="position: absolute; top: -30%; right: -20%; width: 90px; height: 90px; background: radial-gradient(circle, rgba(250, 204, 21, 0.08) 0%, transparent 70%); pointer-events: none;"></div>
-                    <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-                        <span style="font-size: 10px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Wallet Balance</span>
-                        <div style="width: 28px; height: 28px; border-radius: 50%; background: rgba(250, 204, 21, 0.08); border: 1px solid rgba(250, 204, 21, 0.15); display: flex; align-items: center; justify-content: center; color: var(--accent);">
-                            <svg viewBox="0 0 24 24" style="width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2.5;"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
-                        </div>
+                <div class="glass-panel" style="flex: 1; min-width: 100px; padding: 10px 12px; display: flex; align-items: center; gap: 8px; border-radius: 12px; margin: 0; box-shadow: 0 4px 12px rgba(0,0,0,0.15); flex-shrink: 0;">
+                    <div style="width: 28px; height: 28px; border-radius: 50%; background: rgba(250, 204, 21, 0.08); border: 1px solid rgba(250, 204, 21, 0.15); display: flex; align-items: center; justify-content: center; color: var(--accent); flex-shrink: 0;">
+                        <svg viewBox="0 0 24 24" style="width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2.5;"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
                     </div>
                     <div>
-                        <div class="wallet-balance-val" style="font-size: 24px; font-weight: 900; color: #fff; text-shadow: 0 0 15px var(--accent-glow);">₹ 14,250.00</div>
-                        <div style="font-size: 10px; color: var(--text-muted); font-weight: 600; margin-top: 4px;">Total Earnings: <span id="campaignEarningsVal" style="color: var(--accent); font-weight: 800;">₹0.00</span></div>
+                        <span style="font-size: 8px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 1px;">Wallet Balance</span>
+                        <div class="wallet-balance-val" style="font-size: 13px; font-weight: 900; color: #fff; text-shadow: 0 0 15px var(--accent-glow);">₹ 1,024.00</div>
+                        <div style="font-size: 8px; color: var(--text-muted); font-weight: 600; margin-top: 1px;">Total Earnings: <span id="campaignEarningsVal" style="color: var(--accent); font-weight: 800;">₹99.00</span></div>
                     </div>
                 </div>
 
-                <!-- Card 2: Combined Audience Reach -->
-                <div class="stat-card glass-panel" style="padding: 20px; display: flex; flex-direction: column; justify-content: space-between; align-items: flex-start; gap: 12px; position: relative; overflow: hidden; border-radius: 16px;">
-                    <div style="position: absolute; top: -30%; right: -20%; width: 90px; height: 90px; background: radial-gradient(circle, rgba(56, 189, 248, 0.08) 0%, transparent 70%); pointer-events: none;"></div>
-                    <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-                        <span style="font-size: 10px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Views Engagement</span>
-                        <div style="width: 28px; height: 28px; border-radius: 50%; background: rgba(56, 189, 248, 0.08); border: 1px solid rgba(56, 189, 248, 0.15); display: flex; align-items: center; justify-content: center; color: #38bdf8;">
-                            <svg viewBox="0 0 24 24" style="width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2.5;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-                        </div>
+                <!-- Card 2: Views Engagement -->
+                <div class="glass-panel" style="flex: 1; min-width: 100px; padding: 10px 12px; display: flex; align-items: center; gap: 8px; border-radius: 12px; margin: 0; box-shadow: 0 4px 12px rgba(0,0,0,0.15); flex-shrink: 0;">
+                    <div style="width: 28px; height: 28px; border-radius: 50%; background: rgba(56, 189, 248, 0.08); border: 1px solid rgba(56, 189, 248, 0.15); display: flex; align-items: center; justify-content: center; color: #38bdf8; flex-shrink: 0;">
+                        <svg viewBox="0 0 24 24" style="width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2.5;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                     </div>
                     <div>
-                        <div id="activeTasksCountVal" style="font-size: 24px; font-weight: 900; color: #fff; text-shadow: 0 0 15px rgba(56, 189, 248, 0.2);">0 Views</div>
-                        <div style="font-size: 10px; color: var(--text-muted); font-weight: 600; margin-top: 4px;">Across all campaigns</div>
+                        <span style="font-size: 8px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 1px;">Views Engagement</span>
+                        <div id="activeTasksCountVal" style="font-size: 13px; font-weight: 900; color: #fff; text-shadow: 0 0 15px rgba(56, 189, 248, 0.2);">0 Views</div>
+                        <div style="font-size: 8px; color: var(--text-muted); font-weight: 600; margin-top: 1px;">Across all campaigns</div>
                     </div>
                 </div>
 
-                <!-- Card 3: Brief Submissions Status -->
-                <div class="stat-card glass-panel" style="padding: 20px; display: flex; flex-direction: column; justify-content: space-between; align-items: flex-start; gap: 12px; position: relative; overflow: hidden; border-radius: 16px;">
-                    <div style="position: absolute; top: -30%; right: -20%; width: 90px; height: 90px; background: radial-gradient(circle, rgba(168, 85, 247, 0.08) 0%, transparent 70%); pointer-events: none;"></div>
-                    <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-                        <span style="font-size: 10px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Review Queue</span>
-                        <div style="width: 28px; height: 28px; border-radius: 50%; background: rgba(168, 85, 247, 0.08); border: 1px solid rgba(168, 85, 247, 0.15); display: flex; align-items: center; justify-content: center; color: #a855f7;">
-                            <svg viewBox="0 0 24 24" style="width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2.5;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                        </div>
+                <!-- Card 3: Review Queue -->
+                <div class="glass-panel" style="flex: 1; min-width: 100px; padding: 10px 12px; display: flex; align-items: center; gap: 8px; border-radius: 12px; margin: 0; box-shadow: 0 4px 12px rgba(0,0,0,0.15); flex-shrink: 0;">
+                    <div style="width: 28px; height: 28px; border-radius: 50%; background: rgba(168, 85, 247, 0.08); border: 1px solid rgba(168, 85, 247, 0.15); display: flex; align-items: center; justify-content: center; color: #a855f7; flex-shrink: 0;">
+                        <svg viewBox="0 0 24 24" style="width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2.5;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
                     </div>
                     <div>
-                        <div id="submissionStatusCountVal" style="font-size: 24px; font-weight: 900; color: #fff; text-shadow: 0 0 15px rgba(168, 85, 247, 0.2);">0 Pending</div>
-                        <div style="font-size: 10px; color: var(--text-muted); font-weight: 600; margin-top: 4px;">Awaiting verification</div>
+                        <span style="font-size: 8px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 1px;">Review Queue</span>
+                        <div id="submissionStatusCountVal" style="font-size: 13px; font-weight: 900; color: #fff; text-shadow: 0 0 15px rgba(168, 85, 247, 0.2);">5 Pending</div>
+                        <div style="font-size: 8px; color: var(--text-muted); font-weight: 600; margin-top: 1px;">Awaiting verification</div>
                     </div>
                 </div>
+                
             </div>
 
             <!-- Weekly Earnings Performance Spline Chart on Home -->
@@ -2361,7 +2819,6 @@
                     <svg viewBox="0 0 24 24" style="position:absolute; left:12px; top:12px; width:14px; height:14px; stroke:var(--text-muted); fill:none; stroke-width:2.5;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                 </div>
 
-                <!-- Custom Filter Tabs -->
                 <div class="pm-categories-row" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
                     <div style="display:flex; gap:6px;">
                         <button class="pm-category-pill active" data-campaign-filter="all" onclick="window.filterCampaigns(this)">All</button>
@@ -2369,6 +2826,7 @@
                         <button class="pm-category-pill" data-campaign-filter="youtube" onclick="window.filterCampaigns(this)">YouTube</button>
                         <button class="pm-category-pill" data-campaign-filter="post" onclick="window.filterCampaigns(this)">Tasks</button>
                     </div>
+                    <span id="campActiveCount" style="font-size: 10px; font-weight: 800; color: var(--accent); background: rgba(250, 204, 21, 0.08); border: 1px solid rgba(250, 204, 21, 0.15); padding: 4px 10px; border-radius: 8px; font-family: monospace; display: inline-block;">0 Live Briefs</span>
                 </div>
             </div>
 
@@ -2477,7 +2935,7 @@
                     <span class="milestone-reward-text" id="withdrawProgressPercent" style="color: var(--accent); background: rgba(250, 204, 21, 0.08); border-color: rgba(250, 204, 21, 0.15);">0%</span>
                 </div>
                 <div class="milestone-progress-bar-bg" style="margin-bottom: 10px;">
-                    <div class="milestone-progress-bar-fill" id="withdrawProgressBarFill" style="width: 0%;"></div>
+                    <div class="milestone-progress-bar-fill progress-bar-shimmer" id="withdrawProgressBarFill" style="width: 0%;"></div>
                 </div>
                 <div class="milestone-footer-row">
                     <span class="milestone-footer-text" id="withdrawProgressFooter">Checking payout eligibility...</span>
@@ -2905,8 +3363,176 @@
 
         </div>
 
-        <!-- Future Tab -->
-        <div id="earnSection" class="content-section"><p style="color:var(--text-muted); text-align:center;">Earn section coming soon...</p></div>
+        <!-- TAB: EARN SECTION (GAMIFIED HUBS) -->
+        <div id="earnSection" class="content-section" style="padding-bottom: 90px;">
+            
+            <!-- Daily Check-in Card -->
+            <div class="milestone-card" style="padding: 20px; margin-bottom: 20px;">
+                <div class="milestone-title-row" style="margin-bottom: 12px;">
+                    <span class="milestone-title">
+                        <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; stroke: var(--accent); fill: none; stroke-width: 2;"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                        Daily Check-in Rewards
+                    </span>
+                    <span id="earnStreakBadge" style="font-size: 8px; font-weight: 800; color: #000; background: var(--accent); padding: 3px 8px; border-radius: 6px; text-transform: uppercase; box-shadow: 0 0 8px var(--accent-glow);">Streak: 2 Days</span>
+                </div>
+                
+                <p style="font-size: 11px; color: var(--text-muted); line-height: 1.4; margin-bottom: 16px; text-align: center;">
+                    Claim your daily reward and increase your streak! Maintain a streak to boost your earnings multiplier.
+                </p>
+                
+                <!-- 7-Day Grid -->
+                <div class="earn-grid" id="dailyCheckInGrid">
+                    <!-- Dynamic check-in days will be rendered here -->
+                </div>
+                
+                <button class="btn-premium-ai" id="btnClaimDailyCheckIn" onclick="claimDailyReward()" style="width: 100%; height: 42px; font-size: 12px;">
+                    Claim Today's Reward (+₹10)
+                </button>
+            </div>
+
+            <!-- Daily Quests Section -->
+            <h3 style="margin: 0 0 16px 0; font-size: 16px; color: #cbd5e1; display:flex; align-items:center; gap:8px;">
+                <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; stroke: var(--accent); fill: none; stroke-width: 2.5;"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                Daily Earning Quests
+            </h3>
+            
+            <div id="earningQuestsContainer" style="width: 100%;">
+                
+                <!-- Quest 1: Watch Sponsored Video -->
+                <div class="quest-card" id="questCardVideo">
+                    <div style="display:flex; align-items:center; gap:12px; flex:1; overflow:hidden;">
+                        <div class="quest-icon">
+                            <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2.5;"><polygon points="23 7 16 12 23 17 23 7"></polygon><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>
+                        </div>
+                        <div style="overflow:hidden;">
+                            <div style="font-size:13px; font-weight:700; color:#fff; text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">Watch Sponsored Clip</div>
+                            <div style="font-size:10px; color:var(--text-muted); margin-top:2px;">Watch a 15-second sponsor video</div>
+                        </div>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:12px; flex-shrink:0;">
+                        <div style="font-size:14px; font-weight:800; color:var(--accent); text-align:right;">+₹20</div>
+                        <button class="btn-premium-ai" id="btnQuestVideo" onclick="startVideoQuest()" style="padding: 6px 12px; font-size:10px; height:32px; width:auto; margin:0;">Start</button>
+                    </div>
+                </div>
+
+                <!-- Quest 2: Rate App Experience -->
+                <div class="quest-card" id="questCardReview">
+                    <div style="display:flex; align-items:center; gap:12px; flex:1; overflow:hidden;">
+                        <div class="quest-icon">
+                            <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2.5;"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                        </div>
+                        <div style="overflow:hidden;">
+                            <div style="font-size:13px; font-weight:700; color:#fff; text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">Submit Portal Review</div>
+                            <div style="font-size:10px; color:var(--text-muted); margin-top:2px;">Rate our interface & leave feedback</div>
+                        </div>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:12px; flex-shrink:0;">
+                        <div style="font-size:14px; font-weight:800; color:var(--accent); text-align:right;">+₹50</div>
+                        <button class="btn-premium-ai" id="btnQuestReview" onclick="startReviewQuest()" style="padding: 6px 12px; font-size:10px; height:32px; width:auto; margin:0;">Rate</button>
+                    </div>
+                </div>
+
+                <!-- Quest 3: Focus & Match challenge -->
+                <div class="quest-card" id="questCardGame">
+                    <div style="display:flex; align-items:center; gap:12px; flex:1; overflow:hidden;">
+                        <div class="quest-icon">
+                            <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2.5;"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                        </div>
+                        <div style="overflow:hidden;">
+                            <div style="font-size:13px; font-weight:700; color:#fff; text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">Precision Click Match</div>
+                            <div style="font-size:10px; color:var(--text-muted); margin-top:2px;">Click the moving bubble 5 times</div>
+                        </div>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:12px; flex-shrink:0;">
+                        <div style="font-size:14px; font-weight:800; color:var(--accent); text-align:right;">+₹10</div>
+                        <button class="btn-premium-ai" id="btnQuestGame" onclick="startGameQuest()" style="padding: 6px 12px; font-size:10px; height:32px; width:auto; margin:0;">Play</button>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    <!-- VIDEO QUEST MODAL -->
+    <div class="glass-modal-overlay" id="questVideoModal" style="z-index: 9999;">
+        <div class="glass-modal-container" style="max-width: 400px; padding: 24px; text-align: center;">
+            <h3 class="modal-title" style="margin-bottom: 12px;">Watching Sponsored Video</h3>
+            <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 20px;">Keep this modal open. The sponsor reward credits automatically on completion.</p>
+            
+            <div style="display: flex; justify-content: center; margin-bottom: 24px;">
+                <div class="circle-loader">
+                    <svg width="60" height="60">
+                        <circle class="circle-bg" cx="30" cy="30" r="26"></circle>
+                        <circle class="circle-fill" id="videoQuestCircleFill" cx="30" cy="30" r="26"></circle>
+                    </svg>
+                    <div id="videoQuestCountdownVal" style="position: absolute; top:0; left:0; width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-size:16px; font-weight:900; color:#fff; font-family:monospace;">15s</div>
+                </div>
+            </div>
+            
+            <div style="background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.05); border-radius:12px; padding: 14px; font-size: 11px; color:#cbd5e1; margin-bottom: 20px; line-height: 1.5; text-align: left;">
+                <div style="font-weight: 700; color: var(--accent); margin-bottom: 4px;">UGC Ad Sponsor: Nykaa Beauty</div>
+                "Try our new Gold Shimmer setting spray for long-lasting 24-hour glow. Available now in all stores!"
+            </div>
+            
+            <button class="btn-outline-cancel" onclick="cancelVideoQuest()" style="width: 100%;">Cancel & Exit</button>
+        </div>
+    </div>
+
+    <!-- REVIEW QUEST MODAL -->
+    <div class="glass-modal-overlay" id="questReviewModal" style="z-index: 9999;">
+        <div class="glass-modal-container" style="max-width: 400px; padding: 24px;">
+            <button class="modal-close-btn" onclick="closeReviewQuestModal()">
+                <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+            
+            <h3 class="modal-title" style="text-align: center; margin-bottom: 8px;">Rate Portal Experience</h3>
+            <p style="font-size: 11px; color: var(--text-muted); text-align: center; margin-bottom: 16px;">Help us improve! Submit your 5-star rating to claim your reward.</p>
+            
+            <form onsubmit="submitReviewQuest(event)">
+                <div class="star-rating">
+                    <span class="star-item" onclick="setQuestStars(1)">★</span>
+                    <span class="star-item" onclick="setQuestStars(2)">★</span>
+                    <span class="star-item" onclick="setQuestStars(3)">★</span>
+                    <span class="star-item" onclick="setQuestStars(4)">★</span>
+                    <span class="star-item" onclick="setQuestStars(5)">★</span>
+                </div>
+                
+                <div style="display:flex; flex-direction:column; gap:8px; margin-bottom: 20px;">
+                    <label style="font-size: 11px; font-weight:700; color: var(--text-muted); text-transform: uppercase;">Write Feedback</label>
+                    <textarea id="questReviewFeedback" rows="3" placeholder="Tell us what you love or what we can fix..." required></textarea>
+                </div>
+                
+                <button type="submit" class="btn-premium-ai" id="btnSubmitReviewQuest" style="width: 100%; height:40px; font-size: 12px; margin:0;">
+                    Submit Feedback (+₹50)
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- GAME QUEST MODAL -->
+    <div class="glass-modal-overlay" id="questGameModal" style="z-index: 9999;">
+        <div class="glass-modal-container" style="max-width: 400px; padding: 24px; text-align: center; position: relative;">
+            <h3 class="modal-title" style="margin-bottom: 8px;">Precision Click Match</h3>
+            <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 16px;" id="gameQuestInstructions">Click the bubble 5 times before time runs out!</p>
+            
+            <div id="gamePlayArea" style="position: relative; width: 100%; height: 220px; background: rgba(5,7,12,0.6); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; overflow: hidden; margin-bottom: 20px;">
+                <div id="gameClickTarget" class="click-target" style="display: none;" onclick="hitGameTarget()">5</div>
+                
+                <div id="gameStartScreen" style="position: absolute; top:0; left:0; width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px;">
+                    <div style="font-size: 28px; font-weight: 800; color: var(--accent);">Target: 5 Hits</div>
+                    <div style="font-size: 11px; color: var(--text-muted);">Time limit: 8 seconds</div>
+                    <button class="btn-premium-ai" onclick="startGameSequence()" style="width: auto; padding: 8px 24px; font-size:12px; margin:0;">Start Game</button>
+                </div>
+                
+                <div id="gameStatsOverlay" style="position: absolute; top: 10px; left: 10px; right: 10px; display: none; justify-content: space-between; font-size: 10px; color: var(--text-muted); font-weight: 700; font-family: monospace; pointer-events: none;">
+                    <span>Hits: <span id="gameHitsVal" style="color: var(--accent);">0/5</span></span>
+                    <span>Time: <span id="gameTimerVal" style="color: #f87171;">8.0s</span></span>
+                </div>
+            </div>
+            
+            <button class="btn-outline-cancel" onclick="exitGameQuest()" style="width: 100%;">Cancel & Exit</button>
+        </div>
+    </div>
 
         <!-- Affiliate Section (New Referral UI) -->
         <div id="affiliateSection" class="content-section" style="padding-bottom: 80px;">
@@ -3076,7 +3702,7 @@
                 <span>Earn</span>
             </div>
 
-            <div class="menu-item" onclick="switchTab(this, 'affiliateSection', '', '')">
+            <div class="menu-item" onclick="switchTab(this, 'affiliateSection', 'Affiliate Hub', 'Partner Network')">
                 <svg viewBox="0 0 24 24">
                     <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
                     <circle cx="9" cy="7" r="4"></circle>
@@ -3086,7 +3712,7 @@
                 <span>Affiliate</span>
             </div>
 
-            <div class="menu-item" onclick="switchTab(this, 'walletSection', '', '')">
+            <div class="menu-item" onclick="switchTab(this, 'walletSection', 'Premium Wallet', 'Manage Earnings')">
                 <svg viewBox="0 0 24 24">
                     <rect x="2" y="5" width="20" height="14" rx="2"></rect>
                     <line x1="2" y1="10" x2="22" y2="10"></line>
@@ -3457,7 +4083,7 @@
         }
 
         // --- 1. Wallet State & User Session Management ---
-        let availableBalance = 14250.00;
+        let availableBalance = 1024.00;
         let pendingBalance = 2400.00;
         let withdrawnBalance = 8500.00;
         
@@ -3471,11 +4097,7 @@
         let currentAddPaymentMethod = 'upi';
 
         const defaultTransactions = [
-            { id: 1, title: 'Tech Startup Promo', amount: 450, date: 'Today, 11:42 AM', type: 'credit', status: 'completed' },
-            { id: 2, title: 'Local Food Delivery', amount: 120, date: 'Yesterday, 04:15 PM', type: 'credit', status: 'completed' },
-            { id: 3, title: 'Bank Withdrawal', amount: -2000, date: 'Jul 4, 09:00 AM', type: 'debit', status: 'completed' },
-            { id: 4, title: 'E-commerce Campaign', amount: 850, date: 'Jul 2, 02:30 PM', type: 'credit', status: 'completed' },
-            { id: 5, title: 'App Install Campaign', amount: 1500, date: 'Jun 28, 10:15 AM', type: 'credit', status: 'completed' }
+            { id: 1, title: 'UGC Campaign Promo', amount: 99, date: 'Today, 11:42 AM', type: 'credit', status: 'completed' }
         ];
         let transactions = [...defaultTransactions];
         let creditedSubmissions = [];
@@ -3498,11 +4120,19 @@
         let currentJoinCampaignId = null;
 
         function loadUserSession() {
+            // LocalStorage state migration to load new v2 defaults
+            if (!localStorage.getItem('eliteX_migration_v2')) {
+                localStorage.removeItem('eliteX_user_session');
+                localStorage.removeItem('eliteX_bank_profile');
+                localStorage.removeItem('eliteX_pending_count');
+                localStorage.setItem('eliteX_migration_v2', 'true');
+            }
+            
             let session = localStorage.getItem('eliteX_user_session');
             if (session) {
                 let data = JSON.parse(session);
                 userName = data.userName || '';
-                availableBalance = (data.availableBalance !== undefined && data.availableBalance !== null && !isNaN(parseFloat(data.availableBalance))) ? parseFloat(data.availableBalance) : 14250.00;
+                availableBalance = (data.availableBalance !== undefined && data.availableBalance !== null && !isNaN(parseFloat(data.availableBalance))) ? parseFloat(data.availableBalance) : 1024.00;
                 pendingBalance = (data.pendingBalance !== undefined && data.pendingBalance !== null && !isNaN(parseFloat(data.pendingBalance))) ? parseFloat(data.pendingBalance) : 2400.00;
                 withdrawnBalance = (data.withdrawnBalance !== undefined && data.withdrawnBalance !== null && !isNaN(parseFloat(data.withdrawnBalance))) ? parseFloat(data.withdrawnBalance) : 8500.00;
                 completedVideosCount = (data.completedVideosCount !== undefined && data.completedVideosCount !== null) ? parseInt(data.completedVideosCount) : 5;
@@ -3588,7 +4218,7 @@
             if (!name) return;
             
             userName = name;
-            availableBalance = 14250.00;
+            availableBalance = 1024.00;
             pendingBalance = 2400.00;
             withdrawnBalance = 8500.00;
             partnerId = generateRandomPartnerId();
@@ -3734,6 +4364,17 @@
                 const milestoneBar = document.getElementById('milestoneBar');
                 if (milestoneBar) milestoneBar.style.width = '0%';
             }
+
+            // --- NEW: Trigger Tab-Specific Animations ---
+            if (sectionId === 'earnSection') {
+                if (typeof window.renderCheckInGrid === 'function') {
+                    window.renderCheckInGrid();
+                }
+            } else if (sectionId === 'homeSection') {
+                if (typeof window.triggerChartAnimation === 'function') {
+                    window.triggerChartAnimation();
+                }
+            }
         }
 
         function createNewAction() {
@@ -3808,9 +4449,9 @@
             if (earningsEl) earningsEl.innerText = `₹${totalEarnings.toFixed(0)}`;
 
             // Count pending submissions
-            const pendingCount = localStorage.getItem('eliteX_pending_count') || '0';
+            const pendingCount = localStorage.getItem('eliteX_pending_count') || '5';
             const pendingEl = document.getElementById('submissionStatusCountVal');
-            if (pendingEl) pendingEl.innerText = `${pendingCount} Review`;
+            if (pendingEl) pendingEl.innerText = `${pendingCount} Pending`;
         };
 
         window.showJoinConfirmModal = function(id) {
@@ -5995,6 +6636,511 @@
             }, 4000);
         };
 
+        // =============================================================
+        // --- NEW: CONFETTI, 3D CARD TILT, & SPOTLIGHT GLOW LOGIC ---
+        // =============================================================
+        
+        // Confetti Particle Explosion
+        function triggerConfetti(x, y) {
+            const container = document.body;
+            const colors = ['#facc15', '#ca8a04', '#4ade80', '#22c55e', '#38bdf8', '#0284c7', '#ec4899', '#f43f5e'];
+            for (let i = 0; i < 30; i++) {
+                const p = document.createElement('div');
+                p.className = 'confetti-particle';
+                p.style.background = colors[Math.floor(Math.random() * colors.length)];
+                
+                // Random target trajectory variables
+                const tx = (Math.random() - 0.5) * 260;
+                const ty = (Math.random() - 0.5) * 260 - 120;
+                const rot = Math.random() * 720;
+                
+                p.style.setProperty('--tx', `${tx}px`);
+                p.style.setProperty('--ty', `${ty}px`);
+                p.style.setProperty('--rot', `${rot}deg`);
+                
+                p.style.left = `${x}px`;
+                p.style.top = `${y}px`;
+                
+                container.appendChild(p);
+                setTimeout(() => p.remove(), 1200);
+            }
+        }
+
+        // Mouse Spotlight Glow Follower
+        document.body.addEventListener('mousemove', (e) => {
+            const card = e.target.closest('.glass-panel, .milestone-card, .quest-card');
+            if (card) {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            }
+        });
+
+        // 3D Credit Card interactive hover tilt
+        function initCard3DTilt() {
+            const card = document.getElementById('creditCard');
+            if (!card) return;
+            
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = (centerY - y) / 10;
+                const rotateY = (x - centerX) / 10;
+                
+                if (card.classList.contains('flipped')) {
+                    card.style.transform = `rotateY(180deg) rotateX(${-rotateX}deg) rotateY(${-rotateY}deg)`;
+                } else {
+                    card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                }
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                if (card.classList.contains('flipped')) {
+                    card.style.transform = 'rotateY(180deg)';
+                } else {
+                    card.style.transform = 'rotateX(0deg) rotateY(0deg)';
+                }
+            });
+        }
+
+        // SVG spline line chart drawing animation
+        window.triggerChartAnimation = function() {
+            const strokePath = document.getElementById('homeChartSplineStroke');
+            const fillPath = document.getElementById('homeChartSplineFill');
+            if (!strokePath || !fillPath) return;
+            
+            strokePath.style.transition = 'none';
+            fillPath.style.transition = 'none';
+            
+            strokePath.style.strokeDasharray = '1000';
+            strokePath.style.strokeDashoffset = '1000';
+            fillPath.style.opacity = '0';
+            
+            // Reflow
+            strokePath.getBoundingClientRect();
+            
+            strokePath.style.transition = 'stroke-dashoffset 1.4s cubic-bezier(0.16, 1, 0.3, 1)';
+            fillPath.style.transition = 'opacity 0.6s ease 1.0s';
+            
+            strokePath.style.strokeDashoffset = '0';
+            fillPath.style.opacity = '1';
+        };
+
+        // =============================================================
+        // --- NEW: GAMIFIED EARN HUB FUNCTIONS ---
+        // =============================================================
+        
+        const dailyRewards = [10, 15, 20, 25, 30, 40, 100];
+        
+        window.renderCheckInGrid = function() {
+            const grid = document.getElementById('dailyCheckInGrid');
+            if (!grid) return;
+            grid.innerHTML = '';
+            
+            // Index of the current day to claim (e.g. streakCount = 2 means Day 3 index 2)
+            const currentDayIndex = streakCount % 7; 
+            
+            for (let i = 0; i < 7; i++) {
+                const card = document.createElement('div');
+                card.className = 'earn-day-card';
+                
+                let statusHTML = '';
+                // Check if already checked in today
+                const todayStr = new Date().toDateString();
+                const isClaimedToday = (lastCheckInDate === todayStr);
+                
+                if (i < streakCount) {
+                    card.classList.add('claimed');
+                    statusHTML = `<span class="earn-day-icon">✓</span>`;
+                } else if (i === currentDayIndex && !isClaimedToday) {
+                    card.classList.add('current');
+                    statusHTML = `<span class="earn-day-icon">●</span>`;
+                } else {
+                    statusHTML = `<span class="earn-day-icon" style="opacity: 0.25;">○</span>`;
+                }
+                
+                card.innerHTML = `
+                    <span class="earn-day-num">Day ${i+1}</span>
+                    <span class="earn-day-val">₹${dailyRewards[i]}</span>
+                    ${statusHTML}
+                `;
+                
+                if (i === currentDayIndex && !isClaimedToday) {
+                    card.onclick = (e) => claimDailyReward(e);
+                }
+                grid.appendChild(card);
+            }
+            
+            // Update checkin button and streak badge
+            const btn = document.getElementById('btnClaimDailyCheckIn');
+            const badge = document.getElementById('earnStreakBadge');
+            const boostBadge = document.getElementById('streakBoostBadge');
+            
+            if (badge) badge.innerText = `Streak: ${streakCount} Days`;
+            if (boostBadge) {
+                if (streakCount >= 3) {
+                    boostBadge.innerText = "1.2x Boost Active";
+                    boostBadge.style.display = "inline-block";
+                } else {
+                    boostBadge.innerText = "1.0x Boost";
+                    boostBadge.style.display = "inline-block";
+                }
+            }
+            
+            if (btn) {
+                const todayStr = new Date().toDateString();
+                if (lastCheckInDate === todayStr) {
+                    btn.innerText = "Today's Reward Claimed ✓";
+                    btn.disabled = true;
+                    btn.style.opacity = '0.5';
+                    btn.style.cursor = 'default';
+                    btn.style.background = 'rgba(74, 222, 128, 0.1)';
+                    btn.style.color = '#4ade80';
+                    btn.style.borderColor = 'rgba(74, 222, 128, 0.2)';
+                } else {
+                    const currentReward = dailyRewards[currentDayIndex];
+                    btn.innerText = `Claim Today's Reward (+₹${currentReward})`;
+                    btn.disabled = false;
+                    btn.style.opacity = '1';
+                    btn.style.cursor = 'pointer';
+                    btn.style.background = '';
+                    btn.style.color = '';
+                    btn.style.borderColor = '';
+                }
+            }
+        };
+
+        window.claimDailyReward = function(e) {
+            const todayStr = new Date().toDateString();
+            if (lastCheckInDate === todayStr) {
+                alert("Today's reward is already claimed! Come back tomorrow.");
+                return;
+            }
+            
+            const currentDayIndex = streakCount % 7;
+            const rewardAmt = dailyRewards[currentDayIndex];
+            
+            availableBalance += rewardAmt;
+            streakCount++;
+            lastCheckInDate = todayStr;
+            saveUserSession();
+            
+            // Confetti effect
+            let clickX = e ? e.clientX : window.innerWidth / 2;
+            let clickY = e ? e.clientY : window.innerHeight / 2;
+            triggerConfetti(clickX, clickY);
+            
+            // Add check-in transaction
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            transactions.unshift({
+                id: transactions.length + 1,
+                title: `Daily Check-In (Day ${streakCount})`,
+                amount: rewardAmt,
+                date: `Today, ${timeStr}`,
+                type: 'credit',
+                status: 'completed'
+            });
+            
+            // Refresh
+            updateWalletUI();
+            updateCardVisibilityUI();
+            updateMilestoneUI();
+            renderTransactions();
+            window.renderCheckInGrid();
+            
+            // Update streak dot elements on home/wallet if they exist
+            for (let d = 1; d <= 7; d++) {
+                const dot = document.getElementById(`streakDay${d}`);
+                if (dot) {
+                    if (d <= streakCount) {
+                        dot.style.background = 'var(--accent)';
+                        dot.style.color = '#000';
+                    }
+                }
+            }
+            
+            showToast(`Daily check-in successful! +₹${rewardAmt} added.`, 'success');
+        };
+
+        // --- Video Quest Logic ---
+        let videoQuestTimer = null;
+        let videoQuestSeconds = 15;
+        
+        window.startVideoQuest = function() {
+            const btn = document.getElementById('btnQuestVideo');
+            if (btn && btn.innerText === 'Completed') {
+                alert("Quest completed!");
+                return;
+            }
+            
+            document.getElementById('questVideoModal').classList.add('active');
+            videoQuestSeconds = 15;
+            
+            const fill = document.getElementById('videoQuestCircleFill');
+            const countText = document.getElementById('videoQuestCountdownVal');
+            
+            if (fill) fill.style.strokeDashoffset = '100';
+            if (countText) countText.innerText = '15s';
+            
+            videoQuestTimer = setInterval(() => {
+                videoQuestSeconds--;
+                if (countText) countText.innerText = `${videoQuestSeconds}s`;
+                if (fill) {
+                    const offset = 100 - ((15 - videoQuestSeconds) / 15 * 100);
+                    fill.style.strokeDashoffset = offset;
+                }
+                
+                if (videoQuestSeconds <= 0) {
+                    clearInterval(videoQuestTimer);
+                    videoQuestTimer = null;
+                    completeVideoQuest();
+                }
+            }, 1000);
+        };
+        
+        window.cancelVideoQuest = function() {
+            if (videoQuestTimer) {
+                clearInterval(videoQuestTimer);
+                videoQuestTimer = null;
+            }
+            document.getElementById('questVideoModal').classList.remove('active');
+        };
+        
+        function completeVideoQuest() {
+            document.getElementById('questVideoModal').classList.remove('active');
+            const reward = 20;
+            availableBalance += reward;
+            saveUserSession();
+            
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            transactions.unshift({
+                id: transactions.length + 1,
+                title: 'Nykaa Sponsor Clip Ad View',
+                amount: reward,
+                date: `Today, ${timeStr}`,
+                type: 'credit',
+                status: 'completed'
+            });
+            
+            updateWalletUI();
+            updateCardVisibilityUI();
+            updateMilestoneUI();
+            renderTransactions();
+            
+            const btn = document.getElementById('btnQuestVideo');
+            if (btn) {
+                btn.innerText = 'Completed';
+                btn.disabled = true;
+                btn.style.background = 'rgba(74, 222, 128, 0.1)';
+                btn.style.color = '#4ade80';
+                btn.style.borderColor = 'rgba(74, 222, 128, 0.2)';
+                btn.style.cursor = 'default';
+            }
+            
+            showToast("Nykaa Video Quest Completed! +₹20.", 'success');
+        }
+
+        // --- App Rating Review Quest Logic ---
+        let selectedQuestStars = 0;
+        
+        window.startReviewQuest = function() {
+            const btn = document.getElementById('btnQuestReview');
+            if (btn && btn.innerText === 'Completed') {
+                alert("Quest completed!");
+                return;
+            }
+            
+            selectedQuestStars = 0;
+            const stars = document.querySelectorAll('.star-item');
+            stars.forEach(s => s.classList.remove('active'));
+            document.getElementById('questReviewFeedback').value = '';
+            
+            document.getElementById('questReviewModal').classList.add('active');
+        };
+        
+        window.closeReviewQuestModal = function() {
+            document.getElementById('questReviewModal').classList.remove('active');
+        };
+        
+        window.setQuestStars = function(count) {
+            selectedQuestStars = count;
+            const stars = document.querySelectorAll('.star-item');
+            stars.forEach((s, idx) => {
+                if (idx < count) {
+                    s.classList.add('active');
+                } else {
+                    s.classList.remove('active');
+                }
+            });
+        };
+        
+        window.submitReviewQuest = function(event) {
+            event.preventDefault();
+            if (selectedQuestStars === 0) {
+                alert("Please select a star rating!");
+                return;
+            }
+            
+            window.closeReviewQuestModal();
+            const reward = 50;
+            availableBalance += reward;
+            saveUserSession();
+            
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            transactions.unshift({
+                id: transactions.length + 1,
+                title: 'Portal Experience Survey Reward',
+                amount: reward,
+                date: `Today, ${timeStr}`,
+                type: 'credit',
+                status: 'completed'
+            });
+            
+            updateWalletUI();
+            updateCardVisibilityUI();
+            updateMilestoneUI();
+            renderTransactions();
+            
+            const btn = document.getElementById('btnQuestReview');
+            if (btn) {
+                btn.innerText = 'Completed';
+                btn.disabled = true;
+                btn.style.background = 'rgba(74, 222, 128, 0.1)';
+                btn.style.color = '#4ade80';
+                btn.style.borderColor = 'rgba(74, 222, 128, 0.2)';
+                btn.style.cursor = 'default';
+            }
+            
+            showToast("Review Quest Completed! +₹50.", 'success');
+        };
+
+        // --- Click Target Game Quest Logic ---
+        let gameQuestTimer = null;
+        let gameQuestMilliSeconds = 80;
+        let gameHits = 0;
+        
+        window.startGameQuest = function() {
+            const btn = document.getElementById('btnQuestGame');
+            if (btn && btn.innerText === 'Completed') {
+                alert("Quest completed!");
+                return;
+            }
+            
+            document.getElementById('questGameModal').classList.add('active');
+            document.getElementById('gameStartScreen').style.display = 'flex';
+            document.getElementById('gameClickTarget').style.display = 'none';
+            document.getElementById('gameStatsOverlay').style.display = 'none';
+        };
+        
+        window.exitGameQuest = function() {
+            if (gameQuestTimer) {
+                clearInterval(gameQuestTimer);
+                gameQuestTimer = null;
+            }
+            document.getElementById('questGameModal').classList.remove('active');
+        };
+        
+        window.startGameSequence = function() {
+            document.getElementById('gameStartScreen').style.display = 'none';
+            document.getElementById('gameClickTarget').style.display = 'flex';
+            document.getElementById('gameStatsOverlay').style.display = 'flex';
+            
+            gameHits = 0;
+            gameQuestMilliSeconds = 80; // 8.0s
+            
+            document.getElementById('gameHitsVal').innerText = `0/5`;
+            document.getElementById('gameTimerVal').innerText = `8.0s`;
+            document.getElementById('gameClickTarget').innerText = '5';
+            
+            moveGameTarget();
+            
+            if (gameQuestTimer) clearInterval(gameQuestTimer);
+            gameQuestTimer = setInterval(() => {
+                gameQuestMilliSeconds--;
+                const secondsText = (gameQuestMilliSeconds / 10).toFixed(1);
+                document.getElementById('gameTimerVal').innerText = `${secondsText}s`;
+                
+                if (gameQuestMilliSeconds <= 0) {
+                    clearInterval(gameQuestTimer);
+                    gameQuestTimer = null;
+                    alert("Time's up! Try again.");
+                    window.startGameQuest();
+                }
+            }, 100);
+        };
+        
+        function moveGameTarget() {
+            const target = document.getElementById('gameClickTarget');
+            const playArea = document.getElementById('gamePlayArea');
+            if (!target || !playArea) return;
+            
+            const maxW = playArea.clientWidth - 45;
+            const maxH = playArea.clientHeight - 45;
+            
+            const randomX = Math.floor(Math.random() * maxW);
+            const randomY = Math.floor(Math.random() * maxH);
+            
+            target.style.left = `${randomX}px`;
+            target.style.top = `${randomY}px`;
+        }
+        
+        window.hitGameTarget = function() {
+            gameHits++;
+            document.getElementById('gameHitsVal').innerText = `${gameHits}/5`;
+            document.getElementById('gameClickTarget').innerText = `${5 - gameHits}`;
+            
+            if (gameHits >= 5) {
+                clearInterval(gameQuestTimer);
+                gameQuestTimer = null;
+                completeGameQuest();
+            } else {
+                moveGameTarget();
+            }
+        };
+        
+        function completeGameQuest() {
+            document.getElementById('questGameModal').classList.remove('active');
+            const reward = 10;
+            availableBalance += reward;
+            saveUserSession();
+            
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            transactions.unshift({
+                id: transactions.length + 1,
+                title: 'Click Precision Game Reward',
+                amount: reward,
+                date: `Today, ${timeStr}`,
+                type: 'credit',
+                status: 'completed'
+            });
+            
+            updateWalletUI();
+            updateCardVisibilityUI();
+            updateMilestoneUI();
+            renderTransactions();
+            
+            const btn = document.getElementById('btnQuestGame');
+            if (btn) {
+                btn.innerText = 'Completed';
+                btn.disabled = true;
+                btn.style.background = 'rgba(74, 222, 128, 0.1)';
+                btn.style.color = '#4ade80';
+                btn.style.borderColor = 'rgba(74, 222, 128, 0.2)';
+                btn.style.cursor = 'default';
+            }
+            
+            showToast("Precision click match completed! +₹10.", 'success');
+        }
+
         function initWallet() {
             loadUserSession();
             
@@ -6011,6 +7157,11 @@
             renderTransactions();
             if (window.updateCampaignStatsUI) window.updateCampaignStatsUI();
             window.initLiveCreatorFeed();
+
+            // --- NEW: Initialize tilt elements & grids ---
+            initCard3DTilt();
+            triggerChartAnimation();
+            window.renderCheckInGrid();
         }
 
         // Initialize wallet on load
@@ -6035,7 +7186,7 @@
     <!-- Firebase SDK (Version 10.8.1 for Stability) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getFirestore, collection, query, where, orderBy, onSnapshot, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        import { getFirestore, collection, query, where, orderBy, onSnapshot, addDoc, deleteDoc, doc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyBnE05VAXAfvFj1S6y-Ny4yBrNHJNc_DhU",
@@ -6088,6 +7239,7 @@
             
             // Only show accepted (joined) campaigns on Home tab campaigns feed
             const accepted = allCampaigns.filter(c => acceptedCampaigns.includes(c.id));
+            container.innerHTML = '';
             
             if (accepted.length === 0) {
                 container.innerHTML = `
@@ -6100,123 +7252,186 @@
             
             // Stepper HTML helper generator
             function getStepperHTML(status) {
+                // Step 1: Join
                 let step1Bg = 'var(--success)';
                 let step1Border = 'var(--success)';
-                let step1Color = '#000';
+                let step1Color = '#05070c';
                 let step1Icon = '✓';
-                let step1Glow = '';
+                let step1Class = '';
+                let step1LabelColor = '#fff';
                 
-                let step2Bg = '#07090f';
-                let step2Border = 'rgba(255,255,255,0.1)';
-                let step2Color = 'var(--text-muted)';
+                // Step 2: Submit
+                let step2Bg = 'rgba(255,255,255,0.02)';
+                let step2Border = 'rgba(255,255,255,0.08)';
+                let step2Color = 'rgba(255,255,255,0.3)';
                 let step2Icon = '2';
-                let step2Glow = '';
+                let step2Class = '';
+                let step2LabelColor = 'rgba(255,255,255,0.3)';
                 
-                let step3Bg = '#07090f';
-                let step3Border = 'rgba(255,255,255,0.1)';
-                let step3Color = 'var(--text-muted)';
+                // Step 3: Verify
+                let step3Bg = 'rgba(255,255,255,0.02)';
+                let step3Border = 'rgba(255,255,255,0.08)';
+                let step3Color = 'rgba(255,255,255,0.3)';
                 let step3Icon = '3';
-                let step3Glow = '';
-                let step3Label = 'Verified';
+                let step3Class = '';
+                let step3Label = 'Verify';
+                let step3LabelColor = 'rgba(255,255,255,0.3)';
                 
-                let line1Color = 'rgba(255,255,255,0.06)';
-                let line2Color = 'rgba(255,255,255,0.06)';
+                let line1Class = '';
+                let line1Bg = 'rgba(255,255,255,0.05)';
+                let line2Class = '';
+                let line2Bg = 'rgba(255,255,255,0.05)';
                 
                 if (status === 'initial') {
-                    // Upload / Add is active
-                    step1Bg = 'var(--accent)';
-                    step1Border = 'var(--accent)';
-                    step1Color = '#000';
-                    step1Icon = '1';
-                    step1Glow = 'box-shadow: 0 0 8px var(--accent-glow);';
+                    // Step 1 is yellow (deposit frozen)
+                    step1Bg = '#ca8a04';
+                    step1Border = '#eab308';
+                    step1Color = '#fff';
+                    step1Icon = '✓';
+                    step1Class = 'stepper-glow-yellow';
+                    step1LabelColor = '#fff';
+
+                    // Step 2 is active (submit link)
+                    line1Bg = 'rgba(255,255,255,0.05)';
+                    step2Bg = 'var(--accent)';
+                    step2Border = 'var(--accent)';
+                    step2Color = '#05070c';
+                    step2Icon = '2';
+                    step2Class = 'stepper-glow-accent';
+                    step2LabelColor = '#fff';
                 } else if (status === 'pending') {
-                    line1Color = 'var(--success)';
-                    step2Bg = '#eab308';
-                    step2Border = '#eab308';
-                    step2Color = '#000';
-                    step2Icon = '●';
-                    step2Glow = 'box-shadow: 0 0 10px rgba(234,179,8,0.4);';
-                } else if (status === 'tracking') {
-                    line1Color = 'var(--success)';
-                    line2Color = '#38bdf8';
-                    
+                    // Step 1 is yellow (deposit frozen)
+                    step1Bg = '#ca8a04';
+                    step1Border = '#eab308';
+                    step1Color = '#fff';
+                    step1Icon = '✓';
+                    step1Class = 'stepper-glow-yellow';
+                    step1LabelColor = '#fff';
+
+                    // Step 2 is completed (ticked)
+                    line1Class = 'step-line-active-green';
                     step2Bg = 'var(--success)';
                     step2Border = 'var(--success)';
-                    step2Color = '#000';
+                    step2Color = '#05070c';
                     step2Icon = '✓';
+                    step2LabelColor = '#fff';
                     
-                    step3Bg = '#38bdf8';
-                    step3Border = '#38bdf8';
-                    step3Color = '#000';
+                    // Step 3 is In Review (yellow pulse)
+                    line2Bg = 'rgba(255,255,255,0.05)';
+                    step3Bg = '#ca8a04';
+                    step3Border = '#eab308';
+                    step3Color = '#fff';
                     step3Icon = '●';
-                    step3Glow = 'box-shadow: 0 0 10px rgba(56,189,248,0.4);';
-                    step3Label = 'Tracking';
-                } else if (status === 'approved') {
-                    line1Color = 'var(--success)';
-                    line2Color = 'var(--success)';
+                    step3Class = 'stepper-glow-yellow';
+                    step3Label = 'Review';
+                    step3LabelColor = '#fff';
+                } else if (status === 'tracking') {
+                    line1Class = 'step-line-active-green';
+                    line2Class = 'step-line-active-blue';
                     
                     step2Bg = 'var(--success)';
                     step2Border = 'var(--success)';
-                    step2Color = '#000';
+                    step2Color = '#05070c';
                     step2Icon = '✓';
+                    step2LabelColor = '#fff';
+                    
+                    step3Bg = '#0284c7';
+                    step3Border = '#38bdf8';
+                    step3Color = '#fff';
+                    step3Icon = '●';
+                    step3Class = 'stepper-glow-blue';
+                    step3Label = 'Track';
+                    step3LabelColor = '#fff';
+                } else if (status === 'approved') {
+                    line1Class = 'step-line-active-green';
+                    line2Class = 'step-line-active-green';
+                    
+                    step2Bg = 'var(--success)';
+                    step2Border = 'var(--success)';
+                    step2Color = '#05070c';
+                    step2Icon = '✓';
+                    step2LabelColor = '#fff';
                     
                     step3Bg = 'var(--success)';
                     step3Border = 'var(--success)';
-                    step3Color = '#000';
+                    step3Color = '#05070c';
                     step3Icon = '✓';
+                    step3Class = 'stepper-glow-success';
                     step3Label = 'Verified';
+                    step3LabelColor = '#fff';
                 } else if (status === 'rejected') {
-                    line1Color = 'var(--success)';
-                    line2Color = '#ef4444';
+                    line1Class = 'step-line-active-green';
+                    line2Bg = '#ef4444';
                     
                     step2Bg = 'var(--success)';
                     step2Border = 'var(--success)';
-                    step2Color = '#000';
+                    step2Color = '#05070c';
                     step2Icon = '✓';
+                    step2LabelColor = '#fff';
                     
-                    step3Bg = '#ef4444';
+                    step3Bg = '#dc2626';
                     step3Border = '#ef4444';
-                    step3Color = '#000';
+                    step3Color = '#fff';
                     step3Icon = '✗';
+                    step3Class = 'stepper-glow-error';
                     step3Label = 'Rejected';
+                    step3LabelColor = '#fff';
                 }
                 
                 return `
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin: 6px 0 14px 0; position: relative; width: 100%;">
-                        <!-- Background Connectors -->
-                        <div style="position: absolute; top: 12px; left: 15%; width: 35%; height: 2px; background: ${line1Color}; z-index: 1;"></div>
-                        <div style="position: absolute; top: 12px; left: 50%; width: 35%; height: 2px; background: ${line2Color}; z-index: 1;"></div>
-                        
-                        <!-- Step 1: Upload / Add -->
-                        <div style="display: flex; flex-direction: column; align-items: center; z-index: 3; flex: 1;">
-                            <div style="width: 24px; height: 24px; border-radius: 50%; background: ${step1Bg}; border: 2px solid ${step1Border}; color: ${step1Color}; font-size: 10px; font-weight: 900; display: flex; align-items: center; justify-content: center; ${status === 'initial' ? step1Glow : ''}">
-                                ${step1Icon}
+                    <div style="background: rgba(15, 23, 42, 0.25); border: 1px solid rgba(255,255,255,0.03); border-radius: 14px; padding: 12px 10px 10px 10px; margin: 4px 0 10px 0; width: 100%;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; position: relative; width: 100%;">
+                            <!-- Background Connectors -->
+                            <div class="${line1Class}" style="position: absolute; top: 11px; left: 16%; width: 33%; height: 3px; background: ${line1Bg}; z-index: 1; border-radius: 2px;"></div>
+                            <div class="${line2Class}" style="position: absolute; top: 11px; left: 51%; width: 33%; height: 3px; background: ${line2Bg}; z-index: 1; border-radius: 2px;"></div>
+                            
+                            <!-- Step 1: Join -->
+                            <div style="display: flex; flex-direction: column; align-items: center; z-index: 3; flex: 1;">
+                                <div class="${step1Class}" style="width: 22px; height: 22px; border-radius: 50%; background: ${step1Bg}; border: 1px solid ${step1Border}; color: ${step1Color}; font-size: 10px; font-weight: 800; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; box-shadow: 0 2px 6px rgba(0,0,0,0.2);">
+                                    ${step1Icon}
+                                </div>
+                                <span style="font-size: 9px; font-weight: 700; color: ${step1LabelColor}; margin-top: 6px; text-transform: uppercase; letter-spacing: 0.5px;">Join</span>
                             </div>
-                            <span style="font-size: 8px; font-weight: 800; color: #fff; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.3px;">Upload / Link</span>
-                        </div>
-                        
-                        <!-- Step 2: In Review -->
-                        <div style="display: flex; flex-direction: column; align-items: center; z-index: 3; flex: 1;">
-                            <div style="width: 24px; height: 24px; border-radius: 50%; background: ${step2Bg}; border: 2px solid ${step2Border}; color: ${step2Color}; font-size: 10px; font-weight: 900; display: flex; align-items: center; justify-content: center; ${step2Glow}">
-                                ${step2Icon}
+                            
+                            <!-- Step 2: Submit -->
+                            <div style="display: flex; flex-direction: column; align-items: center; z-index: 3; flex: 1;">
+                                <div class="${step2Class}" style="width: 22px; height: 22px; border-radius: 50%; background: ${step2Bg}; border: 1px solid ${step2Border}; color: ${step2Color}; font-size: 10px; font-weight: 800; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; box-shadow: 0 2px 6px rgba(0,0,0,0.2);">
+                                    ${step2Icon}
+                                </div>
+                                <span style="font-size: 9px; font-weight: 700; color: ${step2LabelColor}; margin-top: 6px; text-transform: uppercase; letter-spacing: 0.5px;">Submit</span>
                             </div>
-                            <span style="font-size: 8px; font-weight: 800; color: ${status === 'pending' ? '#fff' : 'var(--text-muted)'}; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.3px;">In Review</span>
-                        </div>
-                        
-                        <!-- Step 3: Verified -->
-                        <div style="display: flex; flex-direction: column; align-items: center; z-index: 3; flex: 1;">
-                            <div style="width: 24px; height: 24px; border-radius: 50%; background: ${step3Bg}; border: 2px solid ${step3Border}; color: ${step3Color}; font-size: 10px; font-weight: 900; display: flex; align-items: center; justify-content: center; ${step3Glow}">
-                                ${step3Icon}
+                            
+                            <!-- Step 3: Verify -->
+                            <div style="display: flex; flex-direction: column; align-items: center; z-index: 3; flex: 1;">
+                                <div class="${step3Class}" style="width: 22px; height: 22px; border-radius: 50%; background: ${step3Bg}; border: 1px solid ${step3Border}; color: ${step3Color}; font-size: 10px; font-weight: 800; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; box-shadow: 0 2px 6px rgba(0,0,0,0.2);">
+                                    ${step3Icon}
+                                </div>
+                                <span style="font-size: 9px; font-weight: 700; color: ${step3LabelColor}; margin-top: 6px; text-transform: uppercase; letter-spacing: 0.5px;">${step3Label}</span>
                             </div>
-                            <span style="font-size: 8px; font-weight: 800; color: ${(status === 'approved' || status === 'tracking' || status === 'rejected') ? '#fff' : 'var(--text-muted)'}; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.3px;">${step3Label}</span>
                         </div>
                     </div>
                 `;
             }
             
-            container.innerHTML = '';
             accepted.forEach((c, index) => {
                 const sub = window.userSubmissions.find(s => s.campaignId === c.id);
+                
+                let cardStyleOverride = '';
+                let verifiedBadgeHTML = '';
+                if (sub) {
+                    if (sub.status === 'approved') {
+                        cardStyleOverride = 'border: 1px solid rgba(74, 222, 128, 0.25) !important; background: linear-gradient(135deg, rgba(20, 83, 45, 0.08) 0%, rgba(5, 7, 12, 0.45) 100%) !important; box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35), 0 0 15px rgba(74, 222, 128, 0.04) !important;';
+                        verifiedBadgeHTML = `<span class="status-badge completed" style="box-shadow: 0 0 8px rgba(74,222,128,0.2); font-size: 8px; padding: 3px 8px; border-radius: 6px; display:inline-flex; align-items:center; gap:3px; border: 1px solid rgba(74,222,128,0.25); text-transform: uppercase;"><svg viewBox="0 0 24 24" style="width:8px; height:8px; stroke:currentColor; fill:none; stroke-width:3.5; margin:0;"><polyline points="20 6 9 17 4 12"></polyline></svg> Verified</span>`;
+                    } else if (sub.status === 'rejected') {
+                        cardStyleOverride = 'border: 1px solid rgba(239, 68, 68, 0.25) !important; background: linear-gradient(135deg, rgba(127, 29, 29, 0.08) 0%, rgba(5, 7, 12, 0.45) 100%) !important; box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35), 0 0 15px rgba(239, 68, 68, 0.04) !important;';
+                        verifiedBadgeHTML = `<span class="status-badge urgent" style="box-shadow: 0 0 8px rgba(239,68,68,0.2); font-size: 8px; padding: 3px 8px; border-radius: 6px; display:inline-flex; align-items:center; gap:3px; border: 1px solid rgba(239,68,68,0.25); text-transform: uppercase;"><svg viewBox="0 0 24 24" style="width:8px; height:8px; stroke:currentColor; fill:none; stroke-width:3.5; margin:0;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg> Rejected</span>`;
+                    } else if (sub.status === 'tracking') {
+                        cardStyleOverride = 'border: 1px solid rgba(56, 189, 248, 0.25) !important; background: linear-gradient(135deg, rgba(3, 105, 161, 0.08) 0%, rgba(5, 7, 12, 0.45) 100%) !important; box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35), 0 0 15px rgba(56, 189, 248, 0.04) !important;';
+                        verifiedBadgeHTML = `<span class="status-badge premium" style="box-shadow: 0 0 8px rgba(56,189,248,0.2); font-size: 8px; padding: 3px 8px; border-radius: 6px; display:inline-flex; align-items:center; gap:3px; border: 1px solid rgba(56,189,248,0.25); text-transform: uppercase;"><svg viewBox="0 0 24 24" style="width:8px; height:8px; stroke:currentColor; fill:none; stroke-width:3.5; margin:0;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg> Tracking</span>`;
+                    } else if (sub.status === 'pending') {
+                        verifiedBadgeHTML = `<span class="status-badge pending" style="box-shadow: 0 0 8px rgba(250,204,21,0.2); font-size: 8px; padding: 3px 8px; border-radius: 6px; display:inline-flex; align-items:center; gap:3px; border: 1px solid rgba(250,204,21,0.25); text-transform: uppercase;"><svg viewBox="0 0 24 24" style="width:8px; height:8px; stroke:currentColor; fill:none; stroke-width:3.5; margin:0; animation: spin 4s linear infinite;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> Reviewing</span>`;
+                    }
+                }
                 
                 let badgeClass = 'badge-reels';
                 let tagLabel = 'Reel';
@@ -6333,16 +7548,38 @@
                     let milestoneText = `Get ${targetGoal.toLocaleString()} ${payoutType === 'conversion' ? 'leads' : 'views'} for bonus!`;
                     if (percentage >= 100) milestoneText = `★ MAX MILESTONE UNLOCKED!`;
                     
+                    let progressClass = 'progress-bar-shimmer-yellow';
+                    let progressAccentColor = 'var(--accent)';
+                    if (sub.status === 'approved') {
+                        progressClass = 'progress-bar-shimmer-green';
+                        progressAccentColor = 'var(--success)';
+                    } else if (sub.status === 'rejected') {
+                        progressClass = 'progress-bar-shimmer-red';
+                        progressAccentColor = 'var(--danger)';
+                    } else if (sub.status === 'tracking') {
+                        progressClass = 'progress-bar-shimmer-blue';
+                        progressAccentColor = '#38bdf8';
+                    }
+
+                    let progressStatsHTML = `
+                        <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:6px;">
+                            <span style="font-size:9px; color:var(--text-muted); font-weight:700; text-transform:uppercase; letter-spacing:0.5px;">Milestone Progress</span>
+                            <div style="text-align:right;">
+                                <span style="font-size:10px; color:#fff; font-weight:800;">${currentProgressMetric.toLocaleString()}</span>
+                                <span style="font-size:8px; color:var(--text-muted); font-weight:600;">/ ${targetGoal.toLocaleString()}</span>
+                            </div>
+                        </div>
+                    `;
                     let progressBarHTML = `
-                        <div style="margin-top: 6px;">
-                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
-                                <span style="font-size:9px; color:var(--text-muted); font-weight:700;">Progress to Milestone</span>
-                                <span style="font-size:9px; color:var(--accent); font-weight:800;">${percentage}%</span>
+                        <div style="margin-top: 10px; background: rgba(15,23,42,0.15); border-radius: 12px; padding: 10px 0;">
+                            ${progressStatsHTML}
+                            <div class="progress-bar-premium-bg" style="width:100%; height:12px; background:rgba(5, 7, 12, 0.6); border:1px solid rgba(255,255,255,0.06); border-radius:12px; overflow:hidden; position:relative; box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);" aria-valuenow="${percentage}" aria-valuemin="0" aria-valuemax="100" role="progressbar">
+                                <div class="progress-bar-premium-fill ${progressClass}" style="width:${percentage}%; height:100%; border-radius:12px; transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);"></div>
                             </div>
-                            <div style="width:100%; height:6px; background:rgba(255,255,255,0.06); border-radius:3px; overflow:hidden;">
-                                <div style="width:${percentage}%; height:100%; background:linear-gradient(90deg, var(--accent) 0%, #eab308 100%); border-radius:3px; box-shadow:0 0 8px var(--accent-glow);"></div>
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:6px;">
+                                <span style="font-size:9px; color:var(--text-muted); font-weight:600;">${milestoneText}</span>
+                                <span style="font-size:10px; color:${progressAccentColor}; background:${progressAccentColor === 'var(--accent)' ? 'rgba(250,204,21,0.06)' : (progressAccentColor === 'var(--success)' ? 'rgba(74,222,128,0.06)' : (progressAccentColor === 'var(--danger)' ? 'rgba(239,68,68,0.06)' : 'rgba(56,189,248,0.06)'))}; border:1px solid ${progressAccentColor === 'var(--accent)' ? 'rgba(250,204,21,0.12)' : (progressAccentColor === 'var(--success)' ? 'rgba(74,222,128,0.12)' : (progressAccentColor === 'var(--danger)' ? 'rgba(239,68,68,0.12)' : 'rgba(56,189,248,0.12)'))}; padding:1px 6px; border-radius:6px; font-weight:800;">${percentage}%</span>
                             </div>
-                            <div style="font-size:8px; color:var(--text-muted); text-align:right; margin-top:3px; font-weight:600;">${milestoneText}</div>
                         </div>
                     `;
                     
@@ -6376,20 +7613,112 @@
                         `;
                     }
                     
+                    // Collapsible details toggle and checklist toggle HTML
+                    let collapsibleDetailsHTML = `
+                        <div onclick="window.toggleSubmissionDetail('${c.id}')" style="display:flex; justify-content:space-between; align-items:center; cursor:pointer; padding:6px 8px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.04); border-radius:8px; margin-top:8px; user-select:none;">
+                            <span style="font-size:9px; color:var(--text-muted); font-weight:700;">Submission Asset Details</span>
+                            <svg id="arrow_${c.id}" viewBox="0 0 24 24" style="width:12px; height:12px; stroke:var(--text-muted); fill:none; stroke-width:2.5; transition: transform 0.3s ease;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                        <div id="details_${c.id}" class="workspace-detail-panel">
+                            <div style="display:flex; flex-direction:column; gap:4px; font-size:10px; padding: 4px 0;">
+                                <div style="display:flex; justify-content:space-between; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
+                                    <span style="color:var(--text-muted);">Submitted URL:</span>
+                                    <a href="${sub ? sub.submissionUrl : '#'}" target="_blank" style="color:var(--accent); font-weight:600; text-decoration:none;">Open Link ↗</a>
+                                </div>
+                                <div style="display:flex; justify-content:space-between; margin-top:4px;">
+                                    <span style="color:var(--text-muted);">Method:</span>
+                                    <span style="color:#fff; font-weight:600; text-transform:capitalize;">${sub ? sub.platform : 'link'}</span>
+                                </div>
+                                <div style="display:flex; justify-content:space-between; margin-top:4px;">
+                                    <span style="color:var(--text-muted);">Submitted On:</span>
+                                    <span style="color:#fff; font-weight:600;">${sub && sub.createdAt ? new Date(sub.createdAt.seconds * 1000).toLocaleDateString() : 'Today'}</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div onclick="window.toggleChecklist('${c.id}')" style="display:flex; justify-content:space-between; align-items:center; cursor:pointer; padding:6px 8px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.04); border-radius:8px; margin-top:6px; user-select:none;">
+                            <span style="font-size:9px; color:var(--text-muted); font-weight:700;">Submission Checklist</span>
+                            <svg id="arrowCheck_${c.id}" viewBox="0 0 24 24" style="width:12px; height:12px; stroke:var(--text-muted); fill:none; stroke-width:2.5; transition: transform 0.3s ease;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                        <div id="checklist_${c.id}" class="workspace-detail-panel">
+                            <div style="display:flex; flex-direction:column; gap:6px; font-size:9px; color:var(--text-muted); padding: 4px 0;">
+                                <div style="display:flex; align-items:center; gap:6px;"><input type="checkbox" checked disabled style="accent-color:var(--success); margin:0;"> Link entered & parsed correctly</div>
+                                <div style="display:flex; align-items:center; gap:6px;"><input type="checkbox" checked disabled style="accent-color:var(--success); margin:0;"> Security deposit ₹10 frozen</div>
+                                <div style="display:flex; align-items:center; gap:6px;"><input type="checkbox" checked disabled style="accent-color:var(--success); margin:0;"> Target brands tagged in video</div>
+                                <div style="display:flex; align-items:center; gap:6px;"><input type="checkbox" checked disabled style="accent-color:var(--success); margin:0;"> Video adheres to brand guidelines</div>
+                            </div>
+                        </div>
+                    `;
+
+                    // Check if pending to inject live ticking countdown timer
+                    let timerHTML = '';
+                    if (sub.status === 'pending') {
+                        timerHTML = `
+                            <div style="display:flex; align-items:center; gap:5px; color:#eab308; background:rgba(234,179,8,0.06); border:1px solid rgba(234,179,8,0.15); border-radius:8px; padding:6px 10px; font-size:10px; justify-content:center; margin-top:6px; font-weight:700; width:100%;">
+                                <svg viewBox="0 0 24 24" style="width:12px; height:12px; stroke:currentColor; fill:none; stroke-width:2.5; animation: spin 4s linear infinite;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                                Verification ends in <span id="verificationTimer_${c.id}">~14h 45m</span>
+                            </div>
+                        `;
+                        // Setup tick interval
+                        setTimeout(() => {
+                            const timerEl = document.getElementById(`verificationTimer_${c.id}`);
+                            if (timerEl) {
+                                const baseHours = 4 + (c.id.charCodeAt(0) % 18);
+                                const baseMins = c.id.charCodeAt(1) % 60;
+                                let totalSecs = (baseHours * 3600) + (baseMins * 60);
+                                
+                                const interval = setInterval(() => {
+                                    if (!document.getElementById(`verificationTimer_${c.id}`)) {
+                                        clearInterval(interval);
+                                        return;
+                                    }
+                                    totalSecs--;
+                                    if (totalSecs <= 0) {
+                                        timerEl.innerText = "Processing...";
+                                        clearInterval(interval);
+                                        return;
+                                    }
+                                    const hrs = Math.floor(totalSecs / 3600);
+                                    const mins = Math.floor((totalSecs % 3600) / 60);
+                                    const secs = totalSecs % 60;
+                                    timerEl.innerText = `${hrs}h ${mins}m ${secs}s`;
+                                }, 1000);
+                            }
+                        }, 50);
+                    }
+
+                    let actionsRowHTML = `
+                        <button class="btn-outline-close" onclick="window.openCampaignDetailModal('${c.id}')" style="width:100%; height:32px; font-size:11px; margin-top:8px; padding:0; font-weight:700;">
+                            View Brief Details
+                        </button>
+                    `;
+                    if (sub.status === 'rejected') {
+                        actionsRowHTML = `
+                            <div style="display: flex; gap: 8px; margin-top: 8px; width:100%;">
+                                <button class="btn-outline-close" onclick="window.openCampaignDetailModal('${c.id}')" style="flex:1; height:32px; font-size:11px; margin:0; padding:0; font-weight:700;">
+                                    View Brief
+                                </button>
+                                <button class="btn-premium-ai" onclick="window.handleResubmitSubmission('${sub.id}')" style="flex:1.5; height:32px; font-size:11px; margin:0; padding:0; font-weight:700; background:linear-gradient(135deg, #ef4444, #b91c1c); border:1px solid rgba(239,68,68,0.2); box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);">
+                                    Re-submit Link
+                                </button>
+                            </div>
+                        `;
+                    }
+
                     submissionHTML = `
                         <div style="display:flex; flex-direction:column; gap:6px; width:100%; border-top: 1px solid rgba(255,255,255,0.05); padding-top:12px; margin-top:4px;">
                             ${stepper}
                             ${progressBarHTML}
+                            ${timerHTML}
                             ${analyticsPanelHTML}
-                            <button class="btn-outline-close" onclick="window.openCampaignDetailModal('${c.id}')" style="width:100%; height:32px; font-size:11px; margin-top:6px; padding:0; font-weight:700;">
-                                View Brief Details
-                            </button>
+                            ${collapsibleDetailsHTML}
+                            ${actionsRowHTML}
                         </div>
                     `;
                 }
                 
                 const card = `
-                    <div class="glass-panel campaign-workspace-card" style="margin-bottom:0; animation-delay: ${index * 60}ms;">
+                    <div class="glass-panel campaign-workspace-card" style="margin-bottom:0; animation-delay: ${index * 60}ms; ${cardStyleOverride}">
                         <div class="brand-header-row">
                             <div style="display:flex; align-items:center; gap:10px; overflow:hidden; flex:1;">
                                 <div class="brand-logo-frame">
@@ -6400,13 +7729,57 @@
                                     <div style="font-size: 10px; color: var(--accent); font-weight: 700; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">@${c.productName || 'client'}</div>
                                 </div>
                             </div>
-                            <span class="task-type-badge ${badgeClass}" style="position:static; box-shadow:none; padding:3px 8px; font-size:8px; border-radius: 6px; flex-shrink:0;">${tagLabel}</span>
+                            <div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
+                                ${verifiedBadgeHTML}
+                                <span class="task-type-badge ${badgeClass}" style="position:static; box-shadow:none; padding:3px 8px; font-size:8px; border-radius: 6px; flex-shrink:0;">${tagLabel}</span>
+                            </div>
                         </div>
                         ${submissionHTML}
                     </div>
                 `;
                 container.innerHTML += card;
             });
+            if (accepted.length > 0) {
+                // Prepend container clear at start of rendering instead of inside
+                const originalContent = container.innerHTML;
+            }
+        };
+
+        window.toggleSubmissionDetail = function(id) {
+            const panel = document.getElementById(`details_${id}`);
+            const arrow = document.getElementById(`arrow_${id}`);
+            if (panel && arrow) {
+                panel.classList.toggle('active');
+                if (panel.classList.contains('active')) {
+                    arrow.style.transform = 'rotate(180deg)';
+                } else {
+                    arrow.style.transform = 'rotate(0deg)';
+                }
+            }
+        };
+
+        window.toggleChecklist = function(id) {
+            const panel = document.getElementById(`checklist_${id}`);
+            const arrow = document.getElementById(`arrowCheck_${id}`);
+            if (panel && arrow) {
+                panel.classList.toggle('active');
+                if (panel.classList.contains('active')) {
+                    arrow.style.transform = 'rotate(180deg)';
+                } else {
+                    arrow.style.transform = 'rotate(0deg)';
+                }
+            }
+        };
+
+        window.handleResubmitSubmission = async function(submissionId) {
+            if (!confirm("Are you sure you want to clear this rejected submission and submit a new link?")) return;
+            try {
+                await deleteDoc(doc(db, "submissions", submissionId));
+                alert("Rejected submission cleared successfully! You can now paste and submit your new video link.");
+            } catch (error) {
+                console.error("Error deleting submission: ", error);
+                alert("Failed to clear submission. Please try again.");
+            }
         };
 
         // --- Added tab handlers and upload controllers for Home Card submissions ---
@@ -6557,6 +7930,7 @@
                 
                 window.updateCampaignEarningsAndSync();
                 window.renderUserSubmissionsList();
+                if (window.renderHomeActiveBriefs) window.renderHomeActiveBriefs();
             }, (error) => {
                 console.error("Submissions Firebase Error:", error);
             });
