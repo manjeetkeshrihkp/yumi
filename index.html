@@ -742,10 +742,9 @@
             padding: 0 24px;
         }
 
-        /* Balance Grid Section */
         .balance-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
             gap: 12px;
             margin-bottom: 24px;
         }
@@ -2927,7 +2926,7 @@
                     <div class="balance-card-icon">
                         <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
                     </div>
-                    <h4>Bonus</h4>
+                    <h4>Available Balance</h4>
                     <div class="amt-val wallet-balance-val">₹ 14,250.00</div>
                 </div>
                 <div class="balance-item-card">
@@ -3033,42 +3032,7 @@
                 </div>
             </div>
 
-            <!-- Daily Creator Streak Tracker Card -->
-            <div class="milestone-card" id="creatorStreakCard" style="margin-bottom: 20px; padding: 20px;">
-                <div class="milestone-title-row" style="margin-bottom: 12px; display:flex; justify-content:space-between; align-items:center; width:100%;">
-                    <div class="milestone-title">
-                        <svg viewBox="0 0 24 24" style="width:16px; height:16px; stroke:var(--accent); fill:none; stroke-width:2;"><path d="M12 2c0 0-2.5 4-5 6.5s-2 5.5 0 7.5c2 2 5.5 2 7.5 0 2.5-2.5 1-7.5-2.5-12zM12 11.5c0 0-1.25 2-2.5 3.25s-1 2.75 0 3.75c1 1 2.75 1 3.75 0 1.25-1.25.5-3.75-1.25-6z"/></svg>
-                        <span style="text-transform: uppercase; font-weight:700; letter-spacing:0.5px;">Daily Creator Streak</span>
-                    </div>
-                    <span id="streakBoostBadge" style="font-size: 8px; font-weight:800; text-transform:uppercase; padding:3px 8px; border-radius:6px; color:#000; background:var(--accent); box-shadow:0 0 8px var(--accent-glow); animation: pulse 1.5s infinite;">1.2x Boost Active</span>
-                </div>
-                <p style="font-size: 11px; color: var(--text-muted); line-height: 1.4; margin-bottom: 16px; text-align:center;">
-                    Maintain a daily check-in streak to activate a 1.2x earnings multiplier on all campaign submissions!
-                </p>
-                <div class="streak-dots-row" style="display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:18px;">
-                    <div class="streak-dot-col" style="display:flex; flex-direction:column; align-items:center; gap:6px; flex:1;">
-                        <div class="streak-dot-circle" id="streakDay1" style="width:20px; height:20px; border-radius:50%; border:2px solid var(--accent); display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:900; background:rgba(250,204,21,0.1); color:#fff;">1</div>
-                        <span style="font-size:9px; color:var(--text-muted);">Day 1</span>
-                    </div>
-                    <div class="streak-dot-col" style="display:flex; flex-direction:column; align-items:center; gap:6px; flex:1;">
-                        <div class="streak-dot-circle" id="streakDay2" style="width:20px; height:20px; border-radius:50%; border:2px solid var(--accent); display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:900; background:rgba(250,204,21,0.1); color:#fff;">2</div>
-                        <span style="font-size:9px; color:var(--text-muted);">Day 2</span>
-                    </div>
-                    <div class="streak-dot-col" style="display:flex; flex-direction:column; align-items:center; gap:6px; flex:1;">
-                        <div class="streak-dot-circle" id="streakDay3" style="width:20px; height:20px; border-radius:50%; border:2px solid rgba(255,255,255,0.1); display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:900; color:var(--text-muted);">3</div>
-                        <span style="font-size:9px; color:var(--text-muted);">Day 3</span>
-                    </div>
-                    <div class="streak-dot-col" style="display:flex; flex-direction:column; align-items:center; gap:6px; flex:1;">
-                        <div class="streak-dot-circle" id="streakDay4" style="width:20px; height:20px; border-radius:50%; border:2px solid rgba(255,255,255,0.1); display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:900; color:var(--text-muted);">4</div>
-                        <span style="font-size:9px; color:var(--text-muted);">Day 4</span>
-                    </div>
-                    <div class="streak-dot-col" style="display:flex; flex-direction:column; align-items:center; gap:6px; flex:1;">
-                        <div class="streak-dot-circle" id="streakDay5" style="width:20px; height:20px; border-radius:50%; border:2px solid rgba(255,255,255,0.1); display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:900; color:var(--text-muted);">5</div>
-                        <span style="font-size:9px; color:var(--text-muted);">Day 5</span>
-                    </div>
-                </div>
-                <button class="btn-action-premium" id="btnCheckIn" onclick="handleStreakCheckIn()" style="width:100%; padding:10px; font-size:11px;">Claim Today's Check-In</button>
-            </div>
+
 
             <!-- VIP Creator Stipend Milestones Card (Circular Progress Row) -->
             <div class="milestone-card" id="rewardMilestonesCard" style="margin-bottom: 24px; padding: 20px;">
@@ -3155,78 +3119,34 @@
                 </div>
             </div>
 
-            <!-- VIP Creator Level Perks Card -->
-            <div class="milestone-card" id="creatorPerksCard" style="margin-bottom: 24px; padding: 20px;">
-                <div class="milestone-title-row" style="margin-bottom: 12px;">
-                    <div class="milestone-title">
-                        <svg viewBox="0 0 24 24" style="width:16px; height:16px; stroke:var(--accent); fill:none; stroke-width:2;"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                        <span style="text-transform: uppercase; font-weight:700; letter-spacing:0.5px;">VIP Creator Perks</span>
-                    </div>
-                </div>
-                
-                <p style="font-size: 11px; color: var(--text-muted); line-height: 1.4; margin-bottom: 16px;">
-                    Earn exclusive creator status privileges and benefits based on your level.
-                </p>
-                
-                <div style="display:flex; flex-direction:column; gap:12px; margin-bottom:16px;">
-                    <div style="display:flex; justify-content:space-between; font-size:11px; border-bottom:1px solid rgba(255,255,255,0.03); padding-bottom:6px;">
-                        <span style="color:var(--text-muted);">Current Creator Level:</span>
-                        <strong id="perksLevelText" style="color:var(--accent); text-transform:uppercase;">Gold Star Creator</strong>
-                    </div>
-                    <div style="display:flex; justify-content:space-between; font-size:11px; border-bottom:1px solid rgba(255,255,255,0.03); padding-bottom:6px;">
-                        <span style="color:var(--text-muted);">Payout Fee Limit:</span>
-                        <span style="color:#fff; font-weight:600;">0% Service Fee</span>
-                    </div>
-                    <div style="display:flex; justify-content:space-between; font-size:11px; border-bottom:1px solid rgba(255,255,255,0.03); padding-bottom:6px;">
-                        <span style="color:var(--text-muted);">Transfer Priority Speed:</span>
-                        <span style="color:#fff; font-weight:600;" id="perksSpeedText">Priority (2-4 Hours)</span>
-                    </div>
-                    <div style="display:flex; justify-content:space-between; font-size:11px; border-bottom:1px solid rgba(255,255,255,0.03); padding-bottom:6px;">
-                        <span style="color:var(--text-muted);">Earning Boost Rate:</span>
-                        <span style="color:#4ade80; font-weight:600;" id="perksBoostText">1.0x Rate</span>
-                    </div>
-                </div>
-                
-                <div class="milestone-footer-row" style="border-top: 1px solid rgba(255,255,255,0.05); padding-top:10px;">
-                    <span class="milestone-footer-text" id="perksNextLevelProgress" style="font-size:10px;">Next Level (Diamond): Submit 15 more video reviews & complete 13 more sales.</span>
-                </div>
-            </div>
+
 
 
 
             <!-- Milestone Goal Progress Card -->
-            <div class="milestone-card">
-                <div class="milestone-title-row">
-                    <div class="milestone-title">
-                        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                        Road to Premium Partner
+            <div class="milestone-card" style="padding: 20px; background: linear-gradient(135deg, rgba(30, 41, 59, 0.4) 0%, rgba(15, 23, 42, 0.4) 100%); border: 1px solid rgba(250, 204, 21, 0.15); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); position: relative; overflow: hidden; margin-bottom: 24px;">
+                <!-- Glowing background accent -->
+                <div style="position: absolute; top: -50px; right: -50px; width: 150px; height: 150px; background: radial-gradient(circle, rgba(250, 204, 21, 0.08) 0%, transparent 70%); pointer-events: none;"></div>
+                
+                <div class="milestone-title-row" style="margin-bottom:14px; display:flex; justify-content:space-between; align-items:center; width:100%;">
+                    <div class="milestone-title" style="display:flex; align-items:center; gap:8px;">
+                        <svg viewBox="0 0 24 24" style="width:16px; height:16px; stroke:var(--accent); fill:none; stroke-width:2;"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                        <span style="text-transform: uppercase; font-weight:700; letter-spacing:0.5px;">Road to Premium Partner</span>
                     </div>
-                    <span class="milestone-reward-text" id="milestoneBoosterText">1.5x Booster</span>
+                    <span id="milestoneLevelBadge" style="font-size: 9px; font-weight:800; text-transform:uppercase; padding:4px 10px; border-radius:8px; color:#000; background:var(--accent); box-shadow:0 0 8px var(--accent-glow);">Level 1: Starter Partner</span>
                 </div>
-                <div class="milestone-progress-bar-bg">
-                    <div class="milestone-progress-bar-fill" id="milestoneBar"></div>
+                
+                <div class="milestone-progress-bar-bg" style="height: 10px; background: rgba(255, 255, 255, 0.05); border-radius: 6px; overflow: hidden; margin-bottom: 12px; border: 1px solid rgba(255,255,255,0.02);">
+                    <div class="milestone-progress-bar-fill" id="milestoneBar" style="width: 0%; height: 100%; background: linear-gradient(90deg, var(--accent), #f97316); box-shadow: 0 0 8px var(--accent-glow); transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);"></div>
                 </div>
-                <div class="milestone-footer-row">
-                    <span class="milestone-footer-text">Earn ₹20,000 total to unlock Premium Partner status & get 1.5x higher payouts!</span>
-                    <span class="milestone-footer-val" id="milestoneProgressLabel">₹14,250 / ₹20,000</span>
+                
+                <div class="milestone-footer-row" style="display:flex; justify-content:space-between; align-items:flex-start; width:100%;">
+                    <span class="milestone-footer-text" id="milestoneDescriptionText" style="font-size: 11px; color: var(--text-muted); line-height: 1.4; max-width:70%;">Loading your partner journey...</span>
+                    <span class="milestone-footer-val" id="milestoneProgressLabel" style="font-size: 12px; font-weight: 700; color: #fff;">₹0 / ₹500</span>
                 </div>
             </div>
 
-            <!-- Viral Video Submission Card -->
-            <div class="creator-booster-card">
-                <span class="creator-badge">₹250 Bonus</span>
-                <div class="creator-title-row">
-                    <svg viewBox="0 0 24 24"><path d="M23 7a2 2 0 0 0-2.45-1.45L16 7V5a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2l4.55 1.45A2 2 0 0 0 23 17V7z"/></svg>
-                    <h3>Viral Creator Program</h3>
-                </div>
-                <p class="creator-desc">Create a YouTube video or Instagram Reel review of EliteX showing your tasks or payouts. Submit the link below to get a flat ₹250 bonus directly into your available balance!</p>
-                <form id="creatorVideoForm" onsubmit="handleVideoSubmit(event)">
-                    <div class="creator-submit-row">
-                        <input type="url" id="creatorVideoUrl" class="creator-url-input" placeholder="Paste your Video/Reel URL here..." required>
-                        <button type="submit" class="creator-submit-btn">Submit Link</button>
-                    </div>
-                </form>
-            </div>
+
 
             <!-- Weekly Earnings Trend Card (SVG Spline Chart) -->
             <div class="earnings-visualizer" id="weeklyEarningsTrendCard" style="margin-bottom: 24px; padding: 20px;">
@@ -3280,42 +3200,7 @@
                 </div>
             </div>
 
-            <!-- Category-wise Earnings Visualizer -->
-            <div class="earnings-visualizer">
-                <h3>
-                    <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
-                    Earnings Distribution
-                </h3>
-                <div class="visualizer-list">
-                    <div class="visualizer-item">
-                        <div class="visualizer-header">
-                            <span class="visualizer-label">Lead Generation Campaigns</span>
-                            <span class="visualizer-percent">65%</span>
-                        </div>
-                        <div class="visualizer-bar-bg">
-                            <div class="visualizer-bar-fill" id="barLeads" style="width: 65%;"></div>
-                        </div>
-                    </div>
-                    <div class="visualizer-item">
-                        <div class="visualizer-header">
-                            <span class="visualizer-label">App Install Promotion</span>
-                            <span class="visualizer-percent">25%</span>
-                        </div>
-                        <div class="visualizer-bar-bg">
-                            <div class="visualizer-bar-fill" id="barInstalls" style="width: 25%;"></div>
-                        </div>
-                    </div>
-                    <div class="visualizer-item">
-                        <div class="visualizer-header">
-                            <span class="visualizer-label">Sales Referrals</span>
-                            <span class="visualizer-percent">10%</span>
-                        </div>
-                        <div class="visualizer-bar-bg">
-                            <div class="visualizer-bar-fill" id="barSales" style="width: 10%;"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
 
             <!-- Live Payout Tracking Timeline Card -->
             <div class="milestone-card" id="payoutTimelineCard" style="margin-bottom: 24px; padding: 20px; display: none;">
@@ -3351,7 +3236,11 @@
                 <p id="timelineDescription" style="font-size: 11px; color: var(--text-muted); text-align: center; margin-top:14px; line-height:1.4;">
                     EliteX security administrators are verifying your banking credentials and transfer destination.
                 </p>
-                <div style="display:flex; justify-content:center; margin-top:12px; width: 100%;">
+                <div style="display:flex; flex-direction:column; align-items:center; gap:12px; margin-top:12px; width: 100%;">
+                    <div id="timelineSimulationRow" style="display:flex; gap:10px; width: 100%;">
+                        <button class="btn-action-premium" onclick="simulateWithdrawApproval()" style="flex:1; padding:8px; font-size:11px; background:rgba(34,197,94,0.1); border:1px solid rgba(34,197,94,0.2); color:#4ade80; box-shadow:none;">Simulate Approve</button>
+                        <button class="btn-action-premium" onclick="simulateWithdrawRejection()" style="flex:1; padding:8px; font-size:11px; background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.2); color:#f87171; box-shadow:none;">Simulate Reject</button>
+                    </div>
                     <button class="btn-action-royal" id="btnDismissTimeline" onclick="dismissPayoutTimeline()" style="display:none; width:100%; padding:8px; font-size:11px;">Dismiss Timeline</button>
                 </div>
             </div>
@@ -3733,7 +3622,7 @@
                 <span>Affiliate</span>
             </div>
 
-            <div class="menu-item" onclick="switchTab(this, 'walletSection', 'Premium Wallet', 'Manage Earnings')">
+            <div class="menu-item" onclick="switchTab(this, 'walletSection', '', '')">
                 <svg viewBox="0 0 24 24">
                     <rect x="2" y="5" width="20" height="14" rx="2"></rect>
                     <line x1="2" y1="10" x2="22" y2="10"></line>
@@ -3745,81 +3634,104 @@
 
     <!-- ADD MONEY MODAL -->
     <div class="glass-modal-overlay" id="addMoneyModal">
+        <style>
+            .add-money-input {
+                width: 100%;
+                padding: 12px 14px;
+                background: rgba(0, 0, 0, 0.3);
+                border: 1px solid var(--surface-border);
+                border-radius: 10px;
+                color: #fff;
+                font-size: 13px;
+                outline: none;
+                transition: all 0.3s ease;
+                margin-top: 8px;
+            }
+            .add-money-input:focus {
+                border-color: var(--accent);
+                box-shadow: 0 0 8px var(--accent-glow);
+            }
+            .pulse-timer {
+                animation: spin 2s linear infinite;
+            }
+        </style>
         <div class="glass-modal-container">
             <button class="modal-close-btn" onclick="closeAddMoneyModal()">
                 <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
             </button>
             
-            <div id="addMoneyModalFormContent">
+            <!-- STEP 1: ENTER AMOUNT -->
+            <div id="addMoneyStep1" class="add-money-step">
                 <h3 class="modal-title">Add Money to Wallet</h3>
-                
                 <div style="margin-bottom: 20px;">
                     <span style="font-size:11px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Current Available Balance</span>
                     <div class="wallet-balance-val" style="font-size:26px; font-weight:800; color:#fff; margin-top:4px;">₹ 14,250.00</div>
                 </div>
-
-                <!-- Form Inputs -->
-                <form id="addMoneyForm" onsubmit="handleAddMoneySubmit(event)">
-                    <div class="input-group" style="margin-bottom: 16px;">
-                        <label>Deposit Amount (₹)</label>
-                        <input type="number" id="addMoneyAmount" placeholder="Min. ₹100, Max. ₹20,000" min="100" max="20000" required>
-                        <span id="addMoneyErrorMsg" style="font-size:11px; color:#ef4444; margin-top:4px; display:none;"></span>
-                    </div>
-
-                    <!-- Payment Method Selector -->
-                    <div style="margin-bottom: 24px;">
-                        <label style="font-size: 11px; font-weight:600; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Payment Gateway</label>
-                        <div class="payout-method-selector" style="margin-top: 8px;">
-                            <div class="payout-method-card active" id="addMethodUPI" onclick="setAddPaymentMethod('upi')">
-                                <svg viewBox="0 0 24 24" style="width:20px; height:20px; stroke:currentColor; fill:none; stroke-width:2;"><circle cx="12" cy="12" r="10"></circle><path d="M12 8l-4 4h8z"/></svg>
-                                <span>UPI (GPay/PhonePe)</span>
-                            </div>
-                            <div class="payout-method-card" id="addMethodCard" onclick="setAddPaymentMethod('card')">
-                                <svg viewBox="0 0 24 24" style="width:20px; height:20px; stroke:currentColor; fill:none; stroke-width:2;"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
-                                <span>Credit/Debit Card</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- UPI App options -->
-                    <div id="addUPIAppsContainer" style="margin-bottom: 24px; display: flex; gap: 8px; justify-content: space-around;">
-                        <div style="font-size: 11px; color: var(--text-muted); border: 1px solid var(--surface-border); border-radius: 8px; padding: 8px; cursor: pointer; text-align: center; flex: 1; transition: 0.3s;" onclick="selectMockUPIApp(this, 'Google Pay')">Google Pay</div>
-                        <div style="font-size: 11px; color: var(--text-muted); border: 1px solid var(--surface-border); border-radius: 8px; padding: 8px; cursor: pointer; text-align: center; flex: 1; transition: 0.3s;" onclick="selectMockUPIApp(this, 'PhonePe')">PhonePe</div>
-                        <div style="font-size: 11px; color: var(--text-muted); border: 1px solid var(--surface-border); border-radius: 8px; padding: 8px; cursor: pointer; text-align: center; flex: 1; transition: 0.3s;" onclick="selectMockUPIApp(this, 'Paytm')">Paytm</div>
-                    </div>
-
-                    <!-- Card Details Fields (Hidden by default) -->
-                    <div id="addCardInputsContainer" style="display:none; flex-direction:column; gap:16px; margin-bottom: 24px;">
-                        <div class="input-group">
-                            <label>Card Number</label>
-                            <input type="text" id="addCardNum" placeholder="4532 9841 0284 3920">
-                        </div>
-                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
-                            <div class="input-group">
-                                <label>Expiry Date</label>
-                                <input type="text" id="addCardExpiry" placeholder="MM/YY">
-                            </div>
-                            <div class="input-group">
-                                <label>CVV</label>
-                                <input type="password" id="addCardCVV" placeholder="•••">
-                            </div>
-                        </div>
-                    </div>
-
-                    <button type="submit" id="addMoneySubmitBtn">Proceed to Pay</button>
-                </form>
+                <div class="input-group" style="margin-bottom: 24px;">
+                    <label style="font-size:11px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Deposit Amount (₹)</label>
+                    <input type="number" id="addMoneyAmountInput" class="add-money-input" placeholder="Min. ₹99, Max. ₹20,000" min="99" max="20000" required>
+                    <span id="addMoneyErrorMsg" style="font-size:11px; color:#ef4444; margin-top:6px; display:none;"></span>
+                </div>
+                <button type="button" class="btn-action-premium" onclick="proceedToQR()" style="width:100%;">Proceed to Pay</button>
             </div>
-            
-            <!-- Success screen (Hidden by default) -->
-            <div id="addMoneyModalSuccessContent" class="modal-success-screen" style="display:none;">
-                <div class="success-checkmark-circle" style="background: rgba(74, 222, 128, 0.1); border-color: #4ade80; color: #4ade80;">
+
+            <!-- STEP 2: SHOW QR CODE & TIMER -->
+            <div id="addMoneyStep2" class="add-money-step" style="display:none; text-align:center;">
+                <h3 class="modal-title" style="margin-bottom:16px;">Scan QR to Pay</h3>
+                <div style="margin-bottom: 12px;">
+                    <span style="font-size:11px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Paying Amount</span>
+                    <div id="qrPayAmount" style="font-size:24px; font-weight:800; color:var(--accent); margin-top:4px;">₹ 0.00</div>
+                </div>
+                
+                <!-- QR Code Container -->
+                <div style="background:#fff; padding:16px; border-radius:16px; display:inline-block; margin-bottom:16px; box-shadow:0 8px 24px rgba(0,0,0,0.3); border: 4px solid var(--accent);">
+                    <img id="upiQRCodeImage" src="" alt="UPI QR Code" style="width:180px; height:180px; display:block;">
+                </div>
+                
+                <!-- UPI ID Details -->
+                <div style="margin-bottom: 20px;">
+                    <span style="font-size:11px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">UPI ID</span>
+                    <div style="display:flex; align-items:center; justify-content:center; gap:8px; margin-top:4px;">
+                        <span style="font-size:14px; font-weight:700; color:#fff;">keshri0@fam</span>
+                        <button onclick="copyUPIId(event)" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); color:#fff; font-size:10px; padding:4px 8px; border-radius:6px; cursor:pointer; display:flex; align-items:center; gap:4px;">
+                            <svg viewBox="0 0 24 24" style="width:12px; height:12px; stroke:currentColor; fill:none; stroke-width:2;"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                            Copy
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Timer -->
+                <div style="background:rgba(255,255,255,0.03); border:1px solid var(--surface-border); border-radius:12px; padding:12px; margin-bottom:8px; display:flex; align-items:center; justify-content:center; gap:8px;">
+                    <svg viewBox="0 0 24 24" class="pulse-timer" style="width:18px; height:18px; stroke:var(--accent); fill:none; stroke-width:2;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    <span style="font-size:12px; color:var(--text-muted);">Verifying payment in <strong id="qrTimerCount" style="color:var(--accent); font-size:14px; font-family: monospace;">10:00</strong></span>
+                </div>
+                <button type="button" class="btn-action-premium" onclick="skipTimerToTxn()" style="width:100%; margin-top: 12px;">I have Paid, Next</button>
+            </div>
+
+            <!-- STEP 3: ASK FOR TRANSACTION ID -->
+            <div id="addMoneyStep3" class="add-money-step" style="display:none;">
+                <h3 class="modal-title">Confirm Transaction</h3>
+                <p style="font-size:12px; color:var(--text-muted); line-height:1.4; margin-bottom:20px;">
+                    Please enter the UPI Ref No. / Transaction ID of your payment to submit for verification.
+                </p>
+                <div class="input-group" style="margin-bottom: 24px;">
+                    <label style="font-size:11px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">UPI Transaction ID / Ref No.</label>
+                    <input type="text" id="addMoneyTxnId" class="add-money-input" placeholder="e.g. 628401928472" required>
+                    <span id="addMoneyTxnErrorMsg" style="font-size:11px; color:#ef4444; margin-top:6px; display:none;"></span>
+                </div>
+                <button type="button" class="btn-action-premium" onclick="submitTransactionId()" style="width:100%;">Submit Details</button>
+            </div>
+
+            <!-- STEP 4: SUCCESS VERIFICATION MSG -->
+            <div id="addMoneyStep4" class="add-money-step" style="display:none; text-align:center; flex-direction:column; align-items:center;">
+                <div class="success-checkmark-circle">
                     <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
                 </div>
-                <h3 style="margin-bottom: 8px;">Payment Successful</h3>
-                <p style="font-size: 13px; color: var(--text-muted); line-height: 1.5; margin-bottom: 24px;">
-                    An amount of <strong id="successAddMoneyAmount" style="color:#fff;">₹0</strong> has been successfully added to your Available Balance.
+                <h3 style="margin-bottom: 12px; color:#fff;">Verification Initiated</h3>
+                <p id="addMoneyStep4Text" style="font-size: 13px; color: var(--text-muted); line-height: 1.6; margin-bottom: 24px; padding: 0 10px;">
+                    Amount of <strong style="color:var(--accent);">₹0</strong> will be added in last 24 hours after verification by our team.
                 </p>
-                <button class="btn-action-royal" onclick="closeAddMoneyModal()" style="width:100%;">Done</button>
+                <button type="button" class="btn-action-royal" onclick="closeAddMoneyModal()" style="width:100%;">Done</button>
             </div>
         </div>
     </div>
@@ -3902,7 +3814,26 @@
     </div>
 
     <!-- WITHDRAW MODAL -->
+    <!-- WITHDRAW MODAL -->
     <div class="glass-modal-overlay" id="withdrawModal">
+        <style>
+            .withdraw-input {
+                width: 100%;
+                padding: 12px 14px;
+                background: rgba(0, 0, 0, 0.3);
+                border: 1px solid var(--surface-border);
+                border-radius: 10px;
+                color: #fff;
+                font-size: 13px;
+                outline: none;
+                transition: all 0.3s ease;
+                margin-top: 8px;
+            }
+            .withdraw-input:focus {
+                border-color: var(--accent);
+                box-shadow: 0 0 8px var(--accent-glow);
+            }
+        </style>
         <div class="glass-modal-container">
             <button class="modal-close-btn" onclick="closeWithdrawModal()">
                 <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
@@ -3912,58 +3843,25 @@
                 <h3 class="modal-title">Withdraw Funds</h3>
                 
                 <div style="margin-bottom: 20px;">
-                    <span style="font-size:11px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Available Balance</span>
+                    <span style="font-size:11px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Available Balance (fully withdrawable)</span>
                     <div class="wallet-balance-val" style="font-size:26px; font-weight:800; color:#fff; margin-top:4px;">₹ 14,250.00</div>
                 </div>
-                
-                <!-- Payout Method Selection -->
-                <div style="margin-bottom: 16px;">
-                    <label style="font-size: 11px; font-weight:600; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Withdrawal Method</label>
-                    <div class="payout-method-selector" style="margin-top: 8px;">
-                        <div class="payout-method-card active" id="methodUPI" onclick="setWithdrawalMethod('upi')">
-                            <svg viewBox="0 0 24 24" style="width:20px; height:20px; stroke:currentColor; fill:none; stroke-width:2;"><circle cx="12" cy="12" r="10"></circle><path d="M12 8l-4 4h8z"/></svg>
-                            <span>UPI Transfer</span>
-                        </div>
-                        <div class="payout-method-card" id="methodBank" onclick="setWithdrawalMethod('bank')">
-                            <svg viewBox="0 0 24 24" style="width:20px; height:20px; stroke:currentColor; fill:none; stroke-width:2;"><path d="M3 21h18M3 10h18M5 6l7-3 7 3M4 10v11M20 10v11M8 14v3M12 14v3M16 14v3"/></svg>
-                            <span>Bank Account</span>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- Form Inputs -->
                 <form id="withdrawForm" onsubmit="handleWithdrawSubmit(event)">
+                    <!-- UPI ID Field -->
                     <div class="input-group" style="margin-bottom: 16px;">
-                        <label>Withdrawal Amount (₹)</label>
-                        <input type="number" id="withdrawAmount" placeholder="Min. ₹500, Max. ₹10,000" min="500" max="10000" required>
-                        <span id="withdrawErrorMsg" style="font-size:11px; color:#ef4444; margin-top:4px; display:none;"></span>
+                        <label style="font-size:11px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">UPI ID (VPA)</label>
+                        <input type="text" id="withdrawUPI" class="withdraw-input" placeholder="e.g. johndoe@okhdfc" required>
                     </div>
 
-                    <!-- UPI Field Container -->
-                    <div class="input-group" id="upiInputContainer" style="margin-bottom: 24px;">
-                        <label>UPI ID (VPA)</label>
-                        <input type="text" id="withdrawUPI" placeholder="e.g. johndoe@okhdfc">
-                    </div>
-
-                    <!-- Bank Fields Container (Hidden by default) -->
-                    <div id="bankInputsContainer" style="display:none; flex-direction:column; gap:16px; margin-bottom: 24px;">
-                        <div class="input-group">
-                            <label>Account Number</label>
-                            <input type="text" id="withdrawAccNum" placeholder="Enter bank account number">
-                        </div>
-                        <div class="input-group">
-                            <label>IFSC Code</label>
-                            <input type="text" id="withdrawIFSC" placeholder="e.g. HDFC0000123" style="text-transform: uppercase;">
-                        </div>
-                    </div>
-
-                    <!-- Security Card Code Input -->
+                    <!-- Withdrawal Amount Field -->
                     <div class="input-group" style="margin-bottom: 24px;">
-                        <label>5-Digit Card Security Code</label>
-                        <input type="password" id="withdrawSecurityCode" placeholder="Enter the 5-digit code from back of card" maxlength="5" pattern="\d{5}" required>
+                        <label style="font-size:11px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Withdrawal Amount (₹)</label>
+                        <input type="number" id="withdrawAmount" class="withdraw-input" placeholder="Min. ₹199, Max. ₹10,000" min="199" max="10000" required>
+                        <span id="withdrawErrorMsg" style="font-size:11px; color:#ef4444; margin-top:6px; display:none;"></span>
                     </div>
  
-                    <button type="submit" id="withdrawSubmitBtn">Request Withdrawal</button>
+                    <button type="submit" class="btn-action-premium" id="withdrawSubmitBtn" style="width:100%;">Request Withdrawal</button>
                 </form>
             </div>
             
@@ -3972,11 +3870,20 @@
                 <div class="success-checkmark-circle">
                     <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
                 </div>
-                <h3 style="margin-bottom: 8px;">Transfer Initiated</h3>
+                <h3 style="margin-bottom: 8px; color:#fff;">Request Submitted</h3>
                 <p style="font-size: 13px; color: var(--text-muted); line-height: 1.5; margin-bottom: 24px;">
-                    Your request to withdraw <strong id="successWithdrawAmount" style="color:#fff;">₹0</strong> has been submitted. Funds will be deposited in 2-4 hours.
+                    Your request to withdraw <strong id="successWithdrawAmount" style="color:#fff;">₹0</strong> has been submitted. Verification & approval will be completed within 48 hours.
                 </p>
                 <button class="btn-action-royal" onclick="closeWithdrawModal()" style="width:100%;">Done</button>
+            </div>
+
+            <!-- Pending Progress View (shown if clicked while pending) -->
+            <div id="withdrawModalProgressContent" style="display:none; flex-direction:column; align-items:center; width:100%; padding: 20px 0;">
+                <div style="background:rgba(234,179,8,0.06); border:1px solid rgba(234,179,8,0.2); color:#facc15; padding:20px; border-radius:12px; width:100%; text-align:center; font-size:14px; font-weight:600; margin-bottom:24px; display:flex; flex-direction:column; gap:12px; align-items:center; justify-content:center; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                    <svg viewBox="0 0 24 24" style="width:32px; height:32px; stroke:currentColor; fill:none; stroke-width:2;"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0zM12 9v4M12 17h.01"/></svg>
+                    <span>Your old request is pending, so please wait.</span>
+                </div>
+                <button type="button" class="btn-action-royal" onclick="closeWithdrawModal()" style="width:100%;">Close</button>
             </div>
         </div>
     </div>
@@ -4220,9 +4127,11 @@
         }
 
         // --- 1. Wallet State & User Session Management ---
-        let availableBalance = 1024.00;
-        let pendingBalance = 2400.00;
-        let withdrawnBalance = 8500.00;
+        let availableBalance = 0.00;
+        let pendingBalance = 0.00;
+        let withdrawnBalance = 0.00;
+        let securityDeposit = 0.00;
+        let claimedMilestoneLevels = [];
         
         let userName = "";
         let partnerId = "EX-USR-8432";
@@ -4233,59 +4142,60 @@
         let currentWithdrawalMethod = 'upi';
         let currentAddPaymentMethod = 'upi';
 
-        const defaultTransactions = [
-            { id: 1, title: 'Portal Wallet Initialization', amount: 1024, date: 'Today, 11:42 AM', type: 'credit', status: 'completed' }
-        ];
-        let transactions = [...defaultTransactions];
+        const defaultTransactions = [];
+        let transactions = [];
         let creditedSubmissions = [];
         let refundedCampaigns = [];
 
-        let completedVideosCount = 5;
-        let completedSalesCount = 2;
+        let completedVideosCount = 0;
+        let completedSalesCount = 0;
         let salaryClaimedThisMonth = false;
         
-        let maxVideoViews = 45000;
+        let maxVideoViews = 0;
         let videoBonusClaimed = false;
         let salesBonusClaimed = false;
         let viewsBonusClaimed = false;
 
-        let creatorTier = 'Gold';
-        let streakCount = 2;
+        let creatorTier = 'Bronze';
+        let streakCount = 0;
         let lastCheckInDate = '';
         let activeWithdrawalPending = false;
-        let payoutTrackingState = 2;
+        let payoutTrackingState = 1;
         let currentJoinCampaignId = null;
 
         function loadUserSession() {
-            // LocalStorage state migration to load new v3 defaults
-            if (!localStorage.getItem('eliteX_migration_v3')) {
+            // LocalStorage state migration to load new v5 defaults
+            if (!localStorage.getItem('eliteX_migration_v5')) {
                 localStorage.removeItem('eliteX_user_session');
                 localStorage.removeItem('eliteX_bank_profile');
                 localStorage.removeItem('eliteX_pending_count');
-                localStorage.setItem('eliteX_migration_v3', 'true');
+                localStorage.setItem('eliteX_migration_v5', 'true');
             }
             
             let session = localStorage.getItem('eliteX_user_session');
             if (session) {
                 let data = JSON.parse(session);
                 userName = data.userName || '';
-                availableBalance = (data.availableBalance !== undefined && data.availableBalance !== null && !isNaN(parseFloat(data.availableBalance))) ? parseFloat(data.availableBalance) : 1024.00;
-                pendingBalance = (data.pendingBalance !== undefined && data.pendingBalance !== null && !isNaN(parseFloat(data.pendingBalance))) ? parseFloat(data.pendingBalance) : 2400.00;
-                withdrawnBalance = (data.withdrawnBalance !== undefined && data.withdrawnBalance !== null && !isNaN(parseFloat(data.withdrawnBalance))) ? parseFloat(data.withdrawnBalance) : 8500.00;
-                completedVideosCount = (data.completedVideosCount !== undefined && data.completedVideosCount !== null) ? parseInt(data.completedVideosCount) : 5;
-                completedSalesCount = (data.completedSalesCount !== undefined && data.completedSalesCount !== null) ? parseInt(data.completedSalesCount) : 2;
+                availableBalance = (data.availableBalance !== undefined && data.availableBalance !== null && !isNaN(parseFloat(data.availableBalance))) ? parseFloat(data.availableBalance) : 0.00;
+                pendingBalance = (data.pendingBalance !== undefined && data.pendingBalance !== null && !isNaN(parseFloat(data.pendingBalance))) ? parseFloat(data.pendingBalance) : 0.00;
+                withdrawnBalance = (data.withdrawnBalance !== undefined && data.withdrawnBalance !== null && !isNaN(parseFloat(data.withdrawnBalance))) ? parseFloat(data.withdrawnBalance) : 0.00;
+                completedVideosCount = (data.completedVideosCount !== undefined && data.completedVideosCount !== null) ? parseInt(data.completedVideosCount) : 0;
+                completedSalesCount = (data.completedSalesCount !== undefined && data.completedSalesCount !== null) ? parseInt(data.completedSalesCount) : 0;
                 salaryClaimedThisMonth = data.salaryClaimedThisMonth === true;
                 
-                maxVideoViews = (data.maxVideoViews !== undefined && data.maxVideoViews !== null) ? parseInt(data.maxVideoViews) : 45000;
+                maxVideoViews = (data.maxVideoViews !== undefined && data.maxVideoViews !== null) ? parseInt(data.maxVideoViews) : 0;
                 videoBonusClaimed = data.videoBonusClaimed === true;
                 salesBonusClaimed = data.salesBonusClaimed === true;
                 viewsBonusClaimed = data.viewsBonusClaimed === true;
 
-                creatorTier = data.creatorTier || 'Gold';
-                streakCount = data.streakCount !== undefined ? parseInt(data.streakCount) : 2;
+                creatorTier = data.creatorTier || 'Bronze';
+                streakCount = data.streakCount !== undefined ? parseInt(data.streakCount) : 0;
                 lastCheckInDate = data.lastCheckInDate || '';
                 activeWithdrawalPending = data.activeWithdrawalPending === true;
-                payoutTrackingState = data.payoutTrackingState !== undefined ? parseInt(data.payoutTrackingState) : 2;
+                payoutTrackingState = data.payoutTrackingState !== undefined ? parseInt(data.payoutTrackingState) : 1;
+                
+                securityDeposit = (data.securityDeposit !== undefined && data.securityDeposit !== null && !isNaN(parseFloat(data.securityDeposit))) ? parseFloat(data.securityDeposit) : 0.00;
+                claimedMilestoneLevels = data.claimedMilestoneLevels || [];
                 
                 partnerId = data.partnerId || generateRandomPartnerId();
                 cardNumber = data.cardNumber || generateRandomCardNumber();
@@ -4293,29 +4203,34 @@
                 firstWithdrawalCompleted = data.firstWithdrawalCompleted === true;
                 cardDetailsHidden = true; // Always default to hidden on load
                 
-                transactions = data.transactions || [...defaultTransactions];
+                transactions = data.transactions || [];
                 creditedSubmissions = data.creditedSubmissions || [];
                 refundedCampaigns = data.refundedCampaigns || [];
             } else {
                 partnerId = generateRandomPartnerId();
                 cardNumber = generateRandomCardNumber();
                 cardSecurityCode = generateRandomSecurityCode();
-                completedVideosCount = 5;
-                completedSalesCount = 2;
+                availableBalance = 0.00;
+                pendingBalance = 0.00;
+                withdrawnBalance = 0.00;
+                completedVideosCount = 0;
+                completedSalesCount = 0;
                 salaryClaimedThisMonth = false;
-                maxVideoViews = 45000;
+                maxVideoViews = 0;
                 videoBonusClaimed = false;
                 salesBonusClaimed = false;
                 viewsBonusClaimed = false;
-                creatorTier = 'Gold';
-                streakCount = 2;
+                creatorTier = 'Bronze';
+                streakCount = 0;
                 lastCheckInDate = '';
                 activeWithdrawalPending = false;
-                payoutTrackingState = 2;
+                payoutTrackingState = 1;
                 
-                transactions = [...defaultTransactions];
+                transactions = [];
                 creditedSubmissions = [];
                 refundedCampaigns = [];
+                securityDeposit = 0.00;
+                claimedMilestoneLevels = [];
             }
         }
 
@@ -4343,7 +4258,9 @@
                 firstWithdrawalCompleted: firstWithdrawalCompleted,
                 transactions: transactions,
                 creditedSubmissions: creditedSubmissions,
-                refundedCampaigns: refundedCampaigns
+                refundedCampaigns: refundedCampaigns,
+                securityDeposit: securityDeposit,
+                claimedMilestoneLevels: claimedMilestoneLevels
             };
             localStorage.setItem('eliteX_user_session', JSON.stringify(data));
         }
@@ -4465,7 +4382,7 @@
 
             const headerContainer = document.getElementById('appHeaderContainer');
             if (headerContainer) {
-                if (sectionId === 'campaignsSection' || sectionId === 'homeSection') {
+                if (sectionId === 'campaignsSection' || sectionId === 'homeSection' || sectionId === 'walletSection') {
                     headerContainer.style.display = 'none';
                 } else {
                     headerContainer.style.display = 'block';
@@ -4473,7 +4390,11 @@
             }
 
             document.getElementById('headerTitle').innerText = newTitle;
-            document.getElementById('headerSubtitle').innerText = newSubtitle;
+            const subtitleEl = document.getElementById('headerSubtitle');
+            if (subtitleEl) {
+                subtitleEl.innerText = newSubtitle;
+                subtitleEl.style.display = newSubtitle ? 'block' : 'none';
+            }
 
             // Trigger premium categories animation on Wallet tab switch
             if (sectionId === 'walletSection') {
@@ -5539,14 +5460,107 @@
         }
 
         // --- 4. Milestone Goal Progress ---
+        const milestoneLevels = [
+            { level: 1, target: 500, bonus: 29, title: "Starter Partner" },
+            { level: 2, target: 1000, bonus: 50, title: "Bronze Partner" },
+            { level: 3, target: 5000, bonus: 75, title: "Silver Partner" },
+            { level: 4, target: 10000, bonus: 99, title: "Gold Partner" },
+            { level: 5, target: 25000, bonus: 99, title: "Platinum Partner" },
+            { level: 6, target: 40000, bonus: 99, title: "Sapphire Partner" },
+            { level: 7, target: 50000, bonus: 99, title: "Ruby Partner" },
+            { level: 8, target: 100000, bonus: 99, title: "Emerald Partner" },
+            { level: 9, target: 200000, bonus: 99, title: "Jade Partner" },
+            { level: 10, target: 300000, bonus: 99, title: "Diamond Partner" },
+            { level: 11, target: 400000, bonus: 99, title: "Crown Partner" },
+            { level: 12, target: 500000, bonus: 99, title: "Elite Partner" },
+            { level: 13, target: 700000, bonus: 99, title: "Master Partner" },
+            { level: 14, target: 850000, bonus: 99, title: "Legend Partner" },
+            { level: 15, target: 1000000, bonus: 99, title: "Apex Partner" }
+        ];
+
         function updateMilestoneUI() {
             let totalEarnings = availableBalance + withdrawnBalance;
-            const targetVal = 20000;
-            let percentage = Math.min((totalEarnings / targetVal) * 100, 100);
+            
+            // Find current level based on earnings
+            let currentLvlIdx = -1; 
+            for (let i = 0; i < milestoneLevels.length; i++) {
+                if (totalEarnings >= milestoneLevels[i].target) {
+                    currentLvlIdx = i;
+                } else {
+                    break;
+                }
+            }
+            
+            // Check for new Level Up and award bonuses
+            let didLevelUp = false;
+            let levelUpMessages = [];
+            
+            for (let idx = 0; idx <= currentLvlIdx; idx++) {
+                const lvlNum = milestoneLevels[idx].level;
+                if (!claimedMilestoneLevels.includes(lvlNum)) {
+                    const bonus = milestoneLevels[idx].bonus;
+                    availableBalance += bonus;
+                    claimedMilestoneLevels.push(lvlNum);
+                    didLevelUp = true;
+                    
+                    const now = new Date();
+                    const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                    transactions.unshift({
+                        id: transactions.length + 1,
+                        title: `Level ${lvlNum} Milestone Bonus Reached`,
+                        amount: bonus,
+                        date: `Today, ${timeStr}`,
+                        type: 'credit',
+                        status: 'completed'
+                    });
+                    
+                    levelUpMessages.push(`🎉 Reached Level ${lvlNum} (${milestoneLevels[idx].title})! ₹${bonus} bonus added to wallet.`);
+                }
+            }
+            
+            if (didLevelUp) {
+                saveUserSession();
+                setTimeout(() => {
+                    updateWalletUI();
+                }, 50);
+                
+                alert(levelUpMessages.join("\n\n"));
+            }
             
             const milestoneBar = document.getElementById('milestoneBar');
             const progressLabel = document.getElementById('milestoneProgressLabel');
-            const boosterText = document.getElementById('milestoneBoosterText');
+            const levelBadge = document.getElementById('milestoneLevelBadge');
+            const descriptionText = document.getElementById('milestoneDescriptionText');
+            
+            let percentage = 0;
+            let levelTitle = "Novice Partner";
+            let nextTarget = milestoneLevels[0].target;
+            let base = 0;
+            let nextBonus = milestoneLevels[0].bonus;
+            let nextTitle = milestoneLevels[0].title;
+            
+            if (currentLvlIdx === -1) {
+                base = 0;
+                nextTarget = milestoneLevels[0].target;
+                percentage = Math.min((totalEarnings / nextTarget) * 100, 100);
+                levelTitle = "Level 0: Novice Partner";
+            } else if (currentLvlIdx < milestoneLevels.length - 1) {
+                const currentLvl = milestoneLevels[currentLvlIdx];
+                const nextLvl = milestoneLevels[currentLvlIdx + 1];
+                base = currentLvl.target;
+                nextTarget = nextLvl.target;
+                nextBonus = nextLvl.bonus;
+                nextTitle = nextLvl.title;
+                
+                const range = nextTarget - base;
+                const earnedInRange = totalEarnings - base;
+                percentage = Math.min((earnedInRange / range) * 100, 100);
+                levelTitle = `Level ${currentLvl.level}: ${currentLvl.title}`;
+            } else {
+                const currentLvl = milestoneLevels[currentLvlIdx];
+                percentage = 100;
+                levelTitle = `Level ${currentLvl.level}: ${currentLvl.title}`;
+            }
             
             if (milestoneBar) {
                 const walletSec = document.getElementById('walletSection');
@@ -5558,92 +5572,93 @@
                 }
             }
             
-            if (progressLabel) {
-                progressLabel.innerText = `₹ ${Math.floor(totalEarnings).toLocaleString('en-IN')} / ₹ ${targetVal.toLocaleString('en-IN')}`;
+            if (levelBadge) {
+                levelBadge.innerText = levelTitle;
             }
             
-            if (boosterText) {
-                if (totalEarnings >= targetVal) {
-                    boosterText.innerText = "Booster Active! 🎉";
-                    boosterText.style.background = "rgba(74, 222, 128, 0.1)";
-                    boosterText.style.borderColor = "rgba(74, 222, 128, 0.3)";
-                    boosterText.style.color = "#4ade80";
+            if (progressLabel) {
+                if (currentLvlIdx < milestoneLevels.length - 1) {
+                    progressLabel.innerText = `₹ ${Math.floor(totalEarnings).toLocaleString('en-IN')} / ₹ ${nextTarget.toLocaleString('en-IN')}`;
                 } else {
-                    boosterText.innerText = "1.5x Booster";
-                    boosterText.style.background = "rgba(250, 204, 21, 0.08)";
-                    boosterText.style.borderColor = "rgba(250, 204, 21, 0.15)";
-                    boosterText.style.color = "var(--accent)";
+                    progressLabel.innerText = `₹ ${Math.floor(totalEarnings).toLocaleString('en-IN')} (Max Level Reached)`;
+                }
+            }
+            
+            if (descriptionText) {
+                if (currentLvlIdx < milestoneLevels.length - 1) {
+                    const remaining = nextTarget - totalEarnings;
+                    descriptionText.innerHTML = `Earn <strong style="color:#fff;">₹${remaining.toLocaleString('en-IN')}</strong> more to unlock <strong style="color:var(--accent);">${nextTitle}</strong> and claim a <strong style="color:#4ade80;">₹${nextBonus}</strong> cash bonus!`;
+                } else {
+                    descriptionText.innerHTML = `<span style="color:#4ade80; font-weight:600;">✓ Apex Milestone Achieved!</span> You have unlocked all premium perks & bonuses.`;
                 }
             }
         }
 
         // --- 5. Add Money Dialog Operations ---
+        let depositAmount = 0;
+
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = seconds % 60;
+            return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+        }
+
+        function showAddMoneyStep(stepNum) {
+            for (let i = 1; i <= 4; i++) {
+                const stepEl = document.getElementById('addMoneyStep' + i);
+                if (stepEl) {
+                    if (i === 4 && stepNum === 4) {
+                        stepEl.style.display = 'flex';
+                    } else {
+                        stepEl.style.display = (i === stepNum) ? 'block' : 'none';
+                    }
+                }
+            }
+        }
+
         function openAddMoneyModal() {
-            document.getElementById('addMoneyForm').reset();
-            document.getElementById('addMoneyErrorMsg').style.display = 'none';
-            document.getElementById('addMoneyModalFormContent').style.display = 'block';
-            document.getElementById('addMoneyModalSuccessContent').style.display = 'none';
+            // Reset inputs
+            const amtInput = document.getElementById('addMoneyAmountInput');
+            if (amtInput) amtInput.value = '';
             
-            setAddPaymentMethod('upi');
+            const txnInput = document.getElementById('addMoneyTxnId');
+            if (txnInput) txnInput.value = '';
+
+            // Reset errors
+            const errEl = document.getElementById('addMoneyErrorMsg');
+            if (errEl) errEl.style.display = 'none';
+
+            const txnErrEl = document.getElementById('addMoneyTxnErrorMsg');
+            if (txnErrEl) txnErrEl.style.display = 'none';
+
+            // Show step 1
+            showAddMoneyStep(1);
+            
+            // Open modal
             document.getElementById('addMoneyModal').classList.add('active');
         }
 
         function closeAddMoneyModal() {
+            if (window.addMoneyQRInterval) {
+                clearInterval(window.addMoneyQRInterval);
+            }
+            // Mark session as closed so it won't show again on reload
+            const sessionStr = localStorage.getItem('activeDepositSession');
+            if (sessionStr) {
+                const session = JSON.parse(sessionStr);
+                session.closed = true;
+                localStorage.setItem('activeDepositSession', JSON.stringify(session));
+            }
             document.getElementById('addMoneyModal').classList.remove('active');
         }
 
-        function setAddPaymentMethod(method) {
-            currentAddPaymentMethod = method;
-            const btnUPI = document.getElementById('addMethodUPI');
-            const btnCard = document.getElementById('addMethodCard');
-            const upiApps = document.getElementById('addUPIAppsContainer');
-            const cardInputs = document.getElementById('addCardInputsContainer');
-            
-            const cardNum = document.getElementById('addCardNum');
-            const cardExpiry = document.getElementById('addCardExpiry');
-            const cardCVV = document.getElementById('addCardCVV');
-            
-            if (method === 'upi') {
-                btnUPI.classList.add('active');
-                btnCard.classList.remove('active');
-                upiApps.style.display = 'flex';
-                cardInputs.style.display = 'none';
-                cardNum.required = false;
-                cardExpiry.required = false;
-                cardCVV.required = false;
-            } else {
-                btnUPI.classList.remove('active');
-                btnCard.classList.add('active');
-                upiApps.style.display = 'none';
-                cardInputs.style.display = 'flex';
-                cardNum.required = true;
-                cardExpiry.required = true;
-                cardCVV.required = true;
-            }
-        }
-
-        let selectedUPIAppText = '';
-        function selectMockUPIApp(element, appName) {
-            const options = document.querySelectorAll('#addUPIAppsContainer div');
-            options.forEach(opt => {
-                opt.style.borderColor = 'var(--surface-border)';
-                opt.style.color = 'var(--text-muted)';
-                opt.style.background = 'transparent';
-            });
-            element.style.borderColor = 'var(--accent)';
-            element.style.color = '#fff';
-            element.style.background = 'rgba(250, 204, 21, 0.05)';
-            selectedUPIAppText = appName;
-        }
-
-        function handleAddMoneySubmit(event) {
-            event.preventDefault();
-            const amtInput = document.getElementById('addMoneyAmount');
+        function proceedToQR() {
+            const amtInput = document.getElementById('addMoneyAmountInput');
             const amt = parseFloat(amtInput.value);
             const errorEl = document.getElementById('addMoneyErrorMsg');
             
-            if (isNaN(amt) || amt < 100) {
-                errorEl.innerText = "Minimum deposit amount is ₹100.";
+            if (isNaN(amt) || amt < 99) {
+                errorEl.innerText = "Minimum deposit amount is ₹99.";
                 errorEl.style.display = 'block';
                 return;
             }
@@ -5654,43 +5669,191 @@
             }
             errorEl.style.display = 'none';
             
-            const submitBtn = document.getElementById('addMoneySubmitBtn');
-            const originalText = submitBtn.innerText;
-            submitBtn.innerText = "Initializing secure gateway...";
-            submitBtn.disabled = true;
+            depositAmount = amt;
             
-            setTimeout(() => {
-                availableBalance += amt;
-                saveUserSession();
-                
-                const now = new Date();
-                const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                transactions.unshift({
-                    id: transactions.length + 1,
-                    title: currentAddPaymentMethod === 'upi' ? `Wallet Load (${selectedUPIAppText || 'UPI'})` : 'Wallet Load (Card)',
-                    amount: amt,
-                    date: `Today, ${timeStr}`,
-                    type: 'credit',
-                    status: 'completed'
-                });
-                
-                updateWalletUI();
-                updateCardVisibilityUI();
-                updateMilestoneUI();
-                renderTransactions();
-                
-                document.getElementById('successAddMoneyAmount').innerText = `₹${amt.toLocaleString('en-IN')}`;
-                document.getElementById('addMoneyModalFormContent').style.display = 'none';
-                document.getElementById('addMoneyModalSuccessContent').style.display = 'flex';
-                
-                submitBtn.innerText = originalText;
-                submitBtn.disabled = false;
-            }, 1500);
+            // Save active deposit session to localStorage (10 mins = 600s)
+            const session = {
+                amount: amt,
+                startTime: Date.now(),
+                step: 2,
+                closed: false
+            };
+            localStorage.setItem('activeDepositSession', JSON.stringify(session));
+
+            // Generate UPI QR Code
+            const upiURI = `upi://pay?pa=keshri0@fam&am=${amt}&cu=INR`;
+            const qrImageEl = document.getElementById('upiQRCodeImage');
+            if (qrImageEl) {
+                qrImageEl.src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(upiURI)}`;
+            }
+            
+            const qrPayAmountEl = document.getElementById('qrPayAmount');
+            if (qrPayAmountEl) {
+                qrPayAmountEl.innerText = `₹ ${amt.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
+            }
+            
+            // Go to step 2
+            showAddMoneyStep(2);
+            
+            // Start 10m Timer
+            let timeLeft = 600;
+            const timerCountEl = document.getElementById('qrTimerCount');
+            if (timerCountEl) timerCountEl.innerText = formatTime(timeLeft);
+            
+            if (window.addMoneyQRInterval) {
+                clearInterval(window.addMoneyQRInterval);
+            }
+            
+            window.addMoneyQRInterval = setInterval(() => {
+                timeLeft--;
+                if (timerCountEl) timerCountEl.innerText = formatTime(timeLeft);
+                if (timeLeft <= 0) {
+                    clearInterval(window.addMoneyQRInterval);
+                    session.step = 3;
+                    localStorage.setItem('activeDepositSession', JSON.stringify(session));
+                    showAddMoneyStep(3);
+                }
+            }, 1000);
+        }
+
+        function copyUPIId(event) {
+            navigator.clipboard.writeText('keshri0@fam').then(() => {
+                const btn = event.currentTarget;
+                if (btn) {
+                    const originalHTML = btn.innerHTML;
+                    btn.innerHTML = `✓ Copied`;
+                    setTimeout(() => {
+                        btn.innerHTML = originalHTML;
+                    }, 2000);
+                }
+            });
+        }
+
+        function submitTransactionId() {
+            const txnInput = document.getElementById('addMoneyTxnId');
+            const txnId = txnInput ? txnInput.value.trim() : '';
+            const errorEl = document.getElementById('addMoneyTxnErrorMsg');
+            
+            if (!txnId) {
+                if (errorEl) {
+                    errorEl.innerText = "Please enter a valid Transaction ID.";
+                    errorEl.style.display = 'block';
+                }
+                return;
+            }
+            if (txnId.length < 6) {
+                if (errorEl) {
+                    errorEl.innerText = "Transaction ID should be at least 6 characters.";
+                    errorEl.style.display = 'block';
+                }
+                return;
+            }
+            if (errorEl) errorEl.style.display = 'none';
+            
+            // Clear active deposit session
+            localStorage.removeItem('activeDepositSession');
+
+            // Add pending transaction
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            transactions.unshift({
+                id: transactions.length + 1,
+                title: `Wallet Load (Ref: ${txnId})`,
+                amount: depositAmount,
+                date: `Today, ${timeStr}`,
+                type: 'credit',
+                status: 'pending'
+            });
+            
+            saveUserSession();
+            updateWalletUI();
+            updateCardVisibilityUI();
+            renderTransactions();
+            
+            // Show step 4
+            const successTextEl = document.getElementById('addMoneyStep4Text');
+            if (successTextEl) {
+                successTextEl.innerHTML = `Amount of <strong style="color:var(--accent);">₹${depositAmount.toLocaleString('en-IN')}</strong> will be added in last 24 hours after verification by our team.`;
+            }
+            showAddMoneyStep(4);
+        }
+
+        function skipTimerToTxn() {
+            if (window.addMoneyQRInterval) {
+                clearInterval(window.addMoneyQRInterval);
+            }
+            const sessionStr = localStorage.getItem('activeDepositSession');
+            if (sessionStr) {
+                const session = JSON.parse(sessionStr);
+                session.step = 3;
+                localStorage.setItem('activeDepositSession', JSON.stringify(session));
+            }
+            showAddMoneyStep(3);
+        }
+
+        function checkActiveDepositSession() {
+            const sessionStr = localStorage.getItem('activeDepositSession');
+            if (!sessionStr) return;
+
+            try {
+                const session = JSON.parse(sessionStr);
+                if (!session || session.closed) return;
+
+                const elapsedSeconds = Math.floor((Date.now() - session.startTime) / 1000);
+                const totalSeconds = 600; // 10 minutes
+                const timeLeft = totalSeconds - elapsedSeconds;
+
+                if (session.step === 2 && timeLeft > 0) {
+                    depositAmount = session.amount;
+                    
+                    document.getElementById('addMoneyModal').classList.add('active');
+                    showAddMoneyStep(2);
+
+                    const upiURI = `upi://pay?pa=keshri0@fam&am=${depositAmount}&cu=INR`;
+                    const qrImageEl = document.getElementById('upiQRCodeImage');
+                    if (qrImageEl) {
+                        qrImageEl.src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(upiURI)}`;
+                    }
+
+                    const qrPayAmountEl = document.getElementById('qrPayAmount');
+                    if (qrPayAmountEl) {
+                        qrPayAmountEl.innerText = `₹ ${depositAmount.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
+                    }
+
+                    let secLeft = timeLeft;
+                    const timerCountEl = document.getElementById('qrTimerCount');
+                    if (timerCountEl) timerCountEl.innerText = formatTime(secLeft);
+
+                    if (window.addMoneyQRInterval) {
+                        clearInterval(window.addMoneyQRInterval);
+                    }
+
+                    window.addMoneyQRInterval = setInterval(() => {
+                        secLeft--;
+                        if (timerCountEl) timerCountEl.innerText = formatTime(secLeft);
+                        if (secLeft <= 0) {
+                            clearInterval(window.addMoneyQRInterval);
+                            session.step = 3;
+                            localStorage.setItem('activeDepositSession', JSON.stringify(session));
+                            showAddMoneyStep(3);
+                        }
+                    }, 1000);
+                } else if (session.step === 3 || (session.step === 2 && timeLeft <= 0)) {
+                    depositAmount = session.amount;
+                    document.getElementById('addMoneyModal').classList.add('active');
+                    showAddMoneyStep(3);
+
+                    session.step = 3;
+                    localStorage.setItem('activeDepositSession', JSON.stringify(session));
+                }
+            } catch (e) {
+                console.error("Error reading active deposit session:", e);
+            }
         }
 
         // --- 6. Withdraw Dialog Operations ---
         function updateWithdrawProgressUI() {
-            const minLimit = firstWithdrawalCompleted ? 499 : 99;
+            const minLimit = firstWithdrawalCompleted ? 499 : 199;
             const progress = Math.min((availableBalance / minLimit) * 100, 100);
             
             const barFill = document.getElementById('withdrawProgressBarFill');
@@ -5715,29 +5878,48 @@
         function openWithdrawModal() {
             document.getElementById('withdrawForm').reset();
             document.getElementById('withdrawErrorMsg').style.display = 'none';
-            document.getElementById('withdrawModalFormContent').style.display = 'block';
-            document.getElementById('withdrawModalSuccessContent').style.display = 'none';
             
-            const saved = localStorage.getItem('eliteX_bank_profile');
-            if (saved) {
-                const profile = JSON.parse(saved);
-                document.getElementById('withdrawUPI').value = profile.upiId || '';
-                document.getElementById('withdrawAccNum').value = profile.accountNumber || '';
-                document.getElementById('withdrawIFSC').value = profile.ifscCode || '';
+            const formContent = document.getElementById('withdrawModalFormContent');
+            const progressContent = document.getElementById('withdrawModalProgressContent');
+            const successContent = document.getElementById('withdrawModalSuccessContent');
+            
+            if (activeWithdrawalPending && payoutTrackingState !== 4 && payoutTrackingState !== 5) {
+                if (formContent) formContent.style.display = 'none';
+                if (successContent) successContent.style.display = 'none';
+                if (progressContent) progressContent.style.display = 'flex';
+            } else {
+                if (activeWithdrawalPending && (payoutTrackingState === 4 || payoutTrackingState === 5)) {
+                    dismissPayoutTimeline();
+                }
+                if (formContent) formContent.style.display = 'block';
+                if (successContent) successContent.style.display = 'none';
+                if (progressContent) progressContent.style.display = 'none';
+                
+                const saved = localStorage.getItem('eliteX_bank_profile');
+                if (saved) {
+                    const profile = JSON.parse(saved);
+                    const upiField = document.getElementById('withdrawUPI');
+                    if (upiField) upiField.value = profile.upiId || '';
+                }
+                
+                // Dynamically show correct minimum limit on placeholder
+                const minLimit = firstWithdrawalCompleted ? 499 : 199;
+                const amtField = document.getElementById('withdrawAmount');
+                if (amtField) {
+                    amtField.placeholder = `Min. ₹${minLimit}, Max. ₹10,000`;
+                    amtField.min = minLimit;
+                }
+                
+                updateWithdrawProgressUI();
             }
             
-            // Dynamically show correct minimum limit on placeholder
-            const minLimit = firstWithdrawalCompleted ? 499 : 99;
-            document.getElementById('withdrawAmount').placeholder = `Min. ₹${minLimit}, Max. ₹10,000`;
-            document.getElementById('withdrawAmount').min = minLimit;
-            
-            updateWithdrawProgressUI();
-            
-            setWithdrawalMethod('upi');
             document.getElementById('withdrawModal').classList.add('active');
         }
 
         function closeWithdrawModal() {
+            if (activeWithdrawalPending && (payoutTrackingState === 4 || payoutTrackingState === 5)) {
+                dismissPayoutTimeline();
+            }
             document.getElementById('withdrawModal').classList.remove('active');
         }
 
@@ -5808,6 +5990,10 @@
             // Withdrawn Balance
             const withdrawnEl = document.getElementById('withdrawnBalanceVal');
             if (withdrawnEl) withdrawnEl.innerText = `₹ ${withdrawnBalance.toLocaleString('en-IN')}`;
+            
+            // Security Deposit
+            const securityEl = document.getElementById('securityDepositVal');
+            if (securityEl) securityEl.innerText = `₹ ${securityDeposit.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
             
             // Update withdrawal threshold progress bar
             updateWithdrawProgressUI();
@@ -6390,10 +6576,12 @@
 
         function updatePayoutTimelineUI() {
             const card = document.getElementById('payoutTimelineCard');
+            const modalProgress = document.getElementById('withdrawModalProgressContent');
             if (!card) return;
             
             if (!activeWithdrawalPending) {
                 card.style.display = 'none';
+                if (modalProgress) modalProgress.style.display = 'none';
                 return;
             }
             
@@ -6403,17 +6591,18 @@
             const step2 = document.getElementById('timelineStep2');
             const step3 = document.getElementById('timelineStep3');
             const step4 = document.getElementById('timelineStep4');
-            
             const label2 = document.getElementById('timelineLabel2');
             const label3 = document.getElementById('timelineLabel3');
             const label4 = document.getElementById('timelineLabel4');
-            
             const statusBadge = document.getElementById('payoutTimelineStatus');
             const desc = document.getElementById('timelineDescription');
             const dismissBtn = document.getElementById('btnDismissTimeline');
             
             if (!line || !step2 || !step3 || !step4) return;
             
+            label4.innerText = 'Settled';
+            
+            // RESET MAIN TIMELINE UI
             step2.style.background = '#07090f';
             step2.style.borderColor = 'rgba(255,255,255,0.1)';
             step2.style.color = 'var(--text-muted)';
@@ -6440,6 +6629,17 @@
             statusBadge.style.color = '#facc15';
             statusBadge.style.background = 'rgba(250,204,21,0.08)';
             
+            const simRow = document.getElementById('timelineSimulationRow');
+            if (simRow) {
+                if (payoutTrackingState === 4 || payoutTrackingState === 5) {
+                    simRow.style.display = 'none';
+                    dismissBtn.style.display = 'block';
+                } else {
+                    simRow.style.display = 'flex';
+                    dismissBtn.style.display = 'none';
+                }
+            }
+            
             if (payoutTrackingState === 1) {
                 line.style.width = '0%';
                 desc.innerText = 'Your withdrawal request is in queue and awaiting security verification.';
@@ -6450,47 +6650,64 @@
                 step2.style.boxShadow = '0 0 10px var(--accent-glow)';
                 step2.innerText = '●';
                 label2.style.color = '#fff';
-                desc.innerText = 'EliteX security administrators are verifying your banking credentials and transfer destination.';
+                desc.innerText = 'EliteX security administrators are verifying your UPI ID and transaction destination.';
             } else if (payoutTrackingState === 3) {
                 line.style.width = '66%';
-                
                 step2.style.background = 'var(--accent)';
                 step2.style.borderColor = 'var(--accent)';
                 step2.style.color = '#000';
                 step2.innerText = '✓';
                 label2.style.color = '#fff';
-                
                 step3.style.borderColor = 'var(--accent)';
                 step3.style.color = 'var(--accent)';
                 step3.style.boxShadow = '0 0 10px var(--accent-glow)';
                 step3.innerText = '●';
                 label3.style.color = '#fff';
-                desc.innerText = 'Clearance approved. Funds have been queued for direct UPI/IMPS bank transfer.';
+                desc.innerText = 'Clearance approved. Funds have been queued for direct UPI transfer.';
             } else if (payoutTrackingState === 4) {
                 line.style.width = '100%';
-                
                 step2.style.background = 'var(--accent)';
                 step2.style.borderColor = 'var(--accent)';
                 step2.style.color = '#000';
                 step2.innerText = '✓';
                 label2.style.color = '#fff';
-                
                 step3.style.background = 'var(--accent)';
                 step3.style.borderColor = 'var(--accent)';
                 step3.style.color = '#000';
                 step3.innerText = '✓';
                 label3.style.color = '#fff';
-                
                 step4.style.background = '#22c55e';
                 step4.style.borderColor = '#22c55e';
                 step4.style.color = '#fff';
                 step4.innerText = '✓';
                 label4.style.color = '#fff';
-                
                 statusBadge.innerText = 'Settled';
                 statusBadge.style.color = '#22c55e';
                 statusBadge.style.background = 'rgba(34,197,94,0.08)';
-                desc.innerText = '✓ Payout successfully settled. Funds deposited into your linked account.';
+                desc.innerText = '✓ Payout successfully settled. Funds deposited into your linked UPI account.';
+                dismissBtn.style.display = 'block';
+            } else if (payoutTrackingState === 5) {
+                line.style.width = '100%';
+                step2.style.background = 'var(--accent)';
+                step2.style.borderColor = 'var(--accent)';
+                step2.style.color = '#000';
+                step2.innerText = '✓';
+                label2.style.color = '#fff';
+                step3.style.background = 'var(--accent)';
+                step3.style.borderColor = 'var(--accent)';
+                step3.style.color = '#000';
+                step3.innerText = '✓';
+                label3.style.color = '#fff';
+                step4.style.background = 'rgba(239,68,68,0.1)';
+                step4.style.borderColor = '#ef4444';
+                step4.style.color = '#ef4444';
+                step4.innerText = '✗';
+                label4.innerText = 'Rejected';
+                label4.style.color = '#ef4444';
+                statusBadge.innerText = 'Rejected';
+                statusBadge.style.color = '#ef4444';
+                statusBadge.style.background = 'rgba(239,68,68,0.08)';
+                desc.innerText = '✗ Withdrawal request rejected by admin. Funds refunded to your Available Balance.';
                 dismissBtn.style.display = 'block';
             }
         }
@@ -6684,16 +6901,15 @@
             const amt = parseFloat(amtInput.value);
             const errorEl = document.getElementById('withdrawErrorMsg');
             
-            // Check 5-digit Card Security PIN Code
-            const pinInput = document.getElementById('withdrawSecurityCode');
-            const userPin = pinInput ? pinInput.value.trim() : '';
-            if (userPin !== cardSecurityCode) {
-                errorEl.innerText = "Invalid Card Security Code. Payout blocked.";
+            const upiInput = document.getElementById('withdrawUPI');
+            const upiId = upiInput ? upiInput.value.trim() : '';
+            if (!upiId) {
+                errorEl.innerText = "Please enter a valid UPI ID.";
                 errorEl.style.display = 'block';
                 return;
             }
             
-            const minLimit = firstWithdrawalCompleted ? 499 : 99;
+            const minLimit = firstWithdrawalCompleted ? 499 : 199;
             
             if (isNaN(amt) || amt < minLimit) {
                 errorEl.innerText = `Minimum withdrawal amount is ₹${minLimit}.`;
@@ -6720,7 +6936,6 @@
             
             setTimeout(() => {
                 availableBalance -= amt;
-                withdrawnBalance += amt;
                 
                 if (!firstWithdrawalCompleted) {
                     firstWithdrawalCompleted = true;
@@ -6733,7 +6948,7 @@
                 const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
                 transactions.unshift({
                     id: transactions.length + 1,
-                    title: currentWithdrawalMethod === 'upi' ? 'UPI Withdrawal' : 'Bank Payout',
+                    title: `UPI Withdrawal (Ref: ${upiId})`,
                     amount: -amt,
                     date: `Today, ${timeStr}`,
                     type: 'debit',
@@ -6745,6 +6960,7 @@
                 updateMilestoneUI();
                 renderTransactions();
                 updateWithdrawProgressUI();
+                updatePayoutTimelineUI();
                 
                 document.getElementById('successWithdrawAmount').innerText = `₹${amt.toLocaleString('en-IN')}`;
                 document.getElementById('withdrawModalFormContent').style.display = 'none';
@@ -6754,6 +6970,42 @@
                 submitBtn.disabled = false;
             }, 1500);
         }
+
+        window.simulateWithdrawApproval = function() {
+            // Find the pending debit transaction and complete it
+            const pendingTx = transactions.find(t => t.type === 'debit' && t.status === 'pending');
+            if (pendingTx) {
+                pendingTx.status = 'completed';
+                // Move the pending amount to withdrawn balance
+                withdrawnBalance += Math.abs(pendingTx.amount);
+            }
+            payoutTrackingState = 4; // Settled
+            saveUserSession();
+            updateWalletUI();
+            updateCardVisibilityUI();
+            updateMilestoneUI();
+            renderTransactions();
+            updatePayoutTimelineUI();
+            showToast("Withdrawal approved successfully!", "success");
+        };
+
+        window.simulateWithdrawRejection = function() {
+            // Find the pending debit transaction and reject it
+            const pendingTx = transactions.find(t => t.type === 'debit' && t.status === 'pending');
+            if (pendingTx) {
+                pendingTx.status = 'rejected';
+                // Refund the amount to availableBalance
+                availableBalance += Math.abs(pendingTx.amount);
+            }
+            payoutTrackingState = 5; // Rejected
+            saveUserSession();
+            updateWalletUI();
+            updateCardVisibilityUI();
+            updateMilestoneUI();
+            renderTransactions();
+            updatePayoutTimelineUI();
+            showToast("Withdrawal rejected and refunded.", "error");
+        };
 
         function handleBankDetailsSave(event) {
             event.preventDefault();
@@ -7400,6 +7652,9 @@
             initCard3DTilt();
             triggerChartAnimation();
             window.renderCheckInGrid();
+
+            // Restore active deposit session if page was refreshed
+            checkActiveDepositSession();
         }
 
         // Initialize wallet on load
