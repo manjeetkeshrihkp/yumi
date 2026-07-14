@@ -2873,13 +2873,13 @@
                         <div class="card-front-content">
                             <div class="card-header-row" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
                                 <div class="card-brand-label">Elite<span>X</span> Premium</div>
-                                <div id="cardTierEmblem" style="background:rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color:var(--accent); font-size:8px; font-weight:800; padding:3px 8px; border-radius:6px; text-transform:uppercase; letter-spacing:0.5px; box-shadow: 0 0 10px rgba(250,204,21,0.15);">Gold Tier</div>
+                                <div id="cardTierEmblem" style="background:rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color:var(--accent); font-size:8px; font-weight:800; padding:3px 8px; border-radius:6px; text-transform:uppercase; letter-spacing:0.5px; box-shadow: 0 0 10px rgba(250,204,21,0.15);">Bronze Tier</div>
                             </div>
                             
                             <!-- Balance on Card Face (Always Visible) -->
                             <div style="margin-top: 10px;">
                                 <span class="card-meta-label">Available Balance</span>
-                                <div class="card-number wallet-balance-val" style="font-size: 24px; font-weight: 800; margin: 4px 0; color: var(--accent); text-shadow: 0 2px 8px var(--accent-glow);">₹ 14,250.00</div>
+                                <div class="card-number wallet-balance-val" style="font-size: 24px; font-weight: 800; margin: 4px 0; color: var(--accent); text-shadow: 0 2px 8px var(--accent-glow);">₹ 0.00</div>
                             </div>
                             
                             <!-- Card Number with inline eye toggle -->
@@ -2927,21 +2927,21 @@
                         <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
                     </div>
                     <h4>Available Balance</h4>
-                    <div class="amt-val wallet-balance-val">₹ 14,250.00</div>
+                    <div class="amt-val wallet-balance-val">₹ 0.00</div>
                 </div>
                 <div class="balance-item-card">
                     <div class="balance-card-icon pending">
                         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
                     </div>
                     <h4>Pending</h4>
-                    <div class="amt-val" id="pendingBalanceVal">₹ 2,400.00</div>
+                    <div class="amt-val" id="pendingBalanceVal">₹ 0.00</div>
                 </div>
                 <div class="balance-item-card">
                     <div class="balance-card-icon withdrawn">
                         <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
                     </div>
                     <h4>Withdrawn</h4>
-                    <div class="amt-val" id="withdrawnBalanceVal">₹ 8,500.00</div>
+                    <div class="amt-val" id="withdrawnBalanceVal">₹ 0.00</div>
                 </div>
             </div>
 
@@ -6474,7 +6474,7 @@
             alert(`Streak Checked In! Day ${streakCount} completed. Keep it up!`);
         };
 
-        let weeklyEarnings = [450, 600, 150, 900, 1200, 800, 1500];
+        let weeklyEarnings = [0, 0, 0, 0, 0, 0, 0];
 
         function updateSplineChartUI() {
             const xCoords = [10, 51.6, 93.3, 135, 176.6, 218.3, 260];
