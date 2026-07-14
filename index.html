@@ -4272,19 +4272,21 @@
             if (!name) return;
             
             userName = name;
-            availableBalance = 1024.00;
-            pendingBalance = 2400.00;
-            withdrawnBalance = 8500.00;
+            availableBalance = 0.00;
+            pendingBalance = 0.00;
+            withdrawnBalance = 0.00;
             partnerId = generateRandomPartnerId();
             cardNumber = generateRandomCardNumber();
             cardSecurityCode = generateRandomSecurityCode();
             firstWithdrawalCompleted = false;
             cardDetailsHidden = true;
-            creatorTier = 'Gold';
-            streakCount = 2;
+            creatorTier = 'Bronze';
+            streakCount = 0;
             lastCheckInDate = '';
             activeWithdrawalPending = false;
-            payoutTrackingState = 2;
+            payoutTrackingState = 1;
+            securityDeposit = 0.00;
+            claimedMilestoneLevels = [];
             
             saveUserSession();
             
