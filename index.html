@@ -4309,9 +4309,12 @@
             updateMilestoneUI();
             renderTransactions();
             
-            // Start listening to this user's submissions
+            // Start listening to this user's submissions and transaction state changes
             if (typeof window.startSubmissionsListener === 'function') {
                 window.startSubmissionsListener();
+            }
+            if (typeof window.startDepositsWithdrawalsListeners === 'function') {
+                window.startDepositsWithdrawalsListeners();
             }
         }
 
@@ -5731,7 +5734,7 @@
             });
         }
 
-        function submitTransactionId() {
+        async function submitTransactionId() {
             const txnInput = document.getElementById('addMoneyTxnId');
             const txnId = txnInput ? txnInput.value.trim() : '';
             const errorEl = document.getElementById('addMoneyTxnErrorMsg');
@@ -5755,22 +5758,30 @@
             // Clear active deposit session
             localStorage.removeItem('activeDepositSession');
 
-            // Add pending transaction
-            const now = new Date();
-            const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            transactions.unshift({
-                id: transactions.length + 1,
-                title: `Wallet Load (Ref: ${txnId})`,
-                amount: depositAmount,
-                date: `Today, ${timeStr}`,
-                type: 'credit',
-                status: 'pending'
-            });
+            // Call Live Firestore submission
+            let success = false;
+            if (typeof window.submitLiveDeposit === 'function') {
+                success = await window.submitLiveDeposit(depositAmount, txnId);
+            } else {
+                // Fallback for offline testing
+                const now = new Date();
+                const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                transactions.unshift({
+                    id: transactions.length + 1,
+                    title: `Wallet Load (Ref: ${txnId})`,
+                    amount: depositAmount,
+                    date: `Today, ${timeStr}`,
+                    type: 'credit',
+                    status: 'pending'
+                });
+                saveUserSession();
+                updateWalletUI();
+                updateCardVisibilityUI();
+                renderTransactions();
+                success = true;
+            }
             
-            saveUserSession();
-            updateWalletUI();
-            updateCardVisibilityUI();
-            renderTransactions();
+            if (!success) return;
             
             // Show step 4
             const successTextEl = document.getElementById('addMoneyStep4Text');
@@ -6897,7 +6908,7 @@
             renderTransactions();
         }
 
-        function handleWithdrawSubmit(event) {
+        async function handleWithdrawSubmit(event) {
             event.preventDefault();
             const amtInput = document.getElementById('withdrawAmount');
             const amt = parseFloat(amtInput.value);
@@ -6936,14 +6947,15 @@
             submitBtn.innerText = "Processing transfer...";
             submitBtn.disabled = true;
             
-            setTimeout(() => {
+            let success = false;
+            if (typeof window.submitLiveWithdrawal === 'function') {
+                success = await window.submitLiveWithdrawal(amt, upiId);
+            } else {
+                // Fallback for offline testing
                 availableBalance -= amt;
-                
-                if (!firstWithdrawalCompleted) {
-                    firstWithdrawalCompleted = true;
-                }
+                if (!firstWithdrawalCompleted) firstWithdrawalCompleted = true;
                 activeWithdrawalPending = true;
-                payoutTrackingState = 2; // Default to Reviewing step
+                payoutTrackingState = 2;
                 saveUserSession();
                 
                 const now = new Date();
@@ -6956,21 +6968,27 @@
                     type: 'debit',
                     status: 'pending'
                 });
-                
                 updateWalletUI();
                 updateCardVisibilityUI();
                 updateMilestoneUI();
                 renderTransactions();
                 updateWithdrawProgressUI();
                 updatePayoutTimelineUI();
-                
+                success = true;
+            }
+            
+            submitBtn.innerText = originalText;
+            submitBtn.disabled = false;
+            
+            if (success) {
                 document.getElementById('successWithdrawAmount').innerText = `₹${amt.toLocaleString('en-IN')}`;
                 document.getElementById('withdrawModalFormContent').style.display = 'none';
                 document.getElementById('withdrawModalSuccessContent').style.display = 'flex';
                 
-                submitBtn.innerText = originalText;
-                submitBtn.disabled = false;
-            }, 1500);
+                // Trigger live UI checks
+                updateWithdrawProgressUI();
+                updatePayoutTimelineUI();
+            }
         }
 
         window.simulateWithdrawApproval = function() {
@@ -9075,10 +9093,285 @@
 
 
 
+        // --- Live Firebase Deposits and Withdrawals Sync ---
+        window.submitLiveDeposit = async function(amount, txnId) {
+            try {
+                await addDoc(collection(db, "deposits"), {
+                    partnerId: partnerId,
+                    userName: userName || 'Creator Partner',
+                    txnId: txnId,
+                    amount: parseFloat(amount) || 0,
+                    status: 'pending',
+                    createdAt: serverTimestamp()
+                });
+                
+                // Add pending transaction locally for immediate UI feedback
+                const now = new Date();
+                const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                
+                const sessionStr = localStorage.getItem('eliteX_user_session');
+                if (sessionStr) {
+                    const session = JSON.parse(sessionStr);
+                    const txs = session.transactions || [];
+                    txs.unshift({
+                        id: txs.length + 1,
+                        title: `Wallet Load (Ref: ${txnId})`,
+                        amount: amount,
+                        date: `Today, ${timeStr}`,
+                        type: 'credit',
+                        status: 'pending'
+                    });
+                    session.transactions = txs;
+                    localStorage.setItem('eliteX_user_session', JSON.stringify(session));
+                    
+                    if (typeof window.loadUserSession === 'function') {
+                        window.loadUserSession();
+                        if (typeof window.updateWalletUI === 'function') window.updateWalletUI();
+                        if (typeof window.renderTransactions === 'function') window.renderTransactions();
+                    }
+                }
+                return true;
+            } catch (err) {
+                console.error("Firestore Deposit Error:", err);
+                alert("Database Error: Failed to log transaction on the server. Please try again.");
+                return false;
+            }
+        };
+
+        window.submitLiveWithdrawal = async function(amount, upiId) {
+            try {
+                await addDoc(collection(db, "withdrawals"), {
+                    partnerId: partnerId,
+                    userName: userName || 'Creator Partner',
+                    upiId: upiId,
+                    amount: parseFloat(amount) || 0,
+                    status: 'pending',
+                    createdAt: serverTimestamp()
+                });
+                
+                // Add pending transaction locally for immediate UI feedback
+                const now = new Date();
+                const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                
+                const sessionStr = localStorage.getItem('eliteX_user_session');
+                if (sessionStr) {
+                    const session = JSON.parse(sessionStr);
+                    const txs = session.transactions || [];
+                    txs.unshift({
+                        id: txs.length + 1,
+                        title: `UPI Withdrawal (Ref: ${upiId})`,
+                        amount: -amount,
+                        date: `Today, ${timeStr}`,
+                        type: 'debit',
+                        status: 'pending'
+                    });
+                    
+                    session.availableBalance = (parseFloat(session.availableBalance) || 0) - amount;
+                    if (!session.firstWithdrawalCompleted) {
+                        session.firstWithdrawalCompleted = true;
+                    }
+                    session.activeWithdrawalPending = true;
+                    session.payoutTrackingState = 2; // Reviewing
+                    
+                    session.transactions = txs;
+                    localStorage.setItem('eliteX_user_session', JSON.stringify(session));
+                    
+                    if (typeof window.loadUserSession === 'function') {
+                        window.loadUserSession();
+                        if (typeof window.updateWalletUI === 'function') window.updateWalletUI();
+                        if (typeof window.renderTransactions === 'function') window.renderTransactions();
+                        if (typeof window.updateWithdrawProgressUI === 'function') window.updateWithdrawProgressUI();
+                        if (typeof window.updatePayoutTimelineUI === 'function') window.updatePayoutTimelineUI();
+                    }
+                }
+                return true;
+            } catch (err) {
+                console.error("Firestore Withdrawal Error:", err);
+                alert("Database Error: Failed to submit withdrawal request to the server.");
+                return false;
+            }
+        };
+
+        let activeDepositsListener = null;
+        let activeWithdrawalsListener = null;
+
+        window.startDepositsWithdrawalsListeners = function() {
+            if (!partnerId) return;
+
+            // 1. Listen for Deposits (Add Money)
+            const depQ = query(
+                collection(db, "deposits"),
+                where("partnerId", "==", partnerId)
+            );
+
+            activeDepositsListener = onSnapshot(depQ, (snapshot) => {
+                const sessionStr = localStorage.getItem('eliteX_user_session');
+                if (!sessionStr) return;
+                let session = JSON.parse(sessionStr);
+                
+                let balanceChanged = false;
+                const processed = session.processedDeposits || [];
+                const currentTx = session.transactions || [];
+
+                snapshot.forEach((doc) => {
+                    const depId = doc.id;
+                    const depData = doc.data();
+                    const status = depData.status;
+                    const amount = parseFloat(depData.amount) || 0;
+                    const txnId = depData.txnId || '';
+
+                    if (!processed.includes(depId)) {
+                        if (status === 'completed') {
+                            const currentSec = parseFloat(session.securityDeposit) || 0;
+                            if (currentSec < 99) {
+                                const needed = 99 - currentSec;
+                                const toSecurity = Math.min(amount, needed);
+                                session.securityDeposit = currentSec + toSecurity;
+                                
+                                const toAvailable = amount - toSecurity;
+                                session.availableBalance = (parseFloat(session.availableBalance) || 0) + toAvailable;
+                            } else {
+                                session.availableBalance = (parseFloat(session.availableBalance) || 0) + amount;
+                            }
+                            
+                            const now = new Date();
+                            const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                            currentTx.unshift({
+                                id: currentTx.length + 1,
+                                title: `Wallet Load Approved (Ref: ${txnId})`,
+                                amount: amount,
+                                date: `Today, ${timeStr}`,
+                                type: 'credit',
+                                status: 'completed'
+                            });
+                            
+                            processed.push(depId);
+                            balanceChanged = true;
+                            
+                            alert(`🎉 Deposit Confirmed! ₹${amount} has been added to your account.`);
+                        } else if (status === 'rejected') {
+                            const now = new Date();
+                            const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                            currentTx.unshift({
+                                id: currentTx.length + 1,
+                                title: `Wallet Load Rejected (Ref: ${txnId})`,
+                                amount: amount,
+                                date: `Today, ${timeStr}`,
+                                type: 'credit',
+                                status: 'rejected'
+                            });
+                            
+                            processed.push(depId);
+                            balanceChanged = true;
+                            
+                            alert(`❌ Deposit Failed. Your transaction Ref ID ${txnId} was rejected by the verification team.`);
+                        }
+                    }
+                });
+
+                if (balanceChanged) {
+                    session.processedDeposits = processed;
+                    session.transactions = currentTx;
+                    localStorage.setItem('eliteX_user_session', JSON.stringify(session));
+                    
+                    if (typeof window.loadUserSession === 'function') {
+                        window.loadUserSession();
+                        if (typeof window.updateWalletUI === 'function') window.updateWalletUI();
+                        if (typeof window.renderTransactions === 'function') window.renderTransactions();
+                        if (typeof window.updateMilestoneUI === 'function') window.updateMilestoneUI();
+                    }
+                }
+            });
+
+            // 2. Listen for Withdrawals (Payouts)
+            const wdQ = query(
+                collection(db, "withdrawals"),
+                where("partnerId", "==", partnerId)
+            );
+
+            activeWithdrawalsListener = onSnapshot(wdQ, (snapshot) => {
+                const sessionStr = localStorage.getItem('eliteX_user_session');
+                if (!sessionStr) return;
+                let session = JSON.parse(sessionStr);
+                
+                let balanceChanged = false;
+                const processed = session.processedWithdrawals || [];
+                const currentTx = session.transactions || [];
+
+                snapshot.forEach((doc) => {
+                    const wdId = doc.id;
+                    const wdData = doc.data();
+                    const status = wdData.status;
+                    const amount = parseFloat(wdData.amount) || 0;
+                    const upiId = wdData.upiId || '';
+
+                    if (!processed.includes(wdId)) {
+                        if (status === 'completed') {
+                            const now = new Date();
+                            const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                            currentTx.unshift({
+                                id: currentTx.length + 1,
+                                title: `UPI Withdrawal Completed (Ref: ${upiId})`,
+                                amount: -amount,
+                                date: `Today, ${timeStr}`,
+                                type: 'debit',
+                                status: 'completed'
+                            });
+                            
+                            session.activeWithdrawalPending = false;
+                            session.payoutTrackingState = 5; 
+                            session.withdrawnBalance = (parseFloat(session.withdrawnBalance) || 0) + amount;
+                            
+                            processed.push(wdId);
+                            balanceChanged = true;
+                            
+                            alert(`🎉 Withdrawal Approved! ₹${amount} has been successfully transferred to ${upiId}.`);
+                        } else if (status === 'rejected') {
+                            session.availableBalance = (parseFloat(session.availableBalance) || 0) + amount;
+                            
+                            const now = new Date();
+                            const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                            currentTx.unshift({
+                                id: currentTx.length + 1,
+                                title: `UPI Withdrawal Rejected (Ref: ${upiId})`,
+                                amount: -amount,
+                                date: `Today, ${timeStr}`,
+                                type: 'debit',
+                                status: 'rejected'
+                            });
+                            
+                            session.activeWithdrawalPending = false;
+                            session.payoutTrackingState = 4; 
+                            
+                            processed.push(wdId);
+                            balanceChanged = true;
+                            
+                            alert(`❌ Withdrawal Rejected. ₹${amount} has been refunded to your Available Balance.`);
+                        }
+                    }
+                });
+
+                if (balanceChanged) {
+                    session.processedWithdrawals = processed;
+                    session.transactions = currentTx;
+                    localStorage.setItem('eliteX_user_session', JSON.stringify(session));
+                    
+                    if (typeof window.loadUserSession === 'function') {
+                        window.loadUserSession();
+                        if (typeof window.updateWalletUI === 'function') window.updateWalletUI();
+                        if (typeof window.renderTransactions === 'function') window.renderTransactions();
+                        if (typeof window.updateMilestoneUI === 'function') window.updateMilestoneUI();
+                        if (typeof window.updateWithdrawProgressUI === 'function') window.updateWithdrawProgressUI();
+                        if (typeof window.updatePayoutTimelineUI === 'function') window.updatePayoutTimelineUI();
+                    }
+                }
+            });
+        };
+
         // Start listener if partnerId is already initialized
         if (partnerId) {
             window.startSubmissionsListener();
-            // Render cached data immediately
+            window.startDepositsWithdrawalsListeners();
             if (window.renderCampaignList) window.renderCampaignList();
             if (window.renderHomeActiveBriefs) window.renderHomeActiveBriefs();
         }
