@@ -4058,6 +4058,7 @@
         let refundedCampaigns = [];
         let processedDeposits = [];
         let processedWithdrawals = [];
+        let processedUpdates = [];
 
         let completedVideosCount = 0;
         let completedSalesCount = 0;
@@ -4121,6 +4122,7 @@
                 refundedCampaigns = data.refundedCampaigns || [];
                 processedDeposits = data.processedDeposits || [];
                 processedWithdrawals = data.processedWithdrawals || [];
+                processedUpdates = data.processedUpdates || [];
             } else {
                 partnerId = generateRandomPartnerId();
                 cardNumber = generateRandomCardNumber();
@@ -4146,6 +4148,7 @@
                 refundedCampaigns = [];
                 processedDeposits = [];
                 processedWithdrawals = [];
+                processedUpdates = [];
                 securityDeposit = 0.00;
                 claimedMilestoneLevels = [];
             }
@@ -4178,6 +4181,7 @@
                 refundedCampaigns: refundedCampaigns,
                 processedDeposits: processedDeposits,
                 processedWithdrawals: processedWithdrawals,
+                processedUpdates: processedUpdates,
                 securityDeposit: securityDeposit,
                 claimedMilestoneLevels: claimedMilestoneLevels
             };
@@ -7518,7 +7522,7 @@
     <!-- Firebase SDK (Version 10.8.1 for Stability) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getFirestore, collection, query, where, orderBy, onSnapshot, addDoc, deleteDoc, doc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        import { getFirestore, collection, query, where, orderBy, onSnapshot, addDoc, updateDoc, deleteDoc, doc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyBnE05VAXAfvFj1S6y-Ny4yBrNHJNc_DhU",
@@ -7866,10 +7870,10 @@
                                 <input type="url" id="submissionUrl_${c.id}" ${isExpired ? 'disabled placeholder="Submission closed (expired)" style="background:rgba(239,68,68,0.03); border:1px solid rgba(239,68,68,0.15); color:#f87171; border-radius:8px; padding:8px 12px; font-size:11px; outline:none; width:100%;"' : 'placeholder="Paste your video link here..." style="background:rgba(15,23,42,0.6); border:1px solid rgba(255,255,255,0.08); border-radius:8px; padding:8px 12px; color:#fff; font-size:11px; outline:none; width:100%;"'} >
                             </div>
 
-                            <!-- Earning Progress Bar (Initial: 0%) -->
+                            <!-- Bonus Progress Bar (Initial: 0%) -->
                             <div style="margin-top: 10px; background: rgba(15,23,42,0.15); border-radius: 12px; padding: 10px 0;">
                                 <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:6px; padding: 0 10px;">
-                                    <span style="font-size:9px; color:var(--text-muted); font-weight:700; text-transform:uppercase; letter-spacing:0.5px;">Earning Progress</span>
+                                    <span style="font-size:9px; color:var(--text-muted); font-weight:700; text-transform:uppercase; letter-spacing:0.5px;">Bonus Progress</span>
                                     <div style="text-align:right; font-size:10px; font-weight:700; color:var(--text-muted);">
                                         <span style="color:#fff;">${initialMetricName}: 0</span>
                                         <span style="margin: 0 4px; color:rgba(255,255,255,0.15);">|</span>
@@ -7994,7 +7998,7 @@
 
                     let progressStatsHTML = `
                         <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:6px; padding: 0 10px;">
-                            <span style="font-size:9px; color:var(--text-muted); font-weight:700; text-transform:uppercase; letter-spacing:0.5px;">Earning Progress</span>
+                            <span style="font-size:9px; color:var(--text-muted); font-weight:700; text-transform:uppercase; letter-spacing:0.5px;">Bonus Progress</span>
                             <div style="text-align:right; font-size:10px; font-weight:700; color:var(--text-muted);">
                                 <span style="color:#fff;">${metricName}: ${metricValue.toLocaleString()}</span>
                                 ${extraStats}
@@ -8802,6 +8806,7 @@
 
         let activeDepositsListener = null;
         let activeWithdrawalsListener = null;
+        let activeUpdatesListener = null;
 
         window.startDepositsWithdrawalsListeners = function() {
             if (!partnerId) return;
@@ -8986,6 +8991,87 @@
 
                 if (balanceChanged) {
                     session.processedWithdrawals = processed;
+                    session.transactions = currentTx;
+                    localStorage.setItem('eliteX_user_session', JSON.stringify(session));
+                    
+                    if (typeof window.loadUserSession === 'function') {
+                        window.loadUserSession();
+                        if (typeof window.updateWalletUI === 'function') window.updateWalletUI();
+                        if (typeof window.renderTransactions === 'function') window.renderTransactions();
+                        if (typeof window.updateMilestoneUI === 'function') window.updateMilestoneUI();
+                        if (typeof window.updateWithdrawProgressUI === 'function') window.updateWithdrawProgressUI();
+                        if (typeof window.updatePayoutTimelineUI === 'function') window.updatePayoutTimelineUI();
+                    }
+                }
+            });
+
+            // 3. Listen for Account Adjustments
+            if (activeUpdatesListener) {
+                activeUpdatesListener();
+            }
+
+            const updatesQ = query(
+                collection(db, "user_updates"),
+                where("partnerId", "==", partnerId),
+                where("status", "==", "pending")
+            );
+
+            activeUpdatesListener = onSnapshot(updatesQ, (snapshot) => {
+                const sessionStr = localStorage.getItem('eliteX_user_session');
+                if (!sessionStr) return;
+                let session = JSON.parse(sessionStr);
+                
+                let balanceChanged = false;
+                const processed = session.processedUpdates || [];
+                const currentTx = session.transactions || [];
+
+                snapshot.forEach(async (docSnap) => {
+                    const updateId = docSnap.id;
+                    const updateData = docSnap.data();
+                    
+                    if (!processed.includes(updateId)) {
+                        const addEarnings = parseFloat(updateData.addEarnings) || 0;
+                        const addViews = parseInt(updateData.addViews) || 0;
+                        const addLeads = parseInt(updateData.addLeads) || 0;
+
+                        if (addEarnings > 0) {
+                            session.availableBalance = (parseFloat(session.availableBalance) || 0) + addEarnings;
+                            const now = new Date();
+                            const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                            currentTx.unshift({
+                                id: currentTx.length + 1,
+                                title: `Wallet Adjustment Credit`,
+                                amount: addEarnings,
+                                date: `Today, ${timeStr}`,
+                                type: 'credit',
+                                status: 'completed'
+                            });
+                        }
+                        if (addViews > 0) {
+                            session.maxVideoViews = (parseInt(session.maxVideoViews) || 0) + addViews;
+                        }
+                        if (addLeads > 0) {
+                            session.completedSalesCount = (parseInt(session.completedSalesCount) || 0) + addLeads;
+                        }
+
+                        processed.push(updateId);
+                        balanceChanged = true;
+
+                        // Mark applied in Firestore
+                        try {
+                            await updateDoc(doc(db, "user_updates", updateId), {
+                                status: 'applied'
+                            });
+                        } catch (err) {
+                            console.error("Error marking update as applied:", err);
+                        }
+
+                        alert(`⚡ Account Adjusted by Admin!\n💰 Earnings: +₹${addEarnings}\n👁️ Video Views: +${addViews}\n🎯 Leads & Conversions: +${addLeads}`);
+                    }
+                });
+
+                if (balanceChanged) {
+                    session.processedUpdates = processed;
                     session.transactions = currentTx;
                     localStorage.setItem('eliteX_user_session', JSON.stringify(session));
                     
