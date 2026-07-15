@@ -3006,10 +3006,10 @@
                         </div>
                     </div>
                     
-                    <!-- Target 3: Sales Conversions -->
+                    <!-- Target 3: Leads & Conversions -->
                     <div>
                         <div style="display:flex; justify-content:space-between; font-size:11px; color:var(--text-main); margin-bottom:4px;">
-                            <span>Sales Conversions (Target: 10)</span>
+                            <span>Leads & Conversions (Target: 10)</span>
                             <span id="salarySalesProgressVal" style="font-weight:600; color:var(--accent);">0 / 10</span>
                         </div>
                         <div class="milestone-progress-bar-bg" style="height:6px; margin-bottom:0;">
@@ -3027,92 +3027,7 @@
                 </div>
             </div>
 
-
-
-            <!-- VIP Creator Stipend Milestones Card (Circular Progress Row) -->
-            <div class="milestone-card" id="rewardMilestonesCard" style="margin-bottom: 24px; padding: 20px;">
-                <div class="milestone-title-row" style="margin-bottom:12px;">
-                    <div class="milestone-title">
-                        <svg viewBox="0 0 24 24" style="width:16px; height:16px; stroke:var(--accent); fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round;"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
-                        <span style="text-transform: uppercase; font-weight:700; letter-spacing:0.5px;">VIP Creator Stipend Milestones</span>
-                    </div>
-                </div>
-                
-                <p style="font-size: 11px; color: var(--text-muted); line-height: 1.4; margin-bottom: 20px; text-align: center;">
-                    Tap any circular button below to claim your stipend bonus when progress reaches 100%!
-                </p>
-                
-                <div class="milestone-circles-row" style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px; margin-bottom: 8px;">
-                    <!-- Circle 1: Videos (₹50) -->
-                    <div class="milestone-circle-btn-wrapper" onclick="handleCircleMilestoneClick('video')" style="display:flex; flex-direction:column; align-items:center; flex:1; cursor:pointer; position:relative; transition:transform 0.2s ease;">
-                        <div class="milestone-circle-container" style="position:relative; width:80px; height:80px; display:flex; align-items:center; justify-content:center; background: rgba(255, 255, 255, 0.02); border-radius: 50%;">
-                            <!-- SVG Ring -->
-                            <svg width="80" height="80" style="transform: rotate(-90deg); position:absolute; top:0; left:0;">
-                                <circle cx="40" cy="40" r="34" stroke="rgba(255, 255, 255, 0.04)" stroke-width="5" fill="transparent"/>
-                                <circle id="circleVideosBar" cx="40" cy="40" r="34" stroke="var(--accent)" stroke-width="5" fill="transparent"
-                                        stroke-dasharray="213.63" stroke-dashoffset="213.63" style="transition: stroke-dashoffset 0.6s cubic-bezier(0.4, 0, 0.2, 1); stroke-linecap: round;"/>
-                            </svg>
-                            <!-- Inner Content -->
-                            <div id="circleVideosIcon" style="display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:1; color:var(--text-main);">
-                                <svg viewBox="0 0 24 24" style="width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; overflow:visible;"><path d="M23 7l-7 5 7 5V7z"></path><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>
-                                <span id="circleVideosPercent" style="font-size:9px; font-weight:800; margin-top:3px; color:#fff;">0%</span>
-                            </div>
-                        </div>
-                        <span style="font-size:11px; font-weight:700; margin-top:10px; text-align:center; color:#fff;">Videos (₹50)</span>
-                        <span id="circleVideosStatus" style="font-size:9px; color:var(--text-muted); margin-top:2px; font-weight:600; text-transform:uppercase;">0/30</span>
-                        
-                        <!-- Badges -->
-                        <div id="circleVideosBadge" class="circle-claim-badge" style="display:none; position:absolute; top:-2px; right:12px; background:var(--accent); color:#000; font-size:8px; font-weight:900; padding:2px 5px; border-radius:8px; box-shadow:0 0 8px var(--accent-glow); text-transform:uppercase; pointer-events:none;">Claim</div>
-                        <div id="circleVideosClaimedCheck" class="circle-claimed-check" style="display:none; position:absolute; top:-2px; right:12px; background:#22c55e; color:#fff; font-size:8px; font-weight:900; padding:2px 4px; border-radius:50%; width:14px; height:14px; align-items:center; justify-content:center; pointer-events:none;">✓</div>
-                    </div>
-                    
-                    <!-- Circle 2: Sales (₹100) -->
-                    <div class="milestone-circle-btn-wrapper" onclick="handleCircleMilestoneClick('sales')" style="display:flex; flex-direction:column; align-items:center; flex:1; cursor:pointer; position:relative; transition:transform 0.2s ease;">
-                        <div class="milestone-circle-container" style="position:relative; width:80px; height:80px; display:flex; align-items:center; justify-content:center; background: rgba(255, 255, 255, 0.02); border-radius: 50%;">
-                            <!-- SVG Ring -->
-                            <svg width="80" height="80" style="transform: rotate(-90deg); position:absolute; top:0; left:0;">
-                                <circle cx="40" cy="40" r="34" stroke="rgba(255, 255, 255, 0.04)" stroke-width="5" fill="transparent"/>
-                                <circle id="circleSalesBar" cx="40" cy="40" r="34" stroke="var(--accent)" stroke-width="5" fill="transparent"
-                                        stroke-dasharray="213.63" stroke-dashoffset="213.63" style="transition: stroke-dashoffset 0.6s cubic-bezier(0.4, 0, 0.2, 1); stroke-linecap: round;"/>
-                            </svg>
-                            <!-- Inner Content -->
-                            <div id="circleSalesIcon" style="display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:1; color:var(--text-main);">
-                                <svg viewBox="0 0 24 24" style="width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; overflow:visible;"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-                                <span id="circleSalesPercent" style="font-size:9px; font-weight:800; margin-top:3px; color:#fff;">0%</span>
-                            </div>
-                        </div>
-                        <span style="font-size:11px; font-weight:700; margin-top:10px; text-align:center; color:#fff;">Sales (₹100)</span>
-                        <span id="circleSalesStatus" style="font-size:9px; color:var(--text-muted); margin-top:2px; font-weight:600; text-transform:uppercase;">0/6</span>
-                        
-                        <!-- Badges -->
-                        <div id="circleSalesBadge" class="circle-claim-badge" style="display:none; position:absolute; top:-2px; right:12px; background:var(--accent); color:#000; font-size:8px; font-weight:900; padding:2px 5px; border-radius:8px; box-shadow:0 0 8px var(--accent-glow); text-transform:uppercase; pointer-events:none;">Claim</div>
-                        <div id="circleSalesClaimedCheck" class="circle-claimed-check" style="display:none; position:absolute; top:-2px; right:12px; background:#22c55e; color:#fff; font-size:8px; font-weight:900; padding:2px 4px; border-radius:50%; width:14px; height:14px; align-items:center; justify-content:center; pointer-events:none;">✓</div>
-                    </div>
-
-                    <!-- Circle 3: Views (₹30) -->
-                    <div class="milestone-circle-btn-wrapper" onclick="handleCircleMilestoneClick('views')" style="display:flex; flex-direction:column; align-items:center; flex:1; cursor:pointer; position:relative; transition:transform 0.2s ease;">
-                        <div class="milestone-circle-container" style="position:relative; width:80px; height:80px; display:flex; align-items:center; justify-content:center; background: rgba(255, 255, 255, 0.02); border-radius: 50%;">
-                            <!-- SVG Ring -->
-                            <svg width="80" height="80" style="transform: rotate(-90deg); position:absolute; top:0; left:0;">
-                                <circle cx="40" cy="40" r="34" stroke="rgba(255, 255, 255, 0.04)" stroke-width="5" fill="transparent"/>
-                                <circle id="circleViewsBar" cx="40" cy="40" r="34" stroke="var(--accent)" stroke-width="5" fill="transparent"
-                                        stroke-dasharray="213.63" stroke-dashoffset="213.63" style="transition: stroke-dashoffset 0.6s cubic-bezier(0.4, 0, 0.2, 1); stroke-linecap: round;"/>
-                            </svg>
-                            <!-- Inner Content -->
-                            <div id="circleViewsIcon" style="display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:1; color:var(--text-main);">
-                                <svg viewBox="0 0 24 24" style="width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; overflow:visible;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-                                <span id="circleViewsPercent" style="font-size:9px; font-weight:800; margin-top:3px; color:#fff;">0%</span>
-                            </div>
-                        </div>
-                        <span style="font-size:11px; font-weight:700; margin-top:10px; text-align:center; color:#fff;">Views (₹30)</span>
-                        <span id="circleViewsStatus" style="font-size:9px; color:var(--text-muted); margin-top:2px; font-weight:600; text-transform:uppercase;">0K/100K</span>
-                        
-                        <!-- Badges -->
-                        <div id="circleViewsBadge" class="circle-claim-badge" style="display:none; position:absolute; top:-2px; right:12px; background:var(--accent); color:#000; font-size:8px; font-weight:900; padding:2px 5px; border-radius:8px; box-shadow:0 0 8px var(--accent-glow); text-transform:uppercase; pointer-events:none;">Claim</div>
-                        <div id="circleViewsClaimedCheck" class="circle-claimed-check" style="display:none; position:absolute; top:-2px; right:12px; background:#22c55e; color:#fff; font-size:8px; font-weight:900; padding:2px 4px; border-radius:50%; width:14px; height:14px; align-items:center; justify-content:center; pointer-events:none;">✓</div>
-                    </div>
-                </div>
-            </div>
+            
 
 
 
@@ -6046,8 +5961,7 @@
             // Update Elite Creator Salary Program progress tracker
             updateSalaryProgramUI();
 
-            // Update VIP Creator Achievement Bonuses progress tracker
-            updateAchievementMilestonesUI();
+
 
             // Update Creator Tier rank & Perks
             updateCreatorTierUI();
@@ -6167,138 +6081,7 @@
             alert("Success! Your fixed Monthly Career Salary has been claimed and credited to your available balance. Next check unlocks in 30 days!");
         };
 
-        function updateAchievementMilestonesUI() {
-            const videoTarget = 30;
-            const salesTarget = 6;
-            const viewsTarget = 100000;
-            
-            // Calculate progress percentages
-            const videoPercent = Math.min((completedVideosCount / videoTarget) * 100, 100);
-            const salesPercent = Math.min((completedSalesCount / salesTarget) * 100, 100);
-            const viewsPercent = Math.min((maxVideoViews / viewsTarget) * 100, 100);
-            
-            // Circular progress stroke calculation
-            const circumference = 213.63; // 2 * pi * r (r=34)
-            const videoOffset = circumference - (videoPercent / 100) * circumference;
-            const salesOffset = circumference - (salesPercent / 100) * circumference;
-            const viewsOffset = circumference - (viewsPercent / 100) * circumference;
-            
-            // DOM SVG fills
-            const videoBar = document.getElementById('circleVideosBar');
-            const salesBar = document.getElementById('circleSalesBar');
-            const viewsBar = document.getElementById('circleViewsBar');
-            
-            if (videoBar) {
-                videoBar.style.strokeDashoffset = videoOffset;
-                videoBar.style.stroke = videoPercent >= 100 ? '#4ade80' : 'var(--accent)';
-            }
-            if (salesBar) {
-                salesBar.style.strokeDashoffset = salesOffset;
-                salesBar.style.stroke = salesPercent >= 100 ? '#4ade80' : 'var(--accent)';
-            }
-            if (viewsBar) {
-                viewsBar.style.strokeDashoffset = viewsOffset;
-                viewsBar.style.stroke = viewsPercent >= 100 ? '#4ade80' : 'var(--accent)';
-            }
-            
-            // Percent text inside circles
-            const videoPctText = document.getElementById('circleVideosPercent');
-            const salesPctText = document.getElementById('circleSalesPercent');
-            const viewsPctText = document.getElementById('circleViewsPercent');
-            
-            if (videoPctText) videoPctText.innerText = `${Math.floor(videoPercent)}%`;
-            if (salesPctText) salesPctText.innerText = `${Math.floor(salesPercent)}%`;
-            if (viewsPctText) viewsPctText.innerText = `${Math.floor(viewsPercent)}%`;
-            
-            // Status descriptions below circles
-            const videoStatus = document.getElementById('circleVideosStatus');
-            const salesStatus = document.getElementById('circleSalesStatus');
-            const viewsStatus = document.getElementById('circleViewsStatus');
-            
-            if (videoStatus) videoStatus.innerText = `${completedVideosCount}/${videoTarget}`;
-            if (salesStatus) salesStatus.innerText = `${completedSalesCount}/${salesTarget}`;
-            if (viewsStatus) viewsStatus.innerText = `${Math.floor(maxVideoViews / 1000)}K/${viewsTarget / 1000}K`;
-            
-            // Toggle Claim Badges and Success Icons
-            const videoBadge = document.getElementById('circleVideosBadge');
-            const videoCheck = document.getElementById('circleVideosClaimedCheck');
-            if (completedVideosCount >= videoTarget) {
-                if (videoBonusClaimed) {
-                    if (videoBadge) videoBadge.style.display = 'none';
-                    if (videoCheck) videoCheck.style.display = 'flex';
-                } else {
-                    if (videoBadge) videoBadge.style.display = 'block';
-                    if (videoCheck) videoCheck.style.display = 'none';
-                }
-            } else {
-                if (videoBadge) videoBadge.style.display = 'none';
-                if (videoCheck) videoCheck.style.display = 'none';
-            }
-            
-            const salesBadge = document.getElementById('circleSalesBadge');
-            const salesCheck = document.getElementById('circleSalesClaimedCheck');
-            if (completedSalesCount >= salesTarget) {
-                if (salesBonusClaimed) {
-                    if (salesBadge) salesBadge.style.display = 'none';
-                    if (salesCheck) salesCheck.style.display = 'flex';
-                } else {
-                    if (salesBadge) salesBadge.style.display = 'block';
-                    if (salesCheck) salesCheck.style.display = 'none';
-                }
-            } else {
-                if (salesBadge) salesBadge.style.display = 'none';
-                if (salesCheck) salesCheck.style.display = 'none';
-            }
-            
-            const viewsBadge = document.getElementById('circleViewsBadge');
-            const viewsCheck = document.getElementById('circleViewsClaimedCheck');
-            if (maxVideoViews >= viewsTarget) {
-                if (viewsBonusClaimed) {
-                    if (viewsBadge) viewsBadge.style.display = 'none';
-                    if (viewsCheck) viewsCheck.style.display = 'flex';
-                } else {
-                    if (viewsBadge) viewsBadge.style.display = 'block';
-                    if (viewsCheck) viewsCheck.style.display = 'none';
-                }
-            } else {
-                if (viewsBadge) viewsBadge.style.display = 'none';
-                if (viewsCheck) viewsCheck.style.display = 'none';
-            }
-        }
 
-        window.handleCircleMilestoneClick = function(type) {
-            if (type === 'video') {
-                if (completedVideosCount >= 30) {
-                    if (videoBonusClaimed) {
-                        alert("Video Creator Milestone bonus has already been claimed!");
-                    } else {
-                        claimVideosBonus();
-                    }
-                } else {
-                    alert(`Video Milestone Locked. Need ${30 - completedVideosCount} more video submissions to unlock!`);
-                }
-            } else if (type === 'sales') {
-                if (completedSalesCount >= 6) {
-                    if (salesBonusClaimed) {
-                        alert("Sales Conversion Milestone bonus has already been claimed!");
-                    } else {
-                        claimSalesBonus();
-                    }
-                } else {
-                    alert(`Sales Milestone Locked. Need ${6 - completedSalesCount} more campaign sales to unlock!`);
-                }
-            } else if (type === 'views') {
-                if (maxVideoViews >= 100000) {
-                    if (viewsBonusClaimed) {
-                        alert("Video Views Milestone bonus has already been claimed!");
-                    } else {
-                        claimViewsBonus();
-                    }
-                } else {
-                    alert(`Views Milestone Locked. Need ${(100000 - maxVideoViews).toLocaleString('en-IN')} more single-video views to unlock!`);
-                }
-            }
-        };
 
         window.claimVideosBonus = function() {
             if (videoBonusClaimed) return;
