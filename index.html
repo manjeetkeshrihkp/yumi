@@ -4152,6 +4152,8 @@
         let transactions = [];
         let creditedSubmissions = [];
         let refundedCampaigns = [];
+        let processedDeposits = [];
+        let processedWithdrawals = [];
 
         let completedVideosCount = 0;
         let completedSalesCount = 0;
@@ -4167,6 +4169,7 @@
         let lastCheckInDate = '';
         let activeWithdrawalPending = false;
         let payoutTrackingState = 1;
+
         let currentJoinCampaignId = null;
 
         function loadUserSession() {
@@ -4212,6 +4215,8 @@
                 transactions = data.transactions || [];
                 creditedSubmissions = data.creditedSubmissions || [];
                 refundedCampaigns = data.refundedCampaigns || [];
+                processedDeposits = data.processedDeposits || [];
+                processedWithdrawals = data.processedWithdrawals || [];
             } else {
                 partnerId = generateRandomPartnerId();
                 cardNumber = generateRandomCardNumber();
@@ -4235,6 +4240,8 @@
                 transactions = [];
                 creditedSubmissions = [];
                 refundedCampaigns = [];
+                processedDeposits = [];
+                processedWithdrawals = [];
                 securityDeposit = 0.00;
                 claimedMilestoneLevels = [];
             }
@@ -4265,6 +4272,8 @@
                 transactions: transactions,
                 creditedSubmissions: creditedSubmissions,
                 refundedCampaigns: refundedCampaigns,
+                processedDeposits: processedDeposits,
+                processedWithdrawals: processedWithdrawals,
                 securityDeposit: securityDeposit,
                 claimedMilestoneLevels: claimedMilestoneLevels
             };
@@ -5644,6 +5653,13 @@
         }
 
         function openAddMoneyModal() {
+            // Check for pending deposit request
+            const hasPending = (transactions || []).some(t => t.type === 'credit' && t.status === 'pending');
+            if (hasPending) {
+                alert("You already have a pending Wallet Load request undergoing verification. Please wait for our team to approve or reject it before submitting another request.");
+                return;
+            }
+
             // Reset inputs
             const amtInput = document.getElementById('addMoneyAmountInput');
             if (amtInput) amtInput.value = '';
@@ -9265,32 +9281,45 @@
                                 session.availableBalance = (parseFloat(session.availableBalance) || 0) + amount;
                             }
                             
-                            const now = new Date();
-                            const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                            currentTx.unshift({
-                                id: currentTx.length + 1,
-                                title: `Wallet Load Approved (Ref: ${txnId})`,
-                                amount: amount,
-                                date: `Today, ${timeStr}`,
-                                type: 'credit',
-                                status: 'completed'
-                            });
+                            // Update existing pending transaction in-place or fallback to unshift
+                            const existingTx = currentTx.find(t => t.title.includes(txnId) && t.status === 'pending');
+                            if (existingTx) {
+                                existingTx.status = 'completed';
+                                existingTx.title = `Wallet Load Approved (Ref: ${txnId})`;
+                            } else {
+                                const now = new Date();
+                                const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                                currentTx.unshift({
+                                    id: currentTx.length + 1,
+                                    title: `Wallet Load Approved (Ref: ${txnId})`,
+                                    amount: amount,
+                                    date: `Today, ${timeStr}`,
+                                    type: 'credit',
+                                    status: 'completed'
+                                });
+                            }
                             
                             processed.push(depId);
                             balanceChanged = true;
                             
                             alert(`🎉 Deposit Confirmed! ₹${amount} has been added to your account.`);
                         } else if (status === 'rejected') {
-                            const now = new Date();
-                            const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                            currentTx.unshift({
-                                id: currentTx.length + 1,
-                                title: `Wallet Load Rejected (Ref: ${txnId})`,
-                                amount: amount,
-                                date: `Today, ${timeStr}`,
-                                type: 'credit',
-                                status: 'rejected'
-                            });
+                            const existingTx = currentTx.find(t => t.title.includes(txnId) && t.status === 'pending');
+                            if (existingTx) {
+                                existingTx.status = 'rejected';
+                                existingTx.title = `Wallet Load Rejected (Ref: ${txnId})`;
+                            } else {
+                                const now = new Date();
+                                const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                                currentTx.unshift({
+                                    id: currentTx.length + 1,
+                                    title: `Wallet Load Rejected (Ref: ${txnId})`,
+                                    amount: amount,
+                                    date: `Today, ${timeStr}`,
+                                    type: 'credit',
+                                    status: 'rejected'
+                                });
+                            }
                             
                             processed.push(depId);
                             balanceChanged = true;
@@ -9338,16 +9367,22 @@
 
                     if (!processed.includes(wdId)) {
                         if (status === 'completed') {
-                            const now = new Date();
-                            const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                            currentTx.unshift({
-                                id: currentTx.length + 1,
-                                title: `UPI Withdrawal Completed (Ref: ${upiId})`,
-                                amount: -amount,
-                                date: `Today, ${timeStr}`,
-                                type: 'debit',
-                                status: 'completed'
-                            });
+                            const existingTx = currentTx.find(t => t.title.includes(upiId) && t.status === 'pending');
+                            if (existingTx) {
+                                existingTx.status = 'completed';
+                                existingTx.title = `UPI Withdrawal Completed (Ref: ${upiId})`;
+                            } else {
+                                const now = new Date();
+                                const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                                currentTx.unshift({
+                                    id: currentTx.length + 1,
+                                    title: `UPI Withdrawal Completed (Ref: ${upiId})`,
+                                    amount: -amount,
+                                    date: `Today, ${timeStr}`,
+                                    type: 'debit',
+                                    status: 'completed'
+                                });
+                            }
                             
                             session.activeWithdrawalPending = false;
                             session.payoutTrackingState = 5; 
@@ -9360,16 +9395,22 @@
                         } else if (status === 'rejected') {
                             session.availableBalance = (parseFloat(session.availableBalance) || 0) + amount;
                             
-                            const now = new Date();
-                            const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                            currentTx.unshift({
-                                id: currentTx.length + 1,
-                                title: `UPI Withdrawal Rejected (Ref: ${upiId})`,
-                                amount: -amount,
-                                date: `Today, ${timeStr}`,
-                                type: 'debit',
-                                status: 'rejected'
-                            });
+                            const existingTx = currentTx.find(t => t.title.includes(upiId) && t.status === 'pending');
+                            if (existingTx) {
+                                existingTx.status = 'rejected';
+                                existingTx.title = `UPI Withdrawal Rejected (Ref: ${upiId})`;
+                            } else {
+                                const now = new Date();
+                                const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                                currentTx.unshift({
+                                    id: currentTx.length + 1,
+                                    title: `UPI Withdrawal Rejected (Ref: ${upiId})`,
+                                    amount: -amount,
+                                    date: `Today, ${timeStr}`,
+                                    type: 'debit',
+                                    status: 'rejected'
+                                });
+                            }
                             
                             session.activeWithdrawalPending = false;
                             session.payoutTrackingState = 4; 
