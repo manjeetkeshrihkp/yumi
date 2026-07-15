@@ -2877,9 +2877,15 @@
                             </div>
                             
                             <!-- Balance on Card Face (Always Visible) -->
-                            <div style="margin-top: 10px;">
-                                <span class="card-meta-label">Available Balance</span>
-                                <div class="card-number wallet-balance-val" style="font-size: 24px; font-weight: 800; margin: 4px 0; color: var(--accent); text-shadow: 0 2px 8px var(--accent-glow);">₹ 0.00</div>
+                            <div style="margin-top: 10px; display: flex; justify-content: space-between; align-items: flex-start; gap: 15px;">
+                                <div>
+                                    <span class="card-meta-label">Available Balance</span>
+                                    <div class="card-number wallet-balance-val" style="font-size: 19px; font-weight: 800; margin: 4px 0; color: var(--accent); text-shadow: 0 2px 8px var(--accent-glow);">₹ 0.00</div>
+                                </div>
+                                <div style="text-align: right;">
+                                    <span class="card-meta-label">Locked Security</span>
+                                    <div class="card-number wallet-security-val" style="font-size: 19px; font-weight: 800; margin: 4px 0; color: #94a3b8; text-shadow: 0 2px 8px rgba(148, 163, 184, 0.15);">₹ 0.00</div>
+                                </div>
                             </div>
                             
                             <!-- Card Number with inline eye toggle -->
@@ -4445,8 +4451,24 @@
         }
 
         // --- 3. Card Operations ---
+        let isCardTransitioning = false;
+
         function toggleCardFlip() {
-            document.getElementById('creditCard').classList.toggle('flipped');
+            const card = document.getElementById('creditCard');
+            if (!card) return;
+            
+            isCardTransitioning = true;
+            card.classList.toggle('flipped');
+            
+            if (card.classList.contains('flipped')) {
+                card.style.transform = 'rotateY(180deg)';
+            } else {
+                card.style.transform = 'rotateX(0deg) rotateY(0deg)';
+            }
+            
+            setTimeout(() => {
+                isCardTransitioning = false;
+            }, 800);
         }
 
         function handleCardClick(event) {
@@ -5996,6 +6018,11 @@
                 el.innerText = `₹ ${availableBalance.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
             });
             
+            // Security Deposit on Card Face
+            document.querySelectorAll('.wallet-security-val').forEach(el => {
+                el.innerText = `₹ ${securityDeposit.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+            });
+            
             // Pending Balance
             const pendingEl = document.getElementById('pendingBalanceVal');
             if (pendingEl) pendingEl.innerText = `₹ ${pendingBalance.toLocaleString('en-IN')}`;
@@ -7194,6 +7221,8 @@
             if (!card) return;
             
             card.addEventListener('mousemove', (e) => {
+                if (isCardTransitioning) return;
+                
                 const rect = card.getBoundingClientRect();
                 const x = e.clientX - rect.left;
                 const y = e.clientY - rect.top;
@@ -7210,6 +7239,8 @@
             });
             
             card.addEventListener('mouseleave', () => {
+                if (isCardTransitioning) return;
+                
                 if (card.classList.contains('flipped')) {
                     card.style.transform = 'rotateY(180deg)';
                 } else {
