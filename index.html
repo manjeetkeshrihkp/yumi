@@ -4054,7 +4054,7 @@
 
         const defaultTransactions = [];
         let transactions = [];
-        let creditedSubmissions = [];
+        let creditedSubmissions = {};
         let refundedCampaigns = [];
         let processedDeposits = [];
         let processedWithdrawals = [];
@@ -4118,7 +4118,18 @@
                 cardDetailsHidden = true; // Always default to hidden on load
                 
                 transactions = data.transactions || [];
-                creditedSubmissions = data.creditedSubmissions || [];
+                
+                // Upgrade creditedSubmissions if it was stored as an array
+                let rawCredited = data.creditedSubmissions || {};
+                if (Array.isArray(rawCredited)) {
+                    creditedSubmissions = {};
+                    rawCredited.forEach(id => {
+                        creditedSubmissions[id] = 0;
+                    });
+                } else {
+                    creditedSubmissions = rawCredited;
+                }
+                
                 refundedCampaigns = data.refundedCampaigns || [];
                 processedDeposits = data.processedDeposits || [];
                 processedWithdrawals = data.processedWithdrawals || [];
@@ -4144,7 +4155,7 @@
                 payoutTrackingState = 1;
                 
                 transactions = [];
-                creditedSubmissions = [];
+                creditedSubmissions = {};
                 refundedCampaigns = [];
                 processedDeposits = [];
                 processedWithdrawals = [];
@@ -8541,22 +8552,26 @@
                     const customBonuses = campaign ? campaign.customBonuses : null;
                     
                     let clipEarnings = 0;
-                    if (payoutType === 'cpm') {
-                        clipEarnings = reward + (views * reward) / 1000;
-                        clipEarnings += getMilestoneBonus(views, false, customBonuses);
-                    } else if (payoutType === 'reach') {
-                        clipEarnings = reward + (reach * reward) / 1000;
-                        clipEarnings += getMilestoneBonus(views, false, customBonuses);
-                    } else if (payoutType === 'conversion') {
-                        clipEarnings = reward + (conversions * reward);
-                        clipEarnings += getMilestoneBonus(conversions, true, customBonuses);
-                    } else if (payoutType === 'performance') {
-                        clipEarnings = reward + ((views * reward) / 2000) + ((conversions * reward) / 2);
-                        clipEarnings += getMilestoneBonus(views, false, customBonuses);
+                    if (sub.overrideEarnings !== undefined && sub.overrideEarnings !== null) {
+                        clipEarnings = parseFloat(sub.overrideEarnings);
                     } else {
-                        clipEarnings = (sub.status === 'approved' || sub.status === 'tracking') ? reward : 0;
-                        clipEarnings += conversions * (campaign ? (campaign.conversionRate || 0) : 0);
-                        clipEarnings += getMilestoneBonus(views, false, customBonuses);
+                        if (payoutType === 'cpm') {
+                            clipEarnings = reward + (views * reward) / 1000;
+                            clipEarnings += getMilestoneBonus(views, false, customBonuses);
+                        } else if (payoutType === 'reach') {
+                            clipEarnings = reward + (reach * reward) / 1000;
+                            clipEarnings += getMilestoneBonus(views, false, customBonuses);
+                        } else if (payoutType === 'conversion') {
+                            clipEarnings = reward + (conversions * reward);
+                            clipEarnings += getMilestoneBonus(conversions, true, customBonuses);
+                        } else if (payoutType === 'performance') {
+                            clipEarnings = reward + ((views * reward) / 2000) + ((conversions * reward) / 2);
+                            clipEarnings += getMilestoneBonus(views, false, customBonuses);
+                        } else {
+                            clipEarnings = (sub.status === 'approved' || sub.status === 'tracking') ? reward : 0;
+                            clipEarnings += conversions * (campaign ? (campaign.conversionRate || 0) : 0);
+                            clipEarnings += getMilestoneBonus(views, false, customBonuses);
+                        }
                     }
                     
                     totalViews += views;
@@ -8576,18 +8591,38 @@
                         const sessionStr = localStorage.getItem('eliteX_user_session');
                         if (sessionStr) {
                             const session = JSON.parse(sessionStr);
-                            const credited = session.creditedSubmissions || [];
+                            let credited = session.creditedSubmissions || {};
+                            if (Array.isArray(credited)) {
+                                const temp = {};
+                                credited.forEach(id => { temp[id] = 0; });
+                                credited = temp;
+                            }
                             const refunded = session.refundedCampaigns || [];
                             const sessionTx = session.transactions || [];
                             
                             let balanceChanged = false;
                             
                             // 1. Credit Clip Earnings
-                            if (!credited.includes(sub.id)) {
-                                credited.push(sub.id);
-                                session.availableBalance = (parseFloat(session.availableBalance) || 0) + clipEarnings;
+                            const alreadyPaid = parseFloat(credited[sub.id] || 0);
+                            if (clipEarnings > alreadyPaid) {
+                                const diff = clipEarnings - alreadyPaid;
+                                session.availableBalance = (parseFloat(session.availableBalance) || 0) + diff;
+                                credited[sub.id] = clipEarnings;
                                 session.creditedSubmissions = credited;
                                 balanceChanged = true;
+                                
+                                // Create credit transaction or adjustment transaction
+                                const now = new Date();
+                                const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                                sessionTx.unshift({
+                                    id: sessionTx.length + 1,
+                                    title: alreadyPaid > 0 ? `Earnings Adjustment: ${sub.campaignTitle}` : `Earnings: ${sub.campaignTitle}`,
+                                    amount: diff,
+                                    date: `Today, ${timeStr}`,
+                                    type: 'credit',
+                                    status: 'completed'
+                                });
+                                session.transactions = sessionTx;
                             }
                             
                             // 2. Refund ₹10 Deposit Fee
@@ -8615,16 +8650,10 @@
                             if (balanceChanged) {
                                 localStorage.setItem('eliteX_user_session', JSON.stringify(session));
                                 
-                                // Call wallet sync immediately
-                                if (typeof window.loadUserSession === 'function') {
-                                    window.loadUserSession();
-                                    if (typeof window.updateWalletUI === 'function') {
-                                        window.updateWalletUI();
-                                    }
-                                    if (typeof window.renderTransactions === 'function') {
-                                        window.renderTransactions();
-                                    }
-                                }
+                                // Call wallet sync immediately from module scope
+                                if (typeof loadUserSession === 'function') loadUserSession();
+                                if (typeof updateWalletUI === 'function') updateWalletUI();
+                                if (typeof renderTransactions === 'function') renderTransactions();
                             }
                         }
                     }
@@ -9086,6 +9115,15 @@
                 }
             });
         };
+
+        // Bind local modular functions to the window object for global visibility
+        window.loadUserSession = loadUserSession;
+        window.saveUserSession = saveUserSession;
+        window.updateWalletUI = updateWalletUI;
+        window.renderTransactions = renderTransactions;
+        window.updateMilestoneUI = updateMilestoneUI;
+        window.updateWithdrawProgressUI = updateWithdrawProgressUI;
+        window.updatePayoutTimelineUI = updatePayoutTimelineUI;
 
         // Start listener if partnerId is already initialized
         if (partnerId) {
