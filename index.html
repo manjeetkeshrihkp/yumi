@@ -2717,6 +2717,35 @@
                     </span>
                     <span id="homeActiveBriefsCount" style="font-size:9px; color:var(--accent); font-weight:800; background:rgba(250,204,21,0.08); padding:2px 8px; border-radius:6px; border:1px solid rgba(250,204,21,0.15); text-transform:uppercase; letter-spacing:0.5px;">0 Active</span>
                 </h3>
+
+                <!-- Sort & Filter Bar -->
+                <div class="glass-panel" style="padding: 10px; margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; gap: 10px; background: rgba(15, 23, 42, 0.3); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; flex-wrap: wrap;">
+                    <!-- Filters -->
+                    <div style="display: flex; align-items: center; gap: 4px; overflow-x: auto; flex: 1; scrollbar-width: none; -ms-overflow-style: none;">
+                        <style>
+                            .home-filter-scroll::-webkit-scrollbar { display: none; }
+                        </style>
+                        <div class="home-filter-scroll" style="display: flex; align-items: center; gap: 4px; overflow-x: auto; -webkit-overflow-scrolling: touch; width: 100%;">
+                            <button class="pm-category-pill active" id="homeFilter_all" onclick="window.setHomeBriefsFilter('all')" style="font-size: 9px; padding: 4px 8px; height: auto; white-space: nowrap;">All</button>
+                            <button class="pm-category-pill" id="homeFilter_approved" onclick="window.setHomeBriefsFilter('approved')" style="font-size: 9px; padding: 4px 8px; height: auto; white-space: nowrap;">Approved</button>
+                            <button class="pm-category-pill" id="homeFilter_tracking" onclick="window.setHomeBriefsFilter('tracking')" style="font-size: 9px; padding: 4px 8px; height: auto; white-space: nowrap;">Tracking</button>
+                            <button class="pm-category-pill" id="homeFilter_pending" onclick="window.setHomeBriefsFilter('pending')" style="font-size: 9px; padding: 4px 8px; height: auto; white-space: nowrap;">Reviewing</button>
+                            <button class="pm-category-pill" id="homeFilter_rejected" onclick="window.setHomeBriefsFilter('rejected')" style="font-size: 9px; padding: 4px 8px; height: auto; white-space: nowrap;">Rejected</button>
+                            <button class="pm-category-pill" id="homeFilter_joined" onclick="window.setHomeBriefsFilter('joined')" style="font-size: 9px; padding: 4px 8px; height: auto; white-space: nowrap;">Awaiting Submit</button>
+                        </div>
+                    </div>
+                    <!-- Sort -->
+                    <div style="display: flex; align-items: center; gap: 4px; flex-shrink: 0; margin-left: auto;">
+                        <span style="font-size: 8px; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;">Sort</span>
+                        <select id="homeBriefsSortSelect" onchange="window.setHomeBriefsSort(this.value)" style="background: rgba(5, 7, 12, 0.6); border: 1px solid rgba(255, 255, 255, 0.08); color: #fff; padding: 4px 8px; border-radius: 8px; font-size: 9px; outline: none; font-weight: 700; cursor: pointer;">
+                            <option value="last_updated">Last Updated</option>
+                            <option value="earnings">Earnings</option>
+                            <option value="views">Views</option>
+                            <option value="title">Title (A-Z)</option>
+                        </select>
+                    </div>
+                </div>
+
                 <div id="homeAcceptedCampaignsContainer" class="campaign-grid" style="width: 100%; margin-bottom: 24px;">
                     <div style="text-align:center; font-size: 12px; padding: 20px; border: 1px dashed rgba(255,255,255,0.06); border-radius:12px; background:rgba(255,255,255,0.01); color:var(--text-muted); grid-column: 1/-1;">
                         No active campaigns joined yet. Select the Campaigns section from the bottom navigation menu to join and start earning.
@@ -2836,6 +2865,30 @@
                         <button class="pm-category-pill" data-campaign-filter="post" onclick="window.filterCampaigns(this)">Tasks</button>
                     </div>
                     <span id="campActiveCount" style="font-size: 10px; font-weight: 800; color: var(--accent); background: rgba(250, 204, 21, 0.08); border: 1px solid rgba(250, 204, 21, 0.15); padding: 4px 10px; border-radius: 8px; font-family: monospace; display: inline-block;">0 Live Briefs</span>
+                </div>
+
+                <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; width:100%;">
+                    <!-- Payout Filter -->
+                    <div style="display:flex; align-items:center; gap:4px; flex: 1;">
+                        <span style="font-size: 8px; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;">Type</span>
+                        <select id="campaignPayoutTypeFilterSelect" onchange="window.setCampaignPayoutFilter(this.value)" style="width:100%; background: rgba(5, 7, 12, 0.6); border: 1px solid rgba(255, 255, 255, 0.08); color: #fff; padding: 6px 10px; border-radius: 8px; font-size: 9px; outline: none; font-weight: 700; cursor: pointer;">
+                            <option value="all">All Payouts</option>
+                            <option value="flat">Flat Reward</option>
+                            <option value="cpm">CPM (per 1k Views)</option>
+                            <option value="conversion">Lead (per Conversion)</option>
+                            <option value="performance">Performance (Hybrid)</option>
+                        </select>
+                    </div>
+                    <!-- Sort -->
+                    <div style="display:flex; align-items:center; gap:4px; flex: 1;">
+                        <span style="font-size: 8px; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;">Sort</span>
+                        <select id="campaignSortSelect" onchange="window.setCampaignSort(this.value)" style="width:100%; background: rgba(5, 7, 12, 0.6); border: 1px solid rgba(255, 255, 255, 0.08); color: #fff; padding: 6px 10px; border-radius: 8px; font-size: 9px; outline: none; font-weight: 700; cursor: pointer;">
+                            <option value="reward_desc">Highest Reward</option>
+                            <option value="newest">Newest First</option>
+                            <option value="slots_desc">Spots Available</option>
+                            <option value="brand_asc">Brand (A-Z)</option>
+                        </select>
+                    </div>
                 </div>
             </div>
 
@@ -3857,6 +3910,26 @@
         </div>
     </div>
 
+    <!-- UPDATE REQUEST CONFIRMATION MODAL -->
+    <div class="glass-modal-overlay" id="updateRequestModal" style="z-index: 10002;">
+        <div class="glass-modal-container" style="max-width: 380px; padding: 24px;">
+            <button class="modal-close-btn" onclick="window.closeUpdateRequestModal()">
+                <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+            
+            <h3 class="modal-title" style="text-align: center; margin-bottom: 12px; font-size: 18px; font-weight: 700; color: #fff;">Request Stats Update</h3>
+            <p id="updateRequestModalText" style="color: var(--text-muted); font-size: 13px; text-align: center; line-height: 1.5; margin-bottom: 24px;">
+                Are you sure you want to request an update for this campaign? 
+                <br><br>
+                This will submit a request to the admin to refresh your views, reach, and leads. You can only make this request once every 48 hours.
+            </p>
+            <div style="display: flex; gap: 12px; width: 100%;">
+                <button class="btn-outline-cancel" onclick="window.closeUpdateRequestModal()" style="flex: 1; height: 42px; margin: 0;">Cancel</button>
+                <button class="btn-premium-ai" id="confirmUpdateRequestBtn" style="flex: 1.5; height: 42px; margin: 0; padding: 0 12px; font-size: 13px; font-weight: 800; box-shadow: 0 4px 12px rgba(250, 204, 21, 0.25);">Request Update</button>
+            </div>
+        </div>
+    </div>
+
     <!-- IDENTITY INITIALIZATION MODAL -->
     <div class="glass-modal-overlay" id="identityModal" style="z-index: 9999;">
         <div class="glass-modal-container" style="max-width: 380px;">
@@ -3909,6 +3982,7 @@
         };
 
         window.getMilestoneBonus = function(val, isConversion, customBonuses = null) {
+            const numericVal = parseInt(String(val || 0).replace(/[^0-9]/g, '')) || 0;
             let levels = isConversion ? CONVERSION_LEVELS : MILESTONE_LEVELS;
             if (!isConversion && customBonuses) {
                 if (Array.isArray(customBonuses) && customBonuses.length > 0) {
@@ -3931,8 +4005,9 @@
                 }
             }
             let activeBonus = 0;
+            levels.sort((a, b) => a.target - b.target);
             for (const lvl of levels) {
-                if (val >= lvl.target) {
+                if (numericVal >= lvl.target) {
                     activeBonus = lvl.bonus;
                 }
             }
@@ -3940,6 +4015,7 @@
         };
 
         window.getMilestoneProgress = function(val, isConversion, customBonuses = null) {
+            const numericVal = parseInt(String(val || 0).replace(/[^0-9]/g, '')) || 0;
             let levels = isConversion ? CONVERSION_LEVELS : MILESTONE_LEVELS;
             if (!isConversion && customBonuses) {
                 if (Array.isArray(customBonuses) && customBonuses.length > 0) {
@@ -3962,8 +4038,9 @@
                 }
             }
             let nextLvl = null;
+            levels.sort((a, b) => a.target - b.target);
             for (const lvl of levels) {
-                if (val < lvl.target) {
+                if (numericVal < lvl.target) {
                     nextLvl = lvl;
                     break;
                 }
@@ -3981,7 +4058,7 @@
             }
             const idx = levels.indexOf(nextLvl);
             const base = idx > 0 ? levels[idx - 1].target : 0;
-            let percentage = Math.round(((val - base) / (nextLvl.target - base)) * 100);
+            let percentage = Math.round(((numericVal - base) / (nextLvl.target - base)) * 100);
             percentage = Math.max(0, Math.min(percentage, 100));
             if (isNaN(percentage)) percentage = 0;
             return {
@@ -4608,7 +4685,20 @@
             renderCampaignList();
         };
 
-        window.renderCampaignList = function() {
+        window.campaignPayoutFilter = 'all';
+        window.campaignSort = 'reward_desc';
+
+        window.setCampaignPayoutFilter = function(val) {
+            window.campaignPayoutFilter = val;
+            window.renderCampaignList();
+        };
+
+        window.setCampaignSort = function(val) {
+            window.campaignSort = val;
+            window.renderCampaignList();
+        };
+
+        window.renderCampaignList = function() { try {
             const container = document.getElementById('campaignsContainer');
             if (!container) return;
             container.innerHTML = '';
@@ -4655,7 +4745,7 @@
                     }
                     expiryMs = expDate.getTime();
                 } else {
-                    const offsetHours = 12 + (c.id.charCodeAt(1) % 150);
+                    const offsetHours = 12000 + (c.id.charCodeAt(1) % 150);
                     let baseMs = 1783584000000;
                     if (c.createdAt) {
                         if (c.createdAt.seconds) {
@@ -4683,12 +4773,76 @@
                     const language = (c.language || '').toLowerCase();
                     matchesSearch = title.includes(searchVal) || name.includes(searchVal) || desc.includes(searchVal) || language.includes(searchVal);
                 }
+
+                // Payout Type filter
+                let matchesPayout = true;
+                if (window.campaignPayoutFilter && window.campaignPayoutFilter !== 'all') {
+                    matchesPayout = (c.payoutType || 'flat') === window.campaignPayoutFilter;
+                }
                 
-                return matchesCategory && matchesSearch;
+                return matchesCategory && matchesSearch && matchesPayout;
+            });
+
+            // Sort campaigns list
+            const activeSort = window.campaignSort || 'reward_desc';
+            filtered.sort((a, b) => {
+                if (activeSort === 'reward_desc') {
+                    return parseFloat(b.reward || 0) - parseFloat(a.reward || 0);
+                } else if (activeSort === 'newest') {
+                    const timeA = a.createdAt ? (a.createdAt.seconds ? a.createdAt.seconds * 1000 : new Date(a.createdAt).getTime()) : 0;
+                    const timeB = b.createdAt ? (b.createdAt.seconds ? b.createdAt.seconds * 1000 : new Date(b.createdAt).getTime()) : 0;
+                    return timeB - timeA;
+                } else if (activeSort === 'slots_desc') {
+                    const maxSlotsA = a.maxSlots || 50;
+                    const filledSlotsA = a.filledSlots !== undefined ? a.filledSlots : Math.round(maxSlotsA * (0.2 + (a.id.charCodeAt(0) % 4) * 0.15));
+                    const remainingSlotsA = Math.max(0, maxSlotsA - filledSlotsA);
+
+                    const maxSlotsB = b.maxSlots || 50;
+                    const filledSlotsB = b.filledSlots !== undefined ? b.filledSlots : Math.round(maxSlotsB * (0.2 + (b.id.charCodeAt(0) % 4) * 0.15));
+                    const remainingSlotsB = Math.max(0, maxSlotsB - filledSlotsB);
+
+                    return remainingSlotsB - remainingSlotsA;
+                } else if (activeSort === 'brand_asc') {
+                    const brandA = (a.productName || '').toLowerCase();
+                    const brandB = (b.productName || '').toLowerCase();
+                    return brandA.localeCompare(brandB);
+                }
+                return 0;
             });
             
             if (filtered.length === 0) {
-                container.innerHTML = '<p style="color:var(--text-muted); text-align:center; padding:24px; font-size:12px;">No active campaigns match your search/filter parameters.</p>';
+                const totalCount = allCampaigns.length;
+                const joinedCount = allCampaigns.filter(c => acceptedCampaigns.includes(c.id)).length;
+                
+                const now = Date.now();
+                let expiredCount = 0;
+                allCampaigns.forEach(c => {
+                    let expiryMs = null;
+                    if (c.expiresAt) {
+                        expiryMs = c.expiresAt.seconds ? c.expiresAt.seconds * 1000 : new Date(c.expiresAt).getTime();
+                    } else if (c.expiryDate) {
+                        const expDate = new Date(c.expiryDate);
+                        if (c.expiryDate.length <= 10) expDate.setHours(23,59,59,999);
+                        expiryMs = expDate.getTime();
+                    } else {
+                    const offsetHours = 12000 + (c.id.charCodeAt(1) % 150);
+                    let baseMs = 1783584000000;
+                        if (c.createdAt) {
+                            baseMs = c.createdAt.seconds ? c.createdAt.seconds * 1000 : new Date(c.createdAt).getTime() || 1783584000000;
+                        }
+                        expiryMs = baseMs + offsetHours * 60 * 60 * 1000;
+                    }
+                    if (expiryMs && now > expiryMs) expiredCount++;
+                });
+
+                container.innerHTML = `
+                    <div style="color:var(--text-muted); text-align:center; padding:24px; font-size:12px; width:100%; grid-column: 1/-1;">
+                        <p>No active campaigns match your search/filter parameters.</p>
+                        <p style="font-size:10px; margin-top:8px; opacity:0.8;">
+                            Debug Info: Total in Database: ${totalCount} | Joined: ${joinedCount} | Expired: ${expiredCount}
+                        </p>
+                    </div>
+                `;
                 return;
             }
             
@@ -4830,7 +4984,7 @@
                     }
                     expiryMs = expDate.getTime();
                 } else {
-                    const offsetHours = 12 + (c.id.charCodeAt(1) % 150);
+                    const offsetHours = 12000 + (c.id.charCodeAt(1) % 150);
                     let baseMs = 1783584000000;
                     if (c.createdAt) {
                         if (c.createdAt.seconds) {
@@ -5025,7 +5179,18 @@
                     el.innerText = timerText;
                 });
             }, 1000);
-        }
+        } catch (err) {
+            console.error("renderCampaignList crashed:", err);
+            const container = document.getElementById('campaignsContainer');
+            if (container) {
+                container.innerHTML = `
+                    <div style="color:var(--danger); text-align:center; padding:24px; font-size:12px; width:100%; grid-column: 1/-1;">
+                        <p>An error occurred while loading the campaigns list.</p>
+                        <p style="font-size:10px; margin-top:8px; opacity:0.8;">Error: ${err.message}</p>
+                    </div>
+                `;
+            }
+        } }
 
         window.openCampaignDetailModal = function(id, showSuccessBanner = false) {
             const campaign = allCampaigns.find(c => c.id === id);
@@ -5068,7 +5233,7 @@
                 }
                 expiryMs = expDate.getTime();
             } else {
-                const offsetHours = 12 + (campaign.id.charCodeAt(1) % 150);
+                const offsetHours = 12000 + (campaign.id.charCodeAt(1) % 150);
                 let baseMs = 1783584000000;
                 if (campaign.createdAt) {
                     if (campaign.createdAt.seconds) {
@@ -7552,27 +7717,40 @@
         const q = query(collection(db, "campaigns"));
         
         onSnapshot(q, (snapshot) => {
-            allCampaigns = [];
-            snapshot.forEach((doc) => {
-                const data = doc.data();
-                allCampaigns.push({
-                    id: doc.id,
-                    ...data
+            try {
+                allCampaigns = [];
+                snapshot.forEach((doc) => {
+                    const data = doc.data();
+                    allCampaigns.push({
+                        id: doc.id,
+                        ...data
+                    });
                 });
-            });
 
-            // Sort client-side by createdAt descending
-            allCampaigns.sort((a, b) => {
-                const timeA = a.createdAt ? (a.createdAt.seconds ? a.createdAt.seconds * 1000 : new Date(a.createdAt).getTime()) : 0;
-                const timeB = b.createdAt ? (b.createdAt.seconds ? b.createdAt.seconds * 1000 : new Date(b.createdAt).getTime()) : 0;
-                return (timeB || 0) - (timeA || 0);
-            });
+                // Sort client-side by createdAt descending
+                allCampaigns.sort((a, b) => {
+                    const timeA = a.createdAt ? (a.createdAt.seconds ? a.createdAt.seconds * 1000 : new Date(a.createdAt).getTime()) : 0;
+                    const timeB = b.createdAt ? (b.createdAt.seconds ? b.createdAt.seconds * 1000 : new Date(b.createdAt).getTime()) : 0;
+                    return (timeB || 0) - (timeA || 0);
+                });
 
-            // Cache campaigns
-            localStorage.setItem('eliteX_all_campaigns', JSON.stringify(allCampaigns));
+                // Cache campaigns
+                localStorage.setItem('eliteX_all_campaigns', JSON.stringify(allCampaigns));
 
-            renderCampaignList();
-            if (window.renderHomeActiveBriefs) window.renderHomeActiveBriefs();
+                renderCampaignList();
+                if (window.renderHomeActiveBriefs) window.renderHomeActiveBriefs();
+            } catch (err) {
+                console.error("onSnapshot campaign processing crashed:", err);
+                const container = document.getElementById('campaignsContainer');
+                if (container) {
+                    container.innerHTML = `
+                        <div style="color:var(--danger); text-align:center; padding:24px; font-size:12px; width:100%; grid-column: 1/-1;">
+                            <p>An error occurred while processing campaign snapshots.</p>
+                            <p style="font-size:10px; margin-top:8px; opacity:0.8;">Error: ${err.message}</p>
+                        </div>
+                    `;
+                }
+            }
         }, (error) => {
             console.error("Firebase Error:", error);
             if (!allCampaigns || allCampaigns.length === 0) {
@@ -7584,6 +7762,30 @@
 
         // Global variable to store submissions
         window.userSubmissions = JSON.parse(localStorage.getItem('eliteX_user_submissions') || '[]');
+        window.homeBriefsFilter = 'all';
+        window.homeBriefsSort = 'last_updated';
+
+        window.setHomeBriefsFilter = function(filterVal) {
+            window.homeBriefsFilter = filterVal;
+            const filterIds = ['all', 'approved', 'tracking', 'pending', 'rejected', 'joined'];
+            filterIds.forEach(id => {
+                const el = document.getElementById(`homeFilter_${id}`);
+                if (el) {
+                    if (id === filterVal) {
+                        el.classList.add('active');
+                    } else {
+                        el.classList.remove('active');
+                    }
+                }
+            });
+            window.renderHomeActiveBriefs();
+        };
+
+        window.setHomeBriefsSort = function(sortVal) {
+            window.homeBriefsSort = sortVal;
+            window.renderHomeActiveBriefs();
+        };
+
         window.renderHomeActiveBriefs = function() {
             const container = document.getElementById('homeAcceptedCampaignsContainer');
             if (!container) return;
@@ -7612,6 +7814,120 @@
                     `;
                 }
             } else {
+                // Map to structured data for sorting and filtering
+                let briefsData = accepted.map(c => {
+                    const sub = window.userSubmissions.find(s => s.campaignId === c.id);
+                    const status = sub ? sub.status : 'joined';
+                    const views = sub ? parseInt(String(sub.views || 0).replace(/[^0-9]/g, '')) || 0 : 0;
+                    const reach = sub ? parseInt(String(sub.reach || 0).replace(/[^0-9]/g, '')) || 0 : 0;
+                    const conversions = sub ? parseInt(String(sub.conversions || 0).replace(/[^0-9]/g, '')) || 0 : 0;
+                    const reward = parseFloat(c.reward || 0);
+                    const payoutType = c.payoutType || 'flat';
+                    const customBonuses = c.customBonuses || null;
+
+                    let earnings = 0;
+                    let baseEarnings = 0;
+                    let bonusEarnings = 0;
+                    const isConversion = payoutType === 'conversion';
+                    if (sub) {
+                        if (sub.overrideEarnings !== undefined && sub.overrideEarnings !== null) {
+                            baseEarnings = parseFloat(sub.overrideEarnings);
+                            bonusEarnings = getMilestoneBonus(isConversion ? conversions : (payoutType === 'reach' ? reach : views), isConversion, customBonuses);
+                            earnings = baseEarnings + bonusEarnings;
+                        } else {
+                            if (payoutType === 'cpm') {
+                                baseEarnings = (views * reward) / 1000;
+                                bonusEarnings = getMilestoneBonus(views, false, customBonuses);
+                                earnings = baseEarnings + bonusEarnings;
+                            } else if (payoutType === 'reach') {
+                                baseEarnings = (reach * reward) / 1000;
+                                bonusEarnings = getMilestoneBonus(reach, false, customBonuses);
+                                earnings = baseEarnings + bonusEarnings;
+                            } else if (payoutType === 'conversion') {
+                                baseEarnings = conversions * reward;
+                                bonusEarnings = getMilestoneBonus(conversions, true, customBonuses);
+                                earnings = baseEarnings + bonusEarnings;
+                            } else if (payoutType === 'performance') {
+                                baseEarnings = ((views * reward) / 2000) + ((conversions * reward) / 2);
+                                bonusEarnings = getMilestoneBonus(views, false, customBonuses);
+                                earnings = baseEarnings + bonusEarnings;
+                            } else {
+                                baseEarnings = (sub.status === 'approved' || sub.status === 'tracking') ? reward : 0;
+                                baseEarnings += conversions * (c.conversionRate || 0);
+                                bonusEarnings = getMilestoneBonus(views, false, customBonuses);
+                                earnings = baseEarnings + bonusEarnings;
+                            }
+                        }
+                    }
+
+                    let timestamp = 0;
+                    if (sub) {
+                        if (sub.updatedAt) {
+                            timestamp = sub.updatedAt;
+                        } else if (sub.createdAt) {
+                            timestamp = sub.createdAt;
+                        }
+                    } else {
+                        if (c.createdAt) {
+                            if (c.createdAt && typeof c.createdAt.toDate === 'function') {
+                                timestamp = c.createdAt.toDate().getTime();
+                            } else if (c.createdAt && c.createdAt.seconds) {
+                                timestamp = c.createdAt.seconds * 1000;
+                            } else {
+                                timestamp = new Date(c.createdAt).getTime();
+                            }
+                        }
+                    }
+
+                    return {
+                        campaign: c,
+                        submission: sub,
+                        status: status,
+                        views: views,
+                        earnings: earnings,
+                        baseEarnings: baseEarnings,
+                        bonusEarnings: bonusEarnings,
+                        timestamp: timestamp || 0
+                    };
+                });
+
+                // Apply filter
+                const activeFilter = window.homeBriefsFilter || 'all';
+                if (activeFilter !== 'all') {
+                    briefsData = briefsData.filter(item => item.status === activeFilter);
+                }
+
+                // Apply sort
+                const activeSort = window.homeBriefsSort || 'last_updated';
+                briefsData.sort((a, b) => {
+                    if (activeSort === 'last_updated') {
+                        const isApprovedA = a.status === 'approved' ? 1 : 0;
+                        const isApprovedB = b.status === 'approved' ? 1 : 0;
+                        
+                        if (isApprovedA !== isApprovedB) {
+                            return isApprovedB - isApprovedA; // Approved on top
+                        }
+                        
+                        return b.timestamp - a.timestamp; // Newest first
+                    } else if (activeSort === 'earnings') {
+                        return b.earnings - a.earnings;
+                    } else if (activeSort === 'views') {
+                        return b.views - a.views;
+                    } else if (activeSort === 'title') {
+                        return (a.campaign.title || '').toLowerCase().localeCompare((b.campaign.title || '').toLowerCase());
+                    }
+                    return 0;
+                });
+
+                if (briefsData.length === 0) {
+                    container.innerHTML = `
+                        <div style="text-align:center; font-size: 12px; padding: 20px; border: 1px dashed rgba(255,255,255,0.06); border-radius:12px; background:rgba(255,255,255,0.01); color:var(--text-muted); grid-column: 1/-1;">
+                            No active briefs match the selected filter.
+                        </div>
+                    `;
+                    return;
+                }
+
             // Stepper HTML helper generator
             function getStepperHTML(status) {
                 // Step 1: Join
@@ -7775,8 +8091,9 @@
                 `;
             }
             
-            accepted.forEach((c, index) => {
-                const sub = window.userSubmissions.find(s => s.campaignId === c.id);
+            briefsData.forEach((item, index) => {
+                const c = item.campaign;
+                const sub = item.submission;
                 
                 let expiryMs = null;
                 if (c.expiresAt) {
@@ -7794,7 +8111,7 @@
                         expiryMs = expDate.getTime();
                     }
                 } else {
-                    const offsetHours = 12 + (c.id.charCodeAt(1) % 150);
+                    const offsetHours = 12000 + (c.id.charCodeAt(1) % 150);
                     let baseMs = 1783584000000;
                     if (c.createdAt) {
                         if (c.createdAt.seconds) {
@@ -7926,11 +8243,13 @@
                     else if (sub.status === 'rejected') { statusColor = '#ef4444'; statusLabel = 'Rejected'; }
                     else if (sub.status === 'tracking') { statusColor = '#38bdf8'; statusLabel = 'Tracking'; }
                     
-                    const views = parseInt(sub.views || 0);
-                    const reach = parseInt(sub.reach || 0);
-                    const conversions = parseInt(sub.conversions || 0);
+                    const views = parseInt(String(sub.views || 0).replace(/[^0-9]/g, '')) || 0;
+                    const reach = parseInt(String(sub.reach || 0).replace(/[^0-9]/g, '')) || 0;
+                    const conversions = parseInt(String(sub.conversions || 0).replace(/[^0-9]/g, '')) || 0;
                     
                     let earnings = 0;
+                    let baseEarnings = 0;
+                    let bonusEarnings = 0;
                     const payoutType = c.payoutType || 'flat';
                     const rewardRate = parseFloat(c.reward || 0);
                     
@@ -7938,22 +8257,33 @@
                     const metricValue = isConversion ? conversions : (payoutType === 'reach' ? reach : views);
                     const customBonuses = c.customBonuses || null;
                     
-                    if (payoutType === 'cpm') {
-                        earnings = rewardRate + (views * rewardRate) / 1000;
-                        earnings += getMilestoneBonus(views, false, customBonuses);
-                    } else if (payoutType === 'reach') {
-                        earnings = rewardRate + (reach * rewardRate) / 1000;
-                        earnings += getMilestoneBonus(views, false, customBonuses);
-                    } else if (payoutType === 'conversion') {
-                        earnings = rewardRate + (conversions * rewardRate);
-                        earnings += getMilestoneBonus(conversions, true, customBonuses);
-                    } else if (payoutType === 'performance') {
-                        earnings = rewardRate + ((views * rewardRate) / 2000) + ((conversions * rewardRate) / 2);
-                        earnings += getMilestoneBonus(views, false, customBonuses);
+                    if (sub.overrideEarnings !== undefined && sub.overrideEarnings !== null) {
+                        baseEarnings = parseFloat(sub.overrideEarnings);
+                        bonusEarnings = getMilestoneBonus(metricValue, isConversion, customBonuses);
+                        earnings = baseEarnings + bonusEarnings;
                     } else {
-                        earnings = (sub.status === 'approved' || sub.status === 'tracking') ? rewardRate : 0;
-                        earnings += conversions * (c.conversionRate || 0);
-                        earnings += getMilestoneBonus(views, false, customBonuses);
+                        if (payoutType === 'cpm') {
+                            baseEarnings = rewardRate + (views * rewardRate) / 1000;
+                            bonusEarnings = getMilestoneBonus(views, false, customBonuses);
+                            earnings = baseEarnings + bonusEarnings;
+                        } else if (payoutType === 'reach') {
+                            baseEarnings = rewardRate + (reach * rewardRate) / 1000;
+                            bonusEarnings = getMilestoneBonus(reach, false, customBonuses);
+                            earnings = baseEarnings + bonusEarnings;
+                        } else if (payoutType === 'conversion') {
+                            baseEarnings = rewardRate + (conversions * rewardRate);
+                            bonusEarnings = getMilestoneBonus(conversions, true, customBonuses);
+                            earnings = baseEarnings + bonusEarnings;
+                        } else if (payoutType === 'performance') {
+                            baseEarnings = rewardRate + ((views * rewardRate) / 2000) + ((conversions * rewardRate) / 2);
+                            bonusEarnings = getMilestoneBonus(views, false, customBonuses);
+                            earnings = baseEarnings + bonusEarnings;
+                        } else {
+                            baseEarnings = (sub.status === 'approved' || sub.status === 'tracking') ? rewardRate : 0;
+                            baseEarnings += conversions * (c.conversionRate || 0);
+                            bonusEarnings = getMilestoneBonus(views, false, customBonuses);
+                            earnings = baseEarnings + bonusEarnings;
+                        }
                     }
                     
                     // For pending/rejected, show 0 earnings progress
@@ -7962,7 +8292,7 @@
                     let percentage = 0;
                     let milestoneText = 'Awaiting link submission';
                     
-                    const progressInfo = getMilestoneProgress(isConversion ? conversions : views, isConversion, customBonuses);
+                    const progressInfo = getMilestoneProgress(metricValue, isConversion, customBonuses);
                     
                     if (sub.status === 'pending') {
                         percentage = 0;
@@ -7977,8 +8307,8 @@
                         } else if (sub.status === 'approved') {
                             milestoneText = 'Reward successfully credited to your wallet';
                         } else {
-                            const needed = progressInfo.target - (isConversion ? conversions : views);
-                            milestoneText = `Reach Level ${progressInfo.label} (Get ${needed.toLocaleString()} more ${isConversion ? 'leads' : 'views'} to unlock +₹${progressInfo.nextBonus} bonus!)`;
+                            const needed = progressInfo.target - metricValue;
+                            milestoneText = `Reach Level ${progressInfo.label} (Get ${needed.toLocaleString()} more ${isConversion ? 'leads' : (payoutType === 'reach' ? 'reach' : 'views')} to unlock +₹${progressInfo.nextBonus} bonus!)`;
                         }
                     }
                     
@@ -7996,7 +8326,7 @@
                     }
 
                     let metricName = isConversion ? 'Leads' : (payoutType === 'reach' ? 'Reach' : 'Views');
-                    let bonus = getMilestoneBonus(isConversion ? conversions : views, isConversion, customBonuses);
+                    let bonus = getMilestoneBonus(metricValue, isConversion, customBonuses);
                     
                     let extraStats = '';
                     if (c.conversionRate && c.conversionRate > 0) {
@@ -8055,39 +8385,41 @@
                     `;
                     
                     let analyticsPanelHTML = '';
-                    if (sub.status === 'tracking' || sub.status === 'approved') {
-                        const hasConv = c.conversionRate && c.conversionRate > 0;
-                        const columns = hasConv ? 4 : 3;
-                        analyticsPanelHTML = `
-                            <div style="display:grid; grid-template-columns: repeat(${columns}, 1fr); gap:8px; width:100%; background:rgba(15, 23, 42, 0.4); border: 1px solid rgba(255,255,255,0.05); border-radius:12px; padding:10px; margin-top:10px;">
-                                ${hasConv ? `
-                                <div style="display:flex; flex-direction:column; gap:2px; align-items:center;">
-                                    <span style="font-size:8px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Conversions</span>
-                                    <span style="font-size:11px; color:#38bdf8; font-weight:800;">${conversions.toLocaleString('en-US')}</span>
-                                </div>
-                                ` : ''}
-                                <div style="display:flex; flex-direction:column; gap:2px; align-items:center;">
-                                    <span style="font-size:8px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Views</span>
-                                    <span style="font-size:11px; color:#fff; font-weight:800;">${views.toLocaleString('en-US')}</span>
-                                </div>
-                                <div style="display:flex; flex-direction:column; gap:2px; align-items:center;">
-                                    <span style="font-size:8px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Earnings</span>
-                                    <span style="font-size:11px; color:var(--accent); font-weight:800;">₹${earnings.toLocaleString('en-IN', {maximumFractionDigits:0})}</span>
-                                </div>
-                                <div style="display:flex; flex-direction:column; gap:2px; align-items:center;">
-                                    <span style="font-size:8px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Status</span>
-                                    <span style="font-size:10px; color:${statusColor}; font-weight:800;">${statusLabel}</span>
-                                </div>
+                    const hasConv = c.conversionRate && c.conversionRate > 0;
+                    const columns = hasConv ? 4 : 3;
+                    analyticsPanelHTML = `
+                        <div style="display:grid; grid-template-columns: repeat(${columns}, 1fr); gap:8px; width:100%; background:rgba(15, 23, 42, 0.4); border: 1px solid rgba(255,255,255,0.05); border-radius:12px; padding:10px; margin-top:10px;">
+                            ${hasConv ? `
+                            <div style="display:flex; flex-direction:column; gap:2px; align-items:center;">
+                                <span style="font-size:8px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Conversions</span>
+                                <span style="font-size:11px; color:#38bdf8; font-weight:800;">${conversions.toLocaleString('en-US')}</span>
+                            </div>
+                            ` : ''}
+                            <div style="display:flex; flex-direction:column; gap:2px; align-items:center;">
+                                <span style="font-size:8px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Views</span>
+                                <span style="font-size:11px; color:#fff; font-weight:800;">${views.toLocaleString('en-US')}</span>
+                            </div>
+                            <div style="display:flex; flex-direction:column; gap:2px; align-items:center;">
+                                <span style="font-size:8px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Earnings</span>
+                                <span style="font-size:11px; color:var(--accent); font-weight:800;">₹${earnings.toLocaleString('en-IN', {maximumFractionDigits:0})}</span>
+                            </div>
+                            <div style="display:flex; flex-direction:column; gap:2px; align-items:center;">
+                                <span style="font-size:8px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Status</span>
+                                <span style="font-size:10px; color:${statusColor}; font-weight:800;">${statusLabel}</span>
+                            </div>
+                        </div>
+                    `;
+                    
+                    if (sub.status === 'pending') {
+                        analyticsPanelHTML += `
+                            <div style="width: 100%; background: rgba(255, 255, 255, 0.01); border: 1px solid rgba(255,255,255,0.04); border-radius: 12px; padding: 10px; margin-top: 8px; font-size: 10px; line-height: 1.45; color: var(--text-muted); text-align: center;">
+                                Our verification team is reviewing your submitted asset. Once verified, details will display here.
                             </div>
                         `;
-                    } else {
-                        let statusText = 'Our verification team is reviewing your submitted asset. Once verified, details will display here.';
-                        if (sub.status === 'rejected') {
-                            statusText = 'Submission rejected. Please review our clipping guidelines and submit a new verification asset.';
-                        }
-                        analyticsPanelHTML = `
-                            <div style="width: 100%; background: rgba(255, 255, 255, 0.01); border: 1px solid rgba(255,255,255,0.04); border-radius: 12px; padding: 10px; margin-top: 8px; font-size: 10px; line-height: 1.45; color: ${sub.status === 'rejected' ? '#f87171' : 'var(--text-muted)'}; text-align: center;">
-                                ${statusText}
+                    } else if (sub.status === 'rejected') {
+                        analyticsPanelHTML += `
+                            <div style="width: 100%; background: rgba(239, 68, 68, 0.04); border: 1px solid rgba(239, 68, 68, 0.15); border-radius: 12px; padding: 10px; margin-top: 8px; font-size: 10px; line-height: 1.45; color: #f87171; text-align: center;">
+                                Submission rejected. Please review our clipping guidelines and submit a new verification asset.
                             </div>
                         `;
                     }
@@ -8117,25 +8449,97 @@
                                     <span style="color:#fff; font-weight:600;">${sub && sub.location ? sub.location : 'Mumbai, India'}</span>
                                 </div>
                                 <div style="display:flex; justify-content:space-between; margin-top:4px;">
-                                    <span style="color:var(--text-muted);">Device Info:</span>
-                                    <span style="color:#fff; font-weight:600; text-overflow:ellipsis; overflow:hidden; white-space:nowrap; max-width:130px; text-align:right;">${sub && sub.deviceInfo ? sub.deviceInfo : 'Chrome on Windows'}</span>
-                                </div>
-                                <div style="display:flex; justify-content:space-between; margin-top:4px;">
                                     <span style="color:var(--text-muted);">Submitted On:</span>
-                                    <span style="color:#fff; font-weight:600;">${sub && sub.createdAt ? (sub.createdAt.seconds ? new Date(sub.createdAt.seconds * 1000).toLocaleString('en-IN', {dateStyle:'short', timeStyle:'short'}) : new Date(sub.createdAt).toLocaleString('en-IN', {dateStyle:'short', timeStyle:'short'})) : 'Today, 11:42 AM'}</span>
+                                    <span style="color:#fff; font-weight:600;">${sub && sub.createdAt ? new Date(sub.createdAt).toLocaleString('en-IN', {dateStyle:'short', timeStyle:'short'}) : 'Today, 11:42 AM'}</span>
                                 </div>
                             </div>
                         </div>
                     `;
 
+                    // --- Calculate update request availability ---
+                    let throttleDisabled = false;
+                    let throttleText = 'Request Update';
+                    let lastReqTime = sub.lastUpdateRequestedAt;
+                    if (lastReqTime) {
+                        let lastReqMs = typeof lastReqTime === 'number' ? lastReqTime : null;
+                        if (!lastReqMs && lastReqTime.seconds) {
+                            lastReqMs = lastReqTime.seconds * 1000;
+                        } else if (!lastReqMs && typeof lastReqTime.toDate === 'function') {
+                            lastReqMs = lastReqTime.toDate().getTime();
+                        } else if (!lastReqMs) {
+                            lastReqMs = new Date(lastReqTime).getTime();
+                        }
+                        
+                        if (lastReqMs) {
+                            const timeDiff = Date.now() - lastReqMs;
+                            const fortyEightHoursMs = 48 * 60 * 60 * 1000;
+                            if (timeDiff < fortyEightHoursMs) {
+                                throttleDisabled = true;
+                                const remainingMs = fortyEightHoursMs - timeDiff;
+                                const hours = Math.floor(remainingMs / (1000 * 60 * 60));
+                                const minutes = Math.floor((remainingMs % (1000 * 60 * 60)) / (1000 * 60));
+                                throttleText = `Wait ${hours}h ${minutes}m`;
+                            }
+                        }
+                    }
+                    
+                    let limitDisabled = false;
+                    let limitText = '';
+                    const limitDays = c.updateRequestDaysLimit;
+                    if (limitDays !== undefined && limitDays !== null && limitDays !== '') {
+                        const limitMs = parseInt(limitDays) * 24 * 60 * 60 * 1000;
+                        const submissionTime = sub.createdAt;
+                        if (submissionTime) {
+                            const elapsed = Date.now() - submissionTime;
+                            if (elapsed > limitMs) {
+                                limitDisabled = true;
+                                limitText = `Requests Closed (Limit ${limitDays}d)`;
+                            } else {
+                                const remainingDays = ((limitMs - elapsed) / (24 * 60 * 60 * 1000)).toFixed(1);
+                                limitText = `Allowed (${remainingDays}d left)`;
+                            }
+                        }
+                    }
+
                     let timerHTML = '';
 
-                    let actionsRowHTML = `
-                        <button class="btn-outline-close" onclick="window.openCampaignDetailModal('${c.id}')" style="width:100%; height:32px; font-size:11px; margin-top:8px; padding:0; font-weight:700;">
-                            View Brief Details
-                        </button>
-                    `;
-
+                    let actionsRowHTML = '';
+                    if (sub.status === 'approved' || sub.status === 'tracking') {
+                        let buttonLabel = throttleText;
+                        let isDisabled = throttleDisabled || limitDisabled;
+                        let titleAttr = '';
+                        if (limitDisabled) {
+                            buttonLabel = 'Limit Exceeded';
+                            titleAttr = `title="Update requests are only allowed within ${limitDays} days of submission."`;
+                        } else if (throttleDisabled) {
+                            titleAttr = `title="You can request updates once every 48 hours."`;
+                        }
+                        
+                        let limitBadgeHTML = '';
+                        if (limitText) {
+                            limitBadgeHTML = `<div style="font-size:8px; color:var(--text-muted); font-weight:700; margin-top:4px; text-transform:uppercase; text-align:center;">${limitText}</div>`;
+                        }
+                        
+                        actionsRowHTML = `
+                            <div style="display: flex; gap: 8px; margin-top: 8px; width:100%; align-items: flex-start;">
+                                <button class="btn-outline-close" onclick="window.openCampaignDetailModal('${c.id}')" style="flex:1; height:32px; font-size:10px; padding:0; font-weight:700; margin:0;">
+                                    View Brief
+                                </button>
+                                <div style="flex:1.2; display:flex; flex-direction:column; gap:2px;">
+                                    <button type="button" class="btn-premium-ai" ${isDisabled ? 'disabled style="background:rgba(255,255,255,0.02) !important; border:1px solid rgba(255,255,255,0.08) !important; color:var(--text-muted) !important; cursor:not-allowed; box-shadow:none; width:100%; height:32px; font-size:10px; padding:0; margin:0;"' : 'onclick="window.requestCampaignUpdate(\''+c.id+'\', \''+sub.id+'\')" style="width:100%; height:32px; font-size:10px; padding:0; box-shadow: 0 4px 12px rgba(250, 204, 21, 0.15); margin:0;"'} ${titleAttr}>
+                                        ${buttonLabel}
+                                    </button>
+                                    ${limitBadgeHTML}
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        actionsRowHTML = `
+                            <button class="btn-outline-close" onclick="window.openCampaignDetailModal('${c.id}')" style="width:100%; height:32px; font-size:11px; margin-top:8px; padding:0; font-weight:700;">
+                                View Brief Details
+                            </button>
+                        `;
+                    }
 
                     submissionHTML = `
                         <div style="display:flex; flex-direction:column; gap:6px; width:100%; border-top: 1px solid rgba(255,255,255,0.05); padding-top:12px; margin-top:4px;">
@@ -8149,6 +8553,14 @@
                     `;
                 }
                 
+                let lastUpdatedStr = 'N/A';
+                if (item.timestamp) {
+                    const dt = new Date(item.timestamp);
+                    const optionsDate = { year: 'numeric', month: 'short', day: 'numeric' };
+                    const optionsTime = { hour: '2-digit', minute: '2-digit', hour12: true };
+                    lastUpdatedStr = `${dt.toLocaleDateString('en-US', optionsDate)} at ${dt.toLocaleTimeString('en-US', optionsTime)}`;
+                }
+
                 const card = `
                     <div class="glass-panel campaign-workspace-card" style="margin-bottom:0; animation-delay: ${index * 60}ms; ${cardStyleOverride}">
                         <div class="brand-header-row">
@@ -8158,7 +8570,11 @@
                                 </div>
                                 <div style="overflow:hidden;">
                                     <div style="font-size: 13px; font-weight: 700; color: #fff; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; margin-bottom: 2px;">${c.title}</div>
-                                    <div style="font-size: 10px; color: var(--accent); font-weight: 700; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">@${c.productName || 'client'}</div>
+                                    <div style="font-size: 10px; color: var(--accent); font-weight: 700; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; margin-bottom: 3px;">@${c.productName || 'client'}</div>
+                                    <div style="font-size: 8px; color: var(--text-muted); font-weight: 600; display: flex; align-items: center; gap: 3.5px; white-space: nowrap;">
+                                        <svg viewBox="0 0 24 24" style="width:9px; height:9px; fill:none; stroke:currentColor; stroke-width:3; flex-shrink:0;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                                        Updated: ${lastUpdatedStr}
+                                    </div>
                                 </div>
                             </div>
                             <div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
@@ -8199,6 +8615,97 @@
                 console.error("Error deleting submission: ", error);
                 alert("Failed to clear submission. Please try again.");
             }
+        };
+
+        window.requestCampaignUpdate = function(campaignId, submissionId) {
+            const campaign = allCampaigns.find(c => c.id === campaignId);
+            const sub = window.userSubmissions.find(s => s.id === submissionId);
+            if (!campaign || !sub) {
+                alert("Campaign or submission not found!");
+                return;
+            }
+            
+            const modal = document.getElementById('updateRequestModal');
+            const modalText = document.getElementById('updateRequestModalText');
+            const confirmBtn = document.getElementById('confirmUpdateRequestBtn');
+            if (!modal || !confirmBtn) return;
+            
+            if (modalText) {
+                const nextEligibleTime = new Date(Date.now() + 48 * 60 * 60 * 1000);
+                const nextEligibleStr = nextEligibleTime.toLocaleString('en-IN', {dateStyle:'short', timeStyle:'short'});
+                
+                let limitInfoHTML = '';
+                const limitDays = campaign.updateRequestDaysLimit;
+                if (limitDays !== undefined && limitDays !== null && limitDays !== '') {
+                    const limitMs = parseInt(limitDays) * 24 * 60 * 60 * 1000;
+                    const submissionTime = sub.createdAt;
+                    if (submissionTime) {
+                        const elapsed = Date.now() - submissionTime;
+                        const remainingMs = Math.max(0, limitMs - elapsed);
+                        const remainingDays = (remainingMs / (24 * 60 * 60 * 1000)).toFixed(1);
+                        limitInfoHTML = `
+                            <div style="margin-top: 10px; background: rgba(239, 68, 68, 0.06); border: 1px solid rgba(239, 68, 68, 0.15); border-radius: 8px; padding: 10px; color: #f87171; text-align: left; font-size: 11.5px; line-height: 1.4;">
+                                📅 <strong>Request Days Limit:</strong> Update requests for this campaign are limited to <strong>${limitDays} days</strong> after submission (set in Admin). You have <strong>${remainingDays} days left</strong>.
+                            </div>
+                        `;
+                    }
+                } else {
+                    limitInfoHTML = `
+                        <div style="margin-top: 10px; background: rgba(74, 222, 128, 0.04); border: 1px solid rgba(74, 222, 128, 0.15); border-radius: 8px; padding: 10px; color: #4ade80; text-align: left; font-size: 11.5px; line-height: 1.4;">
+                            📅 <strong>Request Days Limit:</strong> Unlimited days allowed (No limit set in Admin).
+                        </div>
+                    `;
+                }
+                
+                modalText.innerHTML = `
+                    <div style="background: rgba(250, 204, 21, 0.05); border: 1px solid rgba(250, 204, 21, 0.15); border-radius: 8px; padding: 10px; color: #fef08a; text-align: left; font-size: 11.5px; line-height: 1.4;">
+                        🕒 <strong>48-Hour Interval Restriction:</strong> Once submitted, you cannot request another update for this campaign for 48 hours. Your next request will be allowed on or after: <strong style="color:#fff;">${nextEligibleStr}</strong>.
+                    </div>
+                    
+                    ${limitInfoHTML}
+                `;
+            }
+            
+            confirmBtn.onclick = async function() {
+                confirmBtn.innerText = "Submitting...";
+                confirmBtn.disabled = true;
+                try {
+                    // 1. Create request doc in update_requests collection
+                    await addDoc(collection(db, "update_requests"), {
+                        submissionId: submissionId,
+                        campaignId: campaignId,
+                        campaignTitle: campaign.title,
+                        partnerId: partnerId || "EX-USR-GUEST",
+                        userName: userName || "Anonymous Partner",
+                        submissionUrl: sub.submissionUrl,
+                        views: sub.views || 0,
+                        conversions: sub.conversions || 0,
+                        status: 'pending',
+                        requestedAt: serverTimestamp()
+                    });
+                    
+                    // 2. Set lastUpdateRequestedAt on the submission
+                    await updateDoc(doc(db, "submissions", submissionId), {
+                        lastUpdateRequestedAt: serverTimestamp()
+                    });
+                    
+                    window.closeUpdateRequestModal();
+                    alert("Update request submitted successfully! The admin will review it soon.");
+                } catch (error) {
+                    console.error("Error submitting update request: ", error);
+                    alert("Failed to submit update request. Please try again.");
+                } finally {
+                    confirmBtn.innerText = "Request Update";
+                    confirmBtn.disabled = false;
+                }
+            };
+            
+            modal.classList.add('active');
+        };
+
+        window.closeUpdateRequestModal = function() {
+            const modal = document.getElementById('updateRequestModal');
+            if (modal) modal.classList.remove('active');
         };
 
         // --- Added tab handlers and upload controllers for Home Card submissions ---
@@ -8278,7 +8785,7 @@
                     expiryMs = expDate.getTime();
                 }
             } else {
-                const offsetHours = 12 + (campaign.id.charCodeAt(1) % 150);
+                const offsetHours = 12000 + (campaign.id.charCodeAt(1) % 150);
                 let baseMs = 1783584000000;
                 if (campaign.createdAt) {
                     if (campaign.createdAt.seconds) {
@@ -8386,17 +8893,41 @@
             activeSubmissionsListener = onSnapshot(subQ, (snapshot) => {
                 window.userSubmissions = [];
                 snapshot.forEach((doc) => {
+                    const data = doc.data({ serverTimestamps: 'estimate' });
+                    
+                    let createdAtMs = null;
+                    if (data.createdAt) {
+                        if (typeof data.createdAt.toDate === 'function') createdAtMs = data.createdAt.toDate().getTime();
+                        else if (data.createdAt.seconds) createdAtMs = data.createdAt.seconds * 1000;
+                        else createdAtMs = new Date(data.createdAt).getTime() || null;
+                    }
+                    
+                    let updatedAtMs = null;
+                    if (data.updatedAt) {
+                        if (typeof data.updatedAt.toDate === 'function') updatedAtMs = data.updatedAt.toDate().getTime();
+                        else if (data.updatedAt.seconds) updatedAtMs = data.updatedAt.seconds * 1000;
+                        else updatedAtMs = new Date(data.updatedAt).getTime() || null;
+                    }
+
+                    let lastUpdateRequestedAtMs = null;
+                    if (data.lastUpdateRequestedAt) {
+                        if (typeof data.lastUpdateRequestedAt.toDate === 'function') lastUpdateRequestedAtMs = data.lastUpdateRequestedAt.toDate().getTime();
+                        else if (data.lastUpdateRequestedAt.seconds) lastUpdateRequestedAtMs = data.lastUpdateRequestedAt.seconds * 1000;
+                        else lastUpdateRequestedAtMs = new Date(data.lastUpdateRequestedAt).getTime() || null;
+                    }
+
                     window.userSubmissions.push({
                         id: doc.id,
-                        ...doc.data()
+                        ...data,
+                        createdAt: createdAtMs,
+                        updatedAt: updatedAtMs,
+                        lastUpdateRequestedAt: lastUpdateRequestedAtMs
                     });
                 });
                 
                 // Client-side sort by createdAt descending
                 window.userSubmissions.sort((a, b) => {
-                    const timeA = a.createdAt ? (a.createdAt.seconds || 0) : 0;
-                    const timeB = b.createdAt ? (b.createdAt.seconds || 0) : 0;
-                    return timeB - timeA;
+                    return (b.createdAt || 0) - (a.createdAt || 0);
                 });
 
                 // Cache user submissions
@@ -8434,34 +8965,46 @@
             
             trackerContainer.innerHTML = '';
             window.userSubmissions.forEach(sub => {
-                const views = sub.views || 0;
-                const reward = parseFloat(sub.reward || 0);
-                const payoutType = sub.payoutType || 'flat';
+                const views = parseInt(String(sub.views || 0).replace(/[^0-9]/g, '')) || 0;
                 const platform = sub.platform || 'other';
                 
-                const campaign = window.allCampaigns ? window.allCampaigns.find(c => c.id === sub.campaignId) : (typeof allCampaigns !== 'undefined' ? allCampaigns.find(c => c.id === sub.campaignId) : null);
+                const campaign = window.allCampaigns ? window.allCampaigns.find(c => c.id === sub.campaignId || c.title === sub.campaignTitle) : (typeof allCampaigns !== 'undefined' ? allCampaigns.find(c => c.id === sub.campaignId || c.title === sub.campaignTitle) : null);
+                const payoutType = campaign ? (campaign.payoutType || 'flat') : (sub.payoutType || 'flat');
+                const reward = campaign ? parseFloat(campaign.reward || 0) : parseFloat(sub.reward || 0);
                 const customBonuses = campaign ? campaign.customBonuses : null;
-                const conversions = sub.conversions || 0;
-                const reach = sub.reach || 0;
+                const conversions = parseInt(String(sub.conversions || 0).replace(/[^0-9]/g, '')) || 0;
+                const reach = parseInt(String(sub.reach || 0).replace(/[^0-9]/g, '')) || 0;
 
                 // Calculate clip earnings
                 let earnings = 0;
-                if (payoutType === 'cpm') {
-                    earnings = reward + (views * reward) / 1000;
-                    earnings += getMilestoneBonus(views, false, customBonuses);
-                } else if (payoutType === 'reach') {
-                    earnings = reward + (reach * reward) / 1000;
-                    earnings += getMilestoneBonus(views, false, customBonuses);
-                } else if (payoutType === 'conversion') {
-                    earnings = reward + (conversions * reward);
-                    earnings += getMilestoneBonus(conversions, true, customBonuses);
-                } else if (payoutType === 'performance') {
-                    earnings = reward + ((views * reward) / 2000) + ((conversions * reward) / 2);
-                    earnings += getMilestoneBonus(views, false, customBonuses);
+                let baseEarnings = 0;
+                let bonusEarnings = 0;
+                const isConversion = payoutType === 'conversion';
+                if (sub.overrideEarnings !== undefined && sub.overrideEarnings !== null) {
+                    earnings = parseFloat(sub.overrideEarnings);
                 } else {
-                    earnings = (sub.status === 'approved' || sub.status === 'tracking') ? reward : 0;
-                    earnings += conversions * (campaign ? (campaign.conversionRate || 0) : 0);
-                    earnings += getMilestoneBonus(views, false, customBonuses);
+                    if (payoutType === 'cpm') {
+                        baseEarnings = (views * reward) / 1000;
+                        bonusEarnings = getMilestoneBonus(views, false, customBonuses);
+                        earnings = baseEarnings + bonusEarnings;
+                    } else if (payoutType === 'reach') {
+                        baseEarnings = (reach * reward) / 1000;
+                        bonusEarnings = getMilestoneBonus(reach, false, customBonuses);
+                        earnings = baseEarnings + bonusEarnings;
+                    } else if (payoutType === 'conversion') {
+                        baseEarnings = conversions * reward;
+                        bonusEarnings = getMilestoneBonus(conversions, true, customBonuses);
+                        earnings = baseEarnings + bonusEarnings;
+                    } else if (payoutType === 'performance') {
+                        baseEarnings = ((views * reward) / 2000) + ((conversions * reward) / 2);
+                        bonusEarnings = getMilestoneBonus(views, false, customBonuses);
+                        earnings = baseEarnings + bonusEarnings;
+                    } else {
+                        baseEarnings = (sub.status === 'approved' || sub.status === 'tracking') ? reward : 0;
+                        baseEarnings += conversions * (campaign ? (campaign.conversionRate || 0) : 0);
+                        bonusEarnings = getMilestoneBonus(views, false, customBonuses);
+                        earnings = baseEarnings + bonusEarnings;
+                    }
                 }
                 
                 // Select status badge classes and text
@@ -8522,7 +9065,7 @@
                             </div>
                         </div>
                         <div style="text-align:right; flex-shrink:0; display:flex; flex-direction:column; align-items:flex-end; gap:4px;">
-                            <div style="font-size:13px; font-weight:800; color:var(--accent); text-shadow:0 0 6px var(--accent-glow);">₹${earnings.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
+                            <div style="font-size:13px; font-weight:800; color:var(--accent); text-shadow:0 0 6px var(--accent-glow);">₹${earnings.toLocaleString('en-IN', {maximumFractionDigits:0})}</div>
                             ${statusBadgeHTML}
                         </div>
                     </div>
@@ -8542,30 +9085,30 @@
             
             if (window.userSubmissions && window.userSubmissions.length > 0) {
                 window.userSubmissions.forEach(sub => {
-                    const views = sub.views || 0;
-                    const reach = sub.reach || 0;
-                    const conversions = sub.conversions || 0;
-                    const reward = parseFloat(sub.reward || 0);
-                    const payoutType = sub.payoutType || 'flat';
-                    
-                    const campaign = window.allCampaigns ? window.allCampaigns.find(c => c.id === sub.campaignId) : (typeof allCampaigns !== 'undefined' ? allCampaigns.find(c => c.id === sub.campaignId) : null);
+                    const views = parseInt(String(sub.views || 0).replace(/[^0-9]/g, '')) || 0;
+                    const reach = parseInt(String(sub.reach || 0).replace(/[^0-9]/g, '')) || 0;
+                    const conversions = parseInt(String(sub.conversions || 0).replace(/[^0-9]/g, '')) || 0;
+                    const campaign = window.allCampaigns ? window.allCampaigns.find(c => c.id === sub.campaignId || c.title === sub.campaignTitle) : (typeof allCampaigns !== 'undefined' ? allCampaigns.find(c => c.id === sub.campaignId || c.title === sub.campaignTitle) : null);
+                    const payoutType = campaign ? (campaign.payoutType || 'flat') : (sub.payoutType || 'flat');
+                    const reward = campaign ? parseFloat(campaign.reward || 0) : parseFloat(sub.reward || 0);
                     const customBonuses = campaign ? campaign.customBonuses : null;
                     
                     let clipEarnings = 0;
+                    const isConversion = payoutType === 'conversion';
                     if (sub.overrideEarnings !== undefined && sub.overrideEarnings !== null) {
                         clipEarnings = parseFloat(sub.overrideEarnings);
                     } else {
                         if (payoutType === 'cpm') {
-                            clipEarnings = reward + (views * reward) / 1000;
+                            clipEarnings = (views * reward) / 1000;
                             clipEarnings += getMilestoneBonus(views, false, customBonuses);
                         } else if (payoutType === 'reach') {
-                            clipEarnings = reward + (reach * reward) / 1000;
-                            clipEarnings += getMilestoneBonus(views, false, customBonuses);
+                            clipEarnings = (reach * reward) / 1000;
+                            clipEarnings += getMilestoneBonus(reach, false, customBonuses);
                         } else if (payoutType === 'conversion') {
-                            clipEarnings = reward + (conversions * reward);
+                            clipEarnings = conversions * reward;
                             clipEarnings += getMilestoneBonus(conversions, true, customBonuses);
                         } else if (payoutType === 'performance') {
-                            clipEarnings = reward + ((views * reward) / 2000) + ((conversions * reward) / 2);
+                            clipEarnings = ((views * reward) / 2000) + ((conversions * reward) / 2);
                             clipEarnings += getMilestoneBonus(views, false, customBonuses);
                         } else {
                             clipEarnings = (sub.status === 'approved' || sub.status === 'tracking') ? reward : 0;
@@ -8578,9 +9121,7 @@
                     
                     if (sub.status === 'pending') {
                         pendingCount++;
-                        if (payoutType === 'flat') {
-                            currentPendingClipEarnings += reward + conversions * (campaign ? (campaign.conversionRate || 0) : 0);
-                        }
+                        currentPendingClipEarnings += clipEarnings;
                     } else if (sub.status === 'tracking') {
                         currentPendingClipEarnings += clipEarnings;
                     } else if (sub.status === 'approved') {
@@ -9063,7 +9604,11 @@
                         const addViews = parseInt(updateData.addViews) || 0;
                         const addLeads = parseInt(updateData.addLeads) || 0;
 
-                        if (addEarnings > 0) {
+                        let isSetUpdate = false;
+                        if (updateData.setAvailableBalance !== undefined) {
+                            session.availableBalance = parseFloat(updateData.setAvailableBalance) || 0;
+                            isSetUpdate = true;
+                        } else if (addEarnings > 0) {
                             session.availableBalance = (parseFloat(session.availableBalance) || 0) + addEarnings;
                             const now = new Date();
                             const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -9076,11 +9621,39 @@
                                 status: 'completed'
                             });
                         }
-                        if (addViews > 0) {
+
+                        if (updateData.setPendingBalance !== undefined) {
+                            session.pendingBalance = parseFloat(updateData.setPendingBalance) || 0;
+                            isSetUpdate = true;
+                        }
+
+                        if (updateData.setWithdrawnBalance !== undefined) {
+                            session.withdrawnBalance = parseFloat(updateData.setWithdrawnBalance) || 0;
+                            isSetUpdate = true;
+                        }
+
+                        if (updateData.setMaxViews !== undefined) {
+                            session.maxVideoViews = parseInt(updateData.setMaxViews) || 0;
+                            isSetUpdate = true;
+                        } else if (addViews > 0) {
                             session.maxVideoViews = (parseInt(session.maxVideoViews) || 0) + addViews;
                         }
-                        if (addLeads > 0) {
+
+                        if (updateData.setVideosCount !== undefined) {
+                            session.completedVideosCount = parseInt(updateData.setVideosCount) || 0;
+                            isSetUpdate = true;
+                        }
+
+                        if (updateData.setSalesCount !== undefined) {
+                            session.completedSalesCount = parseInt(updateData.setSalesCount) || 0;
+                            isSetUpdate = true;
+                        } else if (addLeads > 0) {
                             session.completedSalesCount = (parseInt(session.completedSalesCount) || 0) + addLeads;
+                        }
+
+                        if (updateData.setCreatorTier !== undefined) {
+                            session.creatorTier = updateData.setCreatorTier;
+                            isSetUpdate = true;
                         }
 
                         processed.push(updateId);
@@ -9095,7 +9668,11 @@
                             console.error("Error marking update as applied:", err);
                         }
 
-                        alert(`⚡ Account Adjusted by Admin!\n💰 Earnings: +₹${addEarnings}\n👁️ Video Views: +${addViews}\n🎯 Leads & Conversions: +${addLeads}`);
+                        if (isSetUpdate) {
+                            alert(`⚡ Account Synced by Admin!\n💰 Available Balance: ₹${session.availableBalance}\n⏳ Pending Rewards: ₹${session.pendingBalance}\n💸 Withdrawn Rewards: ₹${session.withdrawnBalance}`);
+                        } else {
+                            alert(`⚡ Account Adjusted by Admin!\n💰 Earnings: +₹${addEarnings}\n👁️ Video Views: +${addViews}\n🎯 Leads & Conversions: +${addLeads}`);
+                        }
                     }
                 });
 
