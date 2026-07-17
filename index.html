@@ -8336,44 +8336,154 @@
                     const reach = parseInt(String(sub.reach || 0).replace(/[^0-9]/g, '')) || 0;
                     const conversions = parseInt(String(sub.conversions || 0).replace(/[^0-9]/g, '')) || 0;
                     
-                    let earnings = 0;
-                    let baseEarnings = 0;
-                    let bonusEarnings = 0;
                     const payoutType = c.payoutType || 'flat';
                     const rewardRate = parseFloat(c.reward || 0);
-                    
+                    const customBonuses = c.customBonuses || null;
                     const isConversion = payoutType === 'conversion';
                     const metricValue = isConversion ? conversions : (payoutType === 'reach' ? reach : views);
-                    const customBonuses = c.customBonuses || null;
                     
-                    if (sub.overrideEarnings !== undefined && sub.overrideEarnings !== null) {
-                        baseEarnings = parseFloat(sub.overrideEarnings);
-                        bonusEarnings = getMilestoneBonus(metricValue, isConversion, customBonuses);
-                        earnings = baseEarnings + bonusEarnings;
-                    } else {
-                        if (payoutType === 'cpm') {
-                            baseEarnings = rewardRate + (views * rewardRate) / 1000;
-                            bonusEarnings = getMilestoneBonus(views, false, customBonuses);
-                            earnings = baseEarnings + bonusEarnings;
-                        } else if (payoutType === 'reach') {
-                            baseEarnings = rewardRate + (reach * rewardRate) / 1000;
-                            bonusEarnings = getMilestoneBonus(reach, false, customBonuses);
-                            earnings = baseEarnings + bonusEarnings;
-                        } else if (payoutType === 'conversion') {
-                            baseEarnings = rewardRate + (conversions * rewardRate);
-                            bonusEarnings = getMilestoneBonus(conversions, true, customBonuses);
-                            earnings = baseEarnings + bonusEarnings;
-                        } else if (payoutType === 'performance') {
-                            baseEarnings = rewardRate + ((views * rewardRate) / 2000) + ((conversions * rewardRate) / 2);
-                            bonusEarnings = getMilestoneBonus(views, false, customBonuses);
-                            earnings = baseEarnings + bonusEarnings;
-                        } else {
-                            baseEarnings = (sub.status === 'approved' || sub.status === 'tracking') ? rewardRate : 0;
-                            baseEarnings += conversions * (c.conversionRate || 0);
-                            bonusEarnings = getMilestoneBonus(views, false, customBonuses);
-                            earnings = baseEarnings + bonusEarnings;
-                        }
+                    let earnings = 0;
+                    let viewsPay = 0;
+                    let flatPay = 0;
+                    let conversionPay = 0;
+                    let extraPay = 0;
+                    
+                    let viewsBase = 0;
+                    let viewsBonus = 0;
+                    let conversionBase = 0;
+                    let conversionBonus = 0;
+                    
+                    const cPayoutType = payoutType.toLowerCase().trim();
+                    
+                    if (cPayoutType === 'cpm' || cPayoutType === 'reach') {
+                        const mVal = cPayoutType === 'reach' ? reach : views;
+                        viewsBase = (mVal * rewardRate) / 1000;
+                        viewsBonus = getMilestoneBonus(mVal, false, customBonuses);
+                        viewsPay = viewsBase + viewsBonus;
+                    } else if (cPayoutType === 'performance') {
+                        viewsBase = (views * rewardRate) / 2000;
+                        viewsBonus = getMilestoneBonus(views, false, customBonuses);
+                        viewsPay = viewsBase + viewsBonus;
+                        
+                        conversionBase = (conversions * rewardRate) / 2;
+                        conversionPay = conversionBase;
+                    } else if (cPayoutType === 'conversion') {
+                        conversionBase = conversions * rewardRate;
+                        conversionBonus = getMilestoneBonus(conversions, true, customBonuses);
+                        conversionPay = conversionBase + conversionBonus;
+                    } else { // flat
+                        flatPay = (sub.status === 'approved' || sub.status === 'tracking') ? rewardRate : 0;
+                        viewsBonus = getMilestoneBonus(views, false, customBonuses);
+                        viewsPay = viewsBonus;
                     }
+                    
+                    if (cPayoutType !== 'conversion' && c && c.conversionRate && c.conversionRate > 0) {
+                        conversionBase += conversions * c.conversionRate;
+                        conversionPay += conversions * c.conversionRate;
+                    }
+                    
+                    // Overrides
+                    if (sub.overrideViewsPay !== undefined && sub.overrideViewsPay !== null) {
+                        viewsPay = parseFloat(sub.overrideViewsPay) || 0;
+                        viewsBase = viewsPay;
+                        viewsBonus = 0;
+                    }
+                    if (sub.overrideFlatPay !== undefined && sub.overrideFlatPay !== null) {
+                        flatPay = parseFloat(sub.overrideFlatPay) || 0;
+                    }
+                    if (sub.overrideConversionPay !== undefined && sub.overrideConversionPay !== null) {
+                        conversionPay = parseFloat(sub.overrideConversionPay) || 0;
+                        conversionBase = conversionPay;
+                        conversionBonus = 0;
+                    }
+                    if (sub.overrideExtraPay !== undefined && sub.overrideExtraPay !== null) {
+                        extraPay = parseFloat(sub.overrideExtraPay) || 0;
+                    }
+                    
+                    earnings = viewsPay + flatPay + conversionPay + extraPay;
+                    
+                    let acceptedBreakdownHTML = '';
+                    let cDetailsHTML = `
+                        <div style="display:flex; justify-content:space-between; font-size:9.5px; color:rgba(255,255,255,0.4); line-height:1.3;">
+                            <span>Payout Model:</span>
+                            <span style="color:#fff; font-weight:700; text-transform:uppercase;">${cPayoutType}</span>
+                        </div>
+                        <div style="display:flex; justify-content:space-between; font-size:9.5px; color:rgba(255,255,255,0.4); line-height:1.3;">
+                            <span>Base Rate:</span>
+                            <span style="color:#fff; font-weight:700;">₹${rewardRate}</span>
+                        </div>
+                    `;
+                    
+                    if (viewsPay > 0 || views > 0) {
+                        cDetailsHTML += `
+                            <div style="border-top:1px dashed rgba(255,255,255,0.06); padding-top:4px; margin-top:3px; display:flex; flex-direction:column; gap:2px;">
+                                <div style="display:flex; justify-content:space-between; font-size:10px; font-weight:700; color:#fff;">
+                                    <span>Views Payout:</span>
+                                    <span>₹${viewsPay.toFixed(2)}</span>
+                                </div>
+                                <div style="display:flex; justify-content:space-between; font-size:9.5px; color:rgba(255,255,255,0.35); padding-left:6px;">
+                                    <span>- Base Views Pay:</span>
+                                    <span>₹${viewsBase.toFixed(2)} (${views.toLocaleString()} views)</span>
+                                </div>
+                                ${viewsBonus > 0 ? `
+                                <div style="display:flex; justify-content:space-between; font-size:9.5px; color:#4ade80; padding-left:6px; font-weight:600;">
+                                    <span>- Views Milestone Bonus:</span>
+                                    <span>+₹${viewsBonus.toFixed(2)}</span>
+                                </div>` : ''}
+                            </div>
+                        `;
+                    }
+                    
+                    if (flatPay > 0) {
+                        cDetailsHTML += `
+                            <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px dashed rgba(255,255,255,0.06); padding-top:4px; margin-top:3px; font-size:10px; font-weight:700; color:#fff;">
+                                <span>Flat Payout:</span>
+                                <span>₹${flatPay.toFixed(2)}</span>
+                            </div>
+                        `;
+                    }
+                    
+                    if (conversionPay > 0 || conversions > 0) {
+                        cDetailsHTML += `
+                            <div style="border-top:1px dashed rgba(255,255,255,0.06); padding-top:4px; margin-top:3px; display:flex; flex-direction:column; gap:2px;">
+                                <div style="display:flex; justify-content:space-between; font-size:10px; font-weight:700; color:#fff;">
+                                    <span>Conversions Payout:</span>
+                                    <span>₹${conversionPay.toFixed(2)}</span>
+                                </div>
+                                <div style="display:flex; justify-content:space-between; font-size:9.5px; color:rgba(255,255,255,0.35); padding-left:6px;">
+                                    <span>- Base Leads Pay:</span>
+                                    <span>₹${conversionBase.toFixed(2)} (${conversions} leads)</span>
+                                </div>
+                                ${conversionBonus > 0 ? `
+                                <div style="display:flex; justify-content:space-between; font-size:9.5px; color:#4ade80; padding-left:6px; font-weight:600;">
+                                    <span>- Leads Milestone Bonus:</span>
+                                    <span>+₹${conversionBonus.toFixed(2)}</span>
+                                </div>` : ''}
+                            </div>
+                        `;
+                    }
+                    
+                    if (extraPay > 0) {
+                        cDetailsHTML += `
+                            <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px dashed rgba(255,255,255,0.06); padding-top:4px; margin-top:3px; font-size:10px; font-weight:700; color:#fff;">
+                                <span>Admin Extra Override:</span>
+                                <span>₹${extraPay.toFixed(2)}</span>
+                            </div>
+                        `;
+                    }
+                    
+                    acceptedBreakdownHTML = `
+                        <!-- Collapsible Earning Details Accordion for Accepted campaigns -->
+                        <div style="border-top:1px solid rgba(255,255,255,0.05); padding-top:6px; margin-top:6px;">
+                            <div onclick="window.toggleCardBreakdown('accepted_${c.id}')" style="display:flex; align-items:center; justify-content:space-between; cursor:pointer; font-size:9.5px; color:var(--accent); font-weight:700; text-transform:uppercase; letter-spacing:0.3px; user-select:none;">
+                                <span>Earning Brief Details</span>
+                                <svg id="breakdown_arrow_accepted_${c.id}" viewBox="0 0 24 24" style="width:10px; height:10px; fill:none; stroke:currentColor; stroke-width:3; transition:transform 0.2s;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                            </div>
+                            <div id="breakdown_content_accepted_${c.id}" style="display:none; flex-direction:column; gap:5px; margin-top:6px; padding:8px; border-radius:8px; background:rgba(0,0,0,0.25); border:1px solid rgba(255,255,255,0.04);">
+                                ${cDetailsHTML}
+                            </div>
+                        </div>
+                    `;
                     
                     // For pending/rejected, show 0 earnings progress
                     let displayEarnings = (sub.status === 'approved' || sub.status === 'tracking') ? earnings : 0;
@@ -8636,6 +8746,7 @@
                             ${progressBarHTML}
                             ${timerHTML}
                             ${analyticsPanelHTML}
+                            ${acceptedBreakdownHTML}
                             ${collapsibleDetailsHTML}
                             ${actionsRowHTML}
                         </div>
@@ -8800,6 +8911,16 @@
         window.closeEarningBreakdownModal = function() {
             const modal = document.getElementById('earningBreakdownModal');
             if (modal) modal.classList.remove('active');
+        };
+
+        window.toggleCardBreakdown = function(subId) {
+            const content = document.getElementById(`breakdown_content_${subId}`);
+            const arrow = document.getElementById(`breakdown_arrow_${subId}`);
+            if (content && arrow) {
+                const isOpen = content.style.display === 'flex';
+                content.style.display = isOpen ? 'none' : 'flex';
+                arrow.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
+            }
         };
         
         window.showEarningBreakdownModal = function(subId) {
@@ -9415,29 +9536,110 @@
                 const cardImg = sub.productImage || fallbackImg;
                 const formattedViews = views.toLocaleString('en-US');
                 
-                const subCard = `
-                    <div class="glass-panel" style="display:flex; align-items:center; gap:12px; padding:12px; border-radius:14px; background:rgba(13, 20, 38, 0.45); border:1px solid rgba(255,255,255,0.06); width:100%;">
-                        <div style="width:40px; height:40px; border-radius:8px; overflow:hidden; flex-shrink:0; border:1px solid rgba(255,255,255,0.08);">
-                            <img src="${cardImg}" style="width:100%; height:100%; object-fit:cover;">
+                let breakdownDetailsHTML = `
+                    <div style="display:flex; justify-content:space-between; font-size:9.5px; color:rgba(255,255,255,0.4); line-height:1.3;">
+                        <span>Payout Model:</span>
+                        <span style="color:#fff; font-weight:700; text-transform:uppercase;">${currentPayoutType}</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; font-size:9.5px; color:rgba(255,255,255,0.4); line-height:1.3;">
+                        <span>Base Rate:</span>
+                        <span style="color:#fff; font-weight:700;">₹${reward}</span>
+                    </div>
+                `;
+                
+                if (viewsPay > 0 || views > 0) {
+                    breakdownDetailsHTML += `
+                        <div style="border-top:1px dashed rgba(255,255,255,0.06); padding-top:4px; margin-top:3px; display:flex; flex-direction:column; gap:2px;">
+                            <div style="display:flex; justify-content:space-between; font-size:10px; font-weight:700; color:#fff;">
+                                <span>Views Payout:</span>
+                                <span>₹${viewsPay.toFixed(2)}</span>
+                            </div>
+                            <div style="display:flex; justify-content:space-between; font-size:9.5px; color:rgba(255,255,255,0.35); padding-left:6px;">
+                                <span>- Base Views Pay:</span>
+                                <span>₹${viewsBase.toFixed(2)} (${views.toLocaleString()} views)</span>
+                            </div>
+                            ${viewsBonus > 0 ? `
+                            <div style="display:flex; justify-content:space-between; font-size:9.5px; color:#4ade80; padding-left:6px; font-weight:600;">
+                                <span>- Views Milestone Bonus:</span>
+                                <span>+₹${viewsBonus.toFixed(2)}</span>
+                            </div>` : ''}
                         </div>
-                        <div style="flex:1; overflow:hidden;">
-                            <div style="font-size:12px; font-weight:700; color:#fff; text-overflow:ellipsis; overflow:hidden; white-space:nowrap; margin-bottom:2px;">${sub.campaignTitle}</div>
-                            <div style="display:flex; align-items:center; gap:8px;">
-                                <span style="display:flex; align-items:center; font-size:10px; color:var(--text-muted);">
-                                    ${platformIcon}
-                                    <a href="${sub.submissionUrl}" target="_blank" style="color:var(--text-muted); text-decoration:underline;">View Clip</a>
-                                </span>
-                                <span style="font-size:10px; color:rgba(255,255,255,0.25);">•</span>
-                                <span style="font-size:10px; color:var(--accent); font-weight:600; display:flex; align-items:center; gap:3px;">
-                                    <svg viewBox="0 0 24 24" style="width:10px; height:10px; fill:none; stroke:currentColor; stroke-width:2.5;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-                                    ${formattedViews} views
-                                </span>
+                    `;
+                }
+                
+                if (flatPay > 0) {
+                    breakdownDetailsHTML += `
+                        <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px dashed rgba(255,255,255,0.06); padding-top:4px; margin-top:3px; font-size:10px; font-weight:700; color:#fff;">
+                            <span>Flat Payout:</span>
+                            <span>₹${flatPay.toFixed(2)}</span>
+                        </div>
+                    `;
+                }
+                
+                if (conversionPay > 0 || conversions > 0) {
+                    breakdownDetailsHTML += `
+                        <div style="border-top:1px dashed rgba(255,255,255,0.06); padding-top:4px; margin-top:3px; display:flex; flex-direction:column; gap:2px;">
+                            <div style="display:flex; justify-content:space-between; font-size:10px; font-weight:700; color:#fff;">
+                                <span>Conversions Payout:</span>
+                                <span>₹${conversionPay.toFixed(2)}</span>
+                            </div>
+                            <div style="display:flex; justify-content:space-between; font-size:9.5px; color:rgba(255,255,255,0.35); padding-left:6px;">
+                                <span>- Base Leads Pay:</span>
+                                <span>₹${conversionBase.toFixed(2)} (${conversions} leads)</span>
+                            </div>
+                            ${conversionBonus > 0 ? `
+                            <div style="display:flex; justify-content:space-between; font-size:9.5px; color:#4ade80; padding-left:6px; font-weight:600;">
+                                <span>- Leads Milestone Bonus:</span>
+                                <span>+₹${conversionBonus.toFixed(2)}</span>
+                            </div>` : ''}
+                        </div>
+                    `;
+                }
+                
+                if (extraPay > 0) {
+                    breakdownDetailsHTML += `
+                        <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px dashed rgba(255,255,255,0.06); padding-top:4px; margin-top:3px; font-size:10px; font-weight:700; color:#fff;">
+                            <span>Admin Extra Override:</span>
+                            <span>₹${extraPay.toFixed(2)}</span>
+                        </div>
+                    `;
+                }
+                
+                const subCard = `
+                    <div class="glass-panel" style="display:flex; flex-direction:column; gap:8px; padding:12px; border-radius:14px; background:rgba(13, 20, 38, 0.45); border:1px solid rgba(255,255,255,0.06); width:100%;">
+                        <div style="display:flex; align-items:center; gap:12px; width:100%;">
+                            <div style="width:40px; height:40px; border-radius:8px; overflow:hidden; flex-shrink:0; border:1px solid rgba(255,255,255,0.08);">
+                                <img src="${cardImg}" style="width:100%; height:100%; object-fit:cover;">
+                            </div>
+                            <div style="flex:1; overflow:hidden;">
+                                <div style="font-size:12px; font-weight:700; color:#fff; text-overflow:ellipsis; overflow:hidden; white-space:nowrap; margin-bottom:2px;">${sub.campaignTitle}</div>
+                                <div style="display:flex; align-items:center; gap:8px;">
+                                    <span style="display:flex; align-items:center; font-size:10px; color:var(--text-muted);">
+                                        ${platformIcon}
+                                        <a href="${sub.submissionUrl}" target="_blank" style="color:var(--text-muted); text-decoration:underline;">View Clip</a>
+                                    </span>
+                                    <span style="font-size:10px; color:rgba(255,255,255,0.25);">•</span>
+                                    <span style="font-size:10px; color:var(--accent); font-weight:600; display:flex; align-items:center; gap:3px;">
+                                        <svg viewBox="0 0 24 24" style="width:10px; height:10px; fill:none; stroke:currentColor; stroke-width:2.5;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                                        ${formattedViews} views
+                                    </span>
+                                </div>
+                            </div>
+                            <div style="text-align:right; flex-shrink:0; display:flex; flex-direction:column; align-items:flex-end; gap:4px;">
+                                <div style="font-size:13px; font-weight:800; color:var(--accent); text-shadow:0 0 6px var(--accent-glow);">₹${earnings.toLocaleString('en-IN', {maximumFractionDigits:0})}</div>
+                                ${statusBadgeHTML}
                             </div>
                         </div>
-                        <div style="text-align:right; flex-shrink:0; display:flex; flex-direction:column; align-items:flex-end; gap:4px;">
-                            <div style="font-size:13px; font-weight:800; color:var(--accent); text-shadow:0 0 6px var(--accent-glow);">₹${earnings.toLocaleString('en-IN', {maximumFractionDigits:0})}</div>
-                            ${statusBadgeHTML}
-                            ${breakdownHTML}
+                        
+                        <!-- Collapsible Earning Details Accordion -->
+                        <div style="border-top:1px solid rgba(255,255,255,0.05); padding-top:6px; margin-top:2px;">
+                            <div onclick="window.toggleCardBreakdown('${sub.id}')" style="display:flex; align-items:center; justify-content:space-between; cursor:pointer; font-size:9.5px; color:var(--accent); font-weight:700; text-transform:uppercase; letter-spacing:0.3px; user-select:none;">
+                                <span>Earning Brief Details</span>
+                                <svg id="breakdown_arrow_${sub.id}" viewBox="0 0 24 24" style="width:10px; height:10px; fill:none; stroke:currentColor; stroke-width:3; transition:transform 0.2s;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                            </div>
+                            <div id="breakdown_content_${sub.id}" style="display:none; flex-direction:column; gap:5px; margin-top:6px; padding:8px; border-radius:8px; background:rgba(0,0,0,0.25); border:1px solid rgba(255,255,255,0.04);">
+                                ${breakdownDetailsHTML}
+                            </div>
                         </div>
                     </div>
                 `;
