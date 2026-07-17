@@ -9196,54 +9196,19 @@
                     } else if (sub.status === 'tracking') {
                         currentPendingClipEarnings += clipEarnings;
                     } else if (sub.status === 'approved') {
-                        currentApprovedClipEarnings += clipEarnings;
-                        totalEarnings += clipEarnings;
-                        
-                        // Sync with availableBalance in localStorage once
+                        // Deposit is refunded immediately on task approval
                         const sessionStr = localStorage.getItem('eliteX_user_session');
                         if (sessionStr) {
                             const session = JSON.parse(sessionStr);
-                            let credited = session.creditedSubmissions || {};
-                            if (Array.isArray(credited)) {
-                                const temp = {};
-                                credited.forEach(id => { temp[id] = 0; });
-                                credited = temp;
-                            }
                             const refunded = session.refundedCampaigns || [];
                             const sessionTx = session.transactions || [];
-                            
                             let balanceChanged = false;
                             
-                            // 1. Credit Clip Earnings
-                            const alreadyPaid = parseFloat(credited[sub.id] || 0);
-                            if (clipEarnings > alreadyPaid) {
-                                const diff = clipEarnings - alreadyPaid;
-                                session.availableBalance = (parseFloat(session.availableBalance) || 0) + diff;
-                                credited[sub.id] = clipEarnings;
-                                session.creditedSubmissions = credited;
-                                balanceChanged = true;
-                                
-                                // Create credit transaction or adjustment transaction
-                                const now = new Date();
-                                const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                                sessionTx.unshift({
-                                    id: sessionTx.length + 1,
-                                    title: alreadyPaid > 0 ? `Earnings Adjustment: ${sub.campaignTitle}` : `Earnings: ${sub.campaignTitle}`,
-                                    amount: diff,
-                                    date: `Today, ${timeStr}`,
-                                    type: 'credit',
-                                    status: 'completed'
-                                });
-                                session.transactions = sessionTx;
-                            }
-                            
-                            // 2. Refund ₹10 Deposit Fee
                             if (!refunded.includes(sub.campaignId)) {
                                 refunded.push(sub.campaignId);
                                 session.availableBalance = (parseFloat(session.availableBalance) || 0) + 10;
                                 session.refundedCampaigns = refunded;
                                 
-                                // Create refund credit transaction
                                 const now = new Date();
                                 const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
                                 sessionTx.unshift({
@@ -9255,18 +9220,67 @@
                                     status: 'completed'
                                 });
                                 session.transactions = sessionTx;
-                                
                                 balanceChanged = true;
                             }
-                            
                             if (balanceChanged) {
                                 localStorage.setItem('eliteX_user_session', JSON.stringify(session));
-                                
-                                // Call wallet sync immediately from module scope
                                 if (typeof loadUserSession === 'function') loadUserSession();
                                 if (typeof updateWalletUI === 'function') updateWalletUI();
                                 if (typeof renderTransactions === 'function') renderTransactions();
                             }
+                        }
+
+                        if (sub.releasedToWallet === true) {
+                            currentApprovedClipEarnings += clipEarnings;
+                            totalEarnings += clipEarnings;
+                            
+                            // Sync with availableBalance in localStorage once
+                            const sessionStr = localStorage.getItem('eliteX_user_session');
+                            if (sessionStr) {
+                                const session = JSON.parse(sessionStr);
+                                let credited = session.creditedSubmissions || {};
+                                if (Array.isArray(credited)) {
+                                    const temp = {};
+                                    credited.forEach(id => { temp[id] = 0; });
+                                    credited = temp;
+                                }
+                                const sessionTx = session.transactions || [];
+                                let balanceChanged = false;
+                                
+                                // 1. Credit Clip Earnings
+                                const alreadyPaid = parseFloat(credited[sub.id] || 0);
+                                if (clipEarnings > alreadyPaid) {
+                                    const diff = clipEarnings - alreadyPaid;
+                                    session.availableBalance = (parseFloat(session.availableBalance) || 0) + diff;
+                                    credited[sub.id] = clipEarnings;
+                                    session.creditedSubmissions = credited;
+                                    balanceChanged = true;
+                                    
+                                    const now = new Date();
+                                    const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                                    sessionTx.unshift({
+                                        id: sessionTx.length + 1,
+                                        title: alreadyPaid > 0 ? `Earnings Adjustment: ${sub.campaignTitle}` : `Earnings: ${sub.campaignTitle}`,
+                                        amount: diff,
+                                        date: `Today, ${timeStr}`,
+                                        type: 'credit',
+                                        status: 'completed'
+                                    });
+                                    session.transactions = sessionTx;
+                                }
+                                
+                                if (balanceChanged) {
+                                    localStorage.setItem('eliteX_user_session', JSON.stringify(session));
+                                    
+                                    // Call wallet sync immediately from module scope
+                                    if (typeof loadUserSession === 'function') loadUserSession();
+                                    if (typeof updateWalletUI === 'function') updateWalletUI();
+                                    if (typeof renderTransactions === 'function') renderTransactions();
+                                }
+                            }
+                        } else {
+                            // If approved but NOT released yet, it goes to pending!
+                            currentPendingClipEarnings += clipEarnings;
                         }
                     }
                 });
