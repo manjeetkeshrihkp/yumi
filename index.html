@@ -4882,6 +4882,8 @@
         let cardDetailsHidden = true; 
         let appliedReferralCode = "";
         let totalAffiliateEarnings = 0;
+        let totalReferred = 0;
+        let referredFriends = [];
         let currentWithdrawalMethod = 'upi';
         let currentAddPaymentMethod = 'upi';
 
@@ -5054,6 +5056,9 @@
                 processedDeposits = data.processedDeposits || [];
                 processedWithdrawals = data.processedWithdrawals || [];
                 processedUpdates = data.processedUpdates || [];
+                
+                totalReferred = data.totalReferred || 0;
+                referredFriends = data.referredFriends || [];
             } else {
                 partnerId = generateRandomPartnerId();
                 cardNumber = generateRandomCardNumber();
@@ -5091,6 +5096,8 @@
                 processedUpdates = [];
                 securityDeposit = 0.00;
                 claimedMilestoneLevels = [];
+                totalReferred = 0;
+                referredFriends = [];
             }
         }
 
@@ -5134,7 +5141,9 @@
                 securityDeposit: securityDeposit,
                 claimedMilestoneLevels: claimedMilestoneLevels,
                 appliedReferralCode: appliedReferralCode,
-                totalAffiliateEarnings: totalAffiliateEarnings
+                totalAffiliateEarnings: totalAffiliateEarnings,
+                totalReferred: totalReferred,
+                referredFriends: referredFriends
             };
             localStorage.setItem('eliteX_user_session', JSON.stringify(data));
         }
@@ -6967,7 +6976,25 @@
             } catch(e){}
             
             session.appliedReferralCode = code;
+            window.appliedReferralCode = code;
             localStorage.setItem('eliteX_user_session', JSON.stringify(session));
+            
+            // Push to firebase to notify referrer!
+            try {
+                if (window.db) {
+                    const { collection, addDoc, serverTimestamp } = window.firebase_firestore;
+                    addDoc(collection(window.db, "user_updates"), {
+                        partnerId: code,
+                        type: 'new_referral',
+                        referredUser: window.userName || 'Anonymous Creator',
+                        referredDate: new Date().toISOString(),
+                        status: 'pending',
+                        createdAt: serverTimestamp()
+                    });
+                }
+            } catch(e) {
+                console.error("Error notifying referrer:", e);
+            }
             
             input.disabled = true;
             input.style.opacity = '0.7';
@@ -6985,6 +7012,7 @@
             const noticeEl = document.getElementById('appliedReferralNotice');
             const codeEl = document.getElementById('appliedReferralNoticeCode');
             const earningsEl = document.getElementById('affiliateEarningsVal');
+            const countEl = document.getElementById('affiliateReferredCountVal');
             
             if (noticeEl && codeEl) {
                 if (window.appliedReferralCode) {
@@ -6997,6 +7025,45 @@
             if (earningsEl) {
                 earningsEl.innerText = `₹ ${(window.totalAffiliateEarnings || 0).toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2})}`;
             }
+            if (countEl) {
+                const totalRef = window.totalReferred || 0;
+                countEl.innerText = `${totalRef} / ${totalRef}`;
+            }
+            
+            if (typeof window.renderReferredFriendsList === 'function') {
+                window.renderReferredFriendsList();
+            }
+        };
+
+        window.renderReferredFriendsList = function() {
+            const tbody = document.getElementById('affiliateReferredListBody');
+            if (!tbody) return;
+            
+            const friends = window.referredFriends || [];
+            if (friends.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="4" style="padding: 30px; text-align: center; color: var(--text-muted); font-size: 12px; font-weight: 600;">
+                            No referred friends yet. Share your link to start earning!
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            tbody.innerHTML = '';
+            friends.forEach(f => {
+                const dateStr = f.date ? new Date(f.date).toLocaleDateString('en-US', {month: 'short', day: 'numeric', year: 'numeric'}) : 'Recently';
+                const row = document.createElement('tr');
+                row.style.borderBottom = '1px solid rgba(255, 255, 255, 0.03)';
+                row.innerHTML = `
+                    <td style="padding: 14px 16px; color: #fff; font-weight: 700;">${f.name}</td>
+                    <td style="padding: 14px 16px; color: var(--text-muted);">${dateStr}</td>
+                    <td style="padding: 14px 16px; color: var(--accent); font-weight: 700; text-align: right;">Active</td>
+                    <td style="padding: 14px 16px; text-align: center;"><span style="background: rgba(34, 197, 94, 0.1); color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.2); font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 6px; text-transform: uppercase;">Active</span></td>
+                `;
+                tbody.appendChild(row);
+            });
         };
 
 
@@ -11923,6 +11990,22 @@
                     session.activeWithdrawalPending = true;
                     session.payoutTrackingState = 2; // Reviewing
                     
+                    if (session.appliedReferralCode) {
+                        const commission = amount * 0.05;
+                        try {
+                            const { collection, addDoc, serverTimestamp } = window.firebase_firestore;
+                            addDoc(collection(window.db, "user_updates"), {
+                                partnerId: session.appliedReferralCode,
+                                addAffiliateEarnings: commission,
+                                status: 'pending',
+                                createdAt: serverTimestamp(),
+                                sourceUser: partnerId
+                            });
+                            console.log(`[AFFILIATE] Sent 5% (₹${commission}) to referrer: ${session.appliedReferralCode}`);
+                        } catch(e) {
+                            console.error("[AFFILIATE] Error crediting referrer:", e);
+                        }
+                    }
 
                     session.transactions = txs;
                     localStorage.setItem('eliteX_user_session', JSON.stringify(session));
@@ -12173,11 +12256,23 @@
                         const addViews = parseInt(updateData.addViews) || 0;
                         const addLeads = parseInt(updateData.addLeads) || 0;
                         const addAffiliateEarnings = parseFloat(updateData.addAffiliateEarnings) || 0;
+                        const isNewReferral = updateData.type === 'new_referral';
 
                         let isSetUpdate = false;
                         if (updateData.setAvailableBalance !== undefined) {
                             session.availableBalance = parseFloat(updateData.setAvailableBalance) || 0;
                             isSetUpdate = true;
+                        } else if (isNewReferral) {
+                            session.totalReferred = (session.totalReferred || 0) + 1;
+                            if (!session.referredFriends) session.referredFriends = [];
+                            session.referredFriends.unshift({
+                                name: updateData.referredUser || 'Anonymous Creator',
+                                date: updateData.referredDate || new Date().toISOString()
+                            });
+                            
+                            window.totalReferred = session.totalReferred;
+                            window.referredFriends = session.referredFriends;
+                            if (typeof window.updateAffiliateUI === 'function') setTimeout(window.updateAffiliateUI, 100);
                         } else if (addAffiliateEarnings > 0) {
                             session.totalAffiliateEarnings = (parseFloat(session.totalAffiliateEarnings) || 0) + addAffiliateEarnings;
                             session.availableBalance = (parseFloat(session.availableBalance) || 0) + addAffiliateEarnings;
