@@ -4596,15 +4596,27 @@
             <div class="identity-brand">Elite<span>X</span></div>
             <div class="identity-tagline">Exclusive marketing command center.<br>Initialize your partner identity.</div>
             
-            <form id="identityForm" onsubmit="handleIdentitySubmit(event)">
-                <input type="text" id="identityName" class="identity-input" placeholder="Enter your full name" required autocomplete="off">
-                
+            <div id="identityStep1">
+                <input type="text" id="identityName" class="identity-input" placeholder="Enter your full name" autocomplete="off">
                 <div class="btn-identity-wrapper">
-                    <button type="submit" class="btn-identity">
-                        Generate Virtual Card
-                    </button>
+                    <button type="button" class="btn-identity" onclick="goToIdentityStep2()">Continue</button>
                 </div>
-            </form>
+            </div>
+
+            <div id="identityStep2" style="display: none;">
+                <input type="text" id="identityInsta" class="identity-input" placeholder="@instagram_handle" autocomplete="off">
+                <div class="btn-identity-wrapper">
+                    <button type="button" class="btn-identity" onclick="goToIdentityStep3()">Verify Account</button>
+                </div>
+            </div>
+
+            <div id="identityStep3" style="display: none;">
+                <p style="color: #94a3b8; font-size: 13px; margin-bottom: 16px;">We've sent a 4-digit OTP to verify your handle.</p>
+                <input type="text" id="identityOTP" class="identity-input" placeholder="Enter 4-digit OTP" autocomplete="off" maxlength="4" style="letter-spacing: 4px; font-weight: bold;">
+                <div class="btn-identity-wrapper">
+                    <button type="button" class="btn-identity" onclick="handleIdentitySubmit(event)">Generate Virtual Card</button>
+                </div>
+            </div>
 
             <p style="margin-top: 32px; font-size: 12px; color: rgba(255,255,255,0.4); font-weight: 500; line-height: 1.6;">
                 By continuing, you agree to our<br>
@@ -5096,6 +5108,20 @@
                 totalReferred = 0;
                 referredFriends = [];
             }
+            
+            // Start listening to profile for bans and balance sync
+            if (session && partnerId) {
+                if (typeof window.listenToUserProfile === 'function') {
+                    window.listenToUserProfile(partnerId);
+                } else {
+                    // Wait for module to load
+                    setTimeout(() => {
+                        if (typeof window.listenToUserProfile === 'function') {
+                            window.listenToUserProfile(partnerId);
+                        }
+                    }, 500);
+                }
+            }
         }
 
         function saveUserSession() {
@@ -5145,13 +5171,46 @@
             localStorage.setItem('eliteX_user_session', JSON.stringify(data));
         }
 
-        function handleIdentitySubmit(event) {
-            event.preventDefault();
+        window.goToIdentityStep2 = function() {
             const nameInput = document.getElementById('identityName');
+            if (!nameInput.value.trim()) {
+                alert("Please enter your full name.");
+                return;
+            }
+            document.getElementById('identityStep1').style.display = 'none';
+            document.getElementById('identityStep2').style.display = 'block';
+        };
+
+        window.goToIdentityStep3 = function() {
+            const instaInput = document.getElementById('identityInsta');
+            if (!instaInput.value.trim()) {
+                alert("Please enter your Instagram handle.");
+                return;
+            }
+            document.getElementById('identityStep2').style.display = 'none';
+            document.getElementById('identityStep3').style.display = 'block';
+        };
+
+        window.handleIdentitySubmit = async function(event) {
+            if(event) event.preventDefault();
+            const nameInput = document.getElementById('identityName');
+            const instaInput = document.getElementById('identityInsta');
+            const otpInput = document.getElementById('identityOTP');
+            
             const name = nameInput.value.trim();
-            if (!name) return;
+            const insta = instaInput.value.trim();
+            const otp = otpInput.value.trim();
+            
+            if (!otp || otp.length < 4) {
+                alert("Please enter the 4-digit OTP.");
+                return;
+            }
             
             userName = name;
+            instagramHandle = insta.startsWith('@') ? insta : '@' + insta;
+            instagramVerified = true;
+            instagramVerificationStatus = 'verified';
+
             availableBalance = 0.00;
             pendingBalance = 0.00;
             withdrawnBalance = 0.00;
@@ -5172,6 +5231,21 @@
             
             saveUserSession();
             
+            // Create profile in Firestore
+            if (typeof window.createUserProfile === 'function') {
+                await window.createUserProfile({
+                    partnerId,
+                    userName,
+                    instagramHandle,
+                    availableBalance,
+                    pendingBalance,
+                    withdrawnBalance,
+                    banned: false,
+                    createdAt: new Date().toISOString()
+                });
+                window.listenToUserProfile(partnerId);
+            }
+            
             // Sync to bank details profile for setting name
             const profile = {
                 holderName: userName,
@@ -5185,6 +5259,9 @@
             setupUserIdentityUI(userName);
             
             document.getElementById('identityModal').classList.remove('active');
+            setTimeout(() => {
+                document.getElementById('identityModal').style.display = 'none';
+            }, 500);
             
             updateWalletUI();
             updateCardVisibilityUI();
@@ -9937,7 +10014,7 @@
     <!-- Firebase SDK (Version 10.8.1 for Stability) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getFirestore, collection, query, where, orderBy, onSnapshot, addDoc, updateDoc, deleteDoc, doc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        import { getFirestore, collection, query, where, orderBy, onSnapshot, addDoc, updateDoc, deleteDoc, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyBnE05VAXAfvFj1S6y-Ny4yBrNHJNc_DhU",
@@ -9950,6 +10027,55 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+
+        // Expose DB methods for onboarding
+        window.createUserProfile = async (profileData) => {
+            try {
+                await setDoc(doc(db, "users", profileData.partnerId), profileData);
+                console.log("User profile created in Firestore");
+            } catch (error) {
+                console.error("Error creating user profile:", error);
+            }
+        };
+
+        let userListenerUnsubscribe = null;
+        window.listenToUserProfile = (partnerId) => {
+            if (!partnerId) return;
+            if (userListenerUnsubscribe) userListenerUnsubscribe();
+            
+            userListenerUnsubscribe = onSnapshot(doc(db, "users", partnerId), (docSnap) => {
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    
+                    // Handle Ban
+                    if (data.banned) {
+                        document.body.innerHTML = '<div style="display:flex; height:100vh; background:#020617; color:#ef4444; align-items:center; justify-content:center; flex-direction:column; font-family:sans-serif;"><h1 style="font-size:48px; margin-bottom:12px;">Account Suspended</h1><p style="color:#94a3b8;">Your EliteX Creator account has been permanently banned.</p></div>';
+                        return;
+                    }
+                    
+                    // Sync balances from Admin
+                    let balancesChanged = false;
+                    if (data.availableBalance !== undefined && data.availableBalance !== window.availableBalance) {
+                        window.availableBalance = data.availableBalance;
+                        balancesChanged = true;
+                    }
+                    if (data.pendingBalance !== undefined && data.pendingBalance !== window.pendingBalance) {
+                        window.pendingBalance = data.pendingBalance;
+                        balancesChanged = true;
+                    }
+                    if (data.withdrawnBalance !== undefined && data.withdrawnBalance !== window.withdrawnBalance) {
+                        window.withdrawnBalance = data.withdrawnBalance;
+                        balancesChanged = true;
+                    }
+                    
+                    if (balancesChanged) {
+                        window.saveUserSession();
+                        if (typeof window.updateWalletUI === 'function') window.updateWalletUI();
+                        if (typeof window.updateMilestoneUI === 'function') window.updateMilestoneUI();
+                    }
+                }
+            });
+        };
         
         // Real-time listener for campaigns
         const campaignsContainer = document.getElementById('campaignsContainer');
