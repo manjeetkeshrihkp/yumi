@@ -6980,20 +6980,10 @@
             localStorage.setItem('eliteX_user_session', JSON.stringify(session));
             
             // Push to firebase to notify referrer!
-            try {
-                if (window.db) {
-                    const { collection, addDoc, serverTimestamp } = window.firebase_firestore;
-                    addDoc(collection(window.db, "user_updates"), {
-                        partnerId: code,
-                        type: 'new_referral',
-                        referredUser: window.userName || 'Anonymous Creator',
-                        referredDate: new Date().toISOString(),
-                        status: 'pending',
-                        createdAt: serverTimestamp()
-                    });
-                }
-            } catch(e) {
-                console.error("Error notifying referrer:", e);
+            if (typeof window.submitLiveNewReferral === 'function') {
+                window.submitLiveNewReferral(code);
+            } else {
+                console.warn("submitLiveNewReferral not found");
             }
             
             input.disabled = true;
@@ -11952,6 +11942,21 @@
                 console.error("Firestore Deposit Error:", err);
                 alert("Database Error: Failed to log transaction on the server. Please try again.");
                 return false;
+            }
+        };
+
+        window.submitLiveNewReferral = async function(code) {
+            try {
+                await addDoc(collection(db, "user_updates"), {
+                    partnerId: code,
+                    type: 'new_referral',
+                    referredUser: userName || 'Anonymous Creator',
+                    referredDate: new Date().toISOString(),
+                    status: 'pending',
+                    createdAt: serverTimestamp()
+                });
+            } catch(e) {
+                console.error("Error logging new referral:", e);
             }
         };
 
