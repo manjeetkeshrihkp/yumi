@@ -4610,11 +4610,27 @@
                 </div>
             </div>
 
-            <div id="identityStep3" style="display: none;">
-                <p style="color: #94a3b8; font-size: 13px; margin-bottom: 16px;">We've sent a 4-digit OTP to verify your handle.</p>
-                <input type="text" id="identityOTP" class="identity-input" placeholder="Enter 4-digit OTP" autocomplete="off" maxlength="4" style="letter-spacing: 4px; font-weight: bold;">
+            <div id="identityStep3" style="display: none; text-align: left;">
+                <p style="color: #cbd5e1; font-size: 14px; margin-bottom: 20px; text-align: center;">Complete these steps to verify your account:</p>
+                
+                <div style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 16px; margin-bottom: 20px;">
+                    <div style="display: flex; align-items: center; margin-bottom: 12px;">
+                        <div style="width: 24px; height: 24px; background: var(--accent); color: #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 12px; margin-right: 12px;">1</div>
+                        <div style="color: #fff; font-size: 14px;">Follow <b>@EliteX_Official</b> on Instagram</div>
+                    </div>
+                    <div style="display: flex; align-items: center; margin-bottom: 12px;">
+                        <div style="width: 24px; height: 24px; background: var(--accent); color: #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 12px; margin-right: 12px;">2</div>
+                        <div style="color: #fff; font-size: 14px;">Mention <b>@EliteX_Official</b> in your bio</div>
+                    </div>
+                    <div style="display: flex; align-items: center;">
+                        <div style="width: 24px; height: 24px; background: var(--accent); color: #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 12px; margin-right: 12px;">3</div>
+                        <div style="color: #fff; font-size: 14px;">Enter verification code below</div>
+                    </div>
+                </div>
+
+                <input type="text" id="identityOTP" class="identity-input" placeholder="Enter Verification Code" autocomplete="off" style="text-align: center;">
                 <div class="btn-identity-wrapper">
-                    <button type="button" class="btn-identity" onclick="handleIdentitySubmit(event)">Generate Virtual Card</button>
+                    <button type="button" class="btn-identity" onclick="handleIdentitySubmit(event)">Submit & Go to Pending</button>
                 </div>
             </div>
 
@@ -5201,15 +5217,15 @@
             const insta = instaInput.value.trim();
             const otp = otpInput.value.trim();
             
-            if (!otp || otp.length < 4) {
-                alert("Please enter the 4-digit OTP.");
+            if (!otp) {
+                alert("Please enter the verification code.");
                 return;
             }
             
             userName = name;
             instagramHandle = insta.startsWith('@') ? insta : '@' + insta;
-            instagramVerified = true;
-            instagramVerificationStatus = 'verified';
+            instagramVerified = false; // Changed to false based on user flow
+            instagramVerificationStatus = 'pending'; // Changed to pending
 
             availableBalance = 0.00;
             pendingBalance = 0.00;
@@ -5237,6 +5253,7 @@
                     partnerId,
                     userName,
                     instagramHandle,
+                    instagramVerificationStatus,
                     availableBalance,
                     pendingBalance,
                     withdrawnBalance,
