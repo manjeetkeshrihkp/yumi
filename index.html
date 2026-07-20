@@ -2804,6 +2804,145 @@
             border: 1px solid rgba(250, 204, 21, 0.15);
         }
 
+        /* Premium Identity Initialization Screen */
+        #identityModal {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #020617;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            padding: 24px;
+            box-sizing: border-box;
+            text-align: center;
+            overflow: hidden;
+            opacity: 0;
+            pointer-events: none;
+            visibility: hidden;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+        #identityModal.active {
+            opacity: 1;
+            pointer-events: auto;
+            visibility: visible;
+        }
+        #identityModal::before, #identityModal::after {
+            content: '';
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.4;
+            animation: floatOrb 10s infinite alternate ease-in-out;
+            z-index: 0;
+        }
+        #identityModal::before {
+            background: var(--accent);
+            top: -200px; left: -150px;
+            animation-delay: -5s;
+        }
+        #identityModal::after {
+            background: #6366f1;
+            bottom: -250px; right: -150px;
+        }
+        .identity-card {
+            position: relative;
+            z-index: 1;
+            background: rgba(15, 23, 42, 0.45);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+            border-radius: 32px;
+            padding: 48px 36px;
+            max-width: 420px;
+            width: 100%;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), inset 0 0 0 1px rgba(255,255,255,0.05);
+            transform: translateY(40px) scale(0.96);
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        #identityModal.active .identity-card {
+            transform: translateY(0) scale(1);
+        }
+        .identity-brand {
+            font-family: 'Outfit', sans-serif;
+            font-size: 52px;
+            font-weight: 900;
+            margin-bottom: 12px;
+            letter-spacing: -2px;
+            background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .identity-brand span {
+            background: linear-gradient(135deg, var(--accent) 0%, #eab308 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .identity-tagline {
+            color: #94a3b8;
+            font-size: 16px;
+            margin-bottom: 40px;
+            font-weight: 500;
+            line-height: 1.5;
+        }
+        .identity-input {
+            width: 100%;
+            padding: 16px 20px;
+            background: rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            color: #fff;
+            font-size: 16px;
+            font-family: 'Inter', sans-serif;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+        .identity-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: rgba(0,0,0,0.4);
+            box-shadow: 0 0 0 4px rgba(250, 204, 21, 0.1);
+        }
+        .identity-input::placeholder {
+            color: rgba(255,255,255,0.3);
+        }
+        .btn-identity-wrapper {
+            position: relative;
+            border-radius: 18px;
+            background: linear-gradient(90deg, var(--accent), #eab308, var(--accent));
+            background-size: 200% auto;
+            padding: 2px;
+            animation: gradientBorder 3s linear infinite;
+        }
+        .btn-identity {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff;
+            color: #0f172a;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            font-size: 16px;
+            border: none;
+            border-radius: 16px;
+            padding: 16px 24px;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .btn-identity:hover {
+            background: #f8fafc;
+            transform: scale(0.98);
+        }
+
     </style>
 </head>
 <body>
@@ -4452,19 +4591,25 @@
     </div>
 
     <!-- IDENTITY INITIALIZATION MODAL -->
-    <div class="glass-modal-overlay" id="identityModal" style="z-index: 9999;">
-        <div class="glass-modal-container" style="max-width: 380px;">
-            <h3 class="modal-title" style="text-align: center; margin-bottom: 12px;">Initialize Partner Identity</h3>
-            <p style="color: var(--text-muted); font-size: 13px; text-align: center; line-height: 1.5; margin-bottom: 24px;">
-                Enter your name to generate your unique EliteX Virtual Card and start earning rewards.
-            </p>
+    <div id="identityModal">
+        <div class="identity-card">
+            <div class="identity-brand">Elite<span>X</span></div>
+            <div class="identity-tagline">Exclusive marketing command center.<br>Initialize your partner identity.</div>
+            
             <form id="identityForm" onsubmit="handleIdentitySubmit(event)">
-                <div class="input-group" style="margin-bottom: 20px;">
-                    <label>Full Name</label>
-                    <input type="text" id="identityName" placeholder="e.g. Vikram Singh" required style="padding: 14px;">
+                <input type="text" id="identityName" class="identity-input" placeholder="Enter your full name" required autocomplete="off">
+                
+                <div class="btn-identity-wrapper">
+                    <button type="submit" class="btn-identity">
+                        Generate Virtual Card
+                    </button>
                 </div>
-                <button type="submit" style="width: 100%; padding: 14px; background: var(--accent); color: #000; border: none; border-radius: 12px; font-weight: 700; cursor: pointer; transition: 0.3s;">Generate Partner ID & Card</button>
             </form>
+
+            <p style="margin-top: 32px; font-size: 12px; color: rgba(255,255,255,0.4); font-weight: 500; line-height: 1.6;">
+                By continuing, you agree to our<br>
+                <a href="#" style="color: var(--accent); text-decoration: none;">Terms of Service</a> & <a href="#" style="color: var(--accent); text-decoration: none;">Privacy Policy</a>.
+            </p>
         </div>
     </div>
 
