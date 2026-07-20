@@ -2803,6 +2803,7 @@
             color: var(--accent);
             border: 1px solid rgba(250, 204, 21, 0.15);
         }
+
     </style>
 </head>
 <body>
@@ -3820,133 +3821,7 @@
         </div>
     </div>
 
-        <div id="affiliateSection" class="content-section" style="padding-bottom: 80px;">
-            
-            <div id="appliedReferralNotice" style="display:none; background:linear-gradient(135deg, rgba(74,222,128,0.1), rgba(15,23,42,0.4)); border:1px solid rgba(74,222,128,0.2); padding:16px; border-radius:12px; margin-bottom:20px;">
-                <div style="font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px;">You were referred by</div>
-                <div id="appliedReferralNoticeCode" style="font-size:18px; font-weight:800; color:#4ade80;"></div>
-            </div>
 
-
-            <!-- Affiliate Stats Card -->
-            <div class="milestone-card" style="background: linear-gradient(135deg, rgba(250, 204, 21, 0.1) 0%, rgba(15, 23, 42, 0.4) 100%); border-color: rgba(250, 204, 21, 0.2);">
-                <div class="milestone-title-row">
-                    <span class="milestone-title">
-                        <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; stroke: var(--accent); fill: none; stroke-width: 2;"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-                        Affiliate Earnings
-                    </span>
-                    <span class="milestone-reward-text" style="color: var(--accent); font-weight: 800;">5% Lifetime Bonus</span>
-                </div>
-                
-                <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 15px;">
-                    <div>
-                        <span class="card-meta-label" style="font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Total Referrals Payout</span>
-                        <div style="font-size: 28px; font-weight: 800; color: #fff; margin-top: 5px;" id="affiliateEarningsVal">₹ 2,750.00</div>
-                    </div>
-                    <div style="text-align: right;">
-                        <span class="card-meta-label" style="font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Active / Total Referred</span>
-                        <div style="font-size: 18px; font-weight: 700; color: var(--accent); margin-top: 5px;" id="affiliateReferredCountVal">0 / 0</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Referral Link and Code Sharing Card -->
-            <div class="milestone-card" style="padding: 20px;">
-                <div class="milestone-title-row" style="margin-bottom: 15px;">
-                    <span class="milestone-title">
-                        <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; stroke: var(--accent); fill: none; stroke-width: 2;"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg>
-                        Share Your Referral Link
-                    </span>
-                </div>
-
-                <!-- Referral Link Input & Copy Button -->
-                <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px;">
-                    <label style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Referral Link</label>
-                    <div style="display: flex; gap: 8px; width: 100%;">
-                        <input type="text" id="referralLinkInput" readonly value="https://elitex.agency/join?ref=EX-USR-8432" 
-                            style="flex: 1; background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 10px 14px; color: #fff; font-family: monospace; font-size: 12px; outline: none; text-overflow: ellipsis; white-space: nowrap;">
-                        <button onclick="copyReferralLink()" id="copyLinkBtn"
-                            style="background: linear-gradient(135deg, #fde047, #eab308); border: none; border-radius: 12px; padding: 0 16px; font-weight: 700; color: #07090f; cursor: pointer; transition: all 0.3s; font-size: 12px; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 4px 12px var(--accent-glow); height: 38px;">
-                            <svg viewBox="0 0 24 24" style="width: 14px; height: 14px; stroke: #07090f; stroke-width: 2.5; fill: none;"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-                            <span>Copy</span>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Referral Code Input & Copy Button -->
-                <div style="display: flex; flex-direction: column; gap: 8px;">
-                    <label style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Referral Code</label>
-                    <div style="display: flex; gap: 8px; width: 100%;">
-                        <input type="text" id="referralCodeInput" readonly value="EX-USR-8432" 
-                            style="flex: 1; background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 10px 14px; color: #fff; font-family: monospace; font-size: 12px; outline: none; text-overflow: ellipsis; white-space: nowrap;">
-                        <button onclick="copyReferralCode()" id="copyCodeBtn"
-                            style="background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px; padding: 0 16px; font-weight: 700; color: #fff; cursor: pointer; transition: all 0.3s; font-size: 12px; display: flex; align-items: center; justify-content: center; gap: 6px; height: 38px;">
-                            <svg viewBox="0 0 24 24" style="width: 14px; height: 14px; stroke: #fff; stroke-width: 2.5; fill: none;"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-                            <span>Copy</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- How Referral Program Works (Steps Grid) -->
-            <h4 style="color:#fff; font-size:12px; font-weight:800; text-transform:uppercase; letter-spacing:1px; margin: 24px 0 12px 4px;">How it works</h4>
-            <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px;">
-                <div class="milestone-card" style="padding: 16px; margin-bottom: 0; display: flex; gap: 14px; align-items: center;">
-                    <div style="width: 42px; height: 42px; border-radius: 12px; background: rgba(250, 204, 21, 0.1); border: 1px solid rgba(250, 204, 21, 0.2); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                        <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; stroke: var(--accent); fill: none; stroke-width: 2;"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg>
-                    </div>
-                    <div>
-                        <h5 style="color:#fff; font-size:13px; font-weight:700; margin:0 0 4px 0;">1. Share Invite Link</h5>
-                        <p style="color:var(--text-muted); font-size:11px; margin:0; line-height:1.4;">Send your unique referral link to creators, influencers, or friends.</p>
-                    </div>
-                </div>
-
-                <div class="milestone-card" style="padding: 16px; margin-bottom: 0; display: flex; gap: 14px; align-items: center;">
-                    <div style="width: 42px; height: 42px; border-radius: 12px; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.2); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                        <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; stroke: #3b82f6; fill: none; stroke-width: 2;"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-                    </div>
-                    <div>
-                        <h5 style="color:#fff; font-size:13px; font-weight:700; margin:0 0 4px 0;">2. They Complete Campaigns</h5>
-                        <p style="color:var(--text-muted); font-size:11px; margin:0; line-height:1.4;">Your referred friends join EliteX and earn money by completing available tasks.</p>
-                    </div>
-                </div>
-
-                <div class="milestone-card" style="padding: 16px; margin-bottom: 0; display: flex; gap: 14px; align-items: center;">
-                    <div style="width: 42px; height: 42px; border-radius: 12px; background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.2); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                        <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; stroke: #22c55e; fill: none; stroke-width: 2;"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
-                    </div>
-                    <div>
-                        <h5 style="color:#fff; font-size:13px; font-weight:700; margin:0 0 4px 0;">3. Get Paid Lifetime Bonus</h5>
-                        <p style="color:var(--text-muted); font-size:11px; margin:0; line-height:1.4;">Get ₹250 flat on signup + 5% lifetime commission credited directly to your wallet!</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Referred Friends List -->
-            <h4 style="color:#fff; font-size:12px; font-weight:800; text-transform:uppercase; letter-spacing:1px; margin: 24px 0 12px 4px;">My Referred Friends</h4>
-            <div class="milestone-card" style="padding: 0; overflow: hidden; margin-bottom: 40px;">
-                <div style="overflow-x: auto; width:100%;">
-                    <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 12px;">
-                        <thead>
-                            <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.05); background: rgba(255, 255, 255, 0.02);">
-                                <th style="padding: 14px 16px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; font-size: 10px; letter-spacing: 0.5px;">User</th>
-                                <th style="padding: 14px 16px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; font-size: 10px; letter-spacing: 0.5px;">Join Date</th>
-                                <th style="padding: 14px 16px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; font-size: 10px; letter-spacing: 0.5px; text-align: right;">Commission</th>
-                                <th style="padding: 14px 16px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; font-size: 10px; letter-spacing: 0.5px; text-align: center;">Status</th>
-                            </tr>
-                        </thead>
-                        <tbody id="affiliateReferredListBody">
-                            <tr>
-                                <td colspan="4" style="padding: 30px; text-align: center; color: var(--text-muted); font-size: 12px; font-weight: 600;">
-                                    No referred friends yet. Share your link to start earning!
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-        </div>
     </div>
 
     <!-- Professional Bottom Menu -->
@@ -3974,15 +3849,7 @@
                 <span>Earn</span>
             </div>
 
-            <div class="menu-item" onclick="switchTab(this, 'affiliateSection', 'Affiliate Hub', 'Partner Network')">
-                <svg viewBox="0 0 24 24">
-                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                    <circle cx="9" cy="7" r="4"></circle>
-                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                </svg>
-                <span>Affiliate</span>
-            </div>
+
 
             <div class="menu-item" onclick="switchTab(this, 'walletSection', '', '')">
                 <svg viewBox="0 0 24 24">
@@ -4336,19 +4203,7 @@
                     </div>
                 </div>
 
-                <!-- Referral Code Section -->
-                <div style="display:flex; flex-direction:column; gap:8px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.04); padding:12px 14px; border-radius:12px;">
-                    <div style="display:flex; justify-content:space-between; align-items:center;">
-                        <span style="font-size:11px; color:var(--text-muted); font-weight:600;">Invited By (Referral Code)</span>
-                        <span id="appliedReferralBadge" style="font-size:9.5px; font-weight:800; color:#4ade80; background:rgba(74,222,128,0.15); padding:2px 6px; border-radius:4px; display:none;">Applied</span>
-                    </div>
-                    <div id="referralInputContainer" style="display:flex; gap:8px;">
-                        <input type="text" id="profileReferralInput" placeholder="Enter referral code" style="flex:1; height:34px; font-size:12px; padding:0 12px; border-radius:8px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff; outline:none;" autocomplete="off">
-                        <button type="button" id="profileReferralSaveBtn" onclick="window.saveProfileReferralCode()" style="padding:0 14px; height:34px; font-size:11px; font-weight:700; background:rgba(56,189,248,0.15); border:1px solid rgba(56,189,248,0.3); color:#38bdf8; border-radius:8px; cursor:pointer;">
-                            Apply
-                        </button>
-                    </div>
-                </div>
+
                 
                 <!-- Streak Count -->
                 <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.04); padding:10px 14px; border-radius:12px;">
@@ -4522,10 +4377,7 @@
                     <span>Earnings & Streak</span>
                 </div>
                 
-                <div class="drawer-link" id="drawerLink_affiliate" onclick="window.drawerNavigate('affiliateSection', 'Affiliate Hub', 'Partner Network', 'drawerLink_affiliate')">
-                    <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-                    <span>Affiliate Partner</span>
-                </div>
+
                 
                 <div class="drawer-link" id="drawerLink_wallet" onclick="window.drawerNavigate('walletSection', '', '', 'drawerLink_wallet')">
                     <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
@@ -9953,7 +9805,7 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-
+        
         // Real-time listener for campaigns
         const campaignsContainer = document.getElementById('campaignsContainer');
         const q = query(collection(db, "campaigns"));
