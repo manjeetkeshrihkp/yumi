@@ -108,10 +108,53 @@
             right: 0px;
             width: 8px;
             height: 8px;
-            background-color: #ef4444; 
+            background-color: #38bdf8; 
             border-radius: 50%;
             border: 2px solid #07090f;
+            display: none;
         }
+        @keyframes pulse-alert {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.7); }
+            70% { transform: scale(1.1); box-shadow: 0 0 0 6px rgba(56, 189, 248, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(56, 189, 248, 0); }
+        }
+        .notification-dot.active {
+            display: block;
+            animation: pulse-alert 2s infinite;
+        }
+
+        .notification-dropdown {
+            position: absolute;
+            top: 40px;
+            right: 0;
+            width: 300px;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            padding: 16px;
+            z-index: 1000;
+            display: none;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            cursor: default;
+        }
+        .notification-dropdown.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .notif-header { font-size: 14px; font-weight: 800; color: #fff; padding-bottom: 12px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); margin-bottom: 12px; text-align: left; }
+        .notif-item { display: flex; align-items: flex-start; gap: 12px; padding: 12px 10px; border-radius: 12px; transition: 0.2s; cursor: pointer; text-decoration: none; text-align: left; }
+        .notif-item:hover { background: rgba(255, 255, 255, 0.04); }
+        .notif-icon { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size:16px; background: rgba(255,255,255,0.05); color: var(--accent); }
+        .notif-content { flex: 1; }
+        .notif-title { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+        .notif-desc { font-size: 11px; color: var(--text-muted); line-height: 1.4; }
+        .notif-empty { text-align: center; color: var(--text-muted); font-size: 12px; padding: 20px 0; }
+
 
         .profile-avatar {
             width: 32px;
@@ -2963,12 +3006,19 @@
             </div>
 
             <div class="top-bar-right">
-                <div class="top-icon notification-wrapper">
+                <div class="top-icon notification-wrapper" id="userNotifBellIcon">
                     <svg viewBox="0 0 24 24">
                         <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
                         <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
                     </svg>
-                    <div class="notification-dot"></div>
+                    <div class="notification-dot" id="userNotifDot"></div>
+
+                    <div class="notification-dropdown" id="userNotifDropdown" onclick="event.stopPropagation()">
+                        <div class="notif-header">Notifications (<span id="userNotifCount">0</span>)</div>
+                        <div id="userNotifList">
+                            <div class="notif-empty">No new notifications</div>
+                        </div>
+                    </div>
                 </div>
                 <div class="profile-avatar" onclick="window.openProfileDetailsModal()" style="cursor:pointer;">
                     <svg viewBox="0 0 24 24">
@@ -4382,7 +4432,7 @@
     <!-- INSTAGRAM CONNECT & VERIFICATION MODAL -->
     <div class="glass-modal-overlay" id="instagramConnectModal" style="z-index: 10005;">
         <div class="glass-modal-container" style="max-width: 420px; padding: 24px; max-height: 90vh; overflow-y: auto; position: relative;">
-            <button class="modal-close-btn" onclick="window.closeInstagramConnectModal()" style="display:none;" id="igModalCloseBtn">
+            <button class="modal-close-btn" onclick="window.closeInstagramConnectModal()" id="igModalCloseBtn">
                 <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
             </button>
 
@@ -10192,6 +10242,7 @@
                     if (typeof window.updateLiveSessionState === 'function') {
                         const { balancesChanged, instaChanged } = window.updateLiveSessionState(data);
                         if (balancesChanged || instaChanged) {
+                            if (typeof window.updateUserNotifications === 'function') window.updateUserNotifications();
                             if (balancesChanged) {
                                 if (typeof window.updateWalletUI === 'function') window.updateWalletUI();
                                 if (typeof window.updateMilestoneUI === 'function') window.updateMilestoneUI();
@@ -11711,6 +11762,7 @@
                 window.renderUserSubmissionsList();
                 if (window.renderHomeActiveBriefs) window.renderHomeActiveBriefs();
                 if (window.renderCampaignList) window.renderCampaignList();
+                if (typeof window.updateUserNotifications === 'function') window.updateUserNotifications();
             }, (error) => {
                 console.error("Submissions Firebase Error:", error);
                 if (!window.userSubmissions || window.userSubmissions.length === 0) {
@@ -12484,6 +12536,7 @@
                         if (typeof window.updatePayoutTimelineUI === 'function') window.updatePayoutTimelineUI();
                     }
                 }
+                if (typeof window.updateUserNotifications === 'function') window.updateUserNotifications();
             });
 
             // 3. Listen for Account Adjustments
@@ -12705,6 +12758,169 @@
                 }
             }
         });
+        window.toggleUserNotifications = function(event) {
+            if (event) event.stopPropagation();
+            const dropdown = document.getElementById('userNotifDropdown');
+            if (dropdown) {
+                dropdown.classList.toggle('active');
+            }
+        };
+
+        const userBellIconEl = document.getElementById('userNotifBellIcon');
+        if (userBellIconEl) {
+            userBellIconEl.addEventListener('click', function(e) {
+                window.toggleUserNotifications(e);
+            });
+        }
+
+        document.addEventListener('click', function(e) {
+            const dropdown = document.getElementById('userNotifDropdown');
+            if (dropdown && dropdown.classList.contains('active')) {
+                dropdown.classList.remove('active');
+            }
+        });
+
+        window.updateUserNotifications = function() {
+            const sessionStr = localStorage.getItem('eliteX_user_session');
+            if (!sessionStr) return;
+            const session = JSON.parse(sessionStr);
+
+            const pendingSubs = (window.userSubmissions || []).filter(s => s.status === 'pending');
+            const completedSubs = (window.userSubmissions || []).filter(s => s.status === 'completed' || s.status === 'approved' || s.status === 'rejected');
+            
+            let pendingWithdrawalsCount = session.activeWithdrawalPending ? 1 : 0;
+            const completedTxs = (session.transactions || []).filter(t => t.status === 'completed' || t.status === 'rejected');
+            
+            let instagramPendingCount = 0;
+            let instagramCompletedCount = 0;
+            let igStatus = 'none';
+            if (session.instagramHandle) {
+                igStatus = session.instagramVerificationStatus || (session.instagramVerified ? 'verified' : 'pending');
+                if (igStatus === 'pending') {
+                    instagramPendingCount = 1;
+                } else if (igStatus === 'approved' || igStatus === 'verified' || igStatus === 'rejected') {
+                    instagramCompletedCount = 1;
+                }
+            }
+            
+            const recentCompletedSubs = completedSubs.slice(0, 1); 
+            const recentTxs = completedTxs.slice(0, 1);
+            
+            const totalPending = pendingSubs.length + pendingWithdrawalsCount + instagramPendingCount;
+            const totalNotifications = totalPending + recentCompletedSubs.length + recentTxs.length + instagramCompletedCount;
+            
+            const dot = document.getElementById('userNotifDot');
+            const countSpan = document.getElementById('userNotifCount');
+            const listDiv = document.getElementById('userNotifList');
+            
+            if (dot) {
+                if (totalPending > 0) {
+                    dot.style.display = 'block';
+                    dot.classList.add('active');
+                } else if (totalNotifications > 0) {
+                    dot.style.display = 'block';
+                    dot.classList.remove('active');
+                } else {
+                    dot.style.display = 'none';
+                    dot.classList.remove('active');
+                }
+            }
+            if (countSpan) countSpan.innerText = totalNotifications;
+            
+            if (listDiv) {
+                if (totalNotifications === 0) {
+                    listDiv.innerHTML = '<div class="notif-empty">No new notifications</div>';
+                } else {
+                    let html = '';
+                    
+                    if (instagramPendingCount > 0) {
+                        html += `
+                            <div class="notif-item" onclick="window.openProfileDetailsModal(); window.toggleUserNotifications()">
+                                <div class="notif-icon"><svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></div>
+                                <div class="notif-content">
+                                    <div class="notif-title">Instagram Verification Pending</div>
+                                    <div class="notif-desc">Your profile is under review</div>
+                                </div>
+                            </div>
+                        `;
+                    }
+                    
+                    if (pendingSubs.length > 0) {
+                        html += `
+                            <div class="notif-item" onclick="window.toggleUserNotifications()">
+                                <div class="notif-icon"><svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg></div>
+                                <div class="notif-content">
+                                    <div class="notif-title">${pendingSubs.length} Submission${pendingSubs.length > 1 ? 's' : ''} Under Review</div>
+                                    <div class="notif-desc">We are verifying your campaign proof</div>
+                                </div>
+                            </div>
+                        `;
+                    }
+                    
+                    if (pendingWithdrawalsCount > 0) {
+                        html += `
+                            <div class="notif-item" onclick="window.toggleUserNotifications()">
+                                <div class="notif-icon"><svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg></div>
+                                <div class="notif-content">
+                                    <div class="notif-title">Payout Request Processing</div>
+                                    <div class="notif-desc">Your withdrawal is being processed</div>
+                                </div>
+                            </div>
+                        `;
+                    }
+                    
+                    if (instagramCompletedCount > 0) {
+                        const isIgApproved = (igStatus === 'approved' || igStatus === 'verified');
+                        const icon = isIgApproved ? '<svg viewBox="0 0 24 24" width="18" height="18" stroke="#10b981" stroke-width="2" fill="none"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>' : '<svg viewBox="0 0 24 24" width="18" height="18" stroke="#ef4444" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>';
+                        const title = isIgApproved ? 'Instagram Verification Approved' : 'Instagram Verification Rejected';
+                        const desc = isIgApproved ? 'You can now earn from campaigns' : 'Please check your profile details';
+                        html += `
+                            <div class="notif-item" onclick="window.openProfileDetailsModal(); window.toggleUserNotifications()">
+                                <div class="notif-icon" style="background:rgba(255,255,255,0.05);">${icon}</div>
+                                <div class="notif-content">
+                                    <div class="notif-title">${title}</div>
+                                    <div class="notif-desc">${desc}</div>
+                                </div>
+                            </div>
+                        `;
+                    }
+                    
+                    recentCompletedSubs.forEach(sub => {
+                        const isAppr = sub.status === 'completed' || sub.status === 'approved';
+                        const icon = isAppr ? '<svg viewBox="0 0 24 24" width="18" height="18" stroke="#10b981" stroke-width="2" fill="none"><polyline points="20 6 9 17 4 12"></polyline></svg>' : '<svg viewBox="0 0 24 24" width="18" height="18" stroke="#ef4444" stroke-width="2" fill="none"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
+                        const title = isAppr ? 'Submission Approved' : 'Submission Rejected';
+                        const desc = isAppr ? `Earned ₹${sub.reward}` : 'Your campaign asset was rejected';
+                        html += `
+                            <div class="notif-item" onclick="window.toggleUserNotifications()">
+                                <div class="notif-icon" style="background:rgba(255,255,255,0.05);">${icon}</div>
+                                <div class="notif-content">
+                                    <div class="notif-title">${title}</div>
+                                    <div class="notif-desc">${desc}</div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    
+                    recentTxs.forEach(tx => {
+                        const isAppr = tx.status === 'completed';
+                        const icon = isAppr ? '<svg viewBox="0 0 24 24" width="18" height="18" stroke="#10b981" stroke-width="2" fill="none"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>' : '<svg viewBox="0 0 24 24" width="18" height="18" stroke="#ef4444" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>';
+                        const title = isAppr ? 'Payout Successful' : 'Payout Rejected';
+                        const desc = isAppr ? 'Transferred to your bank' : 'Refunded to your available balance';
+                        html += `
+                            <div class="notif-item" onclick="window.toggleUserNotifications()">
+                                <div class="notif-icon" style="background:rgba(255,255,255,0.05);">${icon}</div>
+                                <div class="notif-content">
+                                    <div class="notif-title">${title}</div>
+                                    <div class="notif-desc">${desc}</div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    
+                    listDiv.innerHTML = html;
+                }
+            }
+        };
     </script>
 </body>
 </html>
