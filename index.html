@@ -4635,38 +4635,62 @@
             <div id="identityStep1">
                 <input type="text" id="identityName" class="identity-input" placeholder="Enter your full name" autocomplete="off">
                 <div class="btn-identity-wrapper">
-                    <button type="button" class="btn-identity" onclick="goToIdentityStep2()">Continue</button>
+                    <button type="button" class="btn-identity" onclick="goToIdentityStep(2)">Continue</button>
                 </div>
             </div>
 
-            <div id="identityStep2" style="display: none;">
+            <!-- STEP 2: Follow -->
+            <div id="identityStep2" style="display: none; text-align: left;">
+                <p style="color: #cbd5e1; font-size: 14px; margin-bottom: 20px; text-align: center;">Step 1: Follow Us</p>
+                <div style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 16px; margin-bottom: 20px; text-align:center;">
+                    <a href="https://instagram.com/elitex_asia" target="_blank" style="display:flex; align-items:center; justify-content:center; gap:6px; width:100%; height:44px; background:linear-gradient(45deg, #f09433, #dc2743, #bc1888); border-radius:10px; color:#fff; text-decoration:none; font-size:13px; font-weight:800; box-shadow:0 4px 12px rgba(220,39,67,0.3);">
+                        <svg viewBox="0 0 24 24" style="width:16px; height:16px;" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" ry="5" stroke="#ffffff" stroke-width="2"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" stroke="#ffffff" stroke-width="2"/></svg>
+                        Follow @elitex_asia
+                    </a>
+                </div>
+                <div class="btn-identity-wrapper">
+                    <button type="button" class="btn-identity" onclick="goToIdentityStep(3)">I have followed -> Next</button>
+                </div>
+            </div>
+
+            <!-- STEP 3: Bio Mention -->
+            <div id="identityStep3" style="display: none; text-align: left;">
+                <p style="color: #cbd5e1; font-size: 14px; margin-bottom: 20px; text-align: center;">Step 2: Add Bio Mention</p>
+                <div style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 16px; margin-bottom: 20px; text-align:center;">
+                    <span style="font-size:14px; font-weight:800; color:#facc15;">A Part of @elitex_asia</span>
+                    <button type="button" onclick="window.copyBioMentionText()" style="display:block; margin:14px auto 0; background:rgba(236,72,153,0.2); border:1px solid rgba(236,72,153,0.4); color:#ec4899; padding:6px 14px; border-radius:6px; font-size:11px; font-weight:800; cursor:pointer;">
+                        Copy Bio Text
+                    </button>
+                </div>
+                <div class="btn-identity-wrapper">
+                    <button type="button" class="btn-identity" onclick="goToIdentityStep(4)">Added to Bio -> Next</button>
+                </div>
+            </div>
+
+            <!-- STEP 4: Send Code -->
+            <div id="identityStep4" style="display: none; text-align: left;">
+                <p style="color: #cbd5e1; font-size: 14px; margin-bottom: 20px; text-align: center;">Step 3: Send DM Code</p>
+                <div style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 16px; margin-bottom: 20px; text-align:center;">
+                    <span style="font-size:18px; font-weight:900; color:#38bdf8; letter-spacing:2px;" id="identityVerifCode">EX-00000</span>
+                    <button type="button" onclick="window.copyIdentityVerifCode()" style="display:block; margin:14px auto 0; background:rgba(56,189,248,0.2); border:1px solid rgba(56,189,248,0.4); color:#38bdf8; padding:6px 14px; border-radius:6px; font-size:11px; font-weight:800; cursor:pointer;">
+                        Copy Code
+                    </button>
+                    <a href="https://ig.me/m/elitex_asia" target="_blank" style="display:flex; align-items:center; justify-content:center; gap:6px; width:100%; height:40px; background:rgba(56,189,248,0.12); border:1px solid rgba(56,189,248,0.3); border-radius:10px; color:#38bdf8; text-decoration:none; font-size:12px; font-weight:800; margin-top:14px;">
+                        <svg viewBox="0 0 24 24" style="width:16px; height:16px; fill:#38bdf8;"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/></svg>
+                        Open Instagram DM
+                    </a>
+                </div>
+                <div class="btn-identity-wrapper">
+                    <button type="button" class="btn-identity" onclick="goToIdentityStep(5)">Code Sent -> Next</button>
+                </div>
+            </div>
+
+            <!-- STEP 5: Add user insta id and submit -->
+            <div id="identityStep5" style="display: none; text-align: left;">
+                <p style="color: #cbd5e1; font-size: 14px; margin-bottom: 20px; text-align: center;">Final Step: Your Instagram Handle</p>
                 <input type="text" id="identityInsta" class="identity-input" placeholder="@instagram_handle" autocomplete="off">
                 <div class="btn-identity-wrapper">
-                    <button type="button" class="btn-identity" onclick="goToIdentityStep3()">Verify Account</button>
-                </div>
-            </div>
-
-            <div id="identityStep3" style="display: none; text-align: left;">
-                <p style="color: #cbd5e1; font-size: 14px; margin-bottom: 20px; text-align: center;">Complete these steps to verify your account:</p>
-                
-                <div style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 16px; margin-bottom: 20px;">
-                    <div style="display: flex; align-items: center; margin-bottom: 12px;">
-                        <div style="width: 24px; height: 24px; background: var(--accent); color: #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 12px; margin-right: 12px;">1</div>
-                        <div style="color: #fff; font-size: 14px;">Follow <b>@EliteX_Official</b> on Instagram</div>
-                    </div>
-                    <div style="display: flex; align-items: center; margin-bottom: 12px;">
-                        <div style="width: 24px; height: 24px; background: var(--accent); color: #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 12px; margin-right: 12px;">2</div>
-                        <div style="color: #fff; font-size: 14px;">Mention <b>@EliteX_Official</b> in your bio</div>
-                    </div>
-                    <div style="display: flex; align-items: center;">
-                        <div style="width: 24px; height: 24px; background: var(--accent); color: #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 12px; margin-right: 12px;">3</div>
-                        <div style="color: #fff; font-size: 14px;">Enter verification code below</div>
-                    </div>
-                </div>
-
-                <input type="text" id="identityOTP" class="identity-input" placeholder="Enter Verification Code" autocomplete="off" style="text-align: center;">
-                <div class="btn-identity-wrapper">
-                    <button type="button" class="btn-identity" onclick="handleIdentitySubmit(event)">Submit & Go to Pending</button>
+                    <button type="button" class="btn-identity" id="btnIdentitySubmit" onclick="handleIdentitySubmit(event)">Submit Profile</button>
                 </div>
             </div>
 
@@ -5223,45 +5247,61 @@
             localStorage.setItem('eliteX_user_session', JSON.stringify(data));
         }
 
-        window.goToIdentityStep2 = function() {
+        window.copyIdentityVerifCode = function() {
+            if (!instagramVerificationCode) instagramVerificationCode = generateInstaVerificationCode();
+            const code = instagramVerificationCode;
+            navigator.clipboard.writeText(code).then(() => {
+                if (typeof showToast === 'function') showToast(`Copied verification code: ${code}! Send it via DM to @elitex_asia`, "success");
+                else alert(`Copied verification code: ${code}! Send it via DM to @elitex_asia`);
+            }).catch(() => {
+                alert(`Copied verification code: ${code}! Send it via DM to @elitex_asia`);
+            });
+        };
+
+        window.goToIdentityStep = function(step) {
             const nameInput = document.getElementById('identityName');
-            if (!nameInput.value.trim()) {
+            
+            if (step > 1 && !nameInput.value.trim()) {
                 alert("Please enter your full name.");
                 return;
             }
-            document.getElementById('identityStep1').style.display = 'none';
-            document.getElementById('identityStep2').style.display = 'block';
-        };
 
-        window.goToIdentityStep3 = function() {
-            const instaInput = document.getElementById('identityInsta');
-            if (!instaInput.value.trim()) {
-                alert("Please enter your Instagram handle.");
-                return;
+            if (step === 4) {
+                if (!instagramVerificationCode) instagramVerificationCode = generateInstaVerificationCode();
+                const codeEl = document.getElementById('identityVerifCode');
+                if (codeEl) codeEl.innerText = instagramVerificationCode;
             }
-            document.getElementById('identityStep2').style.display = 'none';
-            document.getElementById('identityStep3').style.display = 'block';
+            
+            for (let i = 1; i <= 5; i++) {
+                const el = document.getElementById('identityStep' + i);
+                if (el) el.style.display = (i === step) ? 'block' : 'none';
+            }
         };
 
         window.handleIdentitySubmit = async function(event) {
             if(event) event.preventDefault();
             const nameInput = document.getElementById('identityName');
             const instaInput = document.getElementById('identityInsta');
-            const otpInput = document.getElementById('identityOTP');
             
             const name = nameInput.value.trim();
             const insta = instaInput.value.trim();
-            const otp = otpInput.value.trim();
             
-            if (!otp) {
-                alert("Please enter the verification code.");
+            const check = validateInstagramAccount(insta);
+            if (!check.valid) {
+                alert(check.reason);
                 return;
             }
             
+            const btn = document.getElementById('btnIdentitySubmit');
+            if (btn) {
+                btn.innerText = "Submitting...";
+                btn.disabled = true;
+            }
+            
             userName = name;
-            instagramHandle = insta.startsWith('@') ? insta : '@' + insta;
-            instagramVerified = false; // Changed to false based on user flow
-            instagramVerificationStatus = 'pending'; // Changed to pending
+            instagramHandle = check.handle;
+            instagramVerified = false;
+            instagramVerificationStatus = 'pending';
 
             availableBalance = 0.00;
             pendingBalance = 0.00;
@@ -5314,12 +5354,10 @@
             document.getElementById('identityModal').classList.remove('active');
             setTimeout(() => {
                 document.getElementById('identityModal').style.display = 'none';
-                
-                // Prompt IG Verification if not pending or verified
-                if (!instagramVerified && instagramVerificationStatus !== 'pending') {
-                    if (typeof window.promptConnectInstagram === 'function') {
-                        window.promptConnectInstagram();
-                    }
+                if (typeof showToast === 'function') {
+                    showToast(`Verification Submitted! Our team is verifying your profile.`, "success");
+                } else {
+                    alert(`Verification Submitted! Our team is verifying your profile.`);
                 }
             }, 500);
             
