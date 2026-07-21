@@ -5330,6 +5330,7 @@
                     userName,
                     instagramHandle,
                     instagramVerificationStatus,
+                    instagramVerificationCode, // Added this field
                     availableBalance,
                     pendingBalance,
                     withdrawnBalance,
@@ -10202,11 +10203,34 @@
                         window.withdrawnBalance = data.withdrawnBalance;
                         balancesChanged = true;
                     }
+
+                    // Sync Instagram Verification from Admin
+                    let instaChanged = false;
+                    if (data.instagramVerified !== undefined && data.instagramVerified !== window.instagramVerified) {
+                        window.instagramVerified = data.instagramVerified;
+                        instaChanged = true;
+                    }
+                    if (data.instagramVerificationStatus !== undefined && data.instagramVerificationStatus !== window.instagramVerificationStatus) {
+                        window.instagramVerificationStatus = data.instagramVerificationStatus;
+                        instaChanged = true;
+                    }
+                    if (data.instagramFollowers !== undefined && data.instagramFollowers !== window.instagramFollowers) {
+                        window.instagramFollowers = data.instagramFollowers;
+                        instaChanged = true;
+                    }
                     
-                    if (balancesChanged) {
+                    if (balancesChanged || instaChanged) {
                         window.saveUserSession();
-                        if (typeof window.updateWalletUI === 'function') window.updateWalletUI();
-                        if (typeof window.updateMilestoneUI === 'function') window.updateMilestoneUI();
+                        if (balancesChanged) {
+                            if (typeof window.updateWalletUI === 'function') window.updateWalletUI();
+                            if (typeof window.updateMilestoneUI === 'function') window.updateMilestoneUI();
+                        }
+                        if (instaChanged) {
+                            const modal = document.getElementById('profileDetailsModal');
+                            if (modal && modal.classList.contains('active') && typeof window.openProfileDetailsModal === 'function') {
+                                window.openProfileDetailsModal();
+                            }
+                        }
                     }
                 }
             });
