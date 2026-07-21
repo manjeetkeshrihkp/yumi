@@ -4381,8 +4381,8 @@
 
     <!-- INSTAGRAM CONNECT & VERIFICATION MODAL -->
     <div class="glass-modal-overlay" id="instagramConnectModal" style="z-index: 10005;">
-        <div class="glass-modal-container" style="max-width: 420px; padding: 24px; max-height: 90vh; overflow-y: auto;">
-            <button class="modal-close-btn" onclick="window.closeInstagramConnectModal()">
+        <div class="glass-modal-container" style="max-width: 420px; padding: 24px; max-height: 90vh; overflow-y: auto; position: relative;">
+            <button class="modal-close-btn" onclick="window.closeInstagramConnectModal()" style="display:none;" id="igModalCloseBtn">
                 <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
             </button>
 
@@ -4395,80 +4395,116 @@
                         <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
                     </svg>
                 </div>
-                <h3 style="margin:0 0 6px 0; font-size:18px; font-weight:900; color:#fff;">Connect Instagram Account</h3>
+                <h3 style="margin:0 0 6px 0; font-size:18px; font-weight:900; color:#fff;">Instagram Verification</h3>
                 <p style="margin:0; font-size:11px; color:var(--text-muted); line-height:1.4;">
-                    Complete the 3 verification steps to link your Instagram profile and enable creator payouts.
+                    Complete these quick steps to verify your account and enable payouts.
                 </p>
+                <!-- Step Indicator -->
+                <div style="display:flex; justify-content:center; gap:6px; margin-top:16px;" id="igStepIndicators">
+                    <div style="width:24px; height:4px; border-radius:2px; background:var(--accent);"></div>
+                    <div style="width:24px; height:4px; border-radius:2px; background:rgba(255,255,255,0.2);"></div>
+                    <div style="width:24px; height:4px; border-radius:2px; background:rgba(255,255,255,0.2);"></div>
+                    <div style="width:24px; height:4px; border-radius:2px; background:rgba(255,255,255,0.2);"></div>
+                </div>
             </div>
 
-            <!-- Verification Instructions Accordion/Steps -->
-            <div style="display:flex; flex-direction:column; gap:14px; margin-bottom:20px;">
+            <!-- Verification Instructions Wizard -->
+            <div style="position:relative; min-height: 200px;">
                 
-                <!-- STEP 1: Bio Mention & Follow -->
-                <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:14px; padding:14px;">
-                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
-                        <div style="width:22px; height:22px; border-radius:50%; background:#ec4899; color:#fff; font-size:11px; font-weight:900; display:flex; align-items:center; justify-content:center; flex-shrink:0;">1</div>
-                        <span style="font-size:12px; font-weight:800; color:#fff;">Follow & Add Bio Mention</span>
-                    </div>
+                <!-- STEP 1: Follow -->
+                <div id="igStep1" style="display:block; animation: fadeIn 0.3s ease;">
+                    <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:14px; padding:20px; text-align:center;">
+                        <h4 style="color:#fff; font-size:14px; margin-bottom:12px;">Step 1: Follow Us</h4>
+                        <p style="font-size:12px; color:var(--text-muted); margin-bottom:20px;">Please follow our official Instagram page to proceed with the verification.</p>
+                        
+                        <a href="https://instagram.com/elitex_asia" target="_blank" style="display:flex; align-items:center; justify-content:center; gap:6px; width:100%; height:44px; background:linear-gradient(45deg, #f09433, #dc2743, #bc1888); border-radius:10px; color:#fff; text-decoration:none; font-size:13px; font-weight:800; margin-bottom:20px; box-shadow:0 4px 12px rgba(220,39,67,0.3);">
+                            <svg viewBox="0 0 24 24" style="width:16px; height:16px;" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" ry="5" stroke="#ffffff" stroke-width="2"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" stroke="#ffffff" stroke-width="2"/></svg>
+                            Follow @elitex_asia
+                        </a>
 
-                    <!-- Follow Button -->
-                    <a href="https://instagram.com/elitex_asia" target="_blank" style="display:flex; align-items:center; justify-content:center; gap:6px; width:100%; height:36px; background:linear-gradient(45deg, #f09433, #dc2743, #bc1888); border-radius:10px; color:#fff; text-decoration:none; font-size:11.5px; font-weight:800; margin-bottom:10px; box-shadow:0 4px 12px rgba(220,39,67,0.3);">
-                        <svg viewBox="0 0 24 24" style="width:14px; height:14px;" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" ry="5" stroke="#ffffff" stroke-width="2"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" stroke="#ffffff" stroke-width="2"/></svg>
-                        Follow @elitex_asia on Instagram
-                    </a>
-
-                    <!-- Bio Text Copy Box -->
-                    <div style="font-size:10.5px; color:var(--text-muted); margin-bottom:6px;">Add this text in your Instagram Bio:</div>
-                    <div style="display:flex; align-items:center; justify-content:space-between; background:rgba(15,23,42,0.8); border:1px solid rgba(236,72,153,0.3); border-radius:10px; padding:8px 12px;">
-                        <span style="font-size:12px; font-weight:800; color:#facc15;" id="bioMentionText">A Part of @elitex_asia</span>
-                        <button type="button" onclick="window.copyBioMentionText()" style="background:rgba(236,72,153,0.2); border:1px solid rgba(236,72,153,0.4); color:#ec4899; padding:4px 10px; border-radius:6px; font-size:10.5px; font-weight:800; cursor:pointer;">
-                            Copy Bio Text
+                        <button type="button" onclick="window.nextIgStep(2)" style="width:100%; height:44px; background:var(--accent); color:#000; border:none; border-radius:10px; font-weight:800; font-size:14px; cursor:pointer;">
+                            I have followed -> Next
                         </button>
                     </div>
                 </div>
 
-                <!-- STEP 2: Unique Verification Code & DM -->
-                <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:14px; padding:14px;">
-                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
-                        <div style="width:22px; height:22px; border-radius:50%; background:#38bdf8; color:#0f172a; font-size:11px; font-weight:900; display:flex; align-items:center; justify-content:center; flex-shrink:0;">2</div>
-                        <span style="font-size:12px; font-weight:800; color:#fff;">Send Unique Code to @elitex_asia</span>
-                    </div>
+                <!-- STEP 2: Bio Mention -->
+                <div id="igStep2" style="display:none; animation: fadeIn 0.3s ease;">
+                    <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:14px; padding:20px; text-align:center;">
+                        <h4 style="color:#fff; font-size:14px; margin-bottom:12px;">Step 2: Add Bio Mention</h4>
+                        <p style="font-size:12px; color:var(--text-muted); margin-bottom:20px;">Add this exact text to your Instagram Bio to verify your identity.</p>
 
-                    <!-- Auto-Generated Unique Code Box -->
-                    <div style="font-size:10.5px; color:var(--text-muted); margin-bottom:6px;">Your Generated Verification Code:</div>
-                    <div style="display:flex; align-items:center; justify-content:space-between; background:rgba(15,23,42,0.8); border:1px solid rgba(56,189,248,0.3); border-radius:10px; padding:8px 12px; margin-bottom:10px;">
-                        <span style="font-size:14px; font-weight:900; color:#38bdf8; letter-spacing:1px;" id="userInstaVerifCode">EX-894215</span>
-                        <button type="button" onclick="window.copyInstaVerifCode()" style="background:rgba(56,189,248,0.2); border:1px solid rgba(56,189,248,0.4); color:#38bdf8; padding:4px 10px; border-radius:6px; font-size:10.5px; font-weight:800; cursor:pointer;">
-                            Copy Code
-                        </button>
-                    </div>
-
-                    <!-- Direct DM Link Button -->
-                    <a href="https://ig.me/m/elitex_asia" target="_blank" style="display:flex; align-items:center; justify-content:center; gap:6px; width:100%; height:34px; background:rgba(56,189,248,0.12); border:1px solid rgba(56,189,248,0.3); border-radius:8px; color:#38bdf8; text-decoration:none; font-size:11px; font-weight:800;">
-                        <svg viewBox="0 0 24 24" style="width:14px; height:14px; fill:#38bdf8;"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/></svg>
-                        Send Code via DM to @elitex_asia
-                    </a>
-                </div>
-
-                <!-- STEP 3: Submit Handle -->
-                <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:14px; padding:14px;">
-                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
-                        <div style="width:22px; height:22px; border-radius:50%; background:#4ade80; color:#0f172a; font-size:11px; font-weight:900; display:flex; align-items:center; justify-content:center; flex-shrink:0;">3</div>
-                        <span style="font-size:12px; font-weight:800; color:#fff;">Enter Your Instagram Handle</span>
-                    </div>
-
-                    <form id="instaConnectForm" onsubmit="window.saveInstagramAccount(event)">
-                        <div style="margin-bottom:12px;">
-                            <div style="position:relative; display:flex; align-items:center;">
-                                <span style="position:absolute; left:14px; color:#ec4899; font-weight:800; font-size:14px;">@</span>
-                                <input type="text" id="instaHandleInput" placeholder="your_instagram_username" required style="width:100%; height:42px; background:rgba(15,23,42,0.8); border:1px solid rgba(236,72,153,0.3); border-radius:10px; padding:0 14px 0 32px; color:#fff; font-size:13px; font-weight:700; outline:none;">
-                            </div>
+                        <div style="background:rgba(15,23,42,0.8); border:1px solid rgba(236,72,153,0.3); border-radius:10px; padding:12px; margin-bottom:20px;">
+                            <span style="font-size:14px; font-weight:800; color:#facc15;" id="bioMentionText">A Part of @elitex_asia</span>
+                            <button type="button" onclick="window.copyBioMentionText()" style="display:block; margin:10px auto 0; background:rgba(236,72,153,0.2); border:1px solid rgba(236,72,153,0.4); color:#ec4899; padding:6px 14px; border-radius:6px; font-size:11px; font-weight:800; cursor:pointer;">
+                                Copy Bio Text
+                            </button>
                         </div>
 
-                        <button type="submit" id="btnSaveInsta" style="width:100%; height:42px; background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); border:none; border-radius:12px; color:#fff; font-weight:800; font-size:13px; cursor:pointer; box-shadow:0 4px 15px rgba(220,39,67,0.35);">
-                            Submit Profile for Verification
-                        </button>
-                    </form>
+                        <div style="display:flex; gap:10px;">
+                            <button type="button" onclick="window.nextIgStep(1)" style="flex:1; height:44px; background:rgba(255,255,255,0.1); color:#fff; border:none; border-radius:10px; font-weight:800; font-size:14px; cursor:pointer;">
+                                Back
+                            </button>
+                            <button type="button" onclick="window.nextIgStep(3)" style="flex:2; height:44px; background:var(--accent); color:#000; border:none; border-radius:10px; font-weight:800; font-size:14px; cursor:pointer;">
+                                Added to Bio -> Next
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STEP 3: Unique Code -->
+                <div id="igStep3" style="display:none; animation: fadeIn 0.3s ease;">
+                    <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:14px; padding:20px; text-align:center;">
+                        <h4 style="color:#fff; font-size:14px; margin-bottom:12px;">Step 3: Send DM Code</h4>
+                        <p style="font-size:12px; color:var(--text-muted); margin-bottom:20px;">Copy this code and send it to our Instagram message section.</p>
+
+                        <div style="background:rgba(15,23,42,0.8); border:1px solid rgba(56,189,248,0.3); border-radius:10px; padding:12px; margin-bottom:16px;">
+                            <span style="font-size:18px; font-weight:900; color:#38bdf8; letter-spacing:2px;" id="userInstaVerifCode">EX-00000</span>
+                            <button type="button" onclick="window.copyInstaVerifCode()" style="display:block; margin:10px auto 0; background:rgba(56,189,248,0.2); border:1px solid rgba(56,189,248,0.4); color:#38bdf8; padding:6px 14px; border-radius:6px; font-size:11px; font-weight:800; cursor:pointer;">
+                                Copy Code
+                            </button>
+                        </div>
+
+                        <a href="https://ig.me/m/elitex_asia" target="_blank" style="display:flex; align-items:center; justify-content:center; gap:6px; width:100%; height:40px; background:rgba(56,189,248,0.12); border:1px solid rgba(56,189,248,0.3); border-radius:10px; color:#38bdf8; text-decoration:none; font-size:12px; font-weight:800; margin-bottom:20px;">
+                            <svg viewBox="0 0 24 24" style="width:16px; height:16px; fill:#38bdf8;"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/></svg>
+                            Open Instagram DM
+                        </a>
+
+                        <div style="display:flex; gap:10px;">
+                            <button type="button" onclick="window.nextIgStep(2)" style="flex:1; height:44px; background:rgba(255,255,255,0.1); color:#fff; border:none; border-radius:10px; font-weight:800; font-size:14px; cursor:pointer;">
+                                Back
+                            </button>
+                            <button type="button" onclick="window.nextIgStep(4)" style="flex:2; height:44px; background:var(--accent); color:#000; border:none; border-radius:10px; font-weight:800; font-size:14px; cursor:pointer;">
+                                Code Sent -> Next
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STEP 4: Submit Handle -->
+                <div id="igStep4" style="display:none; animation: fadeIn 0.3s ease;">
+                    <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:14px; padding:20px; text-align:center;">
+                        <h4 style="color:#fff; font-size:14px; margin-bottom:12px;">Step 4: Final Verification</h4>
+                        <p style="font-size:12px; color:var(--text-muted); margin-bottom:20px;">Enter your Instagram username. Our team will verify your account within 24 hours.</p>
+
+                        <form id="instaConnectForm" onsubmit="window.saveInstagramAccount(event)">
+                            <div style="margin-bottom:20px;">
+                                <div style="position:relative; display:flex; align-items:center;">
+                                    <span style="position:absolute; left:14px; color:#ec4899; font-weight:800; font-size:16px;">@</span>
+                                    <input type="text" id="instaHandleInput" placeholder="your_username" required style="width:100%; height:48px; background:rgba(15,23,42,0.8); border:1px solid rgba(236,72,153,0.3); border-radius:10px; padding:0 14px 0 36px; color:#fff; font-size:14px; font-weight:700; outline:none; text-align:left;">
+                                </div>
+                            </div>
+
+                            <div style="display:flex; gap:10px;">
+                                <button type="button" onclick="window.nextIgStep(3)" style="flex:1; height:46px; background:rgba(255,255,255,0.1); color:#fff; border:none; border-radius:10px; font-weight:800; font-size:14px; cursor:pointer;">
+                                    Back
+                                </button>
+                                <button type="submit" id="btnSaveInsta" style="flex:2; height:46px; background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); border:none; border-radius:10px; color:#fff; font-weight:800; font-size:14px; cursor:pointer; box-shadow:0 4px 15px rgba(220,39,67,0.35);">
+                                    Submit Profile
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
 
             </div>
@@ -5278,6 +5314,13 @@
             document.getElementById('identityModal').classList.remove('active');
             setTimeout(() => {
                 document.getElementById('identityModal').style.display = 'none';
+                
+                // Prompt IG Verification if not pending or verified
+                if (!instagramVerified && instagramVerificationStatus !== 'pending') {
+                    if (typeof window.promptConnectInstagram === 'function') {
+                        window.promptConnectInstagram();
+                    }
+                }
             }, 500);
             
             updateWalletUI();
@@ -7387,6 +7430,28 @@
             });
         };
 
+        window.nextIgStep = function(stepNumber) {
+            // Hide all steps
+            document.getElementById('igStep1').style.display = 'none';
+            document.getElementById('igStep2').style.display = 'none';
+            document.getElementById('igStep3').style.display = 'none';
+            document.getElementById('igStep4').style.display = 'none';
+            
+            // Show target step
+            const targetStep = document.getElementById('igStep' + stepNumber);
+            if (targetStep) targetStep.style.display = 'block';
+
+            // Update indicators
+            const indicators = document.getElementById('igStepIndicators').children;
+            for (let i = 0; i < indicators.length; i++) {
+                if (i < stepNumber) {
+                    indicators[i].style.background = 'var(--accent)';
+                } else {
+                    indicators[i].style.background = 'rgba(255,255,255,0.2)';
+                }
+            }
+        };
+
         window.promptConnectInstagram = function() {
             if (!instagramVerificationCode) {
                 instagramVerificationCode = generateInstaVerificationCode();
@@ -7400,6 +7465,12 @@
             if (input) {
                 input.value = instagramHandle ? instagramHandle.replace(/^@/, '') : '';
             }
+
+            // Always start at step 1
+            if (typeof window.nextIgStep === 'function') {
+                window.nextIgStep(1);
+            }
+
             const modal = document.getElementById('instagramConnectModal');
             if (modal) modal.classList.add('active');
         };
@@ -7439,16 +7510,16 @@
             
             if (btn) {
                 btn.disabled = false;
-                btn.innerText = "Submit Profile for Verification";
+                btn.innerText = "Submit Profile";
             }
 
             window.closeInstagramConnectModal();
             window.openProfileDetailsModal();
             
             if (typeof showToast === 'function') {
-                showToast(`Verification Submitted! Make sure to add 'A Part of @elitex_asia' in your Bio and send code ${instagramVerificationCode} via DM to @elitex_asia.`, "success");
+                showToast(`Verification Submitted! Our team is verifying your profile.`, "success");
             } else {
-                alert(`Verification Submitted! Make sure to add 'A Part of @elitex_asia' in your Bio and send code ${instagramVerificationCode} via DM to @elitex_asia.`);
+                alert(`Verification Submitted! Our team is verifying your profile.`);
             }
         };
 
@@ -9986,6 +10057,15 @@
                 document.getElementById('identityModal').classList.add('active');
             } else {
                 setupUserIdentityUI(userName);
+                
+                // Prompt IG Verification if not pending or verified
+                if (!instagramVerified && instagramVerificationStatus !== 'pending') {
+                    setTimeout(() => {
+                        if (typeof window.promptConnectInstagram === 'function') {
+                            window.promptConnectInstagram();
+                        }
+                    }, 1000);
+                }
             }
             
             updateWalletUI();
